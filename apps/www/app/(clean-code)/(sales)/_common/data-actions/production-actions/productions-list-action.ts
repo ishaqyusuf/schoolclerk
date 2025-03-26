@@ -59,26 +59,23 @@ export async function getProductionListPageAction(query: SearchParamsType) {
               "production.status": "past due",
           })
         : [];
-    const excludesIds = [...dueToday, ...pastDue].map((a) => a.id);
+    const customs = [...dueToday, ...pastDue]
+        .map(transformProductionList)
+        // .sort(
+        //     (a, b) =>
+        //         (new Date(b.alert.date) as any) -
+        //         (new Date(a.alert.date) as any),
+        // )
+        .filter((a) => !a.completed);
+    // const excludesIds = [...dueToday, ...pastDue].map((a) => a.id);
+    const excludesIds = customs.map((a) => a.id);
     const others = prodList.filter((p) => !excludesIds?.includes(p.id));
 
     const result = await inifinitePageInfo(
         query,
         whereSales(query),
         prisma.salesOrders,
-        [
-            ...[
-                ...dueToday,
-                // ...pastDue
-            ]
-                .map(transformProductionList)
-                .sort(
-                    (a, b) =>
-                        (new Date(b.alert.date) as any) -
-                        (new Date(a.alert.date) as any),
-                ),
-            ...others.map(transformProductionList),
-        ],
+        [...customs, ...others.map(transformProductionList)],
         // [...dueToday, ...pastDue, ...others].map(transformProductionList)
     );
     return result;

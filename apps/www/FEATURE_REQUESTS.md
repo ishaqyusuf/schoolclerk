@@ -3,6 +3,7 @@
 - custom component price
 - production page redesign
 - search:
+- issues on the account
 # SAT, MAR 22
 - login profile cache
 - email render
