@@ -4,6 +4,11 @@
 - production page redesign
 - search:
 - issues on the account
+- new legacy style blue-ish wordpress old school
+- UPDATE: set for delivery and set delivery date.
+  - new tab: delivery tab, pickup tab: show due date.
+- fix component menu floating away
+- moulding when saved:
 # SAT, MAR 22
 - login profile cache
 - email render
