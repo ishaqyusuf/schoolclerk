@@ -1,10 +1,10 @@
 "use client";
 
-import { ICan } from "@/types/auth";
-import { redirect } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { redirect } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { ICan } from "@/types/auth";
+import { useSession } from "next-auth/react";
 
 export type AuthPermissions = (keyof ICan | (keyof ICan)[])[];
 interface Props {
@@ -14,6 +14,7 @@ interface Props {
     permissionType?: "every" | "some" | "none";
     children?;
     className?;
+    noRedirect?: boolean;
 }
 export default function AuthGuard({
     can = [],
@@ -21,6 +22,7 @@ export default function AuthGuard({
     children,
     permissionType = "every",
     roles = [],
+    noRedirect,
 }: Props) {
     const { data: session } = useSession({
         required: true,
@@ -46,10 +48,10 @@ export default function AuthGuard({
         const _visible =
             (permission && rolePermission) || session?.role.name == "Admin";
         setVisible(_visible);
-        if (!_visible) {
+        if (!_visible && !noRedirect) {
             redirect("/");
         }
-    }, []);
+    }, [noRedirect, can, roles, permissionType]);
 
     return <div className={cn(className)}>{visible && children}</div>;
 }

@@ -8,7 +8,7 @@ import { Menu } from "./(clean-code)/menu";
 export function SalesQuickAction({}) {
     return (
         <Portal nodeId={"navRightSlot"}>
-            <AuthGuard can={["viewSales"]}>
+            <AuthGuard noRedirect can={["viewSales"]}>
                 <Menu label={"Quick Action"}>
                     <Menu.Item href={`/sales-book/create-order`}>
                         New Sales
