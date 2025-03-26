@@ -1,17 +1,18 @@
-import { useForm } from "react-hook-form";
-import { useFormDataStore } from "../../_common/_stores/form-data-store";
-import { UseStepContext } from "./ctx";
-import { Form } from "@/components/ui/form";
-import FormInput from "@/components/common/controls/form-input";
-import Button from "@/components/common/button";
 import { useMemo } from "react";
-import AutoComplete from "@/components/_v1/common/auto-complete";
 import {
     createCustomComponentUseCase,
     updateCustomComponentUseCase,
 } from "@/app/(clean-code)/(sales)/_common/use-case/step-component-use-case";
-import { ComponentHelperClass } from "../../_utils/helpers/zus/step-component-class";
+import AutoComplete from "@/components/_v1/common/auto-complete";
+import Button from "@/components/common/button";
+import FormInput from "@/components/common/controls/form-input";
+import { Form } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { useFormDataStore } from "../../_common/_stores/form-data-store";
+import { ComponentHelperClass } from "../../_utils/helpers/zus/step-component-class";
+import { UseStepContext } from "./ctx";
 
 interface Props {
     ctx: UseStepContext;
@@ -28,11 +29,11 @@ export function CustomComponent({ ctx }: Props) {
     });
     const customInputs = useMemo(
         () => ctx.stepComponents?.filter((s) => s._metaData.custom),
-        [ctx.stepComponents]
+        [ctx.stepComponents],
     );
     const hasCost = useMemo(
         () => ctx.items?.filter((s) => s.salesPrice)?.length > 0,
-        [ctx.items]
+        [ctx.items],
     );
     async function _continue() {
         const data = form.getValues();
@@ -44,7 +45,6 @@ export function CustomComponent({ ctx }: Props) {
         }
         let cls: ComponentHelperClass;
         let eProd = customInputs?.find((s) => s.title == data.title);
-        console.log({ data, eProd });
 
         if (!eProd) {
             eProd = (await createCustomComponentUseCase({
@@ -55,7 +55,7 @@ export function CustomComponent({ ctx }: Props) {
             cls = new ComponentHelperClass(
                 ctx.cls.itemStepUid,
                 eProd.uid,
-                eProd
+                eProd,
             );
             if (data.basePrice) {
                 await cls.fetchUpdatedPrice();
@@ -70,7 +70,7 @@ export function CustomComponent({ ctx }: Props) {
                 cls = new ComponentHelperClass(
                     ctx.cls.itemStepUid,
                     eProd.uid,
-                    eProd
+                    eProd,
                 );
                 await cls.fetchUpdatedPrice();
             }
@@ -83,7 +83,7 @@ export function CustomComponent({ ctx }: Props) {
     }
     return (
         <Form {...form}>
-            <div className="relative p-2 min-h-[25vh] xl:min-h-[40hv]  group  flex flex-col gap-4">
+            <div className="group relative flex min-h-[25vh]  flex-col  gap-4 p-2 xl:min-h-[40hv]">
                 {/* {customInputs?.length ? (
                     <AutoComplete
                         onSelect={(value: any) => {

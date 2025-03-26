@@ -1,8 +1,9 @@
 import { AsyncFnType } from "@/app/(clean-code)/type";
 import { prisma } from "@/db";
-import { Prisma } from "@prisma/client";
-import { StepComponentForm, StepComponentMeta } from "../../types";
 import { generateRandomString } from "@/lib/utils";
+import { Prisma } from "@prisma/client";
+
+import { StepComponentForm, StepComponentMeta } from "../../types";
 
 export interface LoadStepComponentsProps {
     stepId?: number;
@@ -18,7 +19,7 @@ export async function loadStepComponentsDta(props: LoadStepComponentsProps) {
         // .filter((p) => p.product || p.door)
         .map(transformStepProduct);
     const filtered = resp.filter(
-        (r, i) => resp.findIndex((s) => s.title == r.title) == i
+        (r, i) => resp.findIndex((s) => s.title == r.title) == i,
     );
     return filtered;
     // if (resp.filter((s) => s.sortIndex >= 0).length)
@@ -106,7 +107,7 @@ export async function getComponentsDta(props: LoadStepComponentsProps) {
 }
 
 export function transformStepProduct(
-    component: AsyncFnType<typeof getComponentsDta>[number]
+    component: AsyncFnType<typeof getComponentsDta>[number],
 ) {
     const { door, product, sortIndex, sorts, ...prod } = component;
     let meta: StepComponentMeta = prod.meta as any;
@@ -132,12 +133,12 @@ export function transformStepProduct(
         productCode: component.productCode,
         redirectUid: component.redirectUid,
         _metaData: {
-            sorts: component.sorts.map(
+            sorts: (component.sorts || [])?.map(
                 ({ sortIndex, stepComponentId, uid }) => ({
                     sortIndex,
                     stepComponentId,
                     uid,
-                })
+                }),
             ),
             custom: component.custom,
             visible: false,
