@@ -45,17 +45,18 @@ export async function getProductionListPageAction(query: SearchParamsType) {
         ([a, b]) => b && !excludes.includes(a as any),
     );
     const queryCount = q?.length;
+    const assignedToId = query["production.assignedToId"];
     const dueToday = !query.start
         ? await getProductionListAction({
               "sales.type": query["sales.type"],
-              "production.assignedToId": query["production.assignedToId"],
+              "production.assignedToId": assignedToId,
               "production.status": "due today",
           })
         : [];
     const pastDue = !query.start
         ? await getProductionListAction({
               "sales.type": query["sales.type"],
-              "production.assignedToId": query["production.assignedToId"],
+              "production.assignedToId": assignedToId,
               "production.status": "past due",
           })
         : [];

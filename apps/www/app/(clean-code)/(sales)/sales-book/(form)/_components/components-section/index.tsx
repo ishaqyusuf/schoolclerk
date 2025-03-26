@@ -1,11 +1,3 @@
-import { Label } from "@/components/ui/label";
-import {
-    useFormDataStore,
-    ZusComponent,
-} from "../../_common/_stores/form-data-store";
-import { zusDeleteComponents } from "../../_utils/helpers/zus/zus-step-helper";
-import { Menu } from "@/components/(clean-code)/menu";
-import { Icons } from "@/components/_v1/icons";
 import {
     memo,
     useCallback,
@@ -15,7 +7,20 @@ import {
     useState,
     useTransition,
 } from "react";
+import { updateComponentsSortingAction } from "@/actions/update-components-sorting";
+import { DeleteRowAction } from "@/components/_v1/data-table/data-table-row-actions";
+import { Icons } from "@/components/_v1/icons";
+import { Menu } from "@/components/(clean-code)/menu";
+import { _modal } from "@/components/common/modal/provider";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sortable, SortableItem } from "@/components/ui/sortable";
+import { useSortControl } from "@/hooks/use-sort-control";
 import { cn } from "@/lib/utils";
+import { closestCorners } from "@dnd-kit/core";
 import {
     BoxSelect,
     CheckCircle,
@@ -27,31 +32,26 @@ import {
     Variable,
     VariableIcon,
 } from "lucide-react";
-import { DeleteRowAction } from "@/components/_v1/data-table/data-table-row-actions";
-import { Checkbox } from "@/components/ui/checkbox";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
-import { ComponentImg } from "../component-img";
+import {
+    useFormDataStore,
+    ZusComponent,
+} from "../../_common/_stores/form-data-store";
 import { ComponentHelperClass } from "../../_utils/helpers/zus/step-component-class";
-import { openEditComponentPrice } from "../modals/component-price-modal";
-import { Badge } from "@/components/ui/badge";
-import DoorSizeModal from "../modals/door-size-modal";
-import { _modal } from "@/components/common/modal/provider";
-import { openDoorPriceModal } from "../modals/door-price-modal";
-import { openComponentVariantModal } from "../modals/component-visibility-modal";
-import { UseStepContext, useStepContext } from "./ctx";
-import { openStepPricingModal } from "../modals/step-pricing-modal";
+import { zusDeleteComponents } from "../../_utils/helpers/zus/zus-step-helper";
+import { ComponentImg } from "../component-img";
 import { openComponentModal } from "../modals/component-form";
-import SearchBar from "./search-bar";
-import { openDoorSizeSelectModal } from "../modals/door-size-select-modal/open-modal";
+import { openEditComponentPrice } from "../modals/component-price-modal";
 import { openSectionSettingOverride } from "../modals/component-section-setting-override";
+import { openComponentVariantModal } from "../modals/component-visibility-modal";
+import { openDoorPriceModal } from "../modals/door-price-modal";
+import DoorSizeModal from "../modals/door-size-modal";
+import { openDoorSizeSelectModal } from "../modals/door-size-select-modal/open-modal";
+import { openStepPricingModal } from "../modals/step-pricing-modal";
+import { UseStepContext, useStepContext } from "./ctx";
 import { CustomComponent } from "./custom-component";
 import { CustomComponentAction } from "./custom-component.action";
-import { Sortable, SortableItem } from "@/components/ui/sortable";
-import { closestCorners } from "@dnd-kit/core";
-import { useSortControl } from "@/hooks/use-sort-control";
-import { updateComponentsSortingAction } from "@/actions/update-components-sorting";
+import SearchBar from "./search-bar";
 
 interface Props {
     itemStepUid;
@@ -89,7 +89,7 @@ export function ComponentsSection({ itemStepUid }: Props) {
     return (
         <ScrollArea
             ref={sticky.containerRef}
-            className="p-4 pb-20 h-full smax-h-[80vh] relative"
+            className="smax-h-[80vh] relative h-full p-4 pb-20"
         >
             <Sortable
                 orientation="mixed"
@@ -98,7 +98,7 @@ export function ComponentsSection({ itemStepUid }: Props) {
                 onValueChange={onSorted}
                 overlay={<div className="size-full rounded-md bg-primary/10" />}
             >
-                <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
                     {items?.map((component, index) => (
                         <SortableItem
                             key={component.id}
@@ -166,7 +166,7 @@ function FloatingAction({ ctx }: { ctx: UseStepContext }) {
         const uids = selectionUids();
         openComponentVariantModal(
             new ComponentHelperClass(stepUid, uids[0]),
-            uids
+            uids,
         );
         ctx.clearSelection();
     }, [selectionState, stepUid, ctx]);
@@ -178,15 +178,15 @@ function FloatingAction({ ctx }: { ctx: UseStepContext }) {
                 style={isFixed ? { left: `${fixedOffset}px` } : {}}
                 className={cn(
                     isFixed
-                        ? "fixed bottom-12 left-1/2 transform -translate-x-1/2"
-                        : "absolute bottom-4 left-1/2 transform -translate-x-1/2",
-                    "bg-white z-10"
+                        ? "fixed bottom-12 left-1/2 -translate-x-1/2 transform"
+                        : "absolute bottom-4 left-1/2 -translate-x-1/2 transform",
+                    "z-10 bg-white",
                 )}
             >
-                <div className="flex border shadow gap-4 p-2 rounded-lg items-center px-4">
+                <div className="flex items-center gap-4 rounded-lg border p-2 px-4 shadow">
                     {selectionState?.count ? (
                         <>
-                            <span className="uppercase font-mono font-semibold text-sm">
+                            <span className="font-mono text-sm font-semibold uppercase">
                                 {selectionState?.count} selected
                             </span>
                             <SearchBar ctx={ctx} />
@@ -216,7 +216,7 @@ function FloatingAction({ ctx }: { ctx: UseStepContext }) {
                         </>
                     ) : (
                         <>
-                            <span className="uppercase font-mono font-semibold text-sm">
+                            <span className="font-mono text-sm font-semibold uppercase">
                                 {items?.length} components
                             </span>{" "}
                             <SearchBar ctx={ctx} />
@@ -255,7 +255,7 @@ function FloatingAction({ ctx }: { ctx: UseStepContext }) {
                                                 _modal.openModal(
                                                     <DoorSizeModal
                                                         cls={ctx.cls}
-                                                    />
+                                                    />,
                                                 );
                                             }}
                                         >
@@ -335,7 +335,7 @@ export function Component({
         const cls = new ComponentHelperClass(
             stepUid,
             component?.uid,
-            component
+            component,
         );
         return {
             cls,
@@ -370,19 +370,19 @@ export function Component({
     const multiSelect = cls.isMultiSelect();
 
     return (
-        <div className="relative p-2 min-h-[25vh] xl:min-h-[40vh] flex flex-col group">
+        <div className="group relative flex min-h-[25vh] flex-col p-2 xl:min-h-[40vh]">
             {/* {multiSelect &&
                 cls.multiSelected() &&
                 cls.getMultiSelectData()?.length} */}
             <button
                 className={cn(
-                    "border h-full hover:bg-white  w-full rounded-lg overflow-hidden",
+                    "h-full w-full overflow-hidden  rounded-lg border hover:bg-white",
                     (multiSelect && cls.multiSelected()) ||
                         stepForm?.componentUid == component.uid
                         ? "border-muted-foreground bg-white"
                         : "hover:border-muted-foreground/50",
                     sortMode &&
-                        "border-dashed border-muted-foreground hover:border-muted-foreground"
+                        "border-dashed border-muted-foreground hover:border-muted-foreground",
                 )}
                 onClick={!sortMode ? selectComponent : undefined}
             >
@@ -394,7 +394,7 @@ export function Component({
                             src={component.img}
                         />
                     </div>
-                    <div className="p-2 border-t font-mono inline-flex text-sm justify-between">
+                    <div className="inline-flex justify-between border-t p-2 font-mono text-sm">
                         <Label className=" uppercase">{component.title}</Label>
                         {component.salesPrice && (
                             <Badge className="h-5 px-1" variant="destructive">
@@ -406,13 +406,13 @@ export function Component({
             </button>
 
             {component.productCode ? (
-                <div className="absolute -rotate-90 -translate-y-1/2 text-sm font-mono uppercase tracking-wider font-semibold text-muted-foreground transform top-1/2">
+                <div className="s-rotate-90 -translate-y-1/2s top-1/2s absolute left-4 top-4 transform font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                     {component.productCode}
                 </div>
             ) : null}
             <div
                 className={cn(
-                    "flex items-center absolute m-4 gap-2 top-0 left-0"
+                    "absolute left-0 top-0 m-4 flex items-center gap-2",
                 )}
             >
                 <div className={cn(selectState?.count ? "" : "hidden")}>
@@ -423,23 +423,23 @@ export function Component({
                 </div>
                 <div
                     className={cn(
-                        !component?.sectionOverride?.overrideMode && "hidden"
+                        !component?.sectionOverride?.overrideMode && "hidden",
                     )}
                 >
                     <LucideVariable className="size-4 text-muted-foreground/70" />
                 </div>
                 <div className={cn(!component.redirectUid && "hidden")}>
-                    <ExternalLink className="w-4 text-muted-foreground/70 h-4" />
+                    <ExternalLink className="h-4 w-4 text-muted-foreground/70" />
                 </div>
             </div>
             <div
                 className={cn(
-                    "absolute top-0 right-0",
+                    "absolute right-0 top-0",
                     open
                         ? ""
                         : selectState?.count
-                        ? "hidden"
-                        : "hidden group-hover:flex bg-white"
+                          ? "hidden"
+                          : "hidden bg-white group-hover:flex",
                 )}
             >
                 <div>
@@ -452,7 +452,7 @@ export function Component({
                                         onClick={() => {
                                             openComponentModal(
                                                 ctx.cls,
-                                                component
+                                                component,
                                             );
                                         }}
                                         Icon={Info}
