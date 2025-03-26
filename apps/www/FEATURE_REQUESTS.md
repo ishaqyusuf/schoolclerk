@@ -1,6 +1,8 @@
 # WED, MAR 26
 - terminal payment sometimes get accepted but not applied.
 - custom component price
+- production page redesign
+- search:
 # SAT, MAR 22
 - login profile cache
 - email render

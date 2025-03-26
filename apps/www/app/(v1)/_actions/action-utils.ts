@@ -29,9 +29,13 @@ export const withDeleted = {
 };
 export function dateEquals(date) {
     return {
-        gte: fixDbTime(dayjs(date)).toISOString(),
-        lte: fixDbTime(dayjs(date), 23, 59, 59).toISOString(),
+        gte: dayjs(date).startOf("day").toDate(),
+        lte: dayjs(date).endOf("day").toDate(),
     };
+    // return {
+    //     gte: fixDbTime(dayjs(date)).toISOString(),
+    //     lte: fixDbTime(dayjs(date), 23, 59, 59).toISOString(),
+    // };
 }
 export function dateQuery({
     date,
