@@ -25,6 +25,7 @@ export default function RootLayout({
       {/*<Suspense>*/}
       {/*  <PostHogPageview />*/}
       {/*</Suspense>*/}
+      {/* LOREM */}
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
