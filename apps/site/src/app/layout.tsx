@@ -1,10 +1,10 @@
 import { Inter as FontSans } from "next/font/google";
 import localFont from "next/font/local";
 
-import "~/styles/globals.css";
+import "@/styles/globals.css";
+import "@gnd/ui/globals.css";
 
-import { cn } from "@gnd/ui";
-import { Toaster } from "@gnd/ui/toaster";
+import { cn } from "@gnd/ui/cn";
 
 const fontSans = FontSans({
   subsets: ["latin"],
