@@ -28,11 +28,11 @@
   "engines": {
     "node": ">=18"
   },
-  "prettier": "@saasfly/prettier-config",
+  "prettier": "@gnd/prettier-config",
   "workspaces": [
     "apps/*",
     "packages/*",
     "tooling/*"
   ],
-   "packageManager": "bun@1.1.38"
+  "packageManager": "bun@1.1.38"
 }

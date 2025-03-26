@@ -1,5 +1,5 @@
 {
-  "name": "@gnd/www",
+  "name": "@gnd/dashboard",
   "version": "0.1.0",
   "private": true,
   "scripts": {

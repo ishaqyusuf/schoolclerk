@@ -1,5 +1,5 @@
 {
-  "name": "@saasfly/ui",
+  "name": "@gnd/ui",
   "private": true,
   "version": "0.1.0",
   "typesVersions": {
@@ -52,19 +52,19 @@
     "lucide-react": "0.323.0",
     "tailwind-merge": "1.14.0",
     "zod": "3.22.4",
-    "@tsparticles/react" : "3.0.0",
+    "@tsparticles/react": "3.0.0",
     "@tsparticles/engine": "3.3.0",
-    "@tsparticles/slim":  "3.3.0",
+    "@tsparticles/slim": "3.3.0",
     "@react-three/fiber": "8.16.1",
     "@react-three/drei": "9.103.0",
     "three": "0.163.0",
     "three-globe": "2.31.0"
   },
   "devDependencies": {
-    "@saasfly/eslint-config": "workspace:*",
-    "@saasfly/prettier-config": "workspace:*",
-    "@saasfly/typescript-config": "workspace:*",
-    "@saasfly/tailwind-config": "workspace:*",
+    "@gnd/eslint-config": "workspace:*",
+    "@gnd/prettier-config": "workspace:*",
+    "@gnd/typescript-config": "workspace:*",
+    "@gnd/tailwind-config": "workspace:*",
     "@types/react": "18.3.3",
     "@tanstack/react-table": "8.17.0",
     "date-fns": "3.3.1",
@@ -78,12 +78,12 @@
     "tailwindcss-animate": "1.0.7",
     "typescript": "5.4.5"
   },
-  "prettier": "@saasfly/prettier-config",
+  "prettier": "@gnd/prettier-config",
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@saasfly/eslint-config/base",
-      "@saasfly/eslint-config/react"
+      "@gnd/eslint-config/base",
+      "@gnd/eslint-config/react"
     ]
   },
   "exports": {
