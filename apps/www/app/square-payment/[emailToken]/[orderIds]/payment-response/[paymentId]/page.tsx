@@ -2,13 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { Icons } from "@/components/_v1/icons";
-import { CheckCircle, XCircle } from "lucide-react";
-import { formatPaymentParams } from "@/utils/format-payment-params";
 import { finalizeSalesCheckout } from "@/actions/finalize-sales-checkout";
 import { salesPaymentCheckoutResponse } from "@/actions/sales-payment-checkout-response";
 import { notifySalesRepPaymentSuccessAction } from "@/actions/triggers/sales-rep-payment-notification";
+import { Icons } from "@/components/_v1/icons";
+import { formatPaymentParams } from "@/utils/format-payment-params";
+import { motion } from "framer-motion";
+import { CheckCircle, XCircle } from "lucide-react";
 
 export default function PaymentResponsePage({ params }) {
     // const { emailToken, slug, paymentId } = params;
@@ -27,21 +27,18 @@ export default function PaymentResponsePage({ params }) {
                 const response0 = await salesPaymentCheckoutResponse({
                     paymentId,
                 });
-                console.log({
-                    response0,
-                });
+
                 // return;
                 await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate processing delay
                 const response = await finalizeSalesCheckout({
                     salesPaymentId: paymentId,
                 });
-                console.log({ response });
                 await Promise.all(
                     response?.notifications?.map(async (not) => {
                         await notifySalesRepPaymentSuccessAction({
                             ...not,
                         });
-                    })
+                    }),
                 );
                 // const response = await salesPaymentCheckoutResponse({
                 //     emailToken,
@@ -65,20 +62,20 @@ export default function PaymentResponsePage({ params }) {
                 return {
                     text: "Payment Successful!",
                     color: "text-green-600",
-                    icon: <CheckCircle className="w-12 h-12 text-green-500" />,
+                    icon: <CheckCircle className="h-12 w-12 text-green-500" />,
                 };
             case "error":
                 return {
                     text: `${error}`,
                     color: "text-red-600",
-                    icon: <XCircle className="w-12 h-12 text-red-500" />,
+                    icon: <XCircle className="h-12 w-12 text-red-500" />,
                 };
             default:
                 return {
                     text: "Processing Transaction...",
                     color: "text-blue-600",
                     icon: (
-                        <Icons.spinner className="w-12 h-12 animate-spin text-blue-500" />
+                        <Icons.spinner className="h-12 w-12 animate-spin text-blue-500" />
                     ),
                 };
         }
@@ -87,12 +84,12 @@ export default function PaymentResponsePage({ params }) {
     const { text, color, icon } = getStatusMessage();
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+        <div className="flex min-h-screen items-center justify-center bg-gray-100 p-6">
             <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
-                className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md text-center"
+                className="w-full max-w-md rounded-lg bg-white p-6 text-center shadow-lg"
             >
                 <div className="flex flex-col items-center space-y-4">
                     {icon}
@@ -109,7 +106,7 @@ export default function PaymentResponsePage({ params }) {
                     {status === "success" && (
                         <motion.button
                             whileTap={{ scale: 0.95 }}
-                            className="mt-4 w-full bg-green-600 text-white py-2 rounded-lg shadow hover:bg-green-700 transition"
+                            className="mt-4 w-full rounded-lg bg-green-600 py-2 text-white shadow transition hover:bg-green-700"
                             onClick={() => router.push("/dashboard")} // Redirect to dashboard or another page
                         >
                             Go to Dashboard
@@ -119,7 +116,7 @@ export default function PaymentResponsePage({ params }) {
                     {status === "error" && (
                         <motion.button
                             whileTap={{ scale: 0.95 }}
-                            className="mt-4 w-full bg-red-600 text-white py-2 rounded-lg shadow hover:bg-red-700 transition"
+                            className="mt-4 w-full rounded-lg bg-red-600 py-2 text-white shadow transition hover:bg-red-700"
                             onClick={() => router.push("/retry-payment")} // Retry payment if needed
                         >
                             Retry Payment

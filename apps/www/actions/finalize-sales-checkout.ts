@@ -5,6 +5,7 @@ import { SalesPaymentStatus } from "@/app/(clean-code)/(sales)/types";
 import { prisma } from "@/db";
 import { formatMoney } from "@/lib/use-number";
 import { sum } from "@/lib/utils";
+
 import { NotifySalesRepPayment } from "./triggers/sales-rep-payment-notification";
 
 interface Props {
@@ -49,6 +50,15 @@ export async function finalizeSalesCheckout({ salesPaymentId }: Props) {
                                             name: true,
                                         },
                                     },
+                                    payments: {
+                                        select: {
+                                            id: true,
+                                            amount: true,
+                                            status: true,
+                                            transactionId: true,
+                                            squarePaymentsId: true,
+                                        },
+                                    },
                                 },
                             },
                         },
@@ -67,7 +77,7 @@ export async function finalizeSalesCheckout({ salesPaymentId }: Props) {
 
     const tenders = cTx.squarePayment.checkout.tenders;
     const validTenders = tenders.filter(
-        (s) => s.status == ("COMPLETED" as SquarePaymentStatus)
+        (s) => s.status == ("COMPLETED" as SquarePaymentStatus),
     );
     if (!validTenders.length) {
         // const _status = Array.from(new Set(cTx.squarePayment.checkout.tenders.map(s =>s.status)));
@@ -150,7 +160,7 @@ export async function finalizeSalesCheckout({ salesPaymentId }: Props) {
                         };
                     salesRepsNotifications[salesRep.email].amount += paidAmount;
                     salesRepsNotifications[salesRep.email].ordersNo.push(
-                        o.order.orderId
+                        o.order.orderId,
                     );
                 }
                 return {
@@ -161,9 +171,9 @@ export async function finalizeSalesCheckout({ salesPaymentId }: Props) {
             return {
                 paidAmount,
             };
-        })
+        }),
     );
-    await prisma.customerTransaction.update({
+    const tx = await prisma.customerTransaction.update({
         where: {
             id: cTx.id,
         },
@@ -177,5 +187,6 @@ export async function finalizeSalesCheckout({ salesPaymentId }: Props) {
         notifications: Object.values(salesRepsNotifications),
         tip,
         totalAmount,
+        tx,
     };
 }

@@ -1,16 +1,17 @@
 "use server";
+
 import { prisma } from "@/db";
-import { resend } from "@/lib/resend";
-import { nanoid } from "nanoid";
-import { render } from "@react-email/render";
-import { composeSalesEmail } from "@/modules/email/emails/invoice";
 import { env } from "@/env.mjs";
-import QueryString from "qs";
-import { createNoteAction } from "@/modules/notes/actions/create-note-action";
-import { sum } from "@/lib/utils";
-import { whereSales } from "@/utils/db/where.sales";
 import { getBaseUrl } from "@/envs";
+import { resend } from "@/lib/resend";
+import { sum } from "@/lib/utils";
+import { composeSalesEmail } from "@/modules/email/emails/invoice";
+import { createNoteAction } from "@/modules/notes/actions/create-note-action";
+import { whereSales } from "@/utils/db/where.sales";
 import { composePaymentOrderIdsParam } from "@/utils/format-payment-params";
+import { render } from "@react-email/render";
+import { nanoid } from "nanoid";
+import QueryString from "qs";
 
 interface Props {
     ids;
@@ -91,7 +92,7 @@ export const __sendInvoiceEmailTrigger = async ({
                 const salesRep = sales.salesRep?.name;
                 const isQuote = sales.type == "quote";
                 const pendingAmountSales = matchingSales.filter(
-                    (s) => s.amountDue > 0
+                    (s) => s.amountDue > 0,
                 );
                 const totalDueAmount = sum(pendingAmountSales, "amountDue");
                 let paymentLink =
@@ -100,7 +101,7 @@ export const __sendInvoiceEmailTrigger = async ({
                     //     :
                     totalDueAmount > 0
                         ? `${getBaseUrl()}/square-payment/${emailSlug}/${composePaymentOrderIdsParam(
-                              pendingAmountSales.map((a) => a.slug)
+                              pendingAmountSales.map((a) => a.slug),
                           )}`
                         : null;
 
@@ -129,10 +130,10 @@ export const __sendInvoiceEmailTrigger = async ({
                                         .join(","),
                                     mode: sales.type,
                                     preview: false,
-                                }
+                                },
                             )}`,
                             salesRep,
-                        })
+                        }),
                     ),
                 });
                 await Promise.all(
@@ -152,10 +153,12 @@ export const __sendInvoiceEmailTrigger = async ({
                                 },
                             ],
                         });
-                    })
+                    }),
                 );
-                if (response.error) throw new Error(`Unable to send email`);
+                if (response.error) {
+                    throw new Error(`Unable to send email`);
+                }
             }
-        })
+        }),
     );
 };
