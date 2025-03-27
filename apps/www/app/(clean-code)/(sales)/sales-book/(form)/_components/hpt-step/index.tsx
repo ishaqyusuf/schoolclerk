@@ -114,15 +114,15 @@ function DoorSizeTable({ door }: DoorSizeTable) {
                             )}
                             {ctx.config.noHandle ? (
                                 <TableHead
-                                    className="w-16 text-center"
+                                    className="w-20 text-center"
                                     align="center"
                                 >
                                     <span className="">Qty</span>
                                 </TableHead>
                             ) : (
                                 <>
-                                    <TableHead className="w-28">Lh</TableHead>
-                                    <TableHead className="w-28">Rh</TableHead>
+                                    <TableHead className="w-20">Lh</TableHead>
+                                    <TableHead className="w-20">Rh</TableHead>
                                 </>
                             )}
                             <TableHead className="w-28">Estimate</TableHead>

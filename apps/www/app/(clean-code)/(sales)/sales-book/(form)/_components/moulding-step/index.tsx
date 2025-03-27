@@ -1,3 +1,10 @@
+import ConfirmBtn from "@/components/_v1/confirm-btn";
+import Money from "@/components/_v1/money";
+import { DataLine } from "@/components/(clean-code)/data-table/Dl";
+import { Menu } from "@/components/(clean-code)/menu";
+import { MoneyBadge } from "@/components/(clean-code)/money-badge";
+import { AnimatedNumber } from "@/components/animated-number";
+import { Label } from "@/components/ui/label";
 import {
     Table,
     TableBody,
@@ -6,18 +13,11 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Context, useCreateContext, useCtx } from "./ctx";
-import { MouldingClass } from "../../_utils/helpers/zus/moulding-class";
-
-import { MoneyBadge } from "@/components/(clean-code)/money-badge";
-import { DataLine } from "@/components/(clean-code)/data-table/Dl";
-import { Menu } from "@/components/(clean-code)/menu";
-import Money from "@/components/_v1/money";
-import { Label } from "@/components/ui/label";
-import ConfirmBtn from "@/components/_v1/confirm-btn";
 import { cn } from "@/lib/utils";
+
+import { MouldingClass } from "../../_utils/helpers/zus/moulding-class";
 import { LineInput } from "../line-input";
-import { AnimatedNumber } from "@/components/animated-number";
+import { Context, useCreateContext, useCtx } from "./ctx";
 
 interface Props {
     itemStepUid;
@@ -27,12 +27,12 @@ export default function MouldingLineItem({ itemStepUid }: Props) {
     return (
         <>
             <Context.Provider value={ctx}>
-                <Table className="p-4 text-xs table-fixed font-medium">
+                <Table className="table-fixed p-4 text-xs font-medium">
                     <TableHeader>
                         <TableRow className="uppercase">
                             <TableHead className="w-10">Sn.</TableHead>
                             <TableHead className="w-full">Moulding</TableHead>
-                            <TableHead className="w-28">Qty</TableHead>
+                            <TableHead className="w-20">Qty</TableHead>
                             <TableHead className="w-28">Estimate</TableHead>
                             <TableHead className="w-28">Addon/Qty</TableHead>
                             <TableHead className="w-28">Line Total</TableHead>
@@ -70,7 +70,7 @@ function MouldingRow({
     return (
         <TableRow className={cn(!mfd?.selected && "hidden")}>
             <TableCell className="font-mono">{sn}.</TableCell>
-            <TableCell className="font-mono font-medium text-sm">
+            <TableCell className="font-mono text-sm font-medium">
                 {data.title}
             </TableCell>
             <TableCell>
@@ -88,7 +88,7 @@ function MouldingRow({
                     Icon={null}
                     label={<Money value={mfd?.pricing?.unitPrice} />}
                 >
-                    <div className="p-2 min-w-[300px]">
+                    <div className="min-w-[300px] p-2">
                         <div>
                             <Label>Price Summary</Label>
                         </div>
@@ -99,7 +99,7 @@ function MouldingRow({
                                     key={step.title}
                                     label={step.title}
                                     value={
-                                        <div className="flex gap-4 items-center justify-end">
+                                        <div className="flex items-center justify-end gap-4">
                                             <span>{step.value}</span>
                                             <MoneyBadge>
                                                 {step.price}
@@ -112,7 +112,7 @@ function MouldingRow({
                                 size="sm"
                                 label="Moulding"
                                 value={
-                                    <div className="flex gap-4 items-center justify-end">
+                                    <div className="flex items-center justify-end gap-4">
                                         <span className="line-clamp-2 max-w-xs">{`${data.title}`}</span>
                                         <MoneyBadge>
                                             {data.basePrice?.price}
