@@ -1,33 +1,51 @@
 "use client";
+
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
     SheetDescription,
     SheetHeader,
     SheetTitle,
 } from "@/components/ui/sheet";
-import { useCustomerOverviewQuery } from "@/hooks/use-customer-overview-query";
-import { useEffect } from "react";
-import { CustomSheet, CustomSheetContent } from "../custom-sheet-content";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useCustomerOverviewQuery } from "@/hooks/use-customer-overview-query";
+import { usePageTitle } from "@/hooks/use-page-title";
+
+import { CustomSheet, CustomSheetContent } from "../custom-sheet-content";
 import { GeneralTab } from "./general-tab";
 import { PayPortalTab } from "./pay-portal-tab";
 
 export function CustomerOverviewSheet() {
     const ctx = useCustomerOverviewQuery();
+    const pt = usePageTitle();
 
-    useEffect(() => {
-        async function getCustomerData() {}
-        if (ctx.opened) {
-        }
-    }, [ctx.accountNo, ctx.opened]);
     const currenTab = ctx.params?.tab;
+    const [customerName, setCustomerName] = useState(null);
+    useEffect(() => {
+        if (!ctx.opened) return;
+        function _title(_t) {
+            return [_t, customerName].filter(Boolean).join(" - ");
+        }
+        pt.setTitle(
+            {
+                general: _title(`Overview`),
+                sales: _title(`Sales`),
+                quotes: _title(`Quotes`),
+                transactions: _title(`Transactions`),
+                "pay-portal": _title(`Pay Portal`),
+            }[currenTab],
+        );
+    }, [currenTab, ctx.opened, pt, customerName]);
     return (
         <CustomSheet
             open={ctx.opened}
             rounded
             size="xl"
             floating
-            onOpenChange={ctx.close}
+            onOpenChange={(e) => {
+                ctx.close(e);
+                pt.reset();
+            }}
         >
             <Tabs
                 value={currenTab}
@@ -41,7 +59,7 @@ export function CustomerOverviewSheet() {
                 <SheetHeader>
                     <SheetTitle>Customer Overview</SheetTitle>
                     <SheetDescription>
-                        <TabsList className="w-full flex justify-start">
+                        <TabsList className="flex w-full justify-start">
                             <TabsTrigger value="general">General</TabsTrigger>
                             <TabsTrigger value="sales">Sales</TabsTrigger>
                             <TabsTrigger value="quotes">Quotes</TabsTrigger>
@@ -58,7 +76,7 @@ export function CustomerOverviewSheet() {
             <CustomSheetContent className="-mt-4">
                 <Tabs value={currenTab}>
                     <TabsContent value="general">
-                        <GeneralTab />
+                        <GeneralTab setCustomerName={setCustomerName} />
                     </TabsContent>
                     <TabsContent value="pay-portal">
                         <PayPortalTab />

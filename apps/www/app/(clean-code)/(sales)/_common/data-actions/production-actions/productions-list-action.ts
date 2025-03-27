@@ -45,20 +45,22 @@ export async function getProductionListPageAction(
     );
     const queryCount = q?.length;
     const assignedToId = query["production.assignedToId"];
-    const dueToday = !query.start
-        ? await getProductionListAction({
-              "sales.type": query["sales.type"],
-              "production.assignedToId": assignedToId,
-              "production.status": "due today",
-          })
-        : [];
-    const pastDue = !query.start
-        ? await getProductionListAction({
-              "sales.type": query["sales.type"],
-              "production.assignedToId": assignedToId,
-              "production.status": "past due",
-          })
-        : [];
+    const dueToday =
+        !query.start && !queryCount
+            ? await getProductionListAction({
+                  "sales.type": query["sales.type"],
+                  "production.assignedToId": assignedToId,
+                  "production.status": "due today",
+              })
+            : [];
+    const pastDue =
+        !query.start && !queryCount
+            ? await getProductionListAction({
+                  "sales.type": query["sales.type"],
+                  "production.assignedToId": assignedToId,
+                  "production.status": "past due",
+              })
+            : [];
     const customs = [...dueToday, ...pastDue]
         .map(transformProductionList)
         // .sort(

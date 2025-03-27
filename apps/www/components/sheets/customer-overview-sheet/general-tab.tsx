@@ -1,15 +1,12 @@
 "use client";
 
+import { useEffect } from "react";
 import { getCustomerGeneralInfoAction } from "@/actions/get-customer-general-info";
-import { useCustomerOverviewQuery } from "@/hooks/use-customer-overview-query";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getInitials } from "@/utils/format";
-import {
-    DataSkeletonProvider,
-    useCreateDataSkeletonCtx,
-} from "@/hooks/use-data-skeleton";
+import Money from "@/components/_v1/money";
+import ProgressStatus from "@/components/_v1/progress-status";
 import { DataSkeleton } from "@/components/data-skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
@@ -17,8 +14,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Wallet } from "lucide-react";
-import Money from "@/components/_v1/money";
 import {
     Table,
     TableBody,
@@ -27,14 +22,20 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { useCustomerOverviewQuery } from "@/hooks/use-customer-overview-query";
+import {
+    DataSkeletonProvider,
+    useCreateDataSkeletonCtx,
+} from "@/hooks/use-data-skeleton";
 import { formatDate } from "@/lib/use-day";
 import { formatMoney } from "@/lib/use-number";
-import ProgressStatus from "@/components/_v1/progress-status";
-import { Button } from "@/components/ui/button";
-import { SalesList } from "./sales-list";
-import { Footer } from "./footer";
+import { getInitials } from "@/utils/format";
+import { Wallet } from "lucide-react";
 
-export function GeneralTab({}) {
+import { Footer } from "./footer";
+import { SalesList } from "./sales-list";
+
+export function GeneralTab({ setCustomerName }) {
     const query = useCustomerOverviewQuery();
 
     // const [data, setData] = useState<CustomerGeneralInfo | null>(null);
@@ -47,6 +48,11 @@ export function GeneralTab({}) {
         autoLoad: true,
     });
     const data = skel?.data;
+    useEffect(() => {
+        if (data) {
+            setCustomerName(data.displayName || data.accountNo);
+        }
+    }, [data]);
     return (
         <div className="space-y-4">
             <DataSkeletonProvider value={skel}>
@@ -162,7 +168,7 @@ export function GeneralTab({}) {
                     <CardContent>
                         {!skel.loading && !skel.data?.recentTx?.length ? (
                             <>
-                                <div className="flex items-center justify-center h-40">
+                                <div className="flex h-40 items-center justify-center">
                                     <p className="text-muted-foreground">
                                         No customer transaction data available
                                     </p>
@@ -191,7 +197,7 @@ export function GeneralTab({}) {
                                                 <TableCell>
                                                     <DataSkeleton pok="date">
                                                         {formatDate(
-                                                            tx?.createdAt
+                                                            tx?.createdAt,
                                                         )}
                                                     </DataSkeleton>
                                                 </TableCell>
@@ -210,7 +216,7 @@ export function GeneralTab({}) {
                                                         pok="moneyLarge"
                                                     >
                                                         {formatMoney(
-                                                            tx?.amount
+                                                            tx?.amount,
                                                         )}
                                                     </DataSkeleton>
                                                 </TableCell>
