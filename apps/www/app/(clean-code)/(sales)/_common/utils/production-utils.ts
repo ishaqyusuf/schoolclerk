@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs from "@/lib/dayjs";
 
 export function dueDateAlert(dates): { text; color; date } {
     const today = dayjs();
@@ -10,7 +10,7 @@ export function dueDateAlert(dates): { text; color; date } {
     };
 
     for (const date of dates) {
-        const dueDate = dayjs(date);
+        const dueDate = dayjs(date).startOf("day");
         const today = dayjs().startOf("day"); // Ensure today is properly set to start of the day
         const diff = dueDate.diff(today, "day");
         const isToday = dueDate.isSame(today, "day"); // Fix unit here
@@ -54,6 +54,7 @@ export function dueDateAlert(dates): { text; color; date } {
                     date,
                 });
             }
+        } else {
         }
 
         // const dueDate = dayjs(date);

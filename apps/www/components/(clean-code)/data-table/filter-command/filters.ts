@@ -1,7 +1,8 @@
+import { __filters } from "@/app/(clean-code)/(sales)/_common/utils/contants";
 import { createColumnHelper } from "@tanstack/react-table";
+
 import { FilterKeys } from "../search-params";
 import { DataTableFilterField } from "../type";
-import { __filters } from "@/app/(clean-code)/(sales)/_common/utils/contants";
 
 export const queryKeys = [
     "orders",
@@ -39,7 +40,7 @@ function filterField(
     value: FilterKeys,
     type: "checkbox" | "input" = "input",
     options = [],
-    label?
+    label?,
 ) {
     // if (!label) label = label?.toLowerCase()?.replaceAll(" ", ".");
     return {
@@ -91,7 +92,7 @@ export const composeFilter = (queryKey: QueryKeys, loadedFilters?) => {
 const undotFilterKey = (k) => k?.split(".")?.join("_");
 const dotFilterKey = (k) => k?.split("_")?.join(".");
 export const __findFilterField = (field, filter) =>
-    undotFilterKey(field.value) == undotFilterKey(filter.id);
+    undotFilterKey(field?.value) == undotFilterKey(filter.id);
 
 export const __getTableCol = (table, key) =>
     table.getColumn(dotFilterKey(key)) || table.getColumn(undotFilterKey(key));

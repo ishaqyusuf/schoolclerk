@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
-
-import relativeTime from "dayjs/plugin/relativeTime";
 import isBetween from "dayjs/plugin/isBetween";
+import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocale from "dayjs/plugin/updateLocale";
+import utc from "dayjs/plugin/utc";
 
 // Import any additional plugins or locales if needed
 import "dayjs/locale/en";
@@ -11,6 +11,7 @@ import "dayjs/locale/en";
 dayjs.extend(relativeTime);
 dayjs.extend(isBetween);
 dayjs.extend(updateLocale);
+dayjs.extend(utc);
 
 dayjs.updateLocale("en", {
     relativeTime: {
