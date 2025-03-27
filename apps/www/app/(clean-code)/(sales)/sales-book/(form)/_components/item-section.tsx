@@ -1,21 +1,21 @@
+import { useMemo } from "react";
+import { restoreMissingComponentData } from "@/actions/restore-missing-component-data";
+import ConfirmBtn from "@/components/_v1/confirm-btn";
+import { Menu } from "@/components/(clean-code)/menu";
 import { Button } from "@/components/ui/button";
-import { useFormDataStore } from "../_common/_stores/form-data-store";
-import { StepSection } from "./step-section";
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
-import ConfirmBtn from "@/components/_v1/confirm-btn";
-
-import ItemSideView from "./item-side-view";
-import { useMemo } from "react";
-import { ItemClass } from "../_utils/helpers/zus/item-class";
-import { Menu } from "@/components/(clean-code)/menu";
 import { swap } from "@/lib/utils";
-import { restoreMissingComponentData } from "@/actions/restore-missing-component-data";
 import { toast } from "sonner";
+
+import { useFormDataStore } from "../_common/_stores/form-data-store";
+import { ItemClass } from "../_utils/helpers/zus/item-class";
+import ItemSideView from "./item-side-view";
+import { StepSection } from "./step-section";
 
 interface Props {
     uid?: string;
@@ -29,7 +29,7 @@ export default function ItemSection({ uid }: Props) {
     }, [zus.sequence?.stepComponent?.[uid]]);
 
     return (
-        <div className="mb-2 sm:mb-4 bg-background rounded-lg">
+        <div className="mb-2 rounded-lg bg-background sm:mb-4">
             <Collapsible
                 open
                 onOpenChange={(e) => {
@@ -37,8 +37,8 @@ export default function ItemSection({ uid }: Props) {
                 }}
             >
                 <ItemSectionHeader uid={uid} />
-                <CollapsibleContent className="flex border overflow-auto max-h-[120vh]">
-                    <div className="flex-1 flex flex-col ">
+                <CollapsibleContent className="flex max-h-[120vh] overflow-auto border">
+                    <div className="flex flex-1 flex-col ">
                         {sequence?.map((stepUid, index) => (
                             <StepSection
                                 isFirst={index == 0}
@@ -77,7 +77,7 @@ function ItemSectionHeader({ uid }) {
         }
     };
     return (
-        <div className="flex border items-center gap-4 p-2 px-4">
+        <div className="flex items-center gap-4 border p-2 px-4">
             <CollapsibleTrigger asChild className="flex-1">
                 <div
                     className="flex "

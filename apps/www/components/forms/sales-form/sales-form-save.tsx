@@ -1,3 +1,4 @@
+import { useRouter, useSearchParams } from "next/navigation";
 import { triggerEvent } from "@/actions/events";
 import {
     getSalesBookFormUseCase,
@@ -5,11 +6,10 @@ import {
 } from "@/app/(clean-code)/(sales)/_common/use-case/sales-book-form-use-case";
 import { useFormDataStore } from "@/app/(clean-code)/(sales)/sales-book/(form)/_common/_stores/form-data-store";
 import { zhInitializeState } from "@/app/(clean-code)/(sales)/sales-book/(form)/_utils/helpers/zus/zus-form-helper";
-import { Menu } from "@/components/(clean-code)/menu";
 import { Icons } from "@/components/_v1/icons";
+import { Menu } from "@/components/(clean-code)/menu";
 import Button from "@/components/common/button";
 import { useSalesFormFeatureParams } from "@/hooks/use-sales-form-feature-params";
-import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 interface Props {
@@ -31,13 +31,13 @@ export function SalesFormSave({ type = "button", and }: Props) {
                 metaData,
                 sequence,
                 saveAction: action,
-                newFeature: newInterfaceQuery?.params?.newInterface,
+                newFeature: !newInterfaceQuery?.params?.legacyMode,
             },
             zus.oldFormState,
             {
                 restoreMode,
                 allowRedirect: true,
-            }
+            },
         );
         const s = resp?.data?.sales;
         if (s?.updateId) triggerEvent("salesUpdated", s?.id);

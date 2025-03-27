@@ -6,10 +6,7 @@ import {
 } from "@/app/(clean-code)/_common/utils/db-utils";
 import { authId } from "@/app/(v1)/_actions/utils";
 import { SearchParamsType } from "@/components/(clean-code)/data-table/search-params";
-import {
-    composeSalesStatKeyValue,
-    composeSalesStatus,
-} from "@/data/compose-sales";
+import { composeSalesStatKeyValue } from "@/data/compose-sales";
 import { prisma } from "@/db";
 import { sum } from "@/lib/utils";
 import { AsyncFnType } from "@/types";

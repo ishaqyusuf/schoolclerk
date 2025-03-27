@@ -1,7 +1,15 @@
-import { InputHTMLAttributes, memo, useEffect, useMemo } from "react";
-import { Context, HptContext, useCreateContext, useCtx } from "./ctx";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ConfirmBtn from "@/components/_v1/confirm-btn";
+import { Icons } from "@/components/_v1/icons";
+import Money from "@/components/_v1/money";
 import TextWithTooltip from "@/components/(clean-code)/custom/text-with-tooltip";
+import { DataLine } from "@/components/(clean-code)/data-table/Dl";
+import { Menu } from "@/components/(clean-code)/menu";
+import { MoneyBadge } from "@/components/(clean-code)/money-badge";
+import { AnimatedNumber } from "@/components/animated-number";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { DropdownMenuShortcut } from "@/components/ui/dropdown-menu";
+import { Label } from "@/components/ui/label";
 import {
     Table,
     TableBody,
@@ -11,25 +19,13 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import ConfirmBtn from "@/components/_v1/confirm-btn";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/_v1/icons";
-import { Menu } from "@/components/(clean-code)/menu";
-import { DropdownMenuShortcut } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
-import Money from "@/components/_v1/money";
-
-import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/form";
-import FormInput from "@/components/common/controls/form-input";
-import { DataLine } from "@/components/(clean-code)/data-table/Dl";
-import { Label } from "@/components/ui/label";
-import { MoneyBadge } from "@/components/(clean-code)/money-badge";
-import { LineInput } from "../line-input";
 import { Repeat } from "lucide-react";
+
+import { LineInput } from "../line-input";
+import { Context, HptContext, useCreateContext, useCtx } from "./ctx";
 import { Door } from "./door";
-import { AnimatedNumber } from "@/components/animated-number";
 
 interface Props {
     itemStepUid;
@@ -53,7 +49,7 @@ export default function HousePackageTool({ itemStepUid }: Props) {
                                 asChild
                                 key={door.uid}
                                 value={door.uid}
-                                className="p-0 bg-white"
+                                className="bg-white p-0"
                             >
                                 <div className="">
                                     <Button
@@ -61,7 +57,7 @@ export default function HousePackageTool({ itemStepUid }: Props) {
                                         className={cn(
                                             "border-b-2 border-b-transparent",
                                             ctx.ctx.tabUid == door.uid &&
-                                                "border-muted-foreground rounded-b-none"
+                                                "rounded-b-none border-muted-foreground",
                                         )}
                                         variant={
                                             ctx.ctx.tabUid == door.uid
@@ -77,7 +73,7 @@ export default function HousePackageTool({ itemStepUid }: Props) {
                                     <div
                                         className={cn(
                                             // ctx.ctx.tabUid != door.uid &&
-                                            "hidden"
+                                            "hidden",
                                         )}
                                     >
                                         <Menu>
@@ -107,9 +103,9 @@ function DoorSizeTable({ door }: DoorSizeTable) {
     const ctx = useCtx();
 
     return (
-        <div className="grid w-full grid-cols-1 lg:grid-cols-4 gap-4">
+        <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-4">
             <div className="lg:col-span-3">
-                <Table className="p-4   font-medium table-fixed">
+                <Table className="table-fixed   p-4 font-medium">
                     <TableHeader className="text-xs">
                         <TableRow className="uppercase">
                             <TableHead className="w-full">Size</TableHead>
@@ -147,7 +143,7 @@ function DoorSizeTable({ door }: DoorSizeTable) {
                                 <Menu
                                     Trigger={
                                         <Button>
-                                            <Icons.add className="size-4 mr-2" />
+                                            <Icons.add className="mr-2 size-4" />
                                             <span>Size</span>
                                         </Button>
                                     }
@@ -206,7 +202,7 @@ function DoorSizeRow({ size }: { size }) {
     };
     return (
         <TableRow className={cn(!sizeForm?.selected && "hidden")}>
-            <TableCell className="font-mono font-semibold text-sm">
+            <TableCell className="font-mono text-sm font-semibold">
                 {size.title}
             </TableCell>
             {ctx.config.hasSwing && (
@@ -253,7 +249,7 @@ function DoorSizeRow({ size }: { size }) {
                     Icon={null}
                     label={<Money value={sizeForm?.pricing?.unitPrice} />}
                 >
-                    <div className="p-2 min-w-[300px]">
+                    <div className="min-w-[300px] p-2">
                         <div>
                             <Label>Price Summary</Label>
                         </div>
@@ -264,7 +260,7 @@ function DoorSizeRow({ size }: { size }) {
                                     key={step.title}
                                     label={step.title}
                                     value={
-                                        <div className="flex gap-4 items-center justify-end">
+                                        <div className="flex items-center justify-end gap-4">
                                             <span>{step.value}</span>
                                             <MoneyBadge>
                                                 {step.price}
@@ -277,7 +273,7 @@ function DoorSizeRow({ size }: { size }) {
                                 size="sm"
                                 label="Door"
                                 value={
-                                    <div className="flex gap-4 items-center justify-end">
+                                    <div className="flex items-center justify-end gap-4">
                                         <span>{`${size.title}`}</span>
                                         <MoneyBadge>
                                             {

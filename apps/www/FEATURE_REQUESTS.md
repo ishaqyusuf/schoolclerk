@@ -1,3 +1,5 @@
+# WED, MAR 27
+- 
 # WED, MAR 26
 - terminal payment sometimes get accepted but not applied.
 - custom component price
@@ -8,7 +10,7 @@
 - UPDATE: set for delivery and set delivery date.
   - new tab: delivery tab, pickup tab: show due date.
 - fix component menu floating away
-- moulding when saved:
+- moulding when saved: title dissapears.
 # SAT, MAR 22
 - login profile cache
 - email render

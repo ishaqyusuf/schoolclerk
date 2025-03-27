@@ -1,27 +1,27 @@
 "use client";
 
 import { useEffect } from "react";
-import { GetSalesBookForm } from "../../../_common/use-case/sales-book-form-use-case";
+import { Icons } from "@/components/_v1/icons";
+import { SalesFormClient } from "@/components/forms/sales-form/sales-form";
+import CustomerProfileUpdateModal from "@/components/modals/customer-profile-update-modal";
+import { Button } from "@/components/ui/button";
+import { useSalesFormFeatureParams } from "@/hooks/use-sales-form-feature-params";
+import { screens } from "@/lib/responsive";
+import { cn } from "@/lib/utils";
+import { useMediaQuery } from "react-responsive";
+
 import { useFormDataStore } from "../_common/_stores/form-data-store";
+import { useSticky } from "../_hooks/use-sticky";
 import {
     zhAddItem,
     zhInitializeState,
 } from "../_utils/helpers/zus/zus-form-helper";
-import ItemSection from "./item-section";
-import { FormHeader } from "./form-header";
-import { Button } from "@/components/ui/button";
-
-import { Icons } from "@/components/_v1/icons";
-import { useSticky } from "../_hooks/use-sticky";
+import { GetSalesBookForm } from "../../../_common/use-case/sales-book-form-use-case";
 import { FormDataPage } from "./data-page";
-import { cn } from "@/lib/utils";
-import { FormFooter } from "./form-footer";
 import { AddressTab } from "./data-page/address-tab";
-import CustomerProfileUpdateModal from "@/components/modals/customer-profile-update-modal";
-import { SalesFormClient } from "@/components/forms/sales-form/sales-form";
-import { useMediaQuery } from "react-responsive";
-import { screens } from "@/lib/responsive";
-import { useSalesFormFeatureParams } from "@/hooks/use-sales-form-feature-params";
+import { FormFooter } from "./form-footer";
+import { FormHeader } from "./form-header";
+import ItemSection from "./item-section";
 
 interface FormClientProps {
     data: GetSalesBookForm;
@@ -34,7 +34,7 @@ export function FormClient({ data }) {
     }, []);
     const feature = useSalesFormFeatureParams();
 
-    const Component = feature?.params?.newInterface
+    const Component = !feature?.params?.legacyMode
         ? SalesFormClient
         : FormClientOld;
 
@@ -55,18 +55,18 @@ function FormClientOld({ data }: FormClientProps) {
                 ref={sticky.containerRef}
                 className={cn(
                     sticky.isFixed && "mt-10 xl:mt-24",
-                    "min-h-screen"
+                    "min-h-screen",
                 )}
             >
                 <div
                     className={cn(
                         zus.currentTab != "info" &&
                             zus.currentTab &&
-                            "opacity-0 h-0 z-0 w-0 overflow-hidden",
-                        "lg:flex lg:gap-4"
+                            "z-0 h-0 w-0 overflow-hidden opacity-0",
+                        "lg:flex lg:gap-4",
                     )}
                 >
-                    <div className="w-2/3 hidden lg:block">
+                    <div className="hidden w-2/3 lg:block">
                         <AddressTab />
                     </div>
                     <FormDataPage />
@@ -74,7 +74,7 @@ function FormClientOld({ data }: FormClientProps) {
                 <div
                     className={cn(
                         zus.currentTab != "address" &&
-                            "opacity-0 h-0 z-0 w-0 overflow-hidden"
+                            "z-0 h-0 w-0 overflow-hidden opacity-0",
                     )}
                 >
                     <AddressTab />
@@ -83,19 +83,19 @@ function FormClientOld({ data }: FormClientProps) {
                 <div
                     className={cn(
                         !(zus.currentTab == "invoice") &&
-                            "opacity-0 h-0 z-0 w-0 overflow-hidden"
+                            "z-0 h-0 w-0 overflow-hidden opacity-0",
                     )}
                 >
                     {zus.sequence?.formItem?.map((uid) => (
                         <ItemSection key={uid} uid={uid} />
                     ))}
-                    <div className="flex mt-4 justify-end">
+                    <div className="mt-4 flex justify-end">
                         <Button
                             onClick={() => {
                                 zhAddItem();
                             }}
                         >
-                            <Icons.add className="size-4 mr-2" />
+                            <Icons.add className="mr-2 size-4" />
                             <span>Add</span>
                         </Button>
                     </div>

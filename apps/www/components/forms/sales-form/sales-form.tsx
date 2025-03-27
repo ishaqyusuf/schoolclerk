@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useFormDataStore } from "@/app/(clean-code)/(sales)/sales-book/(form)/_common/_stores/form-data-store";
 import ItemSection from "@/app/(clean-code)/(sales)/sales-book/(form)/_components/item-section";
 import {
@@ -6,10 +7,10 @@ import {
 } from "@/app/(clean-code)/(sales)/sales-book/(form)/_utils/helpers/zus/zus-form-helper";
 import { Icons } from "@/components/_v1/icons";
 import Button from "@/components/common/button";
-import { cn } from "@/lib/utils";
-import { useEffect } from "react";
-import { SalesMetaForm } from "./sales-meta-form";
 import useEffectLoader from "@/lib/use-effect-loader";
+import { cn } from "@/lib/utils";
+
+import { SalesMetaForm } from "./sales-meta-form";
 
 export function SalesFormClient({ data }) {
     const zus = useFormDataStore();
@@ -19,31 +20,31 @@ export function SalesFormClient({ data }) {
         },
         {
             wait: 200,
-        }
+        },
     );
+    if (!zus.formStatus || zus.currentTab != "invoice") return <></>;
 
-    if (!zus.formStatus) return <></>;
     return (
-        <div className="xl:flex w-full xl:gap-4 p-4 xl:p-8 min-h-screen bg-white">
+        <div className="min-h-screen w-full bg-white p-4 xl:flex xl:gap-4 xl:p-8">
             <div className="flex-1">
                 <div className={cn()}>
                     {zus.sequence?.formItem?.map((uid) => (
                         <ItemSection key={uid} uid={uid} />
                     ))}
-                    <div className="flex mt-4 justify-end">
+                    <div className="mt-4 flex justify-end">
                         <Button
                             onClick={() => {
                                 zhAddItem();
                             }}
                         >
-                            <Icons.add className="size-4 mr-2" />
+                            <Icons.add className="mr-2 size-4" />
                             <span>Add</span>
                         </Button>
                     </div>
                 </div>
             </div>
-            <div className="xl:w-[350px] relative">
-                <div className="sticky flex flex-col w-full top-16">
+            <div className="relative xl:w-[350px]">
+                <div className="sticky top-16 flex w-full flex-col">
                     <div className="">
                         <SalesMetaForm />
                     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useSalesFormFeatureParams } from "@/hooks/use-sales-form-feature-params";
+
 import Portal from "./_v1/portal";
 import { Button } from "./ui/button";
 
@@ -11,17 +12,17 @@ export function SalesFormFeatureSwitch() {
             <Button
                 onClick={(e) => {
                     setParams(
-                        params.newInterface
+                        params.legacyMode
                             ? null
                             : {
-                                  newInterface: true,
-                              }
+                                  legacyMode: true,
+                              },
                     );
                 }}
-                className="relative h-8  rounded-lg   gradient-border overflow-hidden"
+                className="gradient-border relative  h-8   overflow-hidden rounded-lg"
                 size="sm"
             >
-                {params.newInterface ? "v1" : "v1.2"}
+                {!params.legacyMode ? "v1" : "v1.2"}
             </Button>
         </Portal>
     );

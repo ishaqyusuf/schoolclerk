@@ -1,7 +1,6 @@
 import { Icons } from "@/components/_v1/icons";
 import { env } from "@/env.mjs";
 import { ICan } from "@/types/auth";
-
 import { Session } from "next-auth";
 
 function _route(title, icon, path, isNew = false) {
@@ -24,7 +23,7 @@ export interface ISidebar {
 }
 export function nav(
     session: Session | null,
-    isProd = true
+    isProd = true,
 ): ISidebar | undefined {
     // {user,role,can}
     if (!session?.user) return undefined;
@@ -83,10 +82,10 @@ export function nav(
     const isAdmin = session.role?.name == "Admin";
     if (isAdmin) {
         routes.Dashboard.push(
-            _route("Dashboard", Icons.dashboard, "/dashboard")
+            _route("Dashboard", Icons.dashboard, "/dashboard"),
         );
         routes.Settings.push(
-            _route("Sales", Icons.salesSettings, "/settings/sales")
+            _route("Sales", Icons.salesSettings, "/settings/sales"),
         );
     }
     if (editOrders) {
@@ -97,17 +96,17 @@ export function nav(
             ...[
                 _route("Projects", Icons.project, "/community/projects"),
                 _route("Units", Icons.units, "/community/units"),
-            ]
+            ],
         );
     }
     viewProduction &&
         role != "Production" &&
         routes.Community.push(
-            _route("Productions", Icons.production, "/community/productions")
+            _route("Productions", Icons.production, "/community/productions"),
         );
     viewInvoice &&
         routes.Community.push(
-            _route("Invoices", Icons.communityInvoice, "/community/invoices")
+            _route("Invoices", Icons.communityInvoice, "/community/invoices"),
         );
 
     if (role == "Production") {
@@ -115,39 +114,39 @@ export function nav(
             _route(
                 "Sales Production",
                 Icons.production,
-                `/tasks/sales-productions`
+                `/tasks/sales-productions`,
                 // `/tasks/sales-productions${prodQuery}`
             ),
             _route(
                 "Unit Production",
                 Icons.production,
-                "/tasks/unit-productions"
-            )
+                "/tasks/unit-productions",
+            ),
         );
     }
     if (!isAdmin) {
         if (viewInstallation) {
             routes.Services.push(
-                _route("Installations", Icons.tasks, "/tasks/installations")
+                _route("Installations", Icons.tasks, "/tasks/installations"),
             );
             routes.Services.push(
-                _route("Payments", Icons.payment, "/payments")
+                _route("Payments", Icons.payment, "/payments"),
             );
         }
         if (__can.viewTech) {
             routes.Services.push(
-                _route("Punchout", Icons.punchout, "/jobs/punchouts")
+                _route("Punchout", Icons.punchout, "/jobs/punchouts"),
             );
             routes.Services.push(
-                _route("Payments", Icons.payment, "/payments")
+                _route("Payments", Icons.payment, "/payments"),
             );
         }
         if (__can.viewDecoShutterInstall) {
             routes.Services.push(
-                _route("Installations", Icons.tasks, "/jobs/installations")
+                _route("Installations", Icons.tasks, "/jobs/installations"),
             );
             routes.Services.push(
-                _route("Payments", Icons.payment, "/payments")
+                _route("Payments", Icons.payment, "/payments"),
             );
         }
     }
@@ -156,13 +155,13 @@ export function nav(
             _route(
                 "Customer Service",
                 Icons.customerService,
-                "/customer-services"
-            )
+                "/customer-services",
+            ),
         );
     }
     if (__can.viewCommission)
         routes.Singles.push(
-            _route("Sales Commission", Icons.percent, "/sales/commissions")
+            _route("Sales Commission", Icons.percent, "/sales/commissions"),
         );
     const Hrm: Route[] = [];
 
@@ -205,25 +204,34 @@ export function nav(
                 _route(
                     "Quotes",
                     Icons.estimates,
-                    `/sales/quotes`
+                    `/sales-book/quotes`,
                     // `/sales/estimates?_salesRepId=${session.user.id}`
                 ), //employees,roles
-                _route("Orders", Icons.orders, `/sales/orders`),
+                _route("Orders", Icons.orders, `/sales-book/orders`),
                 _route("Customers", Icons.user, "/sales/customers"),
                 _route("Dealers", Icons.delivery, "/sales-v2/dealers", true),
                 _route("Dispatch", Icons.delivery, "/sales-v2/dispatch", true),
-            ]
+            ],
         );
     } else {
         if (__can.viewOrderProduction)
             routes.Sales.push(
-                _route("Productions", Icons.production, `/sales-v2/productions`)
+                _route(
+                    "Productions",
+                    Icons.production,
+                    `/sales-v2/productions`,
+                ),
             );
     }
 
     if ((viewDelivery || viewPickup) && !viewOrders)
         routes.Sales.push(
-            _route("Order Dispatch", Icons.delivery, "/sales-v2/dispatch", true)
+            _route(
+                "Order Dispatch",
+                Icons.delivery,
+                "/sales-v2/dispatch",
+                true,
+            ),
         );
     // if (viewPickup && !viewOrders)
     //     routes.Sales.push(
@@ -240,11 +248,11 @@ export function nav(
                 _route(
                     "Productions",
                     Icons.production,
-                    `/sales-v2/productions`
+                    `/sales-v2/productions`,
                 ),
 
                 // _route("Pending Stocks", CircleDot, "/sales/pending-stocks"),
-            ].filter(Boolean) as any)
+            ].filter(Boolean) as any),
         );
     if (__can.viewInboundOrder)
         routes.Sales.push(_route("Inbounds", Icons.inbound, `/sales/inbounds`));
@@ -268,7 +276,7 @@ export function nav(
             _rw[_href] = _route(
                 title,
                 Icons.communitySettings,
-                `/settings/community/${_href}`
+                `/settings/community/${_href}`,
             );
         }
         if (editProject) {
@@ -289,13 +297,13 @@ export function nav(
                 _rw["community-costs"],
                 _rw["model-costs"],
                 // _rw["model-templates"],
-            ].filter(Boolean)
+            ].filter(Boolean),
         );
         if (href)
             return _route(
                 "Community",
                 Icons.communitySettings,
-                `/settings/community/${href}`
+                `/settings/community/${href}`,
             );
         return null;
     })();
@@ -314,7 +322,7 @@ export function nav(
         const __routes = r
             .filter(
                 (route, index) =>
-                    r.findIndex((fr) => fr.title == route.title) == index
+                    r.findIndex((fr) => fr.title == route.title) == index,
             )
             .filter(Boolean) as Route[];
         routeGroup.push({
@@ -323,7 +331,7 @@ export function nav(
         });
     });
     routeGroup = routeGroup?.filter(
-        (sec) => (sec.routes as any)?.length > 0
+        (sec) => (sec.routes as any)?.length > 0,
     ) as any;
     if (session.role?.name == "Dealer") homeRoute = "/orders";
     return {
@@ -363,7 +371,7 @@ function groupedNavs({
         const r = (_rw[_href] = _route(
             title,
             _Icon || Icon,
-            `${basePath}/${_href}`
+            `${basePath}/${_href}`,
         ));
         if (Group && !single) Group.push(r);
     }

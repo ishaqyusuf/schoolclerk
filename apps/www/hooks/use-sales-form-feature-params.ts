@@ -4,7 +4,7 @@ import { parseAsBoolean, useQueryStates } from "nuqs";
 
 export function useSalesFormFeatureParams() {
     const [params, setParams] = useQueryStates({
-        newInterface: parseAsBoolean,
+        legacyMode: parseAsBoolean,
     });
     return {
         params,
