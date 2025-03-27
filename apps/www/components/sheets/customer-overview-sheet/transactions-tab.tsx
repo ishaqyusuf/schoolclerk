@@ -30,6 +30,7 @@ import { formatMoney } from "@/lib/use-number";
 import { cn, sum } from "@/lib/utils";
 import { salesPaymentMethods } from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAsync } from "@react-hook/async";
 import { CheckCircle, Dot } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
@@ -37,7 +38,7 @@ import { z } from "zod";
 
 import { CustomSheetContentPortal } from "../custom-sheet-content";
 
-export function PayPortalTab({}) {
+export function TransactionsTab({}) {
     const query = useCustomerOverviewQuery();
 
     const loader = async () =>
@@ -46,6 +47,7 @@ export function PayPortalTab({}) {
         loader,
         autoLoad: true,
     });
+    // const d = useAsync(async () => {})
     const data = skel?.data;
     const selections = query.params?.["pay-selections"];
     useEffect(() => {
