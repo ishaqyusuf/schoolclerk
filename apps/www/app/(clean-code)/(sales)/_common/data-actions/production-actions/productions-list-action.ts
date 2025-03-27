@@ -29,8 +29,10 @@ export async function getProductionTasksListPageAction(
 
     return await getProductionListPageAction(q);
 }
-export async function getProductionListPageAction(query: SearchParamsType) {
-    const prodList = await getProductionListAction(query);
+export async function getProductionListPageAction(
+    query: SearchParamsType,
+    admin = false,
+) {
     const excludes: (keyof SearchParamsType)[] = [
         "sort",
         "size",
@@ -67,6 +69,8 @@ export async function getProductionListPageAction(query: SearchParamsType) {
         .filter((a) => !a.completed);
     // const excludesIds = [...dueToday, ...pastDue].map((a) => a.id);
     const excludesIds = customs.map((a) => a.id);
+    const prodList =
+        !admin && !queryCount ? [] : await getProductionListAction(query);
     const others = prodList.filter((p) => !excludesIds?.includes(p.id));
 
     const result = await inifinitePageInfo(
