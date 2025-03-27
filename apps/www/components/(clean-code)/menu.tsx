@@ -6,28 +6,28 @@ import {
     useTransition,
 } from "react";
 import Link from "next/link";
-import { DropdownMenuItemProps } from "@radix-ui/react-dropdown-menu";
-import { PrimitiveDivProps } from "@/types/type";
-import { VariantProps } from "class-variance-authority";
-
+import { useRouter } from "next/navigation";
+import { Icon, IconKeys, Icons } from "@/components/_v1/icons";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
     DropdownMenuSub,
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-    DropdownMenuSeparator,
-    DropdownMenuLabel,
-    DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu";
-import { Icon, IconKeys, Icons } from "@/components/_v1/icons";
 import { cn } from "@/lib/utils";
-import { ScrollArea } from "../ui/scroll-area";
+import { PrimitiveDivProps } from "@/types/type";
+import { DropdownMenuItemProps } from "@radix-ui/react-dropdown-menu";
+import { VariantProps } from "class-variance-authority";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+
+import { ScrollArea } from "../ui/scroll-area";
 
 type MenuItemProps = {
     link?;
@@ -72,11 +72,8 @@ function BaseMenu(
     }));
     return (
         <DropdownMenu
-        // open={onOpenChanged ? open : _open}
-        // onOpenChange={(e) => {
-        //     _onOpenChanged(e);
-        //     onOpenChanged?.(e);
-        // }}
+            open={onOpenChanged ? open : _open}
+            onOpenChange={onOpenChanged || _onOpenChanged}
         >
             <DropdownMenuTrigger asChild>
                 {Trigger ? (
