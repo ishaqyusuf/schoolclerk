@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,8 +8,8 @@ import {
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
-    DropdownMenuTrigger,
     DropdownMenuShortcut,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
     Tooltip,
@@ -16,9 +17,9 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { getInitials } from "@/utils/format";
 import { LayoutGrid, LogOut, User } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 
 export function UserNav() {
     const { data: session } = useSession();
@@ -35,7 +36,7 @@ export function UserNav() {
                                 <Avatar className="h-8 w-8">
                                     <AvatarImage src="#" alt="Avatar" />
                                     <AvatarFallback className="bg-transparent">
-                                        JD
+                                        {getInitials(session?.user?.name)}
                                     </AvatarFallback>
                                 </Avatar>
                             </Button>
