@@ -93,7 +93,7 @@ export function PayPortalTab({}) {
     // }, [terminalPaymentSession, waitSeconds]);
     const makePayment = useAction(createSalesPaymentAction, {
         onSuccess: (args) => {
-            if (args.data.terminalPaymentSession) {
+            if (args.data?.terminalPaymentSession) {
                 setWaitSeconds(0);
                 form.setValue(
                     "terminalPaymentSession",

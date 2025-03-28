@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE `OrderItemDelivery` ADD COLUMN `meta` JSON NULL,
-    ADD COLUMN `qty` INTEGER NOT NULL DEFAULT 0;

@@ -1,7 +1,11 @@
+import { useMemo, useState } from "react";
+import { openSalesOverview } from "@/app/(clean-code)/(sales)/_common/_components/sales-overview-sheet";
 import salesData from "@/app/(clean-code)/(sales)/_common/utils/sales-data";
 import { useFormDataStore } from "@/app/(clean-code)/(sales)/sales-book/(form)/_common/_stores/form-data-store";
 import { SettingsClass } from "@/app/(clean-code)/(sales)/sales-book/(form)/_utils/helpers/zus/settings-class";
 import { DatePicker } from "@/components/_v1/date-range-picker";
+import { Icons } from "@/components/_v1/icons";
+import { Menu } from "@/components/(clean-code)/menu";
 import { AnimatedNumber } from "@/components/animated-number";
 import { FormSelectProps } from "@/components/common/controls/form-select";
 import { NumberInput } from "@/components/currency-input";
@@ -17,15 +21,13 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { useMemo, useState } from "react";
 import { NumericFormatProps } from "react-number-format";
+
+import { Footer } from "./footer";
 import { SalesCustomerForm } from "./sales-customer-form";
-import { Menu } from "@/components/(clean-code)/menu";
-import { Icons } from "@/components/_v1/icons";
-import { SalesFormSave } from "./sales-form-save";
-import { SalesFormPrintMenu } from "./sales-form-print-menu";
 import { SalesFormEmailMenu } from "./sales-form-email-menu";
-import { openSalesOverview } from "@/app/(clean-code)/(sales)/_common/_components/sales-overview-sheet";
+import { SalesFormPrintMenu } from "./sales-form-print-menu";
+import { SalesFormSave } from "./sales-form-save";
 
 export function SalesMetaForm({}) {
     const zus = useFormDataStore();
@@ -39,7 +41,7 @@ export function SalesMetaForm({}) {
     const [tab, setTab] = useState(md?.id ? "summary" : "summary");
     return (
         <div className="">
-            <div className="border-b flex">
+            <div className="flex border-b">
                 {tabs.map((_tab, ti) => (
                     <Button
                         key={_tab}
@@ -49,10 +51,10 @@ export function SalesMetaForm({}) {
                             setTab(_tab);
                         }}
                         className={cn(
-                            "font-mono hover:bg-transparent rounded-none border-b-2 uppercase border-transparent",
+                            "rounded-none border-b-2 border-transparent font-mono uppercase hover:bg-transparent",
                             tab == _tab
-                                ? "border-b rounded-none border-primary"
-                                : "text-muted-foreground/90 hover:text-muted-foreground"
+                                ? "rounded-none border-b border-primary"
+                                : "text-muted-foreground/90 hover:text-muted-foreground",
                         )}
                     >
                         {_tab}
@@ -224,6 +226,7 @@ function SummaryTab({}) {
                         <AnimatedNumber value={md.pricing?.grandTotal || 0} />
                     </div>
                 </LineContainer>
+                <Footer />
             </div>
         </div>
     );
@@ -245,7 +248,7 @@ function Input({ value, label, name, lg, onChange, ...props }: InputProps) {
             {props.type == "date" ? (
                 <>
                     <DatePicker
-                        className=" midday uppercase border-none p-0 border-b w-auto"
+                        className=" midday w-auto border-b border-none p-0 uppercase"
                         hideIcon
                         value={value as any}
                         setValue={(e) => {
@@ -282,8 +285,8 @@ function LineContainer({ label, lg = false, className = "", children }) {
     return (
         <div
             className={cn(
-                "uppercase font-mono items-center gap-4",
-                label && "grid grid-cols-5"
+                "items-center gap-4 font-mono uppercase",
+                label && "grid grid-cols-5",
             )}
         >
             <div className="col-span-3 flex justify-end text-black/70">
@@ -320,8 +323,8 @@ export function Select<T>({
         return typeof option == "string"
             ? option
             : titleKey == "label"
-            ? option[titleKey] || option["text"]
-            : option[titleKey];
+              ? option[titleKey] || option["text"]
+              : option[titleKey];
     }
     const isPlaceholder = !value && !props.placeholder;
     return (
@@ -334,17 +337,17 @@ export function Select<T>({
         >
             <SelectTrigger
                 noIcon
-                className="border-none p-0 bg-transparent  relative font-mono uppercases w-auto min-w-[16px] midday h-7"
+                className="uppercases midday relative  h-7 w-auto min-w-[16px] border-none bg-transparent p-0 font-mono"
             >
                 {isPlaceholder && (
-                    <div className="absolute inset-0 pointer-events-none">
+                    <div className="pointer-events-none absolute inset-0">
                         <div className="h-full w-full bg-[repeating-linear-gradient(-60deg,#DBDBDB,#DBDBDB_1px,transparent_1px,transparent_5px)] dark:bg-[repeating-linear-gradient(-60deg,#2C2C2C,#2C2C2C_1px,transparent_1px,transparent_5px)]" />
                     </div>
                 )}
 
                 <SelectValue
                     asChild
-                    className="whitespace-nowrap uppercase font-mono border-none p-0"
+                    className="whitespace-nowrap border-none p-0 font-mono uppercase"
                     placeholder={props.placeholder}
                 >
                     <span>
@@ -366,7 +369,7 @@ export function Select<T>({
                                     <>{itemText(option)}</>
                                 )}
                             </SelectItem>
-                        )
+                        ),
                     )}
                 </ScrollArea>
             </SelectContent>

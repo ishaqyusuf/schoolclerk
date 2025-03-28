@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `Users` ADD COLUMN `slug` VARCHAR(191) NULL;

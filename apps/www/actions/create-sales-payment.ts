@@ -1,13 +1,17 @@
 "use server";
-import { z } from "zod";
-import { actionClient } from "./safe-action";
-import { createPaymentSchema } from "./schema";
-import { errorHandler } from "@/modules/error/handler";
-import { createSquareTerminalCheckout } from "@/modules/square";
-import { prisma } from "@/db";
+
+import { SquarePaymentStatus } from "@/_v2/lib/square";
 import { SquarePaymentMethods } from "@/app/(clean-code)/(sales)/types";
 import { authId } from "@/app/(v1)/_actions/utils";
-import { SquarePaymentStatus } from "@/_v2/lib/square";
+import { prisma } from "@/db";
+import { errorHandler } from "@/modules/error/handler";
+import { createSquareTerminalCheckout } from "@/modules/square";
+import { z } from "zod";
+
+import { getCustomerPendingSales } from "./get-customer-pending-sales";
+import { getCustomerWalletAction } from "./get-customer-wallet";
+import { actionClient } from "./safe-action";
+import { createPaymentSchema } from "./schema";
 
 export const createSalesPaymentAction = actionClient
     .schema(createPaymentSchema)
@@ -17,21 +21,88 @@ export const createSalesPaymentAction = actionClient
     .action(async ({ parsedInput: { ...input } }) => {
         let response = {
             terminalPaymentSession: null as typeof input.terminalPaymentSession,
+            status: null,
         };
         if (input.paymentMethod == "terminal") {
-            const { error, resp: data } = await createTerminalPayment(input);
-            if (error) throw Error(error.message);
-            response.terminalPaymentSession = {
-                squarePaymentId: data.squarePaymentId,
-                squareCheckoutId: data.squareCheckout.id,
-                status: data.status,
-                // tip: data.tip
-            };
+            if (input.terminalPaymentSession.squarePaymentId) {
+                await applySalesPayment(input);
+                response.status = "success";
+            } else {
+                const { error, resp: data } =
+                    await createTerminalPayment(input);
+                if (error) throw Error(error.message);
+                response.terminalPaymentSession = {
+                    squarePaymentId: data.squarePaymentId,
+                    squareCheckoutId: data.squareCheckout.id,
+                    status: data.status,
+                    // tip: data.tip
+                };
+            }
         } else {
-            //
+            await applySalesPayment(input);
+            response.status = "success";
         }
         return response;
     });
+
+async function applySalesPayment(props: z.infer<typeof createPaymentSchema>) {
+    return prisma.$transaction((async (tx: typeof prisma) => {
+        const wallet = await getCustomerWalletAction(props.accountNo);
+        if (!wallet) throw new Error("Customer not found.");
+        const pendingSalesData = await getCustomerPendingSales(props.accountNo);
+        let balance = +props.amount;
+        await Promise.all(
+            props.salesIds.map(async (orderId) => {
+                const order = pendingSalesData.find((o) => o.id == orderId);
+                if (!order) throw new Error("Order not found.");
+                let payAmount =
+                    balance > order.amountDue ? order.amountDue : balance;
+                balance -= payAmount;
+                const __tx = await prisma.customerTransaction.create({
+                    data: {
+                        amount: payAmount,
+                        wallet: {
+                            connect: {
+                                id: wallet.id,
+                            },
+                        },
+                        paymentMethod: props.paymentMethod,
+                        status: "success" as SquarePaymentStatus,
+                        meta: {
+                            checkNo: props.checkNo,
+                        },
+                        createdBy: {
+                            connect: {
+                                id: await authId(),
+                            },
+                        },
+                        squarePaymentId:
+                            props.terminalPaymentSession?.squarePaymentId ||
+                            undefined,
+                        salesPayments: {
+                            create: {
+                                meta: {
+                                    checkNo: props.checkNo,
+                                },
+                                amount: payAmount,
+                                status: "COMPLETED" as SquarePaymentStatus,
+                                order: {
+                                    connect: {
+                                        id: order.id,
+                                    },
+                                },
+                                squarePaymentId:
+                                    props.terminalPaymentSession
+                                        ?.squarePaymentId,
+                            },
+                        },
+                    },
+                });
+            }),
+        );
+        return {};
+    }) as any);
+}
 
 async function createTerminalPayment(
     props: z.infer<typeof createPaymentSchema>,

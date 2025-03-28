@@ -1,6 +1,7 @@
 model CustomerTransaction {
     id            Int                  @unique @default(autoincrement())
     authorId      Int?
+    txId          String?
     status        String?
     amount        Float
     walletId      Int?

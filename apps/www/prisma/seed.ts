@@ -1,7 +1,8 @@
-import { PrismaClient } from "@prisma/client";
 import * as fs from "fs";
 import * as path from "path";
+import { PrismaClient } from "@prisma/client";
 import dayjs from "dayjs";
+
 const prisma = new PrismaClient();
 // const fs = require("fs");
 // const path = require("path");
@@ -57,7 +58,7 @@ function convertDates(obj) {
                 if (isRequest) {
                     console.log(
                         "Not a valid date for requestDate, skipping",
-                        obj[key]
+                        obj[key],
                     );
                 }
                 // console.log("NOT DATE", key, d);
@@ -215,19 +216,19 @@ async function main() {
     // });
     // console.log((s?.meta as any)?.design);
     // return;
-    if (fs.existsSync(seedInfoPath)) {
-        const _records = fs.readFileSync(seedInfoPath, "utf-8");
-        records = JSON.parse(_records || '{"files": []}');
-    }
-    const files = fs.readdirSync(directoryPath);
-    // return;
-    for (const file of files) {
-        const filePath = path.join(directoryPath, file);
-        transformData(filePath);
-        if (file.endsWith(".json")) {
-            await insertDataFromFile(filePath);
-        }
-    }
+    // if (fs.existsSync(seedInfoPath)) {
+    //     const _records = fs.readFileSync(seedInfoPath, "utf-8");
+    //     records = JSON.parse(_records || '{"files": []}');
+    // }
+    // const files = fs.readdirSync(directoryPath);
+    // // return;
+    // for (const file of files) {
+    //     const filePath = path.join(directoryPath, file);
+    //     transformData(filePath);
+    //     if (file.endsWith(".json")) {
+    //         await insertDataFromFile(filePath);
+    //     }
+    // }
 }
 main()
     .then(async () => {

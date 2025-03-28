@@ -8,9 +8,6 @@ model GitTasks {
 
     statusList GitTaskStatus[]
     tags       GitTaskTags[]
-
-    parentTasks GitTasks[] @relation("SubTasks")
-    subTasks    GitTasks[] @relation("SubTasks")
 }
 
 model GitTaskStatus {
