@@ -1,6 +1,7 @@
 import { dotSet } from "@/app/(clean-code)/_common/utils/utils";
 import { FieldPath, FieldPathValue } from "react-hook-form";
 import { create } from "zustand";
+
 import { PaymentMethods } from "../../../types";
 import {
     GetCustomerOverviewUseCase,
@@ -21,6 +22,7 @@ const data = {
     totalPay: 0,
     inProgress: false,
     terminals: [],
+    customerId: undefined,
 };
 type Action = ReturnType<typeof funcs>;
 type Data = typeof data;
@@ -43,7 +45,7 @@ function funcs(set: ZusFormSet) {
             })),
         dotUpdate: <K extends FieldPath<Data>>(
             k: K,
-            v: FieldPathValue<Data, K>
+            v: FieldPathValue<Data, K>,
         ) =>
             set((state) => {
                 const newState = {

@@ -1,4 +1,6 @@
 "use client";
+
+import { useState } from "react";
 import { getCustomerFormAction } from "@/actions/get-customer-form";
 import { updateCustomerProfile } from "@/actions/update-customer-profile";
 import { updateCustomerTax } from "@/actions/update-customer-tax";
@@ -14,7 +16,6 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { generateRandomString } from "@/lib/utils";
-import { useState } from "react";
 import { useAsyncMemo } from "use-async-memo";
 
 export function CustomerProfileTaxUpdatePrompt({}) {
@@ -27,7 +28,6 @@ export function CustomerProfileTaxUpdatePrompt({}) {
         let updates = [];
         if (customerId) {
             const form = await getCustomerFormAction(customerId);
-            console.log({ form, profileId, customerId, taxCode });
             if (profileId != Number(form?.profileId)) {
                 if (!form.profileId)
                     await updateCustomerProfile(customerId, profileId);
@@ -52,7 +52,6 @@ export function CustomerProfileTaxUpdatePrompt({}) {
                 }
             }
         }
-        console.log({ updates });
 
         return updates;
     }, [customerId, profileId, taxCode]);

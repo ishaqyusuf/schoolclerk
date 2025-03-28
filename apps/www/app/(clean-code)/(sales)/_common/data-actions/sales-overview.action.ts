@@ -1,10 +1,11 @@
 "use server";
 
-import { prisma } from "@/db";
-import { AsyncFnType } from "@/types";
-import { SalesMeta, SalesType } from "../../types";
 import { IconKeys } from "@/components/_v1/icons";
+import { prisma } from "@/db";
 import { formatMoney } from "@/lib/use-number";
+import { AsyncFnType } from "@/types";
+
+import { SalesMeta, SalesType } from "../../types";
 
 export type LoadSalesOverviewAction = AsyncFnType<
     typeof loadSalesOverviewAction
@@ -86,6 +87,7 @@ export async function loadSalesOverviewAction(id) {
         title: [order.orderId, displayName].filter(Boolean).join(" | "),
         subtitle: "",
         phoneNo,
+        customerId: order.customer?.id,
         displayName,
         shipping: [
             addressLine(order.shippingAddress?.name || displayName, "user"),

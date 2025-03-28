@@ -1,13 +1,8 @@
 import { useEffect, useMemo } from "react";
-import { Payables, txStore } from "./store";
-import { PaymentMethods } from "../../../types";
-import { _modal } from "@/components/common/modal/provider";
+import { TCell } from "@/components/(clean-code)/data-table/table-cells";
 import Modal from "@/components/common/modal";
+import { _modal } from "@/components/common/modal/provider";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import PayForm from "./pay-form";
-import CustomerSelector from "./customer-selector";
-import { getCustomerOverviewUseCase } from "../../use-case/customer-use-case";
-import { toast } from "sonner";
 import {
     Table,
     TableBody,
@@ -16,17 +11,25 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { TCell } from "@/components/(clean-code)/data-table/table-cells";
 import { formatMoney } from "@/lib/use-number";
 import { cn, sum } from "@/lib/utils";
+import { toast } from "sonner";
+
+import { PaymentMethods } from "../../../types";
+import { getCustomerOverviewUseCase } from "../../use-case/customer-use-case";
+import CustomerSelector from "./customer-selector";
+import PayForm from "./pay-form";
+import { Payables, txStore } from "./store";
 
 interface Props {}
 export function openTxForm({
     phoneNo,
     paymentMethod,
     payables,
+    customerId,
 }: {
     phoneNo?;
+    customerId;
     paymentMethod?: PaymentMethods;
     payables?: Payables[];
 }) {
@@ -35,6 +38,7 @@ export function openTxForm({
     const store = txStore.getState();
     store.initialize({
         phoneNo,
+        customerId,
         paymentMethod,
         selections,
         totalPay: formatMoney(sum(payables?.map((p) => p.amountDue))),
@@ -88,7 +92,7 @@ function TxFormContent({}) {
 
     if (!profile) return null;
     return (
-        <ScrollArea className="flex-1 -mx-6 px-6">
+        <ScrollArea className="-mx-6 flex-1 px-6">
             <div className="">
                 <Table className="">
                     <TableHeader>
@@ -106,21 +110,21 @@ function TxFormContent({}) {
                                         "cursor-pointer",
                                         tx.selections?.[order.orderId]
                                             ? "bg-muted-foreground/10 hover:bg-muted-foreground/10"
-                                            : ""
+                                            : "",
                                     )}
                                     onClick={() => {
                                         let c =
                                             !tx?.selections?.[order.orderId];
                                         tx.dotUpdate(
                                             `selections.${order.orderId}`,
-                                            c
+                                            c,
                                         );
                                         let amount = tx.totalPay;
                                         amount +=
                                             order.amountDue * (c ? 1 : -1);
                                         tx.dotUpdate(
                                             "totalPay",
-                                            formatMoney(amount)
+                                            formatMoney(amount),
                                         );
                                     }}
                                     key={order.orderId}
@@ -131,7 +135,7 @@ function TxFormContent({}) {
                                         </TCell.Date>
                                     </TableCell>
                                     <TableCell className="p-2">
-                                        <TCell.Secondary className="uppercase font-mono">
+                                        <TCell.Secondary className="font-mono uppercase">
                                             {order.orderId}
                                         </TCell.Secondary>
                                     </TableCell>
