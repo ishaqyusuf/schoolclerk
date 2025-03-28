@@ -1,17 +1,18 @@
 import { timeAgo } from "@/lib/use-day";
-import { GetSalesListDta } from "../sales-dta";
-import { salesLinks } from "./links-dto";
-import { SalesStat } from "@prisma/client";
-import {
-    AddressBookMeta,
-    SalesMeta,
-    QtyControlType,
-    SalesType,
-} from "../../../types";
-import { overallStatus, statToKeyValueDto } from "./sales-stat-dto";
-import { dispatchTitle } from "./sales-shipping-dto";
 import { toNumber } from "@/lib/utils";
 import { getNameInitials } from "@/utils/get-name-initials";
+import { SalesStat } from "@prisma/client";
+
+import {
+    AddressBookMeta,
+    QtyControlType,
+    SalesMeta,
+    SalesType,
+} from "../../../types";
+import { GetSalesListDta } from "../sales-dta";
+import { salesLinks } from "./links-dto";
+import { dispatchTitle } from "./sales-shipping-dto";
+import { overallStatus, statToKeyValueDto } from "./sales-stat-dto";
 
 export type Item = GetSalesListDta["data"][number];
 export function salesOrderDto(data: Item) {
@@ -31,7 +32,7 @@ export function salesOrderDto(data: Item) {
         addressData: {
             shipping: getAddressDto(
                 data.shippingAddress || data.billingAddress,
-                "Shipping Address"
+                "Shipping Address",
             ),
             billing: getAddressDto(data.billingAddress, "Billing Address"),
         },
@@ -69,7 +70,10 @@ function commonListData(data: Item) {
         slug: data.slug,
         address:
             data.shippingAddress?.address1 || data.billingAddress?.address1,
-        displayName: data.customer?.businessName || data?.shippingAddress?.name,
+        displayName:
+            data.customer?.name ||
+            data.customer?.businessName ||
+            data?.shippingAddress?.name,
         email: data.customer?.email,
         customerId: data.customer?.id,
         isBusiness: data.customer?.businessName,
