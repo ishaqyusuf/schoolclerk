@@ -29,7 +29,7 @@ export function openTxForm({
     customerId,
 }: {
     phoneNo?;
-    customerId;
+    customerId?;
     paymentMethod?: PaymentMethods;
     payables?: Payables[];
 }) {
