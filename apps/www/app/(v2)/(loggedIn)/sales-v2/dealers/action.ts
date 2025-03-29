@@ -1,14 +1,14 @@
 "use server";
 
+import { paginatedAction } from "@/app/_actions/get-action-utils";
 import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
 import { sendMessage } from "@/app/(v1)/_actions/email";
 import { userId } from "@/app/(v1)/_actions/utils";
-import { paginatedAction } from "@/app/_actions/get-action-utils";
-import { prisma } from "@/db";
+import { prisma, Prisma } from "@/db";
 import { env } from "@/env.mjs";
 import { generateRandomString } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
 import dayjs from "dayjs";
+
 import { PageTab } from "./type";
 
 interface GetDealersQuery {
@@ -29,7 +29,7 @@ export async function getDealersAction(query: GetDealersQuery) {
     const { pageCount } = await paginatedAction(
         query,
         prisma.dealerAuth,
-        where
+        where,
     );
     const data = await prisma.dealerAuth.findMany({
         where,
@@ -123,7 +123,7 @@ export async function resendApprovalTokenAction(id) {
 export async function dealershipApprovalAction(
     id,
     status: DealerStatus,
-    reason?: string
+    reason?: string,
 ) {
     const authId = await userId();
     await prisma.dealerAuth.update({

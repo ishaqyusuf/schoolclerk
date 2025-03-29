@@ -1,13 +1,13 @@
 "use server";
 
-import { prisma } from "@/db";
-import { authOptions } from "@/lib/auth-options";
-import { ISalesSettingMeta, PostTypes } from "@/types/post";
-import { ISalesType, ISalesOrder } from "@/types/sales";
-import { CustomerTypes } from "@prisma/client";
-import { sum } from "@/lib/utils";
-import dayjs from "dayjs";
 import { user } from "@/app/(v1)/_actions/utils";
+import { CustomerTypes, prisma } from "@/db";
+import { authOptions } from "@/lib/auth-options";
+import { sum } from "@/lib/utils";
+import { ISalesSettingMeta, PostTypes } from "@/types/post";
+import { ISalesOrder, ISalesType } from "@/types/sales";
+import dayjs from "dayjs";
+
 import { ICustomerProfile } from "../(customers)/customers/profiles/_components/type";
 
 export interface ICreateOrderFormQuery {
@@ -32,7 +32,7 @@ export interface SalessalesFormData {
     items: any[];
 }
 export async function _getSalesFormAction(
-    query: ICreateOrderFormQuery
+    query: ICreateOrderFormQuery,
 ): Promise<SalesFormResponse> {
     const order = await prisma.salesOrders.findFirst({
         where: {
@@ -152,7 +152,7 @@ export async function salesFormData(dyke = false) {
     };
 }
 async function newSalesFormAction(
-    query: ICreateOrderFormQuery
+    query: ICreateOrderFormQuery,
 ): Promise<SalesFormResponse> {
     const ctx = await salesFormData();
 

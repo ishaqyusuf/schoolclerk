@@ -1,22 +1,22 @@
 "use server";
 
-import { prisma } from "@/db";
+import { revalidatePath, unstable_noStore } from "next/cache";
+import { prisma, Prisma, Projects } from "@/db";
+import { slugModel, transformData } from "@/lib/utils";
 import { BaseQuery, TableApiResponse } from "@/types/action";
 import { IProject, IProjectMeta } from "@/types/community";
-import { Prisma, Projects } from "@prisma/client";
-import { getPageInfo, queryFilter } from "../action-utils";
-import { slugModel, transformData } from "@/lib/utils";
-import { revalidatePath, unstable_noStore } from "next/cache";
-import { _revalidate } from "../_revalidate";
-import { _cache } from "../_cache/load-data";
+
 import { clearCacheAction } from "../_cache/clear-cache";
+import { _cache } from "../_cache/load-data";
+import { _revalidate } from "../_revalidate";
+import { getPageInfo, queryFilter } from "../action-utils";
 
 export interface ProjectsQueryParams extends BaseQuery {
     _builderId;
 }
 
 export async function getProjectsAction(
-    query: ProjectsQueryParams
+    query: ProjectsQueryParams,
 ): TableApiResponse<IProject> {
     const where = whereProject(query);
     const _items = await prisma.projects.findMany({
@@ -82,7 +82,7 @@ export async function staticProjectsAction() {
             });
             return _data;
         },
-        "project-filter"
+        "project-filter",
     );
     // console.log(f);
     return f;

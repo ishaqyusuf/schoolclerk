@@ -1,10 +1,10 @@
 "use server";
 
-import { prisma } from "@/db";
-import { BaseQuery } from "@/types/action";
-import { getPageInfo, queryFilter } from "../action-utils";
-import { Prisma } from "@prisma/client";
+import { prisma, Prisma } from "@/db";
 import { whereQuery } from "@/lib/db-utils";
+import { BaseQuery } from "@/types/action";
+
+import { getPageInfo, queryFilter } from "../action-utils";
 
 export interface CommunityTaskQuery extends BaseQuery {
     _projectId?;

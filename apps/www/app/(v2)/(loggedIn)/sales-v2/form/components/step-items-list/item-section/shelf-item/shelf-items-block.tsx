@@ -1,39 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
-import { getShelfProducts } from "../../../../_action/get-shelf-products.actions";
-import { Form, FormField } from "@/components/ui/form";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import { _getShelfCategories } from "../../../../_action/get-shelf-categories";
-import { DykeShelfCategories } from "@prisma/client";
-import useShelfItem, { IUseShelfItem } from "../../../../_hooks/use-shelf-item";
-import { Input } from "@/components/ui/input";
-import Money from "@/components/_v1/money";
-import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/_v1/icons";
-import { useModal } from "@/components/common/modal/provider";
-import ShelfItemModal from "../../../modals/shelf-item-modal";
-import { toast } from "sonner";
+import Money from "@/components/_v1/money";
 import FormSelect from "@/components/common/controls/form-select";
-// import { ArrowDown } from "lucide-react";
-import { Check, ChevronsUpDown } from "lucide-react";
-
-import { cn } from "@/lib/utils";
+import { useModal } from "@/components/common/modal/provider";
+import { Button } from "@/components/ui/button";
 import {
     Command,
     CommandEmpty,
@@ -42,11 +14,40 @@ import {
     CommandItem,
     CommandList,
 } from "@/components/ui/command";
+import { Form, FormField } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import { DykeShelfCategories } from "@/db";
+import { cn } from "@/lib/utils";
+// import { ArrowDown } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { toast } from "sonner";
+
+import { _getShelfCategories } from "../../../../_action/get-shelf-categories";
+import { getShelfProducts } from "../../../../_action/get-shelf-products.actions";
+import useShelfItem, { IUseShelfItem } from "../../../../_hooks/use-shelf-item";
+import ShelfItemModal from "../../../modals/shelf-item-modal";
+
 interface Props {
     shelfIndex;
     deleteItem;
@@ -65,7 +66,7 @@ export default function ShelfItemsBlock({ shelfIndex, deleteItem }: Props) {
     async function getProducts(parentCategoryId, categoryId) {
         const { subCategoriesCount, products } = await getShelfProducts(
             parentCategoryId,
-            categoryId
+            categoryId,
         );
         console.log(subCategoriesCount, products);
         if (subCategoriesCount) {
@@ -84,7 +85,7 @@ export default function ShelfItemsBlock({ shelfIndex, deleteItem }: Props) {
         const generatedProd: any = shelf.prodArray.fields[index];
         const prodId = generatedProd?.item?.id;
         let prod = shelf.products?.find(
-            (p) => p.id == generatedProd?.item?.productId
+            (p) => p.id == generatedProd?.item?.productId,
         );
         if (!prod && index) {
             toast.error("Something went wrong editing product");
@@ -105,7 +106,7 @@ export default function ShelfItemsBlock({ shelfIndex, deleteItem }: Props) {
                 onCreate={(prod) => shelf.productUpdated(prod, index)}
                 prod={prod}
                 categoryIds={categoryIds}
-            />
+            />,
         );
         // shelf.prodArray.remove(index);
     }
@@ -135,7 +136,7 @@ export default function ShelfItemsBlock({ shelfIndex, deleteItem }: Props) {
                         ))}
                     </div>
                 </TableCell>
-                <TableCell className="w-full space-y-2 items-start  flex flex-col">
+                <TableCell className="flex w-full flex-col  items-start space-y-2">
                     {shelf.products && (
                         <>
                             {shelf.prodArray.fields.map(
@@ -150,7 +151,7 @@ export default function ShelfItemsBlock({ shelfIndex, deleteItem }: Props) {
                                         field={prodField}
                                         shelf={shelf}
                                     />
-                                )
+                                ),
                             )}
                             <div className="flex gap-4">
                                 <Button
@@ -161,20 +162,20 @@ export default function ShelfItemsBlock({ shelfIndex, deleteItem }: Props) {
                                             },
                                         });
                                     }}
-                                    className="w-full mt-2"
+                                    className="mt-2 w-full"
                                     size="sm"
                                 >
-                                    <Icons.add className="size-4 mr-4" />
+                                    <Icons.add className="mr-4 size-4" />
                                     Add Product
                                 </Button>
                                 <Button
                                     onClick={() => {
                                         shelfItemForm();
                                     }}
-                                    className="w-full mt-2"
+                                    className="mt-2 w-full"
                                     size="sm"
                                 >
-                                    <Icons.add className="size-4 mr-4" />
+                                    <Icons.add className="mr-4 size-4" />
                                     Create
                                 </Button>
                             </div>
@@ -218,7 +219,7 @@ function ShellProductCells({
     // console.log(shelf.products);
     // if (!shelf.products?.length) return <></>;
     return (
-        <div className="w-full flex items-center space-x-4">
+        <div className="flex w-full items-center space-x-4">
             <div className="flex-1">
                 <ShelfSelect
                     control={shelf.categoryForm.control}
@@ -236,7 +237,7 @@ function ShellProductCells({
                         ({ title: label, id: value }) => ({
                             label,
                             value: value.toString(),
-                        })
+                        }),
                     )}
                 />
                 {/* {index == shelf.prodArray.fields.length - 1 && (
@@ -271,7 +272,7 @@ function ShellProductCells({
                                 shelf.updateProductPrice(
                                     index,
                                     null,
-                                    +e.target.value
+                                    +e.target.value,
                                 );
                             }}
                         />
@@ -284,12 +285,12 @@ function ShellProductCells({
             <div className="w-24 text-right">
                 <Money value={totalPrice} />
             </div>
-            <div className="w-12 flex gap-2">
+            <div className="flex w-12 gap-2">
                 <Button
                     onClick={() => {
                         shelfItemForm(index);
                     }}
-                    className="w-8 h-8"
+                    className="h-8 w-8"
                     size="icon"
                     variant="ghost"
                 >
@@ -300,7 +301,7 @@ function ShellProductCells({
                         // shelfItemForm(index);
                         onDelete(index);
                     }}
-                    className="w-8 h-8"
+                    className="h-8 w-8"
                     size="icon"
                     variant="ghost"
                 >
@@ -479,7 +480,7 @@ function ComboboxDemo({
                                         setValue(
                                             currentValue === value
                                                 ? ""
-                                                : currentValue
+                                                : currentValue,
                                         );
                                         setOpen(false);
                                         onSelect(currentValue);
@@ -490,7 +491,7 @@ function ComboboxDemo({
                                             "mr-2 h-4 w-4",
                                             value === framework.value
                                                 ? "opacity-100"
-                                                : "opacity-0"
+                                                : "opacity-0",
                                         )}
                                     />
                                     {framework.label}

@@ -1,8 +1,7 @@
 "use server";
 
-import { prisma } from "@/db";
+import { prisma, Prisma } from "@/db";
 import { BaseQuery } from "@/types/action";
-import { Prisma } from "@prisma/client";
 
 import { dateQuery, getPageInfo, queryFilter } from "../action-utils";
 

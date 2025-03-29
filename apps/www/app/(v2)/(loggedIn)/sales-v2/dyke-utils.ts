@@ -1,9 +1,10 @@
-import { DykeDoors, DykeProducts, DykeStepProducts } from "@prisma/client";
-import { DykeProductMeta, StepProdctMeta } from "./type";
+import { DykeDoors, DykeProducts, DykeStepProducts } from "@/db";
+
 import { findDoorSvg } from "./_utils/find-door-svg";
+import { DykeProductMeta, StepProdctMeta } from "./type";
 
 export function transformStepProducts(
-    prod: DykeStepProducts & { door?: DykeDoors; product?: DykeProducts }
+    prod: DykeStepProducts & { door?: DykeDoors; product?: DykeProducts },
 ) {
     let meta: StepProdctMeta = prod.meta as any;
     if (!prod.meta)

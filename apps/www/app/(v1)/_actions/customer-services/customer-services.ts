@@ -1,16 +1,16 @@
 "use server";
 
-import { prisma } from "@/db";
-import { BaseQuery } from "@/types/action";
-import { getPageInfo, queryFilter } from "../action-utils";
-import { Prisma } from "@prisma/client";
+import { prisma, Prisma } from "@/db";
 import { whereQuery } from "@/lib/db-utils";
+import { BaseQuery } from "@/types/action";
+
+import { getPageInfo, queryFilter } from "../action-utils";
 
 export interface CustomerServiceQueryParamsProps extends BaseQuery {
     _show: "scheduled" | "incomplete" | "completed";
 }
 export async function getCustomerServices(
-    query: CustomerServiceQueryParamsProps
+    query: CustomerServiceQueryParamsProps,
 ) {
     const where = whereCustomerService(query);
     const items = await prisma.workOrders.findMany({

@@ -1,11 +1,11 @@
 "use server";
 
-import { prisma } from "@/db";
-import { slugModel } from "@/lib/utils";
-import { Blogs } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { deleteRealtimeMdx } from "./real-time-mdx";
+import { Blogs, prisma } from "@/db";
 import { nextId } from "@/lib/nextId";
+import { slugModel } from "@/lib/utils";
+
+import { deleteRealtimeMdx } from "./real-time-mdx";
 
 export async function saveBlogAction(data: Blogs) {
     if (data.id)

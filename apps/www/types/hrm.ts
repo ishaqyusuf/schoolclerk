@@ -7,7 +7,8 @@ import {
     Roles,
     UserDocuments,
     Users,
-} from "@prisma/client";
+} from "@/db";
+
 import { InstallCosting, InstallCostingTemplate } from "./community";
 
 export type IUser = Omit<Users, "meta"> & {

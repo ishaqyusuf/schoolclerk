@@ -1,7 +1,6 @@
 "use server";
 
-import { prisma } from "@/db";
-import { Prisma } from "@prisma/client";
+import { prisma, Prisma } from "@/db";
 
 export const updateNoteAction = async (id, data: Prisma.NotePadUpdateInput) => {
     await prisma.notePad.update({

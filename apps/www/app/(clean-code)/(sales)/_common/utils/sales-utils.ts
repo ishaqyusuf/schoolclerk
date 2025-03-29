@@ -1,8 +1,9 @@
-import { DykeSteps, SalesStat } from "@prisma/client";
-import { DykeDoorType, SalesStatStatus, QtyControlType } from "../../types";
+import { DykeSteps, SalesStat } from "@/db";
 import { Colors } from "@/lib/status-badge";
 import { sum } from "@/lib/utils";
 import dayjs from "dayjs";
+
+import { DykeDoorType, QtyControlType, SalesStatStatus } from "../../types";
 
 export function inToFt(_in) {
     if (_in.includes("-")) return _in;

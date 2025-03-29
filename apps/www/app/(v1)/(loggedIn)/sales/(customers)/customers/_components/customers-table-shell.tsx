@@ -1,26 +1,24 @@
 "use client";
 
+import React, { useEffect, useMemo, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { useCustomerProfiles } from "@/_v2/hooks/use-static-data";
+import salesData from "@/app/(v2)/(loggedIn)/sales/sales-data";
+import { DataTable2 } from "@/components/_v1/data-table/data-table-2";
+import PageHeader from "@/components/_v1/page-header";
+import useDataTableColumn from "@/components/common/data-table/columns/use-data-table-columns";
+import { useModal } from "@/components/common/modal/provider";
+import { CustomerTypes } from "@/db";
 import { TableShellProps } from "@/types/data-table";
 // import { ISalesOrder } from "@/types/ISales";
 import { ColumnDef } from "@tanstack/react-table";
-import React, { useEffect, useMemo, useState, useTransition } from "react";
-
-import { DataTable2 } from "@/components/_v1/data-table/data-table-2";
-
-import { CustomerTypes } from "@prisma/client";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import CustomersBatchAction from "./customers-selection-action";
-import { useCustomerProfiles } from "@/_v2/hooks/use-static-data";
-import useDataTableColumn from "@/components/common/data-table/columns/use-data-table-columns";
-import { Cells } from "./customer-cells";
-import PageHeader from "@/components/_v1/page-header";
 import CustomerFormModal from "../_modals/customer-form";
-import { useModal } from "@/components/common/modal/provider";
-import salesData from "@/app/(v2)/(loggedIn)/sales/sales-data";
-import { GetCustomers } from "../../../type";
 import { setCustomerProfileAction } from "../../_actions/sales-customer-profiles";
+import { GetCustomers } from "../../../type";
+import { Cells } from "./customer-cells";
+import CustomersBatchAction from "./customers-selection-action";
 
 export default function CustomersTableShell({ promise, searchParams }) {
     const { data, pageCount }: GetCustomers = React.use(promise);
@@ -30,7 +28,7 @@ export default function CustomersTableShell({ promise, searchParams }) {
         setDefaultProfile(profiles.data?.find((p) => p.defaultProfile) as any);
     }, [profiles.data]);
     const [defaultProfile, setDefaultProfile] = useState<CustomerTypes>(
-        {} as any
+        {} as any,
     );
 
     const route = useRouter();
@@ -56,7 +54,7 @@ export default function CustomersTableShell({ promise, searchParams }) {
             ctx.ActionColumn(Cells.Action),
         ],
         true,
-        { sn: false, filterCells: ["_q", "_having", "_due"] }
+        { sn: false, filterCells: ["_q", "_having", "_due"] },
     );
     const modal = useModal();
 

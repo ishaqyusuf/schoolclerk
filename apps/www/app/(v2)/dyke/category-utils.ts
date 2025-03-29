@@ -1,4 +1,4 @@
-import { DykeShelfCategories } from "@prisma/client";
+import { DykeShelfCategories } from "@/db";
 
 const categories: DykeShelfCategories[] = [];
 let nextCatId = 1;
@@ -26,7 +26,7 @@ function generate(cats: string[]) {
             title,
             nCategoryId,
             parentCategoryId,
-            catType(index)
+            catType(index),
         );
         if (!newCat) return;
         if (index == 0) parentCategoryId = newCat?.id;
@@ -67,7 +67,7 @@ function findCat(t, type) {
 function findCatWithCatId(t, type, categoryId) {
     if (t) {
         const cat = categories.find(
-            (c) => c.name == t && c.type == type && c.categoryId == categoryId
+            (c) => c.name == t && c.type == type && c.categoryId == categoryId,
         );
         try {
             return cat;

@@ -2,14 +2,15 @@ import {
     anyDateQuery,
     withDeleted,
 } from "@/app/(clean-code)/_common/utils/db-utils";
+import { dateEquals, fixDbTime } from "@/app/(v1)/_actions/action-utils";
 import {
     FilterKeys,
     SearchParamsType,
 } from "@/components/(clean-code)/data-table/search-params";
-import { Prisma } from "@prisma/client";
-import { dateEquals, fixDbTime } from "@/app/(v1)/_actions/action-utils";
+import { Prisma } from "@/db";
 import { formatDate } from "@/lib/use-day";
 import dayjs from "dayjs";
+
 import { QtyControlType } from "../../../types";
 import { composeQuery } from "../db-utils";
 import { ftToIn } from "../sales-utils";

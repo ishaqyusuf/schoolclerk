@@ -1,3 +1,4 @@
+import { DykeForm as OldDykeForm } from "@/app/(v2)/(loggedIn)/sales-v2/type";
 import {
     AddressBooks,
     ComponentPrice,
@@ -9,11 +10,11 @@ import {
     SalesStat,
     SalesTaxes,
     Taxes,
-} from "@prisma/client";
-import { DykeForm as OldDykeForm } from "@/app/(v2)/(loggedIn)/sales-v2/type";
+} from "@/db";
 import { FieldPath } from "react-hook-form";
-import { GetSalesBookForm } from "./_common/use-case/sales-book-form-use-case";
+
 import { GetStepComponent } from "./_common/data-access/step-components.dta";
+import { GetSalesBookForm } from "./_common/use-case/sales-book-form-use-case";
 
 export type SalesType = "order" | "quote";
 export type SalesPriority = "Low" | "High" | "Medium" | "Non";

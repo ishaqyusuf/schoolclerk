@@ -1,20 +1,20 @@
 "use server";
 
-import { prisma } from "@/db";
-import { DykeForm } from "../../type";
-import { lastId } from "@/lib/nextId";
-import { generateSalesIdDac } from "../../../sales/_data-access/generate-sales-id.dac";
+import { saveSalesComponentPricingDta } from "@/app/(clean-code)/(sales)/_common/data-access/sales-form-dta";
+import { saveSalesTaxDta } from "@/app/(clean-code)/(sales)/_common/data-access/sales-tax.persistent";
+import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
+import { dealerSession } from "@/app/(v1)/_actions/utils";
 import {
     ComponentPrice,
     DykeSalesDoors,
     HousePackageTools,
+    prisma,
     Prisma,
-} from "@prisma/client";
+} from "@/db";
+import { lastId } from "@/lib/nextId";
 
-import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
-import { dealerSession } from "@/app/(v1)/_actions/utils";
-import { saveSalesTaxDta } from "@/app/(clean-code)/(sales)/_common/data-access/sales-tax.persistent";
-import { saveSalesComponentPricingDta } from "@/app/(clean-code)/(sales)/_common/data-access/sales-form-dta";
+import { generateSalesIdDac } from "../../../sales/_data-access/generate-sales-id.dac";
+import { DykeForm } from "../../type";
 
 export async function saveDykeSales(data: DykeForm) {
     const dealerMode = await dealerSession();
@@ -174,15 +174,15 @@ export async function saveDykeSales(data: DykeForm) {
                                                                 updatedAt:
                                                                     new Date(),
                                                             } as any,
-                                                        }
+                                                        },
                                                     );
                                                 }
                                                 ids.shelfIds.push(prodId);
-                                            }
-                                        )
+                                            },
+                                        ),
                                     );
-                                }
-                            )
+                                },
+                            ),
                         );
                     } else {
                         let {
@@ -218,7 +218,7 @@ export async function saveDykeSales(data: DykeForm) {
                                         doorType: item?.meta?.doorType,
                                     } as any);
                                 }
-                            }
+                            },
                         );
 
                         if (doors?.length || hptData?.doorType == "Moulding") {
@@ -283,7 +283,7 @@ export async function saveDykeSales(data: DykeForm) {
                                         });
                                     }
                                     ids.doorsIds.push(doorId);
-                                })
+                                }),
                             );
                             if (hptId) ids.housePackageIds.push(hptId as any);
                         }
@@ -320,10 +320,10 @@ export async function saveDykeSales(data: DykeForm) {
                                     });
                                 }
                                 ids.stepFormsIds.push(stepFormId);
-                            }
-                        )
+                            },
+                        ),
                     );
-                })
+                }),
             );
             // console.log(ids.doorsIds);
             // console.log({ createDoors });
@@ -343,7 +343,7 @@ export async function saveDykeSales(data: DykeForm) {
             async function _deleteWhere(
                 t,
                 notIn: number[] = [],
-                items = false
+                items = false,
             ) {
                 // return;
                 const where: any = items
@@ -437,7 +437,7 @@ export async function saveDykeSales(data: DykeForm) {
                         //         ...i.where,
                         //     },
                         // });
-                    })
+                    }),
             );
             await saveSalesTaxDta(data, order.id);
 

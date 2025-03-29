@@ -1,15 +1,15 @@
 "use server";
 
-import { prisma } from "@/db";
-import { actionClient } from "./safe-action";
-import { createCustomerSchema } from "./schema";
+import { revalidateTag } from "next/cache";
 import {
     AddressBookMeta,
     CustomerMeta,
 } from "@/app/(clean-code)/(sales)/types";
-import { Prisma } from "@prisma/client";
-import { revalidateTag } from "next/cache";
+import { prisma, Prisma } from "@/db";
 import { Tags } from "@/utils/constants";
+
+import { actionClient } from "./safe-action";
+import { createCustomerSchema } from "./schema";
 
 export const createCustomerAction = actionClient
     .schema(createCustomerSchema)
@@ -48,12 +48,12 @@ export const createCustomerAction = actionClient
                       }
                     : undefined
                 : input?.taxCode
-                ? {
-                      create: {
-                          taxCode: input.taxCode,
-                      },
-                  }
-                : undefined,
+                  ? {
+                        create: {
+                            taxCode: input.taxCode,
+                        },
+                    }
+                  : undefined,
         } satisfies Prisma.CustomersUpdateInput;
         if (input.id) {
             const customer = await prisma.customers.update({

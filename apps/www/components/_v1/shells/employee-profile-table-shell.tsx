@@ -1,24 +1,23 @@
 "use client";
 
+import { useMemo, useState, useTransition } from "react";
+import { deleteEmployeeProfile } from "@/app/(v1)/_actions/hrm/employee-profiles";
+import { EmployeeProfile } from "@/db";
 import { TableShellProps } from "@/types/data-table";
 import { ColumnDef } from "@tanstack/react-table";
-import { useMemo, useState, useTransition } from "react";
+
 import {
-    ColumnHeader,
     Cell,
+    ColumnHeader,
     PrimaryCellContent,
     SecondaryCellContent,
 } from "../columns/base-columns";
 import { DataTable2 } from "../data-table/data-table-2";
-
-import { BuilderFilter } from "../filters/builder-filter";
 import {
     DeleteRowAction,
     RowActionCell,
 } from "../data-table/data-table-row-actions";
-
-import { EmployeeProfile } from "@prisma/client";
-import { deleteEmployeeProfile } from "@/app/(v1)/_actions/hrm/employee-profiles";
+import { BuilderFilter } from "../filters/builder-filter";
 
 export default function EmployeeProfileTableShell<T>({
     data,
@@ -82,7 +81,7 @@ export default function EmployeeProfileTableShell<T>({
                 ),
             },
         ], //.filter(Boolean) as any,
-        [data, isPending]
+        [data, isPending],
     );
     return (
         <DataTable2

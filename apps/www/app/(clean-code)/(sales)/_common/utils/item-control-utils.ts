@@ -1,12 +1,13 @@
-import { Prisma, QtyControl } from "@prisma/client";
+import { Prisma, QtyControl } from "@/db";
+import { percent, sum } from "@/lib/utils";
+import { isEqual } from "lodash";
+
 import {
     QtyControlByType,
     QtyControlType,
     SalesDispatchStatus,
 } from "../../types";
-import { percent, sum } from "@/lib/utils";
 import { GetSalesItemControllables } from "../data-actions/item-control.action";
-import { isEqual } from "lodash";
 
 export type ItemControlTypes = "door" | "molding" | "item";
 
@@ -91,8 +92,8 @@ export function composeQtyControl(props: ComposeQtyControlProps) {
     if (!totalQty) return [];
     const previousControls = qtyControlsByType(
         props.order?.itemControls?.filter(
-            (c) => c.uid == props.controlUid
-        ) as any
+            (c) => c.uid == props.controlUid,
+        ) as any,
     );
 
     const controls: QtyControlByType = {} as any;
@@ -110,7 +111,7 @@ export function composeQtyControl(props: ComposeQtyControlProps) {
         itemTotal: totalQty,
     };
     let assignments = props.order.assignments.filter((a) =>
-        props.doorId ? a.salesDoorId == props.doorId : a.itemId == props.itemId
+        props.doorId ? a.salesDoorId == props.doorId : a.itemId == props.itemId,
     );
     const singleHandle = assignments?.every((a) => !a.lhQty && !a.rhQty);
     controls.prodAssigned = {
@@ -136,7 +137,7 @@ export function composeQtyControl(props: ComposeQtyControlProps) {
     const dispatches = submissions.map((s) => s.itemDeliveries).flat();
     function registerDispatch(
         status: SalesDispatchStatus,
-        controlType: QtyControlType
+        controlType: QtyControlType,
     ) {
         const dispatchItems = dispatches.filter((d) => {
             const _status =
@@ -211,7 +212,7 @@ export function composeControls(order: GetSalesItemControllables) {
                 item.housePackageTool?.doors.map((door) => {
                     let controlUid = doorItemControlUid(
                         door.id,
-                        door.dimension
+                        door.dimension,
                     );
                     controls.push({
                         uid: controlUid,
@@ -238,7 +239,7 @@ export function composeControls(order: GetSalesItemControllables) {
             } else {
                 let controlUid = mouldingItemControlUid(
                     item.id,
-                    item.housePackageTool.id
+                    item.housePackageTool.id,
                 );
                 controls.push({
                     uid: controlUid,
@@ -293,7 +294,7 @@ export function composeControls(order: GetSalesItemControllables) {
     }[] = [];
     controls.map((control) => {
         const prevControl = order.itemControls.find(
-            (c) => c.uid == control.uid
+            (c) => c.uid == control.uid,
         );
         if (prevControl) {
             let {
@@ -319,7 +320,7 @@ export function composeControls(order: GetSalesItemControllables) {
                         createMany: {
                             data: control.qtyControls.map((qty) => {
                                 const prevQty = qtyControls.find(
-                                    (c) => c.type == qty.type
+                                    (c) => c.type == qty.type,
                                 );
 
                                 qty.autoComplete = prevQty?.autoComplete;

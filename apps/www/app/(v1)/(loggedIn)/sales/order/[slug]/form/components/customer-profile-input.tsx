@@ -8,8 +8,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { CustomerTypes } from "@/db";
 import { ISalesOrderForm } from "@/types/sales";
-import { CustomerTypes } from "@prisma/client";
 
 export function SalesCustomerProfileInput({
     form,
@@ -26,13 +26,13 @@ export function SalesCustomerProfileInput({
                 value={profileId as any}
                 onValueChange={(value) => {
                     const selection = profiles.find(
-                        (profile) => profile.title == value
+                        (profile) => profile.title == value,
                     );
                     if (selection) {
                         //   form.setValue("meta.sales_profile", value);
                         form.setValue(
                             "meta.sales_percentage",
-                            selection.coefficient
+                            selection.coefficient,
                         );
                     }
                 }}

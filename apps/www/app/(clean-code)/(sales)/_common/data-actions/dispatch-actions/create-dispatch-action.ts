@@ -1,16 +1,16 @@
 "use server";
 
 import { authId } from "@/app/(v1)/_actions/utils";
-import { prisma } from "@/db";
-import { getSalesAssignmentsByUidAction } from "../production-actions/item-assignments-action";
-import { getItemControlAction } from "../item-control.action";
-import { Prisma } from "@prisma/client";
+import { prisma, Prisma } from "@/db";
 import { sum } from "@/lib/utils";
-import { resetSalesStatAction } from "../sales-stat-control.action";
+
+import { getItemControlAction } from "../item-control.action";
 import {
     assignAllPendingToProductionAction,
     completeAllProductionsAction,
 } from "../production-actions/batch-action";
+import { getSalesAssignmentsByUidAction } from "../production-actions/item-assignments-action";
+import { resetSalesStatAction } from "../sales-stat-control.action";
 
 export interface CreateSalesDispatchData {
     items: {
@@ -48,7 +48,7 @@ export async function createSalesDispatchAction(data: CreateSalesDispatchData) {
                 data.items.map(async (item) => {
                     const dispatchables = await getItemDispatchableSubmissions(
                         item,
-                        salesId
+                        salesId,
                     );
                     if (!dispatchables?.length)
                         throw new Error("Insufficient submissions");
@@ -58,13 +58,13 @@ export async function createSalesDispatchAction(data: CreateSalesDispatchData) {
                         orderId: salesId,
                         meta: {},
                     }));
-                })
+                }),
             )
         )?.flat();
         console.log("LCOAACLLCA");
         if (!dispatchables?.length)
             throw new Error(
-                "Unable to create dispatch due to missing submissions"
+                "Unable to create dispatch due to missing submissions",
             );
         // console.log(dispatchables);
         const resp = await tx.orderItemDelivery.createMany({
@@ -74,7 +74,7 @@ export async function createSalesDispatchAction(data: CreateSalesDispatchData) {
 }
 async function getItemDispatchableSubmissions(
     item: CreateSalesDispatchData["items"][number],
-    salesId
+    salesId,
 ) {
     const cuid = item.uid;
     //
@@ -86,7 +86,7 @@ async function getItemDispatchableSubmissions(
                 submit: true,
                 controlIds: [cuid],
             },
-            item.produceable
+            item.produceable,
         );
     }
     const control = await getItemControlAction(cuid);
@@ -132,7 +132,7 @@ async function getItemDispatchableSubmissions(
                         const sdq = sum([d?.[qtySubKey]]);
                         stats.delivered += sdq;
                         return sdq;
-                    })
+                    }),
                 );
                 let pendingSubmitDeliveryQty = sum([
                     submitQty,

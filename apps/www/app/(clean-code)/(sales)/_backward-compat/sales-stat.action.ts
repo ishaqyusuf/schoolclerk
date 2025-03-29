@@ -1,9 +1,8 @@
 "use server";
 
-import { prisma } from "@/db";
+import { OrderItemProductionAssignments, prisma, Prisma } from "@/db";
 import { lastId } from "@/lib/nextId";
 import { percent, sum } from "@/lib/utils";
-import { OrderItemProductionAssignments, Prisma } from "@prisma/client";
 import dayjs from "dayjs";
 
 import { salesOverviewDto } from "../_common/data-access/dto/sales-item-dto";

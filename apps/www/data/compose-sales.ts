@@ -1,14 +1,14 @@
-import { IGetFullSale } from "@/data-access/sales.get-overview";
-import { dateData, infoData } from "./data-util";
-import { capitalize } from "lodash";
-import { SalesStat } from "@prisma/client";
-
-import { sum } from "@/lib/utils";
-import { GetAllSales, SalesItem } from "@/data-access/sales";
 import {
     QtyControlType,
     TypedSalesStat,
 } from "@/app/(clean-code)/(sales)/types";
+import { GetAllSales, SalesItem } from "@/data-access/sales";
+import { IGetFullSale } from "@/data-access/sales.get-overview";
+import { SalesStat } from "@/db";
+import { sum } from "@/lib/utils";
+import { capitalize } from "lodash";
+
+import { dateData, infoData } from "./data-util";
 
 export function composeSalesCostBreakdown(data: IGetFullSale) {
     if (data.type != "order") return null;

@@ -1,12 +1,11 @@
 "use server";
 
-import { prisma } from "@/db";
+import { prisma, Prisma } from "@/db";
 import { permissions } from "@/lib/data/role";
 import { queryBuilder, whereQuery } from "@/lib/db-utils";
+import { transformData } from "@/lib/utils";
 import { BaseQuery } from "@/types/action";
 import { IRoleForm } from "@/types/hrm";
-import { Prisma } from "@prisma/client";
-import { transformData } from "@/lib/utils";
 
 interface Props extends BaseQuery {}
 export async function _getRoles(query: Props) {
@@ -17,7 +16,7 @@ export async function _getRoles(query: Props) {
     const builder = await queryBuilder<Prisma.RolesWhereInput>(
         query,
         prisma.roles,
-        false
+        false,
     );
     return builder.response(
         await prisma.roles.findMany({
@@ -30,7 +29,6 @@ export async function _getRoles(query: Props) {
                     },
                 },
             },
-        })
+        }),
     );
 }
-

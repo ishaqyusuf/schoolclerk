@@ -4,17 +4,18 @@ import {
     CommunityModelPivot,
     CommunityModels,
     CostCharts,
+    Homes,
     HomeTasks,
     HomeTemplates,
-    Homes,
     Invoices,
     Jobs,
     Projects,
     Users,
-} from "@prisma/client";
-import { OmitMeta } from "./type";
-import { IJobs } from "./hrm";
+} from "@/db";
 import { extend } from "dayjs";
+
+import { IJobs } from "./hrm";
+import { OmitMeta } from "./type";
 
 export type IProject = OmitMeta<Projects> & {
     meta: IProjectMeta;

@@ -1,15 +1,16 @@
-import { InventoryProducts, ProductVariants, Products } from "@prisma/client";
+import { InventoryProducts, Products, ProductVariants } from "@/db";
+
 import { OmitMeta } from "./type";
 
 export interface IProduct extends InventoryProducts {
-  variants: IProductVariant[];
+    variants: IProductVariant[];
 }
 
 export type IProductVariant = OmitMeta<ProductVariants> & {
-  meta: IProductVariantMeta;
-  product: LegacyProduct;
+    meta: IProductVariantMeta;
+    product: LegacyProduct;
 };
 export interface IProductVariantMeta {
-  componentTitle;
+    componentTitle;
 }
 export interface LegacyProduct extends OmitMeta<InventoryProducts> {}

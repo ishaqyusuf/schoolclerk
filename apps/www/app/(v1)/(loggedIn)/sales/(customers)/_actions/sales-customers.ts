@@ -1,18 +1,16 @@
 "use server";
 
-import { prisma } from "@/db";
-import { Prisma } from "@prisma/client";
-import { ICustomer } from "@/types/customers";
+import { unstable_noStore } from "next/cache";
+import { paginatedAction } from "@/app/_actions/get-action-utils";
+import { _cache } from "@/app/(v1)/_actions/_cache/load-data";
+import { prisma, Prisma } from "@/db";
 import { sum, transformData } from "@/lib/utils";
 import { BaseQuery } from "@/types/action";
-import { paginatedAction } from "@/app/_actions/get-action-utils";
-
+import { ICustomer } from "@/types/customers";
 import { ISalesType } from "@/types/sales";
 
 import { InvoicePastDue, ShowCustomerHaving } from "../../type";
 import customerSalesOrderQuery from "./customer-sales-order-query";
-import { _cache } from "@/app/(v1)/_actions/_cache/load-data";
-import { unstable_noStore } from "next/cache";
 
 export interface IGetCustomerActionQuery extends BaseQuery {
     _having: ShowCustomerHaving;
@@ -37,7 +35,7 @@ export async function getCustomersAction(query: IGetCustomerActionQuery) {
     const { pageCount, skip, take } = await paginatedAction(
         query,
         prisma.customers,
-        where
+        where,
     );
 
     const _items = await prisma.customers.findMany({
@@ -89,7 +87,7 @@ export async function getCustomersAction(query: IGetCustomerActionQuery) {
         pageCount,
         data: _items.map((customer) => {
             let primaryAddress = customer.addressBooks.find(
-                (a) => a.id == customer.addressId
+                (a) => a.id == customer.addressId,
             );
             if (!primaryAddress && customer.addressBooks.length > 0)
                 primaryAddress = customer.addressBooks[0];
@@ -135,23 +133,23 @@ export async function getCustomerAction(id) {
 
     customer._count.totalSales = sum(customer.salesOrders, "grandTotal");
     customer._count.amountDue = sum(
-        customer.salesOrders.map((s) => Number(s.amountDue) || 0)
+        customer.salesOrders.map((s) => Number(s.amountDue) || 0),
     );
     let pd = (customer._count.pendingDoors = sum(
         customer.salesOrders,
-        "builtQty"
+        "builtQty",
     ));
     let td = (customer._count.totalDoors = sum(
         customer.salesOrders,
-        "prodQty"
+        "prodQty",
     ));
     customer._count.completedDoors = (td || 0) - (pd || 0);
     let pendingCompletion = _customer.salesOrders?.filter(
-        (s) => s.prodStatus != "Completed"
+        (s) => s.prodStatus != "Completed",
     ).length;
     customer._count.pendingOrders = pendingCompletion;
     customer._count.completedOrders = _customer.salesOrders?.filter(
-        (s) => s.prodStatus == "Completed"
+        (s) => s.prodStatus == "Completed",
     ).length;
 
     return { customer };
@@ -203,7 +201,7 @@ export async function getCustomerProfileId(customer: ICustomer) {
                     title,
                     coefficient: Number(coefficient),
                 },
-                true
+                true,
             ) as any,
         });
         return profile.id;

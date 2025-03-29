@@ -1,22 +1,18 @@
 // import { ISalesOrder, ISalesOrderItem } from "@/types/ISales";
-import { deepCopy } from "@/lib/deep-copy";
-import { formatDate } from "@/lib/use-day";
+import { INotification } from "@/app/(v1)/_actions/notifications";
 import {
     Builders,
-    CustomerTypes,
     Customers,
+    CustomerTypes,
     EmployeeProfile,
     HomeTemplates,
     InventoryProducts,
     Projects,
     Roles,
     Users,
-} from "@prisma/client";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { store } from ".";
-import { IOrderPrintMode, ISalesOrder, ISalesOrderItem } from "@/types/sales";
-import { IProduct } from "@/types/product";
-import { INotification } from "@/app/(v1)/_actions/notifications";
+} from "@/db";
+import { deepCopy } from "@/lib/deep-copy";
+import { formatDate } from "@/lib/use-day";
 import {
     ExtendedHome,
     ICommunityTemplate,
@@ -24,7 +20,13 @@ import {
     IProject,
 } from "@/types/community";
 import { ICustomer } from "@/types/customers";
+import { IProduct } from "@/types/product";
+import { IOrderPrintMode, ISalesOrder, ISalesOrderItem } from "@/types/sales";
 import { InstallCostSettings } from "@/types/settings";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+import { store } from ".";
+
 // import { IOrderPrintMode } from "@/app/(auth)/sales/orders/components/row-action/print-order-menu";
 
 export interface ISlicer {
@@ -139,7 +141,7 @@ const headerNavSlice = createSlice({
     reducers: {
         updateSlice(
             state,
-            action: PayloadAction<{ key: keyof ISlicer; data }>
+            action: PayloadAction<{ key: keyof ISlicer; data }>,
         ) {
             const { key, data } = action.payload;
             // Object.entries(data).map(([k, v]) => {
@@ -173,7 +175,7 @@ export function dispatchSlice(key: keyof ISlicer, data: any = null) {
         updateSlice({
             key,
             data: deepCopy(data),
-        })
+        }),
     );
 }
 
@@ -188,6 +190,6 @@ export function navigateTo(href) {
         updateSlice({
             key: "href",
             data: href,
-        })
+        }),
     );
 }

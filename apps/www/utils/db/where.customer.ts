@@ -1,4 +1,5 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/db";
+
 import { CustomersQueryParams } from "../../app/(clean-code)/(sales)/_common/data-access/customer.dta";
 import { composeQuery } from "../../app/(clean-code)/(sales)/_common/utils/db-utils";
 

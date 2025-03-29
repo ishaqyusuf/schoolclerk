@@ -1,5 +1,5 @@
 import { dateQuery } from "@/app/(v1)/_actions/action-utils";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/db";
 
 export function wherePayableSalesOrders(query) {
     const whereDate = dateQuery({
@@ -16,7 +16,7 @@ export function wherePayableSalesOrders(query) {
         //
         let numSearch = query._q?.split(" ")?.filter(Boolean).join("");
         [">", ">=", "<", "<=", "="].map(
-            (s) => (numSearch = numSearch?.replace(s, ""))
+            (s) => (numSearch = numSearch?.replace(s, "")),
         );
         numSearch = Number(numSearch);
         if (numSearch >= 0) {

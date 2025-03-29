@@ -1,4 +1,4 @@
-import { Settings } from "@prisma/client";
+import { Settings } from "@/db";
 
 export const PostTypes = {
     SALES_SETTINGS: "sales-settings",

@@ -1,22 +1,26 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-
 import { useRouter } from "next/navigation";
-
-import { _useAsync } from "@/lib/use-async";
-import Btn from "../btn";
-import BaseModal from "./base-modal";
+import { useBuilders } from "@/_v2/hooks/use-static-data";
+import { saveProject } from "@/app/(v1)/_actions/community/projects";
+import { staticBuildersAction } from "@/app/(v1)/(loggedIn)/settings/community/builders/action";
+import { CustomerTypes } from "@/db";
 import { closeModal } from "@/lib/modal";
+import { _useAsync } from "@/lib/use-async";
+import { projectSchema } from "@/lib/validations/community-validations";
+import { emailSchema } from "@/lib/validations/email";
+import { useAppSelector } from "@/store";
+import { loadStaticList } from "@/store/slicers";
+import { IProject } from "@/types/community";
+import { ICustomer } from "@/types/customers";
+import { ArrowLeft } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { useForm } from "react-hook-form";
-
+import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
-import { emailSchema } from "@/lib/validations/email";
-import { ICustomer } from "@/types/customers";
-import { CustomerTypes } from "@prisma/client";
 import {
     Select,
     SelectContent,
@@ -25,15 +29,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "../../ui/select";
-import { Button } from "../../ui/button";
-import { ArrowLeft } from "lucide-react";
-import { IProject } from "@/types/community";
-import { useAppSelector } from "@/store";
-import { loadStaticList } from "@/store/slicers";
-import { staticBuildersAction } from "@/app/(v1)/(loggedIn)/settings/community/builders/action";
-import { projectSchema } from "@/lib/validations/community-validations";
-import { saveProject } from "@/app/(v1)/_actions/community/projects";
-import { useBuilders } from "@/_v2/hooks/use-static-data";
+import Btn from "../btn";
+import BaseModal from "./base-modal";
 
 export default function ProjectModal() {
     const route = useRouter();
@@ -70,7 +67,7 @@ export default function ProjectModal() {
                   }
                 : {
                       ...data,
-                  }
+                  },
         );
     }
     const watchBuilderId = form.watch("builderId");
@@ -85,8 +82,8 @@ export default function ProjectModal() {
             Title={({ data }) => <div>Create Project</div>}
             Content={({ data }) => (
                 <div>
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <div className="grid gap-2 col-span-2">
+                    <div className="grid gap-4 md:grid-cols-2">
+                        <div className="col-span-2 grid gap-2">
                             <Label>Name</Label>
                             <Input
                                 placeholder=""
@@ -127,7 +124,7 @@ export default function ProjectModal() {
                             </Select>
                         </div>
 
-                        <div className="grid gap-2 col-span-2">
+                        <div className="col-span-2 grid gap-2">
                             <Label>Address</Label>
                             <Input
                                 className="h-8"

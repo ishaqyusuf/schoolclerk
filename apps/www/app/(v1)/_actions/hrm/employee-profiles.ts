@@ -1,10 +1,10 @@
 "use server";
 
-import { prisma } from "@/db";
+import { EmployeeProfile, prisma } from "@/db";
 import { transformData } from "@/lib/utils";
-import { EmployeeProfile } from "@prisma/client";
-import { getPageInfo } from "../action-utils";
+
 import { _cache } from "../_cache/load-data";
+import { getPageInfo } from "../action-utils";
 
 export async function getProfiles(query) {
     const pageInfo = await getPageInfo({}, {}, prisma.employeeProfile);
@@ -17,7 +17,7 @@ export async function getProfiles(query) {
 export async function getStaticEmployeeProfiles() {
     return await _cache(
         "customerProfiles",
-        async () => (await prisma.employeeProfile.findMany({})) as any
+        async () => (await prisma.employeeProfile.findMany({})) as any,
     );
 }
 
@@ -62,4 +62,3 @@ export async function deleteEmployeeProfile(id) {
         },
     });
 }
-

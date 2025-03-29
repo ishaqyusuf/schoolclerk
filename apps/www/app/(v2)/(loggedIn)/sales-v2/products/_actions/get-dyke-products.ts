@@ -1,15 +1,14 @@
 "use server";
 
-import { prisma } from "@/db";
+import { prisma, Prisma } from "@/db";
 import { queryBuilder } from "@/lib/db-utils";
 import { BaseQuery } from "@/types/action";
-import { Prisma } from "@prisma/client";
 
 interface Query extends BaseQuery {}
 export async function getDykeProducts(q: Query) {
     const builder = await queryBuilder<Prisma.DykeProductsWhereInput>(
         q,
-        prisma.dykeProducts
+        prisma.dykeProducts,
     );
     builder.searchQuery("title", "description");
     return {

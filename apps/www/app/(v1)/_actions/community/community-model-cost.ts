@@ -1,68 +1,68 @@
 "use server";
 
-import { prisma } from "@/db";
+import { revalidatePath } from "next/cache";
+import { prisma, Prisma } from "@/db";
+import {
+    calculateCommunitModelCost,
+    getPivotModel,
+    getTwinModelName,
+} from "@/lib/community/community-utils";
 import { formatDate } from "@/lib/use-day";
 import { transformData } from "@/lib/utils";
 import { ICommunityCosts, ICostChart } from "@/types/community";
 import dayjs from "dayjs";
-import { fixDbTime } from "../action-utils";
-import { revalidatePath } from "next/cache";
-import {
-    calculateCommunitModelCost,
-    getPivotModel,
-    getTwinModelName
-} from "@/lib/community/community-utils";
-import { Prisma } from "@prisma/client";
+
 import { _revalidate } from "../_revalidate";
+import { fixDbTime } from "../action-utils";
 
 export async function _importModelCostData(
     id,
     modelName,
     builderId,
     meta,
-    builderTasks
+    builderTasks,
 ) {
     const template = await prisma.homeTemplates.findFirst({
         where: {
             modelName,
-            builderId
+            builderId,
         },
         include: {
-            costs: true
-        }
+            costs: true,
+        },
     });
     if (template && template.costs.length) {
         console.log(template);
         await prisma.communityModelCost.deleteMany({
             where: {
-                communityModelId: id
-            }
+                communityModelId: id,
+            },
         });
         const _comm = await prisma.communityModels.update({
             where: { id },
             data: {
                 costs: {
                     createMany: {
-                        data: template.costs.map(cost => ({
+                        data: template.costs.map((cost) => ({
                             model: cost.model,
                             title: cost.title,
                             type: cost.type,
                             meta: calculateCommunitModelCost(
                                 cost.meta,
-                                builderTasks
+                                builderTasks,
                             ) as any,
                             createdAt: cost.createdAt,
                             updatedAt: cost.updatedAt,
                             current: cost.current,
                             endDate: cost.endDate,
-                            startDate: cost.startDate
-                        }))
-                    }
-                }
+                            startDate: cost.startDate,
+                        })),
+                    },
+                },
             },
             include: {
-                costs: true
-            }
+                costs: true,
+            },
         });
         revalidatePath("/settings/community/community-templates", "page");
         return _comm;
@@ -89,7 +89,7 @@ export async function _saveCommunitModelCostData(
     cost: ICommunityCosts,
     _communityModelId,
     pivotId,
-    includeCompletedTasks = false
+    includeCompletedTasks = false,
 ) {
     let { id: _id, communityModelId, pivotId: _pivotId, ..._cost } = cost;
     if (!_pivotId)
@@ -99,7 +99,7 @@ export async function _saveCommunitModelCostData(
     } = null as any;
     const title = [
         cost?.startDate ? formatDate(cost?.startDate, "MM/DD/YY") : null,
-        cost?.endDate ? formatDate(cost?.endDate, "MM/DD/YY") : "To Date"
+        cost?.endDate ? formatDate(cost?.endDate, "MM/DD/YY") : "To Date",
     ].join(" - ");
     _cost.title = title;
     _cost.current = cost.endDate
@@ -113,31 +113,31 @@ export async function _saveCommunitModelCostData(
                 type: "task-costs",
                 pivot: {
                     connect: {
-                        id: pivotId
-                    }
+                        id: pivotId,
+                    },
                 },
                 community: {
                     connect: {
-                        id: _communityModelId
-                    }
+                        id: _communityModelId,
+                    },
                 },
-                meta: _cost.meta as any
+                meta: _cost.meta as any,
             }),
             include: {
-                community: true
-            }
+                community: true,
+            },
         })) as any;
     } else {
         _c = (await prisma.communityModelCost.update({
             where: {
-                id: _id
+                id: _id,
             },
             data: {
-                ...(_cost as any)
+                ...(_cost as any),
             },
             include: {
-                community: true
-            }
+                community: true,
+            },
         })) as any;
     }
     await _attachedUnitsToCommunity(pivotId);
@@ -148,25 +148,25 @@ export async function _saveCommunitModelCostData(
 export async function _attachedUnitsToCommunity(pivotId) {
     const pivot = await prisma.communityModelPivot.findUnique({
         where: {
-            id: pivotId
+            id: pivotId,
         },
         include: {
-            communityModels: true
-        }
+            communityModels: true,
+        },
     });
     if (pivot) {
         await Promise.all(
-            pivot.communityModels.map(async model => {
+            pivot.communityModels.map(async (model) => {
                 await prisma.homes.updateMany({
                     where: {
                         projectId: model.projectId,
-                        modelName: model.modelName
+                        modelName: model.modelName,
                     },
                     data: {
-                        communityTemplateId: model.id
-                    }
+                        communityTemplateId: model.id,
+                    },
                 });
-            })
+            }),
         );
     }
 }
@@ -179,8 +179,8 @@ export async function _findOrGeneratePivotForCommunity(id) {
     const pivot = await prisma.communityModelPivot.findFirst({
         where: {
             model: pivotM,
-            projectId: c.id
-        }
+            projectId: c.id,
+        },
     });
     if (pivot) {
         await prisma.communityModels.update({
@@ -188,10 +188,10 @@ export async function _findOrGeneratePivotForCommunity(id) {
             data: {
                 pivot: {
                     connect: {
-                        id: pivot.id
-                    }
-                }
-            }
+                        id: pivot.id,
+                    },
+                },
+            },
         });
         return pivot.id;
     }
@@ -206,16 +206,16 @@ export async function _synchronizeModelCost(_c, pivotId) {
                 home: {
                     // communityTemplateId: templateId,
                     communityTemplate: {
-                        pivotId
+                        pivotId,
                     },
                     createdAt: {
                         gte: fixDbTime(dayjs(from)).toISOString(),
                         lte: !to
                             ? undefined
-                            : fixDbTime(dayjs(to), 23, 59, 59).toISOString()
-                    }
+                            : fixDbTime(dayjs(to), 23, 59, 59).toISOString(),
+                    },
                 },
-                taskUid: k
+                taskUid: k,
             };
             // if (!includeCompletedTasks)
             //    whereHomTasks.status = {
@@ -225,18 +225,18 @@ export async function _synchronizeModelCost(_c, pivotId) {
                 where: whereHomTasks,
                 data: {
                     amountDue: Number(v) || 0,
-                    updatedAt: new Date()
-                }
+                    updatedAt: new Date(),
+                },
             });
 
             console.log(s.count, whereHomTasks);
-        })
+        }),
     );
 }
 export async function _deleteCommunityModelCost(id) {
     if (!id) return;
     await prisma.communityModelCost.delete({
-        where: { id }
+        where: { id },
     });
     _revalidate("communityTemplates");
 }

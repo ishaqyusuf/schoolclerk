@@ -1,16 +1,15 @@
-import { AsyncFnType } from "@/app/(clean-code)/type";
-import { SearchParamsType } from "@/components/(clean-code)/data-table/search-params";
-import { prisma } from "@/db";
-import { Prisma } from "@prisma/client";
-
 import {
     getPageInfo,
     pageQueryFilter,
 } from "@/app/(clean-code)/_common/utils/db-utils";
-import { SalesMeta, SalesType } from "../../types";
+import { AsyncFnType } from "@/app/(clean-code)/type";
+import { SearchParamsType } from "@/components/(clean-code)/data-table/search-params";
+import { prisma, Prisma } from "@/db";
 import { sum } from "@/lib/utils";
-import { getCustomerWalletInfoDta } from "./wallet/wallet-dta";
 import { whereCustomers } from "@/utils/db/where.customer";
+
+import { SalesMeta, SalesType } from "../../types";
+import { getCustomerWalletInfoDta } from "./wallet/wallet-dta";
 
 export type CustomersQueryParams = Pick<SearchParamsType, "search" | "address">;
 export type GetCustomersDta = AsyncFnType<typeof getCustomersDta>;

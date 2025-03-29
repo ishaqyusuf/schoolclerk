@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { DykeItemFormContext, useDykeForm } from "./form-context";
-import { useFieldArray, useForm } from "react-hook-form";
-import { CategorizedShelfItem, IDykeShelfProducts } from "../../type";
-import { DykeShelfProducts } from "@prisma/client";
-import { getShelfProducts } from "../_action/get-shelf-products.actions";
+import { DykeShelfProducts } from "@/db";
 import { generateRandomString } from "@/lib/utils";
+import { useFieldArray, useForm } from "react-hook-form";
+
+import { getShelfProducts } from "../_action/get-shelf-products.actions";
+import { CategorizedShelfItem, IDykeShelfProducts } from "../../type";
+import { DykeItemFormContext, useDykeForm } from "./form-context";
 import useFooterEstimate from "./use-footer-estimate";
 
 export default function useShelfItem(shelfIndex) {
@@ -88,7 +89,7 @@ export default function useShelfItem(shelfIndex) {
         },
         getProdFormKey(prodIndex, ...path) {
             let paths = path.map(
-                (p) => `${configky}.productArray.${prodIndex}.item.${p}` as any
+                (p) => `${configky}.productArray.${prodIndex}.item.${p}` as any,
             );
             if (path.length == 1) return paths[0];
             return paths;
@@ -98,7 +99,7 @@ export default function useShelfItem(shelfIndex) {
                 prodIndex,
                 "qty",
                 "unitPrice",
-                "totalPrice"
+                "totalPrice",
             );
             if (!qty) qty = +form.getValues(qtyPath);
 
@@ -121,13 +122,13 @@ export default function useShelfItem(shelfIndex) {
         },
         watchProductEstimate(index) {
             return form.watch(
-                this.getProdFormKey(index, "unitPrice", "totalPrice")
+                this.getProdFormKey(index, "unitPrice", "totalPrice"),
             );
         },
         clearEstimates() {
             prodArray.fields.map((f, i) => {
                 this.getProdFormKey(i, "unitPrice", "totalPrice").map((k) =>
-                    form.setValue(k as any, null)
+                    form.setValue(k as any, null),
                 );
             });
         },
@@ -150,7 +151,7 @@ export default function useShelfItem(shelfIndex) {
         productUpdated(product: IDykeShelfProducts, prodIndex) {
             setProducts((current) => {
                 const cIndex: any = current?.findIndex(
-                    (p) => p.id == product.id
+                    (p) => p.id == product.id,
                 );
                 const newData = [...((current || []) as any)];
                 if (cIndex > -1) newData[cIndex] = product;
@@ -161,11 +162,11 @@ export default function useShelfItem(shelfIndex) {
                     const prodKey: any = `${configky}.productArray.${prodIndex}.item`;
                     form.setValue(
                         `${prodKey}.unitPrice` as any,
-                        product?.unitPrice
+                        product?.unitPrice,
                     );
                     form.setValue(
                         `${prodKey}.description` as any,
-                        product?.title
+                        product?.title,
                     );
                     // const qty = form.getValues(`${prodKey}.qty` as any);
                     // if(!qty)
@@ -186,7 +187,7 @@ export default function useShelfItem(shelfIndex) {
             // console.log({ categoryId, parentCategoryId });
             const { subCategoriesCount, products } = await getShelfProducts(
                 parentCategoryId,
-                categoryId
+                categoryId,
             );
             if (subCategoriesCount) {
                 catArray.append({ id: null });

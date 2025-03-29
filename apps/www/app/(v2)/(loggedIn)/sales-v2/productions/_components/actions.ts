@@ -1,15 +1,16 @@
 "use server";
 
 import { paginatedAction } from "@/app/_actions/get-action-utils";
-import { prisma } from "@/db";
-import { Prisma } from "@prisma/client";
-import { DeliveryOption, IAddressMeta, ISalesType } from "@/types/sales";
-import { serverSession } from "@/app/(v1)/_actions/utils";
-import { sum } from "@/lib/utils";
-import salesData from "../../../sales/sales-data";
 import { dateEquals, fixDbTime } from "@/app/(v1)/_actions/action-utils";
-import dayjs from "dayjs";
+import { serverSession } from "@/app/(v1)/_actions/utils";
+import { prisma, Prisma } from "@/db";
 import { formatDate } from "@/lib/use-day";
+import { sum } from "@/lib/utils";
+import { DeliveryOption, IAddressMeta, ISalesType } from "@/types/sales";
+import dayjs from "dayjs";
+
+import salesData from "../../../sales/sales-data";
+
 interface Props {
     production?: boolean;
     query?: {
@@ -30,10 +31,10 @@ export async function _getProductionList({ query, production = false }: Props) {
     const dueDate = query?.dueToday
         ? dateEquals(formatDate(dayjs(), "YYYY-MM-DD"))
         : query?.pastDue
-        ? {
-              lt: fixDbTime(dayjs()).toISOString(),
-          }
-        : undefined;
+          ? {
+                lt: fixDbTime(dayjs()).toISOString(),
+            }
+          : undefined;
 
     // console.log(dueDate);
     // return prisma.$transaction(async (tx) => {
@@ -157,7 +158,7 @@ export async function _getProductionList({ query, production = false }: Props) {
     const { pageCount, skip, take } = await paginatedAction(
         query,
         prisma.salesOrders,
-        where
+        where,
     );
     const data = await prisma.salesOrders.findMany({
         where,
@@ -278,13 +279,13 @@ export async function _getProductionList({ query, production = false }: Props) {
                     order.isDyke
                         ? [
                               ...order.doors.map((d) =>
-                                  sum([d.lhQty, d.rhQty])
+                                  sum([d.lhQty, d.rhQty]),
                               ),
                               ...order.items.map((i) =>
-                                  i.dykeProduction ? i.qty : 0
+                                  i.dykeProduction ? i.qty : 0,
                               ),
                           ]
-                        : order.items?.filter((i) => i.swing).map((i) => i.qty)
+                        : order.items?.filter((i) => i.swing).map((i) => i.qty),
                 ),
             },
             customer: {
@@ -301,8 +302,8 @@ export async function _getProductionList({ query, production = false }: Props) {
         const totalDoors = resp._meta.totalDoors;
         const submitted = sum(
             resp.assignments.map((a) =>
-                sum(a.submissions.map((s) => sum([s.lhQty, s.rhQty])))
-            )
+                sum(a.submissions.map((s) => sum([s.lhQty, s.rhQty]))),
+            ),
         );
 
         return {
@@ -314,7 +315,7 @@ export async function _getProductionList({ query, production = false }: Props) {
     });
     return {
         data: orders.filter((a) =>
-            query.pastDue || query.dueToday ? !a.completed : true
+            query.pastDue || query.dueToday ? !a.completed : true,
         ),
         pageCount,
     };

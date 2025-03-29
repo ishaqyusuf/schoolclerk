@@ -1,6 +1,16 @@
 "use client";
 
-import { EmployeeProfile, JobPayments } from "@prisma/client";
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { makePayment } from "@/app/(v1)/_actions/hrm-jobs/make-payment";
+import { EmployeeProfile, JobPayments } from "@/db";
+import { transformData } from "@/lib/utils";
+import { IJobPayment, IJobs } from "@/types/hrm";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
 import {
     Table,
     TableBody,
@@ -8,18 +18,9 @@ import {
     TableHead,
     TableRow,
 } from "../../ui/table";
-import Money from "../money";
-import { useForm } from "react-hook-form";
-import { IJobPayment, IJobs } from "@/types/hrm";
 import AutoComplete2 from "../auto-complete-tw";
-import { Input } from "../../ui/input";
-import { useTransition } from "react";
-import { makePayment } from "@/app/(v1)/_actions/hrm-jobs/make-payment";
-import { transformData } from "@/lib/utils";
-import { Button } from "../../ui/button";
 import Btn from "../btn";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import Money from "../money";
 
 interface Props {
     user: {

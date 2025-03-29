@@ -1,9 +1,10 @@
-import { Prisma } from "@prisma/client";
-import { CellTransform, ExportForm, ExportTypes, TypedExport } from "./type";
-import { dotArray } from "@/lib/utils";
-import { dotKeys, dotObject } from "../utils/utils";
-import { isDate } from "lodash";
+import { Prisma } from "@/db";
 import { formatDate } from "@/lib/use-day";
+import { dotArray } from "@/lib/utils";
+import { isDate } from "lodash";
+
+import { dotKeys, dotObject } from "../utils/utils";
+import { CellTransform, ExportForm, ExportTypes, TypedExport } from "./type";
 
 type OrderSelect = Prisma.SalesOrdersSelect;
 // type ExportCells = Partial<{
@@ -101,7 +102,7 @@ export function transformExportData(formData: ExportForm, data) {
 }
 export function getExportForm(
     type: ExportTypes,
-    config?: TypedExport
+    config?: TypedExport,
 ): ExportForm {
     const _ = {
         exports: {},

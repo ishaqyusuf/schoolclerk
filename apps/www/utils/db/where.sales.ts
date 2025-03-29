@@ -2,19 +2,19 @@ import {
     anyDateQuery,
     withDeleted,
 } from "@/app/(clean-code)/_common/utils/db-utils";
+import salesData from "@/app/(clean-code)/(sales)/_common/utils/sales-data";
+import { dateEquals, fixDbTime } from "@/app/(v1)/_actions/action-utils";
 import {
     FilterKeys,
     SearchParamsType,
 } from "@/components/(clean-code)/data-table/search-params";
-import { Prisma } from "@prisma/client";
-import { composeQuery } from "../../app/(clean-code)/(sales)/_common/utils/db-utils";
-import { QtyControlType } from "../../app/(clean-code)/(sales)/types";
-import { ftToIn } from "../../app/(clean-code)/(sales)/_common/utils/sales-utils";
-import { dateEquals, fixDbTime } from "@/app/(v1)/_actions/action-utils";
+import { Prisma, prisma } from "@/db";
 import { formatDate } from "@/lib/use-day";
 import dayjs from "dayjs";
-import { prisma } from "@/db";
-import salesData from "@/app/(clean-code)/(sales)/_common/utils/sales-data";
+
+import { composeQuery } from "../../app/(clean-code)/(sales)/_common/utils/db-utils";
+import { ftToIn } from "../../app/(clean-code)/(sales)/_common/utils/sales-utils";
+import { QtyControlType } from "../../app/(clean-code)/(sales)/types";
 
 export function whereSales(query: SearchParamsType) {
     const whereAnd: Prisma.SalesOrdersWhereInput[] = [];
@@ -96,7 +96,7 @@ export function whereSales(query: SearchParamsType) {
                                         {
                                             paymentTerm: {
                                                 in: salesData.paymentTerms.map(
-                                                    (a) => a.value
+                                                    (a) => a.value,
                                                 ),
                                             },
                                         },

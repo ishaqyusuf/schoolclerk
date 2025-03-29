@@ -1,17 +1,17 @@
 "use server";
 
-import { prisma } from "@/db";
-import { BaseQuery } from "@/types/action";
-import { getPageInfo, queryFilter } from "../action-utils";
-import { Prisma } from "@prisma/client";
-import { slugModel, transformData } from "@/lib/utils";
+import { prisma, Prisma } from "@/db";
 import { queryBuilder } from "@/lib/db-utils";
+import { slugModel, transformData } from "@/lib/utils";
+import { BaseQuery } from "@/types/action";
+
+import { getPageInfo, queryFilter } from "../action-utils";
 
 export interface LegacyProductsQueryParamsProps extends BaseQuery {}
 export async function getLegacyProducts(query: LegacyProductsQueryParamsProps) {
     const builder = await queryBuilder<Prisma.ProductVariantsWhereInput>(
         query,
-        prisma.productVariants
+        prisma.productVariants,
     );
     builder.searchQuery("description", "variantTitle", "title");
     return builder.response(
@@ -26,7 +26,7 @@ export async function getLegacyProducts(query: LegacyProductsQueryParamsProps) {
                     },
                 },
             },
-        })
+        }),
     );
     const where = whereLegacyProducts(query);
     const items = await prisma.productVariants.findMany({
@@ -51,7 +51,7 @@ export async function getLegacyProducts(query: LegacyProductsQueryParamsProps) {
 }
 export async function createProductAction(
     product: { id?; title; category },
-    variant: { price; variantTitle; title? }
+    variant: { price; variantTitle; title? },
 ) {
     let id = product.id;
     if (!id) {
@@ -63,7 +63,7 @@ export async function createProductAction(
                     category: product.category,
                     slug: await slugModel(
                         product.title,
-                        prisma.inventoryProducts
+                        prisma.inventoryProducts,
                     ),
                     meta: {},
                 },

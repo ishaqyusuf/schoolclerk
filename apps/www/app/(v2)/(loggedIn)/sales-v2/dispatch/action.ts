@@ -1,15 +1,15 @@
 "use server";
 
 import { paginatedAction } from "@/app/_actions/get-action-utils";
-import { prisma } from "@/db";
+import { prisma, Prisma } from "@/db";
 import { DeliveryOption } from "@/types/sales";
-import { Prisma } from "@prisma/client";
+
 import { _getProductionList } from "../productions/_components/actions";
 
 interface QueryProps {}
 export async function getDispatchSales(
     deliveryOption: DeliveryOption,
-    query: QueryProps
+    query: QueryProps,
 ) {
     return await _getProductionList({
         query: {
@@ -24,7 +24,7 @@ export async function getDispatchSales(
     const { pageCount, skip, take } = await paginatedAction(
         query,
         prisma.salesOrders,
-        where
+        where,
     );
     const data = await prisma.salesOrders.findMany({
         where,

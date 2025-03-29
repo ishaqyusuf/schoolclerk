@@ -1,12 +1,11 @@
 "use server";
 
-import { prisma } from "@/db";
+import { prisma, Prisma } from "@/db";
 import { generateRandomString } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
 
 export async function updateSalesTaxProfileAction(
     taxCode,
-    data: Prisma.TaxesUpdateInput
+    data: Prisma.TaxesUpdateInput,
 ) {
     const r = await prisma.taxes.update({
         where: {
@@ -17,7 +16,7 @@ export async function updateSalesTaxProfileAction(
     return r;
 }
 export async function createSalesTaxProfileAction(
-    data: Prisma.TaxesCreateManyInput
+    data: Prisma.TaxesCreateManyInput,
 ) {
     const res = await prisma.taxes.create({
         data: {

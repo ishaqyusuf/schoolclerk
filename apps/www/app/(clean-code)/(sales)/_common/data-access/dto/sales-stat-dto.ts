@@ -1,16 +1,17 @@
-import { SalesStat } from "@prisma/client";
+import { SalesStat } from "@/db";
+import { Colors } from "@/lib/status-badge";
+import { percent, sum, sumArrayKeys } from "@/lib/utils";
+
 import { QtyControlType } from "../../../types";
+import { overallDeliveryBreakdown } from "../../utils/dispatch-utils";
+import { statStatus } from "../../utils/sales-utils";
 import { GetFullSalesDataDta } from "../sales-dta";
 import { salesItemGroupOverviewDto } from "./sales-item-dto";
-import { statStatus } from "../../utils/sales-utils";
-import { Colors } from "@/lib/status-badge";
-import { overallDeliveryBreakdown } from "../../utils/dispatch-utils";
-import { percent, sum, sumArrayKeys } from "@/lib/utils";
 
 type ItemGroup = ReturnType<typeof salesItemGroupOverviewDto>;
 export function salesItemsStatsDto(
     data: GetFullSalesDataDta,
-    itemGroup: ItemGroup
+    itemGroup: ItemGroup,
 ) {
     const dataStats = statToKeyValueDto(data.stat);
     const calculatedStats = calculatedStatsDto(itemGroup, data);
@@ -23,16 +24,16 @@ export function salesItemsStatsDto(
                 .map((item) =>
                     item.items
                         ?.map((it) => it.analytics.deliveryBreakdown)
-                        .flat()
+                        .flat(),
                 )
-                .flat()
+                .flat(),
         ),
     };
 }
 
 export function calculatedStatsDto(
     itemGroup: ItemGroup,
-    data: GetFullSalesDataDta
+    data: GetFullSalesDataDta,
 ) {
     const cs = statToKeyValueDto(data.stat, true);
     function populate(type: QtyControlType, pending, success) {
@@ -83,7 +84,7 @@ export function overallStatus(dataStats: SalesStat[]) {
     const sk = statToKeyValueDto(dataStats);
     const dispatch = sumArrayKeys(
         [sk.dispatchAssigned, sk.dispatchInProgress, sk.dispatchCompleted],
-        ["score", "total", "percentage"]
+        ["score", "total", "percentage"],
     );
 
     return {

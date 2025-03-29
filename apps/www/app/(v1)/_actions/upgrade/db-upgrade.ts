@@ -1,19 +1,19 @@
 "use server";
 
-import { prisma } from "@/db";
-
+import { randomUUID } from "crypto";
+import { _updateProdQty } from "@/app/(v2)/(loggedIn)/sales/_data-access/update-prod-qty.dac";
+import { prisma, Prisma } from "@/db";
+import { composeItemDescription } from "@/lib/sales/sales-invoice-form";
+import { ISalesSetting, ISalesSettingMeta, PostTypes } from "@/types/post";
 import {
     ISalesOrderItem,
     ISalesOrderItemMeta,
     ISalesOrderMeta,
     WizardKvForm,
 } from "@/types/sales";
-import { Prisma } from "@prisma/client";
-import { randomUUID } from "crypto";
-import { ISalesSetting, ISalesSettingMeta, PostTypes } from "@/types/post";
-import { composeItemDescription } from "@/lib/sales/sales-invoice-form";
+
 import { getSettingAction } from "../settings";
-import { _updateProdQty } from "@/app/(v2)/(loggedIn)/sales/_data-access/update-prod-qty.dac";
+
 export async function dbUpgradeAction() {
     // const _ = await prisma.posts.groupBy({
     //   by: ["type"],
@@ -108,7 +108,7 @@ async function addTypeToSalesOrder() {
                 },
                 data,
             });
-        })
+        }),
     );
 }
 async function upgradeOrderQty() {
@@ -131,7 +131,7 @@ interface oldComponentCost {
 }
 async function transformItemComponent() {
     let { id, meta, ...salesSetting } = (await getSettingAction<ISalesSetting>(
-        "sales-settings"
+        "sales-settings",
     )) as ISalesSetting;
     let { wizard: { titleMarkdown } = {}, ...salesMeta } =
         meta as ISalesSettingMeta;
@@ -164,7 +164,7 @@ async function transformItemComponent() {
                 depId: doorUUID,
                 hasCost: true,
                 defaultQty: 1,
-            })
+            }),
     );
     titleMarkdown = "@Door | Frame: @Frame | Hinge: @Hinge | Casing: @Casing";
     await prisma.settings.update({

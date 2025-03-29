@@ -1,14 +1,14 @@
 "use server";
 
-import { prisma } from "@/db";
+import { revalidatePath } from "next/cache";
+import { prisma, Prisma } from "@/db";
+import { whereQuery } from "@/lib/db-utils";
 import { removeEmptyValues, transformData } from "@/lib/utils";
 import { BaseQuery } from "@/types/action";
-import { Prisma } from "@prisma/client";
-import { getPageInfo, queryFilter } from "../../../../_actions/action-utils";
-import { whereQuery } from "@/lib/db-utils";
-import { revalidatePath } from "next/cache";
-import slugify from "slugify";
 import { HomeTemplateMeta, ICommunityTemplateMeta } from "@/types/community";
+import slugify from "slugify";
+
+import { getPageInfo, queryFilter } from "../../../../_actions/action-utils";
 import { userId } from "../../../../_actions/utils";
 
 export interface HomeTemplatesQueryParams extends BaseQuery {}
@@ -128,7 +128,7 @@ function whereHomeTemplate(query: HomeTemplatesQueryParams) {
     return where;
 }
 export async function printHomesAction(
-    homes: { builderId: number; projectId: number; modelName }[]
+    homes: { builderId: number; projectId: number; modelName }[],
 ) {
     const prints = await prisma.homeTemplates.findMany({
         where: {

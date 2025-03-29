@@ -1,4 +1,4 @@
-import { OrderInventory } from "@prisma/client";
+import { OrderInventory } from "@/db";
 
 export type IOrderInventory = OrderInventory & {
     product: IOrderInventory;

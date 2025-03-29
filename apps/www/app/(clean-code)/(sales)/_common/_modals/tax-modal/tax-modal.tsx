@@ -1,10 +1,11 @@
 import FormInput from "@/components/common/controls/form-input";
 import Modal from "@/components/common/modal";
-import { Form } from "@/components/ui/form";
-import { Taxes } from "@prisma/client";
-import { useForm } from "react-hook-form";
-import { createTax } from "./action";
 import { useModal } from "@/components/common/modal/provider";
+import { Form } from "@/components/ui/form";
+import { Taxes } from "@/db";
+import { useForm } from "react-hook-form";
+
+import { createTax } from "./action";
 
 interface Props {
     onCreate?(tax: Taxes);

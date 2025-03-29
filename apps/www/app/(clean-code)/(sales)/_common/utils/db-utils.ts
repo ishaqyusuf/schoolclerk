@@ -1,11 +1,12 @@
-import { Prisma } from "@prisma/client";
-import salesData from "./sales-data";
 import {
     getPageInfo,
     pageQueryFilter,
     whereNotTrashed,
 } from "@/app/(clean-code)/_common/utils/db-utils";
+import { Prisma } from "@/db";
+
 import { GetSalesDispatchListQuery } from "../data-access/sales-dispatch-dta";
+import salesData from "./sales-data";
 
 export function whereDispatch(query: GetSalesDispatchListQuery) {
     const whereAnd: Prisma.OrderDeliveryWhereInput[] = [];
@@ -38,7 +39,7 @@ export async function infinitListQuery<T>(props: InfiniteListQueryProps<T>) {
         const pageInfo = await getPageInfo(
             props.query,
             props.where,
-            props.table
+            props.table,
         );
         return {
             pageCount: pageInfo?.pageCount,
@@ -368,7 +369,7 @@ export const dykeFormIncludes = (restoreQuery) =>
         customer: true,
         shippingAddress: true,
         billingAddress: true,
-    } satisfies Prisma.SalesOrdersInclude);
+    }) satisfies Prisma.SalesOrdersInclude;
 export const includeStepPriceCount = {
     select: {
         priceSystem: {
@@ -468,4 +469,4 @@ export const SalesBookFormIncludes = (restoreQuery) =>
         customer: true,
         shippingAddress: true,
         billingAddress: true,
-    } satisfies Prisma.SalesOrdersInclude);
+    }) satisfies Prisma.SalesOrdersInclude;

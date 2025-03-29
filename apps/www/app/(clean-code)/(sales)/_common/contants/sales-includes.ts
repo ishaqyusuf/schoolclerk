@@ -1,3 +1,3 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/db";
 
 export const SalesProductionListSelect = {} satisfies Prisma.SalesOrdersInclude;

@@ -1,9 +1,25 @@
 "use client";
 
+import { useState, useTransition } from "react";
+import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
+import { updateProjectMeta } from "@/app/(v1)/_actions/community/projects";
+import { assignTech } from "@/app/(v1)/_actions/customer-services/assign-tech";
+import { updateWorkOrderStatus } from "@/app/(v1)/_actions/customer-services/update-status";
+import { WorkOrders } from "@/db";
+import { useAppSelector } from "@/store";
 import { IProject } from "@/types/community";
-import { Cell, StatusCell } from "../columns/base-columns";
-import Money from "../money";
+import { IWorkOrder } from "@/types/customer-service";
+import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
+import { toast } from "sonner";
+
 import { Button } from "../../ui/button";
+import {
+    Command,
+    CommandGroup,
+    CommandItem,
+    CommandList,
+} from "../../ui/command";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,25 +27,10 @@ import {
 } from "../../ui/dropdown-menu";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
-import { useState, useTransition } from "react";
-import { updateProjectMeta } from "@/app/(v1)/_actions/community/projects";
-import Btn from "../btn";
-import { WorkOrders } from "@prisma/client";
-import { IWorkOrder } from "@/types/customer-service";
-import { useAppSelector } from "@/store";
-import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
-import { assignTech } from "@/app/(v1)/_actions/customer-services/assign-tech";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
-import {
-    Command,
-    CommandGroup,
-    CommandItem,
-    CommandList,
-} from "../../ui/command";
-import { updateWorkOrderStatus } from "@/app/(v1)/_actions/customer-services/update-status";
-import { revalidatePath } from "next/cache";
+import Btn from "../btn";
+import { Cell, StatusCell } from "../columns/base-columns";
+import Money from "../money";
 
 interface Props {
     workOrder: IWorkOrder;
@@ -55,7 +56,7 @@ export default function WorkOrderTechCell({ workOrder }: Props) {
                         <Button
                             variant="outline"
                             size="sm"
-                            className="h-8 border-dashed w-full"
+                            className="h-8 w-full border-dashed"
                         >
                             <span className="whitespace-nowrap">
                                 {workOrder.tech
@@ -66,7 +67,7 @@ export default function WorkOrderTechCell({ workOrder }: Props) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                         align="end"
-                        className="w-[185px] p-4 grid gap-2 text-sm"
+                        className="grid w-[185px] gap-2 p-4 text-sm"
                     >
                         {techEmployees?.map((e) => (
                             <DropdownMenuItem
@@ -106,7 +107,7 @@ export function WorkOrderStatusCell({ workOrder }: Props) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                         align="end"
-                        className="w-[185px] p-4 grid gap-2 text-sm"
+                        className="grid w-[185px] gap-2 p-4 text-sm"
                     >
                         {[
                             "Pending",

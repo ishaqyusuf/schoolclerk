@@ -1,7 +1,6 @@
-import { DykeForm } from "@/app/(v2)/(loggedIn)/sales-v2/type";
-import { prisma } from "@/db";
 import { withDeleted } from "@/app/(clean-code)/_common/utils/db-utils";
-import { SalesTaxes, Taxes } from "@prisma/client";
+import { DykeForm } from "@/app/(v2)/(loggedIn)/sales-v2/type";
+import { prisma, SalesTaxes, Taxes } from "@/db";
 import { generateRandomString, sum } from "@/lib/utils";
 
 export async function saveSalesTaxDta(data: DykeForm, salesId) {
@@ -33,7 +32,7 @@ export async function saveSalesTaxDta(data: DykeForm, salesId) {
                     taxxable: tax.data.taxxable,
                 },
             });
-        })
+        }),
     );
     let newTaxes = newTaxList
         .map((s) => s.data)

@@ -1,12 +1,11 @@
 "use server";
 
 import { withDeleted } from "@/app/(v1)/_actions/action-utils";
-import { prisma } from "@/db";
+import { prisma, Prisma } from "@/db";
 import { composeBar } from "@/lib/chart";
 import { capitalizeFirstLetter, sum } from "@/lib/utils";
 import { ISalesDashboard } from "@/types/dashboard";
 import { ISalesType } from "@/types/sales";
-import { Prisma } from "@prisma/client";
 
 interface Props {}
 export async function salesDashboardAction(): Promise<ISalesDashboard> {

@@ -1,6 +1,6 @@
-import { prisma } from "@/db";
+import { prisma, Prisma } from "@/db";
 import { SettingType } from "@/types/settings";
-import { Prisma } from "@prisma/client";
+
 import { HousePackageToolSettings } from "../../types";
 import { ftToIn } from "../utils/sales-utils";
 
@@ -8,7 +8,7 @@ export async function getDykeStepTitlesDta() {
     const sections = await prisma.dykeSteps.findMany({});
     const unique = sections
         .filter(
-            (s, si) => si == sections.findIndex((s1) => s1.title == s.title)
+            (s, si) => si == sections.findIndex((s1) => s1.title == s.title),
         )
         .filter((s) => s.title?.trim());
 

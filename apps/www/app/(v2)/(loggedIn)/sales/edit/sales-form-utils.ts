@@ -1,19 +1,20 @@
 import {
+    ISalesForm,
+    ISalesFormItem,
+} from "@/app/(v2)/(loggedIn)/sales/edit/type";
+import { SalesOrderItems, SalesOrders } from "@/db";
+import { deepCopy } from "@/lib/deep-copy";
+import { numeric } from "@/lib/use-number";
+import { generateRandomString, removeEmptyValues } from "@/lib/utils";
+import {
+    IFooterInfo,
     ISalesOrder,
     ISalesOrderForm,
     ISalesOrderItemMeta,
     SaveOrderActionProps,
 } from "@/types/sales";
 import dayjs from "dayjs";
-import { IFooterInfo } from "@/types/sales";
-import { generateRandomString, removeEmptyValues } from "@/lib/utils";
-import { deepCopy } from "@/lib/deep-copy";
-import { numeric } from "@/lib/use-number";
-import { SalesOrderItems, SalesOrders } from "@prisma/client";
-import {
-    ISalesForm,
-    ISalesFormItem,
-} from "@/app/(v2)/(loggedIn)/sales/edit/type";
+
 // type form =
 export default {
     _calculatePaymentTerm,
@@ -34,7 +35,7 @@ function copySalesItem(item) {
     const { id, meta, createdAt, updatedAt, _ctx, ...itemData } = deepCopy(
         item || {
             meta: {},
-        }
+        },
     ) as ISalesFormItem;
     const { produced_qty, uid, ..._meta } = meta as ISalesOrderItemMeta;
     return {
@@ -72,7 +73,7 @@ function formData(data, paidAmount): SaveOrderActionProps {
 
             return numeric<SalesOrderItems>(
                 ["qty", "price", "rate", "tax", "taxPercenatage", "total"],
-                item
+                item,
             );
         })
         .filter(Boolean);
@@ -81,7 +82,7 @@ function formData(data, paidAmount): SaveOrderActionProps {
         id,
         order: numeric<SalesOrders>(
             ["grandTotal", "amountDue", "tax", "taxPercentage", "subTotal"],
-            formValues
+            formValues,
         ) as any,
         deleteIds,
         items: items as any,

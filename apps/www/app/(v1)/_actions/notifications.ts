@@ -1,14 +1,14 @@
 "use server";
 
-import { prisma } from "@/db";
-import { SalesOrders, Notifications, JobPayments } from "@prisma/client";
-import { userId, user } from "./utils";
-import { transformData } from "@/lib/utils";
+import { JobPayments, Notifications, prisma, SalesOrders } from "@/db";
 import { formatDate } from "@/lib/use-day";
-import { ISalesOrder, ISalesOrderItem } from "@/types/sales";
-import { IJobs } from "@/types/hrm";
+import { transformData } from "@/lib/utils";
 import { ExtendedHomeTasks } from "@/types/community";
+import { IJobs } from "@/types/hrm";
+import { ISalesOrder, ISalesOrderItem } from "@/types/sales";
 import dayjs from "dayjs";
+
+import { user, userId } from "./utils";
 
 export type INotification = Notifications & {
     archived: Boolean;
@@ -85,7 +85,7 @@ export async function _notify(
     type: NotificationType,
     message,
     link?,
-    body?
+    body?,
 ) {
     await prisma.notifications.create({
         data: transformData({
@@ -110,14 +110,14 @@ export async function _notify(
 }
 export async function _notifyProdStarted(
     item: ISalesOrderItem,
-    order: { orderId; slug; id }
+    order: { orderId; slug; id },
 ) {
     const me = await user();
     await _notify(
         1,
         "sales production",
         `Production Started: ${item?.description}. by ${me.name}`,
-        `/tasks/sales-production/${order.orderId}`
+        `/tasks/sales-production/${order.orderId}`,
     );
 }
 export async function _notifyProductionDateUpdate(order: SalesOrders) {
@@ -128,7 +128,7 @@ export async function _notifyProductionDateUpdate(order: SalesOrders) {
             `Production due date for (${
                 order.orderId
             }) has been updated, new date: ${formatDate(order.prodDueDate)}`,
-            `/tasks/sales-production/${order.orderId}`
+            `/tasks/sales-production/${order.orderId}`,
         );
 }
 export async function _notifyProductionAssigned(order: SalesOrders) {
@@ -139,9 +139,9 @@ export async function _notifyProductionAssigned(order: SalesOrders) {
         `Order (${
             order.orderId
         }) has been assigned to you for production. Due date: ${formatDate(
-            order.prodDueDate
+            order.prodDueDate,
         )}`,
-        `/tasks/sales-production/${order.orderId}`
+        `/tasks/sales-production/${order.orderId}`,
     );
 }
 export async function _notifyAdminJobSubmitted(job: IJobs) {
@@ -150,13 +150,13 @@ export async function _notifyAdminJobSubmitted(job: IJobs) {
         1,
         job.type as any,
         `New Job: ${job.title} ${job.subtitle} by ${job.user.name}`,
-        `/jobs?id=${job.id}`
+        `/jobs?id=${job.id}`,
     );
 }
 export async function _notifyTaskAssigned(task: ExtendedHomeTasks) {}
 export async function _notifyWorkerPaymentPaid(
     payment: JobPayments,
-    jobCount
+    jobCount,
 ) {}
 export async function _alert() {
     return {
@@ -165,7 +165,7 @@ export async function _alert() {
                 task.assignedToId,
                 "community task",
                 `Task (${task.taskName} -
-                ${__taskSubtitle}) has been assigned to you for installation.`
+                ${__taskSubtitle}) has been assigned to you for installation.`,
                 // `/tasks/sales-production/${order.orderId}`
             );
         },
