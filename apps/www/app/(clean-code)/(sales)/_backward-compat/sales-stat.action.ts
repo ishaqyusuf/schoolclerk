@@ -1,20 +1,21 @@
 "use server";
 
 import { prisma } from "@/db";
+import { lastId } from "@/lib/nextId";
+import { percent, sum } from "@/lib/utils";
+import { OrderItemProductionAssignments, Prisma } from "@prisma/client";
+import dayjs from "dayjs";
+
+import { salesOverviewDto } from "../_common/data-access/dto/sales-item-dto";
+import { typedFullSale } from "../_common/data-access/sales-dta";
+import { resetSalesStatAction } from "../_common/data-actions/sales-stat-control.action";
 import {
     SalesIncludeAll,
     SalesOverviewIncludes,
 } from "../_common/utils/db-utils";
-import { TypedSalesStat } from "../types";
-import { percent, sum } from "@/lib/utils";
 import { createSaleStat, statStatus } from "../_common/utils/sales-utils";
-import { OrderItemProductionAssignments, Prisma } from "@prisma/client";
 import { AsyncFnType } from "../../type";
-import { typedFullSale } from "../_common/data-access/sales-dta";
-import { salesOverviewDto } from "../_common/data-access/dto/sales-item-dto";
-import { lastId } from "@/lib/nextId";
-import dayjs from "dayjs";
-import { resetSalesStatAction } from "../_common/data-actions/sales-stat-control.action";
+import { TypedSalesStat } from "../types";
 
 export async function loadSalesWithoutStats() {
     // const resp = await prisma.qtyControl.deleteMany({
@@ -64,11 +65,11 @@ export async function loadSalesWithoutStats() {
     });
     console.log(
         "NO QTY CONTROLS",
-        transformed.filter((a) => !a.qtyCounts && !a._count.assignments)
+        transformed.filter((a) => !a.qtyCounts && !a._count.assignments),
     );
     console.log(
         "HAS QTY CONTROLs",
-        transformed.filter((a) => a.qtyCounts)
+        transformed.filter((a) => a.qtyCounts),
     );
     return (
         transformed
@@ -80,7 +81,7 @@ export async function updateSalesStats(ids) {
     return await Promise.all(
         ids.map(async (id) => {
             await resetSalesStatAction(id);
-        })
+        }),
     );
 }
 async function loadSalesOverviews() {
@@ -138,7 +139,7 @@ export async function salesStatisticsAction() {
     function statBy(k) {
         const res: any = {};
         Array.from(new Set(sales.map((s) => s[k]))).map((r) => {
-            res[r || "null"] = sales.filter((s) => s[k] == r).length;
+            res[r || ("null" as any)] = sales.filter((s) => s[k] == r).length;
         });
         return res;
     }
@@ -176,7 +177,7 @@ function productionStats(order: LoadedSales[number]) {
         function registerAssignment(
             totalQty,
             salesDoorId?,
-            { lhQty = null, rhQty = null } = {}
+            { lhQty = null, rhQty = null } = {},
         ) {
             resp.assignments.push({
                 itemId: item.id,
