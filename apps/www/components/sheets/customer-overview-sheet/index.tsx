@@ -43,7 +43,7 @@ export function CustomerOverviewSheet() {
             size="xl"
             floating
             onOpenChange={(e) => {
-                ctx.close(e);
+                ctx.close();
                 pt.reset();
             }}
         >
