@@ -1,11 +1,11 @@
-import { useEffect } from "react";
-import { SiteLinksPage } from "./links";
-import { useQueryTab } from "./provider";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Icons } from "@/components/_v1/icons";
-import { useQueryTabStore } from "./data-store";
+import { Button } from "@/components/ui/button";
 import { isEmpty } from "lodash";
+
+import { useQueryTabStore } from "./data-store";
+import { SiteLinksPage } from "./links";
+import { useQueryTab } from "./provider";
 
 interface Props {
     page: SiteLinksPage;
@@ -20,7 +20,7 @@ export default function QueryTab({ page }: Props) {
                 <Button
                     asChild
                     key={index}
-                    className="h-8 text-xs rounded-none"
+                    className="h-8 rounded-none text-xs"
                     variant={
                         store.pageInfo?.currentTabIndex ==
                         link?.tabIndex?.tabIndex

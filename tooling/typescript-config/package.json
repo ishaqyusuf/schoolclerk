@@ -1,5 +1,5 @@
 {
-  "name": "@gnd/typescript-config",
+  "name": "@gnd/tsconfig",
   "version": "0.0.1",
   "private": true,
   "files": [

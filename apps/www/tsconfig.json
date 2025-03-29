@@ -1,7 +1,17 @@
 {
+    "extends": "@gnd/tsconfig/base.json",
+
     "compilerOptions": {
+        "lib": ["es2022", "dom", "dom.iterable"],
+        "jsx": "preserve",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./*"]
+        },
+        "plugins": [{ "name": "next" }],
+        // "module": "esnext",
         "target": "es2017",
-        "lib": ["dom", "dom.iterable", "esnext"],
+        // "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
         "checkJs": true,
         "skipLibCheck": true,
@@ -9,33 +19,16 @@
         "forceConsistentCasingInFileNames": true,
         "noEmit": true,
         "esModuleInterop": true,
-        "module": "NodeNext",
-        "moduleResolution": "NodeNext",
+        "module": "esnext",
+        "moduleResolution": "node",
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "jsx": "preserve",
+
         "incremental": true,
         "noUncheckedIndexedAccess": true,
-        "baseUrl": ".",
-        "noImplicitAny": false,
-        "plugins": [
-            {
-                "name": "next"
-            }
-        ],
-        "paths": {
-            "@/*": ["./*"]
-        }
+
+        "noImplicitAny": false
     },
-    "include": [
-        ".eslintrc.cjs",
-        "next-env.d.ts",
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.cjs",
-        "**/*.mjs",
-        ".next/types/**/*.ts",
-        "trigger.config.ts"
-    ],
+    "include": [".", ".next/types/**/*.ts"],
     "exclude": ["node_modules"]
 }
