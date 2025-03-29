@@ -6,14 +6,10 @@
 // import { PrismaClient } from "@prisma/client/edge";
 // import { withAccelerate } from "@prisma/extension-accelerate";
 
-import {
-  Prisma as BasePrisma,
-  PrismaClient,
-  Roles,
-  Users,
-} from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 export * from "@prisma/client";
+
 // Learn more about instantiating PrismaClient in Next.js here: https://www.prisma.io/docs/data-platform/accelerate/getting-started
 const prismaClientSingleton = () => {
   return new PrismaClient({
@@ -37,6 +33,3 @@ const globalForPrisma = globalThis as unknown as {
 export const db = globalForPrisma.prisma ?? prismaClientSingleton();
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;
-export const Prisma = BasePrisma;
-export { PrismaClient };
-export type { Roles, Users };

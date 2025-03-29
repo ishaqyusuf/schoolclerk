@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma, Prisma } from "@/db";
+import { prisma, type Prisma } from "@/db";
 
 export async function updateSalesItemControlUseCase(
     data: Prisma.SalesItemControlCreateManyInput,

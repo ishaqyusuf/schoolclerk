@@ -1,6 +1,8 @@
-import { Prisma as BasePrisma, db } from "@gnd/db";
+import { db } from "@gnd/db";
+
+export { type Prisma } from "@prisma/client";
 
 export const prisma = db;
-export const Prisma = BasePrisma;
+// export const Prisma = BasePrisma;
 
-export * from "@gnd/db";
+// export * from "@gnd/db";
