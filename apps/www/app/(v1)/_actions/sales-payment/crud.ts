@@ -2,8 +2,9 @@
 
 import { prisma } from "@/db";
 import { BaseQuery } from "@/types/action";
-import { dateQuery, getPageInfo, queryFilter } from "../action-utils";
 import { Prisma } from "@prisma/client";
+
+import { dateQuery, getPageInfo, queryFilter } from "../action-utils";
 
 export interface salesPaymentsQueryParamsProps extends BaseQuery {
     _customerId?;
@@ -13,11 +14,11 @@ export async function getsalesPayments(query: salesPaymentsQueryParamsProps) {
     const items = await prisma.salesPayments.findMany({
         where,
         include: {
-            customer: {
-                include: {
-                    wallet: true,
-                },
-            },
+            // customer: {
+            //     include: {
+            //         wallet: true,
+            //     },
+            // },
             order: true,
         },
         ...(await queryFilter(query)),
