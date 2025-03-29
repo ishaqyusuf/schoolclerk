@@ -1,4 +1,4 @@
-import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
+// import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 
 const components = {
     h1: (props) => (
@@ -7,16 +7,19 @@ const components = {
         </h1>
     ),
 };
-export default function MDX(props: MDXRemoteProps) {
+export default function MDX(
+    props,
+    // : MDXRemoteProps
+) {
     return (
         <div className="">
-            <MDXRemote
+            {/* <MDXRemote
                 {...props}
                 components={{
                     // ...components,
                     ...(props.components || {}),
                 }}
-            ></MDXRemote>
+            ></MDXRemote> */}
         </div>
     );
 }
