@@ -67,18 +67,27 @@ async function applySalesPayment(props: z.infer<typeof createPaymentSchema>) {
                             },
                         },
                         paymentMethod: props.paymentMethod,
-                        status: "success" as SquarePaymentStatus,
+                        status: "success" as any as SquarePaymentStatus,
                         meta: {
                             checkNo: props.checkNo,
                         },
-                        createdBy: {
+
+                        author: {
                             connect: {
                                 id: await authId(),
                             },
                         },
-                        squarePaymentId:
-                            props.terminalPaymentSession?.squarePaymentId ||
-                            undefined,
+                        squarePayment: props.terminalPaymentSession
+                            ?.squarePaymentId
+                            ? {
+                                  connect: {
+                                      id: props.terminalPaymentSession
+                                          ?.squarePaymentId,
+                                  },
+                              }
+                            : undefined,
+                        // squarePID:
+                        //     props.terminalPaymentSession?.squarePaymentId,
                         salesPayments: {
                             create: {
                                 meta: {
@@ -86,12 +95,20 @@ async function applySalesPayment(props: z.infer<typeof createPaymentSchema>) {
                                 },
                                 amount: payAmount,
                                 status: "COMPLETED" as SquarePaymentStatus,
-                                order: {
-                                    connect: {
-                                        id: order.id,
-                                    },
-                                },
-                                squarePaymentId:
+                                orderId: order.id,
+                                // order: {
+                                //     connect: {
+                                //         id: order.id,
+                                //     },
+                                // },
+                                // squarePaymentsId
+                                // squarePayments: {
+                                //     connect: {
+                                //         id: props.terminalPaymentSession
+                                //         ?.squarePaymentId
+                                //     }
+                                // }
+                                squarePaymentsId:
                                     props.terminalPaymentSession
                                         ?.squarePaymentId,
                             },
