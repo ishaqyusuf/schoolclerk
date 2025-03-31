@@ -19,7 +19,7 @@ export const createCustomerAction = actionClient
         track: {},
     })
     .action(async ({ parsedInput: { ...input } }) => {
-        return await prisma.$transaction((async (tx: typeof prisma) => {
+        const resp = await prisma.$transaction(async (tx: typeof prisma) => {
             let customerId = input.id;
             let accountNo = input.phoneNo
                 ? input.phoneNo
@@ -125,5 +125,6 @@ export const createCustomerAction = actionClient
                 customerId,
                 addressId: address.id,
             };
-        }) as any);
+        });
+        return resp;
     });
