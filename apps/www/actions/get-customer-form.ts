@@ -19,6 +19,7 @@ export async function getCustomerFormAction(id) {
                     id: true,
                 },
             },
+            profile: true,
             addressBooks: {
                 where: {
                     OR: [
@@ -59,6 +60,7 @@ export async function getCustomerFormAction(id) {
         netTerm: customerMeta?.netTerm,
         phoneNo: customer?.phoneNo,
         phoneNo2: address?.phoneNo2,
+        // profileName: customer?.profile?.title,
         profileId: customer?.customerTypeId
             ? String(customer?.customerTypeId)
             : undefined,

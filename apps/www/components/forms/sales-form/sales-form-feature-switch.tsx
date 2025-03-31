@@ -2,11 +2,12 @@
 
 import { useSalesFormFeatureParams } from "@/hooks/use-sales-form-feature-params";
 
-import Portal from "./_v1/portal";
-import { Button } from "./ui/button";
+import Portal from "../../_v1/portal";
+import { Button } from "../../ui/button";
 
 export function SalesFormFeatureSwitch() {
     const { params, setParams } = useSalesFormFeatureParams();
+    return null;
     return (
         <Portal nodeId={"navRightSlot"}>
             <Button

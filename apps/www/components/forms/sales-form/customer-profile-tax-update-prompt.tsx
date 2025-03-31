@@ -29,9 +29,9 @@ export function CustomerProfileTaxUpdatePrompt({}) {
         if (customerId) {
             const form = await getCustomerFormAction(customerId);
             if (profileId != Number(form?.profileId)) {
-                if (!form.profileId)
+                if (!form.profileId) {
                     await updateCustomerProfile(customerId, profileId);
-                else
+                } else
                     updates.push({
                         note: "Selected customer profile on this sale does not match with customer profile on the record.",
                         code: generateRandomString(5),
@@ -52,13 +52,13 @@ export function CustomerProfileTaxUpdatePrompt({}) {
                 }
             }
         }
-
         return updates;
     }, [customerId, profileId, taxCode]);
     const [resolved, setResolved] = useState<{
         [code in string]: { note: string };
     }>({});
-    const opened = data?.some((data) => !resolved[data?.code]);
+    const opened =
+        data?.some((data) => !resolved[data?.code]) && !!data?.length;
     return (
         <Dialog
             open={opened}
@@ -71,6 +71,8 @@ export function CustomerProfileTaxUpdatePrompt({}) {
             <DialogContent>
                 <DialogTitle>Customer Profile Changed</DialogTitle>
                 <DialogDescription></DialogDescription>
+                {JSON.stringify(data || [])}
+                {taxCode}
                 {data?.map((d) => (
                     <div key={d.code} className="border-b py-2">
                         <Label>
