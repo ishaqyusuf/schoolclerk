@@ -1,7 +1,6 @@
 "use server";
 
-import { prisma } from "@/db";
-import { Prisma } from "@prisma/client";
+import { prisma, Prisma } from "@/db";
 
 export async function updateTaxProfilesAction(data) {
     const tax = await prisma.customerTaxProfiles.createMany({

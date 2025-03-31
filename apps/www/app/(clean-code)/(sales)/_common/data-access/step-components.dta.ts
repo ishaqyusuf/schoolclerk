@@ -1,7 +1,6 @@
 import { AsyncFnType } from "@/app/(clean-code)/type";
-import { prisma } from "@/db";
+import { prisma, Prisma } from "@/db";
 import { generateRandomString } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
 
 import { StepComponentForm, StepComponentMeta } from "../../types";
 

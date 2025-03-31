@@ -1,4 +1,5 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/db";
+
 import { DykeDoorType } from "../../type";
 
 const _salesAssignmentIncludes =

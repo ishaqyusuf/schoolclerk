@@ -1,42 +1,39 @@
 "use client";
 
 import React, { useEffect, useTransition } from "react";
-
 import { useRouter } from "next/navigation";
-
-import Btn from "../btn";
-import BaseModal from "./base-modal";
-import { closeModal } from "@/lib/modal";
-import { toast } from "sonner";
-
-import { useFieldArray, useForm } from "react-hook-form";
-import { Label } from "../../ui/label";
-import { Input } from "../../ui/input";
-import { IBuilder } from "@/types/community";
-import { Checkbox } from "../../ui/checkbox";
-import { Button } from "../../ui/button";
-import { Plus, Trash } from "lucide-react";
-import { _serverAction, generateRandomString } from "@/lib/utils";
+import { useBuilders, useStaticProjects } from "@/_v2/hooks/use-static-data";
+import {
+    _createCommunityTemplate,
+    _updateCommunityModel,
+} from "@/app/(v1)/_actions/community/community-template";
+import { staticProjectsAction } from "@/app/(v1)/_actions/community/projects";
+import { _updateModelSearch } from "@/app/(v1)/_actions/community/update-model-search";
+import { _createModelTemplate } from "@/app/(v1)/(loggedIn)/settings/community/_components/home-template";
 import {
     saveBuilder,
     saveBuilderInstallations,
     saveBuilderTasks,
     staticBuildersAction,
 } from "@/app/(v1)/(loggedIn)/settings/community/builders/action";
-import { ModalName, loadStaticList } from "@/store/slicers";
-import { CommunityModels } from "@prisma/client";
-import { useAppSelector } from "@/store";
-import { staticProjectsAction } from "@/app/(v1)/_actions/community/projects";
-import AutoComplete from "../auto-complete-tw";
-
+import { CommunityModels } from "@/db";
+import { closeModal } from "@/lib/modal";
 import { toastArrayAction } from "@/lib/toast-util";
-import { _updateModelSearch } from "@/app/(v1)/_actions/community/update-model-search";
-import {
-    _createCommunityTemplate,
-    _updateCommunityModel,
-} from "@/app/(v1)/_actions/community/community-template";
-import { useBuilders, useStaticProjects } from "@/_v2/hooks/use-static-data";
-import { _createModelTemplate } from "@/app/(v1)/(loggedIn)/settings/community/_components/home-template";
+import { _serverAction, generateRandomString } from "@/lib/utils";
+import { useAppSelector } from "@/store";
+import { loadStaticList, ModalName } from "@/store/slicers";
+import { IBuilder } from "@/types/community";
+import { Plus, Trash } from "lucide-react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Button } from "../../ui/button";
+import { Checkbox } from "../../ui/checkbox";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
+import AutoComplete from "../auto-complete-tw";
+import Btn from "../btn";
+import BaseModal from "./base-modal";
 
 export default function ModelTemplateModal({
     formType = "modelTemplate",
@@ -69,12 +66,12 @@ export default function ModelTemplateModal({
                         ? await _createCommunityTemplate(
                               data,
                               projects.data?.find((p) => p.id == data.projectId)
-                                  ?.title
+                                  ?.title,
                           )
                         : await _createModelTemplate(
                               data,
                               builders.data?.find((b) => b.id == data.builderId)
-                                  ?.name
+                                  ?.name,
                           );
                 },
                 onSuccess: async (data) => {
@@ -111,8 +108,8 @@ export default function ModelTemplateModal({
             Title={({ data }) => <div>Model Form</div>}
             Content={({ data }) => (
                 <div>
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <div className="grid gap-2 col-span-2">
+                    <div className="grid gap-4 md:grid-cols-2">
+                        <div className="col-span-2 grid gap-2">
                             <Label>Model Name</Label>
                             <Input
                                 placeholder="Model Name"

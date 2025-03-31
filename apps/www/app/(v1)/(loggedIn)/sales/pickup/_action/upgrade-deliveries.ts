@@ -1,8 +1,7 @@
 "use server";
 
-import { prisma } from "@/db";
+import { OrderDelivery, OrderItemDelivery, prisma } from "@/db";
 import { DeliveryOption } from "@/types/sales";
-import { OrderDelivery, OrderItemDelivery } from "@prisma/client";
 
 export async function upgradeDeliveries() {
     // deliveries

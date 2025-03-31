@@ -1,7 +1,7 @@
 "use server";
 
-import { prisma } from "@/db";
-import { ComponentPrice, DykeStepForm } from "@prisma/client";
+import { ComponentPrice, DykeStepForm, prisma } from "@/db";
+
 import { DykeFormStepMeta, DykeStepMeta } from "../../type";
 
 export async function getStepForm(id) {

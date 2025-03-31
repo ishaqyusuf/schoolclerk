@@ -1,8 +1,7 @@
 "use server";
 
 import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
-import { prisma } from "@/db";
-import { Customers } from "@prisma/client";
+import { Customers, prisma } from "@/db";
 
 export async function mergeCustomersAction(customerIds) {
     const mergeToCustomerId = customerIds.sort((a, b) => a - b)?.[0];

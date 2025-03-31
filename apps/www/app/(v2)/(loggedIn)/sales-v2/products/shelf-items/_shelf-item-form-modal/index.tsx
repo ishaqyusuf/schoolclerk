@@ -1,14 +1,15 @@
 "use client";
 
-import Modal from "@/components/common/modal";
-import { useFieldArray, useForm, useFormContext } from "react-hook-form";
-import { IDykeShelfProducts, IDykeShelfProductsForm } from "../../../type";
-import { Form } from "@/components/ui/form";
-import FormInput from "@/components/common/controls/form-input";
 import { useEffect, useState } from "react";
-import { DykeShelfCategories } from "@prisma/client";
-import { _getShelfCategories } from "../../../form/_action/get-shelf-categories";
+import FormInput from "@/components/common/controls/form-input";
 import FormSelect from "@/components/common/controls/form-select";
+import Modal from "@/components/common/modal";
+import { Form } from "@/components/ui/form";
+import { DykeShelfCategories } from "@/db";
+import { useFieldArray, useForm, useFormContext } from "react-hook-form";
+
+import { _getShelfCategories } from "../../../form/_action/get-shelf-categories";
+import { IDykeShelfProducts, IDykeShelfProductsForm } from "../../../type";
 
 interface Props {
     data?: IDykeShelfProductsForm;
@@ -39,7 +40,7 @@ export default function ShelfItemFormModal({
         <Form {...form}>
             <Modal.Content>
                 <Modal.Header title="Shelf Item" />
-                <div className="grid gap-4 grid-cols-2">
+                <div className="grid grid-cols-2 gap-4">
                     <div className="col-span-2">
                         <FormInput
                             control={form.control}

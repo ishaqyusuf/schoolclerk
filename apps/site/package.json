@@ -51,7 +51,7 @@
     "@gnd/eslint-config": "workspace:*",
     "@gnd/prettier-config": "workspace:*",
     "@gnd/tailwind-config": "workspace:*",
-    "@gnd/typescript-config": "workspace:*",
+    "@gnd/tsconfig": "workspace:*",
     "@types/mdx": "^2.0.11",
     "@types/negotiator": "0.6.3",
     "@types/node": "20.12.12",

@@ -1,6 +1,11 @@
 "use client";
+
 import React, { useState } from "react";
-import { UseFormReturn } from "react-hook-form/dist/types";
+import { useDebounce } from "@/hooks/use-debounce";
+import { cn } from "@/lib/utils";
+import { UseFormReturn } from "react-hook-form";
+
+import { Button } from "../ui/button";
 import {
     Command,
     CommandEmpty,
@@ -11,9 +16,6 @@ import {
     CommandSeparator,
 } from "../ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Button } from "../ui/button";
-import { useDebounce } from "@/hooks/use-debounce";
-import { cn } from "@/lib/utils";
 
 export interface ComboboxProps<T> {
     list?;
@@ -86,7 +88,7 @@ export default function Combobox<T>({
         // };
         const pattern = new RegExp(
             v?.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
-            "i"
+            "i",
         );
         setItems(
             items.map((item) => {
@@ -97,7 +99,7 @@ export default function Combobox<T>({
                 res[item.label] = [item.hidden, isEmpty];
 
                 return item;
-            })
+            }),
         );
     }
     function transformItem(item) {
@@ -185,7 +187,7 @@ export default function Combobox<T>({
                                         >
                                             <span
                                                 className={cn(
-                                                    uppercase && "uppercase"
+                                                    uppercase && "uppercase",
                                                 )}
                                             >
                                                 {q}
@@ -205,7 +207,7 @@ export default function Combobox<T>({
                                             >
                                                 <span>{item.label}</span>
                                             </CommandItem>
-                                        )
+                                        ),
                                 )}
                             </CommandGroup>
                         </CommandList>

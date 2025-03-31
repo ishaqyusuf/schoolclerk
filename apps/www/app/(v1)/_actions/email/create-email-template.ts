@@ -1,7 +1,6 @@
 "use server";
 
-import { prisma } from "@/db";
-import { MailGrids } from "@prisma/client";
+import { MailGrids, prisma } from "@/db";
 
 export async function _createEmailTemplate(data: MailGrids) {
     const e = await prisma.mailGrids.findFirst({

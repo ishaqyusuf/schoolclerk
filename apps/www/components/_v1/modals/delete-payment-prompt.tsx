@@ -1,20 +1,29 @@
 "use client";
 
 import React, { useEffect, useState, useTransition } from "react";
-
 import { useRouter } from "next/navigation";
-
-import { _useAsync } from "@/lib/use-async";
-import Btn from "../btn";
-import BaseModal from "./base-modal";
+import { saveProject } from "@/app/(v1)/_actions/community/projects";
+import { getSalesPaymentCustomers } from "@/app/(v1)/_actions/sales-payment/get-sales-payment-customer";
+import { deleteSalesPayment } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-payment";
+import { staticBuildersAction } from "@/app/(v1)/(loggedIn)/settings/community/builders/action";
+import { CustomerTypes } from "@/db";
 import { closeModal, openModal } from "@/lib/modal";
+import { _useAsync } from "@/lib/use-async";
+import { sum } from "@/lib/utils";
+import { projectSchema } from "@/lib/validations/community-validations";
+import { useAppSelector } from "@/store";
+import { loadStaticList } from "@/store/slicers";
+import { IProject } from "@/types/community";
+import { ICustomer } from "@/types/customers";
+import { ISalesPayment } from "@/types/sales";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { useForm } from "react-hook-form";
-
+import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
-import { CustomerTypes } from "@prisma/client";
+import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
+import { ScrollArea } from "../../ui/scroll-area";
 import {
     Select,
     SelectContent,
@@ -23,26 +32,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from "../../ui/select";
-import { IProject } from "@/types/community";
-import { useAppSelector } from "@/store";
-import { loadStaticList } from "@/store/slicers";
-import { staticBuildersAction } from "@/app/(v1)/(loggedIn)/settings/community/builders/action";
-import { projectSchema } from "@/lib/validations/community-validations";
-import { saveProject } from "@/app/(v1)/_actions/community/projects";
-import { getSalesPaymentCustomers } from "@/app/(v1)/_actions/sales-payment/get-sales-payment-customer";
 import { Table, TableBody, TableCell, TableRow } from "../../ui/table";
+import Btn from "../btn";
 import {
     PrimaryCellContent,
     SecondaryCellContent,
 } from "../columns/base-columns";
 import Money from "../money";
-import { sum } from "@/lib/utils";
-import { ScrollArea } from "../../ui/scroll-area";
-import { ICustomer } from "@/types/customers";
-import { deleteSalesPayment } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-payment";
-import { Button } from "../../ui/button";
-import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
-import { ISalesPayment } from "@/types/sales";
+import BaseModal from "./base-modal";
 
 export default function DeletePaymentPrompt() {
     const [action, setAction] = useState<"yes" | "no">("no");

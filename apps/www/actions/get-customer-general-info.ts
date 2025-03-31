@@ -1,13 +1,13 @@
 "use server";
 
-import { prisma } from "@/db";
-import { AsyncFnType } from "@/types";
-import { Prisma } from "@prisma/client";
-import { getCustomerWalletAction } from "./get-customer-wallet";
-import { getRecentCustomerSalesTx } from "./get-customer-recent-transaction";
-import { getCustomerPendingSales } from "./get-customer-pending-sales";
+import { prisma, Prisma } from "@/db";
 import { sum } from "@/lib/utils";
+import { AsyncFnType } from "@/types";
+
+import { getCustomerPendingSales } from "./get-customer-pending-sales";
 import { getCustomerRecentSales } from "./get-customer-recent-sales";
+import { getRecentCustomerSalesTx } from "./get-customer-recent-transaction";
+import { getCustomerWalletAction } from "./get-customer-wallet";
 
 export type CustomerGeneralInfo = AsyncFnType<
     typeof getCustomerGeneralInfoAction

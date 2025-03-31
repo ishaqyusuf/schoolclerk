@@ -1,8 +1,10 @@
-import { UseFormReturn } from "react-hook-form";
+import { ComponentPrice } from "@/db";
 import { formatMoney } from "@/lib/use-number";
-import { ComponentPrice } from "@prisma/client";
 import { generateRandomString, sum } from "@/lib/utils";
+import { UseFormReturn } from "react-hook-form";
+
 import { DykeFormData } from "../../types";
+
 // import { profileUpdateStepCtx } from "../../sales-book/(form)/_utils/helpers/step-helper";
 type DykeFormReturn = UseFormReturn<DykeFormData>;
 function salesProfileChanged(form: DykeFormReturn, id) {
@@ -18,7 +20,7 @@ function salesProfileChanged(form: DykeFormReturn, id) {
                 let price = salesProfileCost(form, basePrice);
                 form.setValue(
                     `itemArray.${index}.formStepArray.${formStepIndex}.item.price` as any,
-                    price
+                    price,
                 );
             });
             // return;
@@ -32,7 +34,7 @@ function salesProfileChanged(form: DykeFormReturn, id) {
                         // console.log(item.multiComponent.components);
                         form.setValue(
                             `${componentKey}.priceTags.moulding.price` as any,
-                            price
+                            price,
                         );
                         // console.log({ price, bPrice });
                     }
@@ -48,8 +50,8 @@ function salesProfileChanged(form: DykeFormReturn, id) {
                                 doorForm.priceData,
                                 ctx.baseProfileCost(
                                     form,
-                                    doorForm.priceData || {}
-                                )
+                                    doorForm.priceData || {},
+                                ),
                             );
                             // console.log(size);
 
@@ -61,20 +63,20 @@ function salesProfileChanged(form: DykeFormReturn, id) {
 
                             form.setValue(
                                 `${sizeKey}.priceData` as any,
-                                priceData
+                                priceData,
                             );
                             // console.log(priceData.salesUnitCost);
                             form.setValue(
                                 `${sizeKey}.jambSizePrice` as any,
-                                priceData.salesUnitCost
+                                priceData.salesUnitCost,
                             );
                         });
                     }
-                }
+                },
             );
             form.setValue(
                 `itemArray.${index}.priceRefresher`,
-                generateRandomString()
+                generateRandomString(),
             );
         });
         // profileUpdateStepCtx.applyUpdates();
@@ -87,20 +89,20 @@ function salesProfileCost(form: DykeFormReturn, baseCost) {
     const data = form.getValues();
 
     const profile = data.data.profiles.find(
-        (p) => p.id == data.order.customerProfileId
+        (p) => p.id == data.order.customerProfileId,
     );
     if (!profile || profile.coefficient == 0) return baseCost;
     return formatMoney(baseCost / (profile.coefficient || 1));
 }
 function baseProfileCost(
     form: DykeFormReturn,
-    { baseUnitCost, salesUnitCost }: Partial<ComponentPrice>
+    { baseUnitCost, salesUnitCost }: Partial<ComponentPrice>,
 ) {
     if (!salesUnitCost || baseUnitCost) return baseUnitCost;
     const data = form.getValues();
 
     const profile = data.data.profiles.find(
-        (p) => p.id == data.order.customerProfileId
+        (p) => p.id == data.order.customerProfileId,
     );
     if (!profile || profile.coefficient == 0) return salesUnitCost;
     return formatMoney(salesUnitCost * (profile.coefficient || 1));
@@ -110,7 +112,7 @@ function updateSalesComponentPrice(
     form: DykeFormReturn,
     _pData: Partial<ComponentPrice>,
     basePrice,
-    qty = 1
+    qty = 1,
 ) {
     console.log({ basePrice });
 
@@ -134,7 +136,7 @@ function updateSalesComponentPriceQty(
     qty,
     args?: {
         form?: DykeFormReturn;
-    }
+    },
 ) {}
 const salesFormUtils = {
     salesProfileChanged,

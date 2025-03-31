@@ -1,34 +1,33 @@
 "use client";
 
-import { TableShellProps } from "@/types/data-table";
-import { ColumnDef } from "@tanstack/react-table";
 import { useMemo, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { deleteEmployeeProfile } from "@/app/(v1)/_actions/hrm/employee-profiles";
+import { updateInboundStatusAction } from "@/app/(v1)/_actions/sales-inbound/update-inbound-status";
+import { EmployeeProfile } from "@/db";
+import { InboundStatus } from "@/lib/status";
+import { TableShellProps } from "@/types/data-table";
+import { IInboundOrder } from "@/types/sales-inbound";
+import { ColumnDef } from "@tanstack/react-table";
+import { toast } from "sonner";
+
+import { Badge } from "../../ui/badge";
 import {
-    ColumnHeader,
     Cell,
-    PrimaryCellContent,
+    ColumnHeader,
     DateCellContent,
+    PrimaryCellContent,
 } from "../columns/base-columns";
 import { DataTable2 } from "../data-table/data-table-2";
-
-import { BuilderFilter } from "../filters/builder-filter";
 import {
     DeleteRowAction,
     RowActionCell,
     RowActionMenuItem,
     RowActionMoreMenu,
 } from "../data-table/data-table-row-actions";
-
-import { EmployeeProfile } from "@prisma/client";
-import { deleteEmployeeProfile } from "@/app/(v1)/_actions/hrm/employee-profiles";
-import { IInboundOrder } from "@/types/sales-inbound";
-import StatusBadge from "../status-badge";
-import { Badge } from "../../ui/badge";
-import { InboundStatus } from "@/lib/status";
-import { updateInboundStatusAction } from "@/app/(v1)/_actions/sales-inbound/update-inbound-status";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { SmartTable } from "../data-table/smart-table";
+import { BuilderFilter } from "../filters/builder-filter";
+import StatusBadge from "../status-badge";
 
 export default function InboundsTableShell<T>({
     data,
@@ -57,12 +56,12 @@ export default function InboundsTableShell<T>({
                         table.secondary(data.createdAt),
                     ],
                 }),
-                { id: "id" }
+                { id: "id" },
             ),
 
             table.simpleColumn("Putaway", (data) => {
                 const putAway = data.inboundItems.filter(
-                    (ii) => ii.putawayAt
+                    (ii) => ii.putawayAt,
                 ).length;
                 const total = data.inboundItems.length;
                 return {
@@ -91,7 +90,7 @@ export default function InboundsTableShell<T>({
                                                 onClick={() =>
                                                     updateStatus(
                                                         row.original.slug,
-                                                        status
+                                                        status,
                                                     )
                                                 }
                                                 key={status}
@@ -109,7 +108,7 @@ export default function InboundsTableShell<T>({
                 ),
             },
         ], //.filter(Boolean) as any,
-        [data, isPending]
+        [data, isPending],
     );
     return (
         <DataTable2

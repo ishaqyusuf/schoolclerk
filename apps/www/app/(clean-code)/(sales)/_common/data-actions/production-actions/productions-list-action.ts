@@ -7,11 +7,10 @@ import {
 import { authId } from "@/app/(v1)/_actions/utils";
 import { SearchParamsType } from "@/components/(clean-code)/data-table/search-params";
 import { composeSalesStatKeyValue } from "@/data/compose-sales";
-import { prisma } from "@/db";
+import { prisma, Prisma } from "@/db";
 import { sum } from "@/lib/utils";
 import { AsyncFnType } from "@/types";
 import { whereSales } from "@/utils/db/where.sales";
-import { Prisma } from "@prisma/client";
 
 import { overallStatus } from "../../data-access/dto/sales-stat-dto";
 import { qtyControlsByType } from "../../utils/item-control-utils";

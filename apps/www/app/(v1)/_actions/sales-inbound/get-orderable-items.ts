@@ -1,9 +1,10 @@
 "use server";
 
-import { prisma } from "@/db";
+import { prisma, Prisma } from "@/db";
 import { BaseQuery } from "@/types/action";
-import { Prisma } from "@prisma/client";
+
 import { getPageInfo, queryFilter } from "../action-utils";
+
 export interface InboundOrderableItemQueryParamProps
     extends Omit<BaseQuery, "_show"> {
     salesOrderItemIds?: number[];
@@ -11,7 +12,7 @@ export interface InboundOrderableItemQueryParamProps
     _supplier?;
 }
 export async function getOrderableItems(
-    query: InboundOrderableItemQueryParamProps
+    query: InboundOrderableItemQueryParamProps,
 ) {
     const where = buildQuery(query);
     const items = await prisma.salesOrderItems.findMany({

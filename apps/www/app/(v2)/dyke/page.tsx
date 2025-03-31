@@ -1,10 +1,11 @@
 "use client";
 
-import { DykeShelfProducts } from "@prisma/client";
-import { prods } from "./products";
-import categoryUtils from "./category-utils";
 import { useEffect } from "react";
+import { DykeShelfProducts } from "@/db";
+
 import { createDykeProducts } from "./_dyke-action";
+import categoryUtils from "./category-utils";
+import { prods } from "./products";
 
 export default function DykePage() {
     useEffect(() => {

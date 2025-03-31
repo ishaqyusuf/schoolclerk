@@ -1,9 +1,9 @@
 "use server";
 
-import { prisma } from "@/db";
+import { prisma, Prisma } from "@/db";
 import { BaseQuery } from "@/types/action";
+
 import { dateQuery, getPageInfo, queryFilter } from "../action-utils";
-import { Prisma } from "@prisma/client";
 import { _fixHomeTaskDates } from "../upgrade/fix-home-task-date";
 
 export interface HomeQueryParams extends BaseQuery {
@@ -86,7 +86,7 @@ export async function getProjectHomesAction(query: HomeQueryParams) {
     const pageInfo = await getPageInfo(
         query,
         await whereHome(query),
-        prisma.homes
+        prisma.homes,
     );
     const { homes, ...pdata } = project as any;
     return {

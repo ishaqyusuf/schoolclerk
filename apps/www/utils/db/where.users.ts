@@ -1,7 +1,8 @@
 import { SearchParamsType } from "@/components/(clean-code)/data-table/search-params";
-import { Prisma } from "@prisma/client";
-import { composeQuery } from "../../app/(clean-code)/(sales)/_common/utils/db-utils";
+import { Prisma } from "@/db";
 import { addSpacesToCamelCase } from "@/lib/utils";
+
+import { composeQuery } from "../../app/(clean-code)/(sales)/_common/utils/db-utils";
 
 export function whereUsers(query: SearchParamsType) {
     const wheres: Prisma.UsersWhereInput[] = [];

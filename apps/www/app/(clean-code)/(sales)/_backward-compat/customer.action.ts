@@ -33,7 +33,7 @@ export async function uniqueables() {
 
     return await prisma.customers.findMany({
         where: {
-            uniquePhone: null,
+            // uniquePhone: null,
             phoneNo: {
                 not: null,
             },

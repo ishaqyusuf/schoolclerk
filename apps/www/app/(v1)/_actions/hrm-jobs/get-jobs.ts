@@ -1,10 +1,10 @@
 "use server";
 
-import { prisma } from "@/db";
-import { BaseQuery } from "@/types/action";
-import { Prisma } from "@prisma/client";
-import { userId } from "../utils";
+import { prisma, Prisma } from "@/db";
 import { queryBuilder } from "@/lib/db-utils";
+import { BaseQuery } from "@/types/action";
+
+import { userId } from "../utils";
 
 export interface JobsQueryParamsProps extends Omit<BaseQuery, "_show"> {
     _type?: "punchout" | "installation";
@@ -20,7 +20,7 @@ export async function getMyPunchoutJobs(query: JobsQueryParamsProps) {}
 export async function getJobs(query: JobsQueryParamsProps) {
     const builder = await queryBuilder<Prisma.JobsWhereInput>(
         query,
-        prisma.jobs
+        prisma.jobs,
     );
     builder.searchQuery("description", "subtitle", "title");
     builder.orWhere("projectId", Number(query._projectId));
@@ -46,6 +46,6 @@ export async function getJobs(query: JobsQueryParamsProps) {
                 user: true,
                 homeTasks: true,
             },
-        })
+        }),
     );
 }

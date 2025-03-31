@@ -1,15 +1,13 @@
 import { useContext } from "react";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
-import { closeModal } from "@/lib/modal";
-
-import { ScrollArea } from "@/components/ui/scroll-area";
-
-import { Users } from "@prisma/client";
-
-import { useJobSubmitCtx } from "./use-submit-job";
-import { changeJobWorkerAction } from "../_actions/change-job-worker";
 import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Users } from "@/db";
+import { closeModal } from "@/lib/modal";
+import { ArrowLeft } from "lucide-react";
+
+import { changeJobWorkerAction } from "../_actions/change-job-worker";
+import { useJobSubmitCtx } from "./use-submit-job";
 
 export default function SelectUserField() {
     // const {resetFields} = form;

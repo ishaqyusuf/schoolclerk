@@ -1,11 +1,11 @@
 "use server";
 
-import { prisma } from "@/db";
-import { sum } from "@/lib/utils";
-import { OrderProductionSubmissions } from "@prisma/client";
-import { GetOrderAssignmentData } from "./get-order-assignment-data";
-import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
 import { updateSalesProgressDta } from "@/app/(clean-code)/(sales)/_common/data-access/sales-progress.dta";
+import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
+import { OrderProductionSubmissions, prisma } from "@/db";
+import { sum } from "@/lib/utils";
+
+import { GetOrderAssignmentData } from "./get-order-assignment-data";
 
 type Props =
     GetOrderAssignmentData["doorGroups"][0]["salesDoors"][0]["assignments"][0];
@@ -69,7 +69,7 @@ export async function _deleteAssignmentSubmission(submissionId) {
 }
 export async function _deleteAssignmentSubmissions(
     assignmentId,
-    k: "rhQty" | "lhQty"
+    k: "rhQty" | "lhQty",
 ) {
     const submissions = await prisma.orderProductionSubmissions.findMany({
         where: {
@@ -98,7 +98,7 @@ export async function _deleteAssignmentSubmissions(
     });
 }
 export async function _submitProduction(
-    data: Partial<OrderProductionSubmissions>
+    data: Partial<OrderProductionSubmissions>,
 ) {
     const qty = sum([data.lhQty, data.rhQty]);
     data.qty = qty;

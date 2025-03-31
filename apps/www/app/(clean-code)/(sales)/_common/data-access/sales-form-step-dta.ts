@@ -1,7 +1,7 @@
 import { AsyncFnType } from "@/app/(clean-code)/type";
 import { DykeStepMeta } from "@/app/(v2)/(loggedIn)/sales-v2/type";
-import { prisma } from "@/db";
-import { ComponentPrice, DykeStepForm, Prisma } from "@prisma/client";
+import { ComponentPrice, DykeStepForm, prisma, Prisma } from "@/db";
+
 import { DykeFormStepMeta, StepComponentMeta, StepMeta } from "../../types";
 import { notDeleted } from "../utils/db-utils";
 

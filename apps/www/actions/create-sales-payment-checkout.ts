@@ -1,13 +1,14 @@
 "use server";
 
-import { prisma as _prisma } from "@/db";
-import { getSalesPaymentCheckoutInfoAction } from "./get-sales-payment-checkout-info-action";
 import { SquarePaymentStatus } from "@/_v2/lib/square";
-import { generateRandomString } from "@/lib/utils";
 import { PaymentMethods } from "@/app/(clean-code)/(sales)/types";
-import { CustomerTransactionType } from "./get-sales-transactions";
+import { prisma as _prisma } from "@/db";
 import { getBaseUrl } from "@/envs";
+import { generateRandomString } from "@/lib/utils";
 import { SQUARE_LOCATION_ID, squareClient } from "@/utils/square-utils";
+
+import { getSalesPaymentCheckoutInfoAction } from "./get-sales-payment-checkout-info-action";
+import { CustomerTransactionType } from "./get-sales-transactions";
 
 interface Props {
     emailToken: string;
@@ -20,9 +21,9 @@ export async function createSalesCheckoutLinkAction(props: Props) {
         const { orderIds, emailToken, orderIdsParam } = props;
         const data = await getSalesPaymentCheckoutInfoAction(
             orderIds,
-            emailToken
+            emailToken,
         );
-        let phoneNo = data.primaryPhone?.replaceAll("-", "");
+        let phoneNo = (data.primaryPhone as any)?.replaceAll("-", "");
         if (!phoneNo?.startsWith("+")) phoneNo = `+1${phoneNo}`;
 
         // console.log({ phoneNo });

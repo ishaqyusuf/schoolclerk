@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 
 export async function generateCustomerPrintReport(
     id,
-    query: IGetCustomerActionQuery
+    query: IGetCustomerActionQuery,
 ) {
     const salesQuery = customerSalesOrderQuery(query);
     let _customer = await prisma.customers.findFirstOrThrow({
@@ -43,7 +43,8 @@ export async function generateCustomerPrintReport(
                     createdAt: "desc",
                 },
             },
-            payments: true,
+
+            // payments: true,
         },
     });
     let customer = {

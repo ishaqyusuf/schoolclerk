@@ -1,9 +1,11 @@
-import { z } from "zod";
-import { Ok, Err, Result } from "ts-results";
 import { _email } from "@/app/(v1)/_actions/_email";
-import { prisma } from "@/db";
 import { userId } from "@/app/(v1)/_actions/utils";
+import { prisma } from "@/db";
+import { Err, Ok, Result } from "ts-results";
+import { z } from "zod";
+
 import { generateRandomString } from "./utils";
+
 export type FieldErrors<T> = {
     [K in keyof T]?: string[];
 };
@@ -16,7 +18,7 @@ export type ActionState<TInput, TOutput> = {
 
 export const createSafeAction = <TInput = any, TOutput = any>(
     handler: (validatedData: TInput) => Promise<TOutput>,
-    schema?: z.Schema<TInput>
+    schema?: z.Schema<TInput>,
 ) => {
     return async (data: TInput): Promise<Result<TOutput, any>> => {
         const validationResult = schema
@@ -52,7 +54,7 @@ export const createSafeAction = <TInput = any, TOutput = any>(
                         userId: await userId(),
                         createdAt: new Date(),
                         updatedAt: new Date(),
-                        slug: generateRandomString(10),
+                        // slug: generateRandomString(10),
                     },
                 });
                 console.log(e.message);

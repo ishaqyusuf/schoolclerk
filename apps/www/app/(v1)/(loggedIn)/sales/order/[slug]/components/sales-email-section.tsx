@@ -1,13 +1,13 @@
 "use client";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AddressBooks } from "@/db";
+import { useDataPage } from "@/lib/data-page-context";
+import { convertToNumber } from "@/lib/use-number";
 import { IAddressBook, ISalesOrder } from "@/types/sales";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Info } from "../../../../../../../components/_v1/info";
-import { AddressBooks } from "@prisma/client";
 import OrderOverviewActions from "../../../../../../../components/_v1/actions/order-overview-actions";
-import { convertToNumber } from "@/lib/use-number";
-import { useDataPage } from "@/lib/data-page-context";
+import { Info } from "../../../../../../../components/_v1/info";
 import { SalesCells } from "../../../orders/components/cells";
 
 interface Props {
@@ -43,7 +43,8 @@ export default function SalesEmailSection({}: Props) {
                             </span>{" "}
                             ($
                             {convertToNumber(
-                                (order.grandTotal || 0) - (order.amountDue || 0)
+                                (order.grandTotal || 0) -
+                                    (order.amountDue || 0),
                             )}
                             )
                         </span>

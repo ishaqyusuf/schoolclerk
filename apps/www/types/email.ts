@@ -1,4 +1,4 @@
-import { Inbox } from "@prisma/client";
+import { Inbox } from "@/db";
 
 export interface EmailProps extends Inbox {
     meta: {};

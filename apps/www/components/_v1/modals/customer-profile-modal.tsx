@@ -1,22 +1,18 @@
 "use client";
 
 import React, { useTransition } from "react";
-
 import { useRouter } from "next/navigation";
-
-import { _useAsync } from "@/lib/use-async";
-import Btn from "../btn";
-import BaseModal from "./base-modal";
+import { saveCustomerProfile } from "@/app/(v1)/(loggedIn)/sales/(customers)/_actions/sales-customer-profiles";
+import { CustomerTypes } from "@/db";
 import { closeModal } from "@/lib/modal";
-import { toast } from "sonner";
-
+import { _useAsync } from "@/lib/use-async";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
-import { CustomerTypes } from "@prisma/client";
-
-import { saveCustomerProfile } from "@/app/(v1)/(loggedIn)/sales/(customers)/_actions/sales-customer-profiles";
+import Btn from "../btn";
+import BaseModal from "./base-modal";
 
 export default function CustomerProfileModal() {
     const route = useRouter();
@@ -50,7 +46,7 @@ export default function CustomerProfileModal() {
                 ? {}
                 : {
                       ...data,
-                  }
+                  },
         );
     }
     return (
@@ -69,8 +65,8 @@ export default function CustomerProfileModal() {
             )}
             Content={({ data }) => (
                 <div>
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <div className="grid gap-2 col-span-2">
+                    <div className="grid gap-4 md:grid-cols-2">
+                        <div className="col-span-2 grid gap-2">
                             <Label>Profile Name</Label>
                             <Input
                                 placeholder=""

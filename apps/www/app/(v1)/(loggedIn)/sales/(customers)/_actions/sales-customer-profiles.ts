@@ -1,9 +1,8 @@
 "use server";
 
 import { _cache } from "@/app/(v1)/_actions/_cache/load-data";
-import { prisma } from "@/db";
+import { CustomerTypes, prisma } from "@/db";
 import { transformData } from "@/lib/utils";
-import { CustomerTypes } from "@prisma/client";
 
 export async function staticCustomerProfilesAction() {
     return await prisma.customerTypes.findMany({});

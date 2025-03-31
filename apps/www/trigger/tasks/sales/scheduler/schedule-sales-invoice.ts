@@ -1,6 +1,6 @@
 // import { SalesType } from "@/app/(clean-code)/(sales)/types";
 import { SalesType } from "@/app/(clean-code)/(sales)/types";
-// import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@/db";
 // import { prisma } from "@/db";
 import { schedules } from "@trigger.dev/sdk/v3";
 

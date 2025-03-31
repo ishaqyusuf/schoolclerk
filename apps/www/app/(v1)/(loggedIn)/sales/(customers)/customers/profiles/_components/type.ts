@@ -1,4 +1,4 @@
-import { CustomerTypes } from "@prisma/client";
+import { CustomerTypes } from "@/db";
 
 export interface ICustomerProfile extends Omit<CustomerTypes, "meta"> {
     meta: ICustomerProfileMeta;

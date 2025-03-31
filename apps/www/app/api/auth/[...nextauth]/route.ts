@@ -1,12 +1,11 @@
 import { loginAction } from "@/app/(v1)/_actions/auth";
-import { prisma } from "@/db";
+import { prisma, Roles, Users } from "@/db";
 import { authOptions } from "@/lib/auth-options";
 import { ICan } from "@/types/auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { Roles, Users } from "@prisma/client";
-import NextAuth from "next-auth";
-import { DefaultSession } from "next-auth";
+import NextAuth, { DefaultSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+
 // import { authOptions } from "@/server/auth";
 declare module "next-auth" {
     // interface User {

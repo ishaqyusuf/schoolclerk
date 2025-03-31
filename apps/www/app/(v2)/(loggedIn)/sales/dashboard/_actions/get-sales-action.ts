@@ -1,9 +1,9 @@
 "use server";
 
 import { getSales } from "@/data-access/sales";
+import { Prisma } from "@/db";
 import { BaseQuery } from "@/types/action";
 import { DeliveryOption, ISalesType } from "@/types/sales";
-import { Prisma } from "@prisma/client";
 
 export interface SalesQueryParams extends BaseQuery {
     type: ISalesType;

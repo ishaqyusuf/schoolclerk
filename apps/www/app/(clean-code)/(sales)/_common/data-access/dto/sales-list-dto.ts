@@ -1,7 +1,7 @@
+import { SalesStat } from "@/db";
 import { timeAgo } from "@/lib/use-day";
 import { toNumber } from "@/lib/utils";
 import { getNameInitials } from "@/utils/get-name-initials";
-import { SalesStat } from "@prisma/client";
 
 import {
     AddressBookMeta,

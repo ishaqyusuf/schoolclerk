@@ -1,9 +1,9 @@
 "use server";
 
-import { dateQuery } from "@/app/(v1)/_actions/action-utils";
 import { paginatedAction } from "@/app/_actions/get-action-utils";
-import { prisma } from "@/db";
-import { Prisma } from "@prisma/client";
+import { dateQuery } from "@/app/(v1)/_actions/action-utils";
+import { prisma, Prisma } from "@/db";
+
 import { wherePayableSalesOrders } from "./where";
 
 export default async function getPayablesAction(query) {
@@ -12,7 +12,7 @@ export default async function getPayablesAction(query) {
     const { pageCount, skip, take } = await paginatedAction(
         query,
         prisma.salesOrders,
-        where
+        where,
     );
     const data = await prisma.salesOrders.findMany({
         where,

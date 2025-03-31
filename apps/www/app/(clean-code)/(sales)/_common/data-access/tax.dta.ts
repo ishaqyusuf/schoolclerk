@@ -1,5 +1,4 @@
-import { prisma } from "@/db";
-import { Taxes } from "@prisma/client";
+import { prisma, Taxes } from "@/db";
 
 export async function getTaxesDta() {
     return await prisma.taxes.findMany({});

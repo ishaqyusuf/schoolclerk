@@ -1,10 +1,10 @@
+import { loginAction } from "@/app/(v1)/_actions/auth";
+import { Prisma, PrismaClient, Roles, Users } from "@/db";
+import { env } from "@/env.mjs";
+import { ICan } from "@/types/auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { Prisma, PrismaClient, Roles, Users } from "@prisma/client";
 import type { DefaultSession, NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { ICan } from "@/types/auth";
-import { loginAction } from "@/app/(v1)/_actions/auth";
-import { env } from "@/env.mjs";
 
 const prisma = new PrismaClient();
 declare module "next-auth" {

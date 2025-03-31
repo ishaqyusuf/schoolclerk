@@ -1,4 +1,5 @@
-import { ExportConfig } from "@prisma/client";
+import { ExportConfig } from "@/db";
+
 import { exportCells } from "./config";
 
 export type ExportMeta = {

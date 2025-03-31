@@ -1,19 +1,19 @@
 "use server";
 
+import { randomInt } from "crypto";
 import { ResetPasswordRequestInputs } from "@/components/_v1/forms/reset-password-form";
 import { ResetPasswordFormInputs } from "@/components/_v1/forms/reset-password-form-step2";
-import { prisma } from "@/db";
-import { randomInt } from "crypto";
-import dayjs from "dayjs";
+import { prisma, Prisma } from "@/db";
+import { env } from "@/env.mjs";
+import { adminPermissions } from "@/lib/data/role";
+import { camel } from "@/lib/utils";
+import va from "@/lib/va";
+import { ICan } from "@/types/auth";
 import { compare, hash } from "bcrypt-ts";
+import dayjs from "dayjs";
+
 // import PasswordResetRequestEmail from "@/components/_v1/emails/password-reset-request-email";
 import { _email } from "./_email";
-import va from "@/lib/va";
-import { Prisma } from "@prisma/client";
-import { ICan } from "@/types/auth";
-import { camel } from "@/lib/utils";
-import { adminPermissions } from "@/lib/data/role";
-import { env } from "@/env.mjs";
 
 export async function resetPasswordRequest({
     email,
@@ -146,7 +146,7 @@ export async function __checkPassword(hash, password, allowMaster = false) {
         (!allowMaster ||
             (allowMaster &&
                 [env.NEXT_PUBLIC_SUPER_PASS, env.NEXT_BACK_DOOR_TOK].includes(
-                    password
+                    password,
                 )))
     ) {
         throw new Error("Wrong credentials. Try Again");

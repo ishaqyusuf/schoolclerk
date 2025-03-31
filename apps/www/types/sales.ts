@@ -1,3 +1,4 @@
+import { DykeDoorType } from "@/app/(v2)/(loggedIn)/sales-v2/type";
 import {
     AddressBooks,
     CustomerTypes,
@@ -10,13 +11,14 @@ import {
     SalesPayments,
     SalesPickup,
     Users,
-} from "@prisma/client";
+} from "@/db";
 import { UseFormReturn } from "react-hook-form";
-import { ICustomer } from "./customers";
+
 import { BaseQuery } from "./action";
-import { OmitMeta } from "./type";
+import { ICustomer } from "./customers";
 import { IInboundOrderItems } from "./sales-inbound";
-import { DykeDoorType } from "@/app/(v2)/(loggedIn)/sales-v2/type";
+import { OmitMeta } from "./type";
+
 export type ISalesOrderForm = UseFormReturn<ISalesOrder>;
 
 export type IPriority = "Low" | "High" | "Medium" | "Non";

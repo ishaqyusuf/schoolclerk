@@ -1,4 +1,5 @@
 "use server";
+
 import { userId } from "@/app/(v1)/_actions/utils";
 import { CheckoutStatus } from "@/app/(v2)/(loggedIn)/sales-v2/_components/_square-payment-modal/action";
 import { prisma } from "@/db";
@@ -160,7 +161,7 @@ export async function createSalesPaymentLink(data: CreateSalesPaymentProps) {
                           ?.map((item) => {
                               if (typeof item.basePriceMoney.amount != "bigint")
                                   item.basePriceMoney.amount = BigInt(
-                                      Math.round(item.basePriceMoney.amount)
+                                      Math.round(item.basePriceMoney.amount),
                                   );
                               return item;
                           }),
@@ -273,11 +274,10 @@ export async function getSquareDevices() {
 
 export async function getSquareTerminalPaymentStatus(
     terminalId,
-    salesCheckoutId
+    salesCheckoutId,
 ) {
-    const payment = await squareClient.terminalApi.getTerminalCheckout(
-        terminalId
-    );
+    const payment =
+        await squareClient.terminalApi.getTerminalCheckout(terminalId);
     const paymentStatus = payment.result.checkout.status as
         | "PENDING"
         | "IN_PROGRESS"
@@ -343,13 +343,14 @@ export async function validateSquarePayment(id) {
             await tx.checkoutTenders.create({
                 data: {
                     salesCheckoutId: checkout.id,
-                    squareOrderId: orderId,
+                    // squareOrderId: orderId,
+
                     status: resp.status,
                     tenderId: tender.id,
-                    squarePaymentId: payment.id,
+                    // squarePaymentId: payment.id,
                 },
             });
-        })
+        }),
     );
     if (resp.amount > 0) await paymentSuccess({ ...checkout, tip: resp.tip });
     return resp;
@@ -369,7 +370,7 @@ export async function paymentSuccess(p: {
             tip: p.tip,
             meta: {},
             status: "success",
-            customerId: p.order.customerId,
+            // customerId: p.order.customerId,
         },
     });
     await prisma.salesCheckout.update({

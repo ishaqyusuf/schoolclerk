@@ -1,10 +1,11 @@
+import { Builders, Homes, Projects } from "@/db";
 import { ExtendedHome, ICostChartMeta, IHome } from "@/types/community";
-import { getBadgeColor } from "../status-badge";
-import { Builders, Homes, Projects } from "@prisma/client";
+
 import { deepCopy } from "../deep-copy";
-import { sumKeyValues } from "../utils";
-import { convertToNumber } from "../use-number";
+import { getBadgeColor } from "../status-badge";
 import { formatDate } from "../use-day";
+import { convertToNumber } from "../use-number";
+import { sumKeyValues } from "../utils";
 
 export function getHomeProductionStatus(home: ExtendedHome) {
     const prod = home?.tasks?.filter((t) => t.produceable);
@@ -47,7 +48,7 @@ export function getHomeProductionStatus(home: ExtendedHome) {
 export function homeSearchMeta(
     home: Homes,
     project: Projects | undefined = undefined,
-    builder: Builders | undefined = undefined
+    builder: Builders | undefined = undefined,
 ) {
     const search: any[] = [];
     const { modelName, lot, block } = home;

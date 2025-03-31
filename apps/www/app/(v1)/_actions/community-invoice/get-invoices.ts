@@ -1,10 +1,11 @@
 "use server";
 
-import { prisma } from "@/db";
+import { prisma, Prisma } from "@/db";
 import { BaseQuery } from "@/types/action";
-import { Prisma } from "@prisma/client";
+
 import { getPageInfo, queryFilter } from "../action-utils";
 import { HomeQueryParams, whereHome } from "../community/home";
+
 export interface InvoiceQueryParams extends BaseQuery {}
 export async function getHomeInvoices(query: HomeQueryParams) {
     if (query._production == "sort") {

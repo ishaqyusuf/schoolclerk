@@ -1,5 +1,4 @@
-import { staticCustomerProfilesAction } from "@/app/(v1)/(loggedIn)/sales/(customers)/_actions/sales-customer-profiles";
-import { staticBuildersAction } from "@/app/(v1)/(loggedIn)/settings/community/builders/action";
+import { useEffect } from "react";
 import { staticProjectsAction } from "@/app/(v1)/_actions/community/projects";
 import { getStaticEmployeeProfiles } from "@/app/(v1)/_actions/hrm/employee-profiles";
 import { staticRolesAction } from "@/app/(v1)/_actions/hrm/static-roles";
@@ -7,13 +6,11 @@ import {
     getStaticCategories,
     getStaticProducts,
 } from "@/app/(v1)/_actions/sales-products/statics";
+import { staticCustomerProfilesAction } from "@/app/(v1)/(loggedIn)/sales/(customers)/_actions/sales-customer-profiles";
+import { staticBuildersAction } from "@/app/(v1)/(loggedIn)/settings/community/builders/action";
 import { getContractorsAction } from "@/app/(v2)/(loggedIn)/contractors/_actions/get-job-employees";
 import { getJobCostList } from "@/app/(v2)/(loggedIn)/contractors/_actions/job-cost-list";
 import { getStaticProductionUsersAction } from "@/app/(v2)/(loggedIn)/sales/_actions/static/get-static-production-users-action";
-import { store, useAppSelector } from "@/store";
-import { updateStaticData } from "@/store/static-data-slice";
-import { IJobType } from "@/types/hrm";
-import { InstallCostLine } from "@/types/settings";
 import {
     Builders,
     CustomerTypes,
@@ -21,8 +18,11 @@ import {
     Projects,
     Roles,
     Users,
-} from "@prisma/client";
-import { useEffect } from "react";
+} from "@/db";
+import { store, useAppSelector } from "@/store";
+import { updateStaticData } from "@/store/static-data-slice";
+import { IJobType } from "@/types/hrm";
+import { InstallCostLine } from "@/types/settings";
 
 export default function useStaticData<T>(key, loader, __load = true) {
     const data = useAppSelector((store) => store.staticData?.[key]);
@@ -34,7 +34,7 @@ export default function useStaticData<T>(key, loader, __load = true) {
             updateStaticData({
                 key,
                 data: _data,
-            })
+            }),
         );
         // dispatchSlice(key, deepCopy(_data));
     }
@@ -58,7 +58,7 @@ export const useStaticContractors = () =>
 export const useStaticProducers = () =>
     useStaticData<Awaited<ReturnType<typeof getStaticProductionUsersAction>>>(
         "staticProductionUsers",
-        getStaticProductionUsersAction
+        getStaticProductionUsersAction,
     );
 export const useBuilders = () =>
     useStaticData<Builders[]>("staticBuilders", staticBuildersAction);
@@ -68,17 +68,17 @@ export const useStaticProjects = (load = true) =>
 export const useJobCostList = (type: IJobType) =>
     useStaticData<InstallCostLine[]>(
         "staticJobCostList",
-        async () => await getJobCostList(type)
+        async () => await getJobCostList(type),
     );
 export const useEmployeeProfiles = () =>
     useStaticData<EmployeeProfile[]>(
         "employeeProfiles",
-        getStaticEmployeeProfiles
+        getStaticEmployeeProfiles,
     );
 export const useCustomerProfiles = () =>
     useStaticData<CustomerTypes[]>(
         "customerProfiles",
-        staticCustomerProfilesAction
+        staticCustomerProfilesAction,
     );
 
 export const useStaticProductCategories = () =>

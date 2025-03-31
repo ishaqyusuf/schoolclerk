@@ -1,17 +1,17 @@
 "use server";
 
-import { Prisma } from "@prisma/client";
+import { Prisma, prisma } from "@/db";
+// import { updateSalesStatControlAction } from "./sales-stat-control.action";
+import { percent, sum } from "@/lib/utils";
+import { AsyncFnType } from "@/types";
+
+import { QtyControlType, SalesDispatchStatus, StepMeta } from "../../types";
+import { loadSalesSetting } from "../data-access/sales-form-settings.dta";
 import {
     composeControls,
     itemControlUidObject,
     qtyControlsByType,
 } from "../utils/item-control-utils";
-import { prisma } from "@/db";
-import { QtyControlType, SalesDispatchStatus, StepMeta } from "../../types";
-import { AsyncFnType } from "@/types";
-// import { updateSalesStatControlAction } from "./sales-stat-control.action";
-import { percent, sum } from "@/lib/utils";
-import { loadSalesSetting } from "../data-access/sales-form-settings.dta";
 
 // export async function updateItemControlAction(
 //     uid,
@@ -39,7 +39,7 @@ import { loadSalesSetting } from "../data-access/sales-form-settings.dta";
 export async function updateQtyControlAutoComplete(
     data,
     uid,
-    { produceableQty, shippableQty, produceableChanged, shippableChanged, qty }
+    { produceableQty, shippableQty, produceableChanged, shippableChanged, qty },
 ) {
     const { produceable, shippable } = data;
     await Promise.all(
@@ -80,16 +80,16 @@ export async function updateQtyControlAutoComplete(
                             ...qty,
                             reset: true,
                         });
-                    })
+                    }),
                 );
             }
-        })
+        }),
     );
 }
 export async function updateQtyControlAction(
     uid,
     type: QtyControlType,
-    { qty, lh, rh, totalQty, reset = false } = { reset: false } as any
+    { qty, lh, rh, totalQty, reset = false } = { reset: false } as any,
 ) {
     const qtyControl = await prisma.qtyControl.upsert({
         where: {
@@ -313,8 +313,8 @@ export async function getSalesItemControllablesInfoAction(salesId) {
                         itemDeliveries: s.itemDeliveries
                             .filter((s) =>
                                 order.deliveries.some(
-                                    (a) => a.id == s.orderDeliveryId
-                                )
+                                    (a) => a.id == s.orderDeliveryId,
+                                ),
                             )
                             .map((d) => {
                                 return {
@@ -363,7 +363,7 @@ export async function updateSalesItemControlAction(salesId) {
                         uid: c.uid,
                     },
                 });
-        })
+        }),
     );
     return { del, arr };
     // }) as any);

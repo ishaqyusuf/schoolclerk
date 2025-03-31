@@ -1,4 +1,4 @@
-import { FieldError } from "react-hook-form/dist/types/errors";
+import { FieldError } from "react-hook-form";
 
 export interface ControlValueAccessorProps<T> {
     value: T;

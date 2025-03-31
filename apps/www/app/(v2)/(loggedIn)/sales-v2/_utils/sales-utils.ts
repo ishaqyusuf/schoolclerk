@@ -1,6 +1,6 @@
+import { DykeSalesDoors, SalesOrderItems } from "@/db";
 import { sum } from "@/lib/utils";
 import { ISalesOrderItemMeta } from "@/types/sales";
-import { DykeSalesDoors, SalesOrderItems } from "@prisma/client";
 
 export function getSalesQties(order) {
     const isDyke = order.isDyke;
@@ -17,16 +17,16 @@ export function getSalesQties(order) {
                       ?.filter((s) => s.dykeProduction && s.qty)
                       ?.map((s) => s.qty),
               ]
-            : _items?.filter((i) => i.swing)?.map((i) => i.qty)
+            : _items?.filter((i) => i.swing)?.map((i) => i.qty),
     );
     const totalShelfs = sum(
         isDyke
             ? _items
                   .filter(
-                      (item) => item.meta.doorType == "Shelf Items" && item.qty
+                      (item) => item.meta.doorType == "Shelf Items" && item.qty,
                   )
                   ?.map((item) => item.qty)
-            : []
+            : [],
     );
     return {
         shelfQty: totalShelfs,

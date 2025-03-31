@@ -21,7 +21,7 @@
   "devDependencies": {
     "@gnd/eslint-config": "workspace:*",
     "@gnd/prettier-config": "workspace:*",
-    "@gnd/typescript-config": "workspace:*",
+    "@gnd/tsconfig": "workspace:*",
     "eslint": "8.57.0",
     "prettier": "3.2.5",
     "typescript": "^5.6.3"

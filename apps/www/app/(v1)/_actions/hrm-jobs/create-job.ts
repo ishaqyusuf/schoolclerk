@@ -1,11 +1,11 @@
 "use server";
 
-import { prisma } from "@/db";
+import { Jobs, prisma, Prisma } from "@/db";
 import { transformData } from "@/lib/utils";
-import { userId } from "../utils";
+import { IJobs, IJobType } from "@/types/hrm";
+
 import { _notifyAdminJobSubmitted } from "../notifications";
-import { Jobs, Prisma } from "@prisma/client";
-import { IJobType, IJobs } from "@/types/hrm";
+import { userId } from "../utils";
 
 export async function createJobAction(data: IJobs) {
     data.status = "Submitted";

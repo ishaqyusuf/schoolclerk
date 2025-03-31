@@ -1,9 +1,9 @@
 "use server";
 
-import { prisma } from "@/db";
+import { prisma, Prisma } from "@/db";
 import { whereQuery } from "@/lib/db-utils";
 import { BaseQuery } from "@/types/action";
-import { Prisma } from "@prisma/client";
+
 import { getPageInfo, queryFilter } from "../action-utils";
 
 interface PutawayQueryParams extends Omit<BaseQuery, "status"> {
@@ -28,12 +28,12 @@ export async function getPutwaysAction(query: PutawayQueryParams) {
             //         }
             //     }
             // }
-        }
+        },
     });
     const pageInfo = await getPageInfo(query, where, prisma.salesItemSupply);
     return {
         pageInfo,
-        data: items as any
+        data: items as any,
     };
 }
 function wherePutaway(query: PutawayQueryParams) {
@@ -44,7 +44,7 @@ export async function _updateInboundItemLocation(id, data) {
         where: { id },
         data: {
             ...data,
-            updatedAt: new Date()
-        }
+            updatedAt: new Date(),
+        },
     });
 }

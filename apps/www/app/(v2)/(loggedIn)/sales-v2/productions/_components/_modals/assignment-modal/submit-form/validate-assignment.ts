@@ -1,14 +1,13 @@
-import { UseFormReturn } from "react-hook-form";
-
-import { z } from "zod";
-import { toast } from "sonner";
 import {
     OrderItemProductionAssignments,
     OrderProductionSubmissions,
-} from "@prisma/client";
+} from "@/db";
+import { UseFormReturn } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 export function useValidateAssignment(
-    form: UseFormReturn<Partial<OrderProductionSubmissions>>
+    form: UseFormReturn<Partial<OrderProductionSubmissions>>,
 ) {
     return {
         validate() {

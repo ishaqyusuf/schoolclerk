@@ -1,7 +1,7 @@
 "use server";
 
+import { Prisma } from "@/db";
 import { ISalesType } from "@/types/sales";
-import { Prisma } from "@prisma/client";
 
 interface QueryProps {
     _q?: string;

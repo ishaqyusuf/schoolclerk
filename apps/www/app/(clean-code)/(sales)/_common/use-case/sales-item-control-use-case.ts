@@ -1,10 +1,9 @@
 "use server";
 
-import { prisma } from "@/db";
-import { Prisma } from "@prisma/client";
+import { prisma, type Prisma } from "@/db";
 
 export async function updateSalesItemControlUseCase(
-    data: Prisma.SalesItemControlCreateManyInput
+    data: Prisma.SalesItemControlCreateManyInput,
 ) {
     await prisma.salesItemControl.upsert({
         where: {

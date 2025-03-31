@@ -1,15 +1,14 @@
 "use server";
 
 import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
-import { prisma } from "@/db";
+import { DykeStepProducts, DykeSteps, prisma } from "@/db";
 import { lastId } from "@/lib/nextId";
 import { uploadFile } from "@/lib/upload-file";
 import { generateRandomString } from "@/lib/utils";
-import { DykeStepProducts, DykeSteps } from "@prisma/client";
 
 export async function createDoorSpecies(
     step: DykeSteps,
-    stepProduct: DykeStepProducts
+    stepProduct: DykeStepProducts,
 ) {
     const stepId = (
         await prisma.dykeSteps.findFirst({
@@ -45,7 +44,7 @@ export async function createDoorSpecies(
                     value: item.title,
                     title: item.title,
                 };
-            })
+            }),
         ),
     });
     const s =

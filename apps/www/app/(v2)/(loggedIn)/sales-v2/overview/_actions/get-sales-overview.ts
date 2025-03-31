@@ -1,17 +1,17 @@
 "use server";
 
-import { prisma } from "@/db";
+import { loadSalesSetting } from "@/app/(clean-code)/(sales)/_common/data-access/sales-form-settings.dta";
+import { StepComponentMeta } from "@/app/(clean-code)/(sales)/types";
+import { prisma, Prisma } from "@/db";
 import {
-    ISalesType,
     ISalesOrderItemMeta,
     ISalesOrderMeta,
+    ISalesType,
 } from "@/types/sales";
+
 import { composeSalesItems } from "../../_utils/compose-sales-items";
 import { DykeDoorType } from "../../type";
 import { isComponentType } from "../is-component-type";
-import { Prisma } from "@prisma/client";
-import { loadSalesSetting } from "@/app/(clean-code)/(sales)/_common/data-access/sales-form-settings.dta";
-import { StepComponentMeta } from "@/app/(clean-code)/(sales)/types";
 
 export async function getSalesOverview({
     type,
@@ -68,7 +68,7 @@ export async function viewSale(type, slug, deletedAt?) {
         const meta = item.meta as any as ISalesOrderItemMeta;
 
         const rootStep = item.formSteps.find(
-            (fs) => fs.step.title == "Item Type"
+            (fs) => fs.step.title == "Item Type",
         );
         const routes = settings?.data?.route;
         const rootConfig = settings?.data?.route?.[rootStep?.prodUid]?.config;
@@ -77,7 +77,7 @@ export async function viewSale(type, slug, deletedAt?) {
             ?.map(
                 (fs) =>
                     (fs.component?.meta as any as StepComponentMeta)
-                        ?.sectionOverride
+                        ?.sectionOverride,
             )
             ?.filter(Boolean);
         const sectionOverride = ovs.find((s) => s.overrideMode);
@@ -87,11 +87,11 @@ export async function viewSale(type, slug, deletedAt?) {
             configs: sectionOverride
                 ? sectionOverride
                 : rootConfig
-                ? rootConfig
-                : null,
+                  ? rootConfig
+                  : null,
 
             sectionTitle: sectionTitles?.stepProducts?.find(
-                (p) => p?.product?.title == meta?.doorType
+                (p) => p?.product?.title == meta?.doorType,
             )?.product?.value,
             housePackageTool: item.housePackageTool
                 ? {
@@ -106,13 +106,13 @@ export async function viewSale(type, slug, deletedAt?) {
         .filter(
             (item) =>
                 (item.multiDyke && item.multiDykeUid) ||
-                (!item.multiDyke && !item.multiDykeUid)
+                (!item.multiDyke && !item.multiDykeUid),
         )
         .map((item, index) => {
             const _multiDyke = items.filter(
                 (i) =>
                     i.id == item.id ||
-                    (item.multiDyke && item.multiDykeUid == i.multiDykeUid)
+                    (item.multiDyke && item.multiDykeUid == i.multiDykeUid),
             );
 
             return {
@@ -141,7 +141,7 @@ export async function viewSale(type, slug, deletedAt?) {
     // ].map((v) => v.map((c) => ids.push(c.id)));
 
     groupings.doors = _mergedItems?.filter((mi) =>
-        ids.every((id) => id != mi.id)
+        ids.every((id) => id != mi.id),
     );
 
     const progress = await prisma.progress.findMany({

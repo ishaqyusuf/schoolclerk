@@ -1,13 +1,13 @@
 "use server";
 
 import { oldSiteJobs } from "@/data/old-site-jobs";
-import { prisma } from "@/db";
+import { Jobs, prisma, Prisma } from "@/db";
 import { queryBuilder } from "@/lib/db-utils";
 import { BaseQuery } from "@/types/action";
 import { IJobMeta } from "@/types/hrm";
-import { Jobs, Prisma } from "@prisma/client";
-import { getSettingAction } from "../settings";
 import { InstallCostSettings } from "@/types/settings";
+
+import { getSettingAction } from "../settings";
 
 export async function getRestorableJobsCount() {
     return await prisma.posts.count({
@@ -21,7 +21,7 @@ interface Props extends BaseQuery {}
 export async function getRestorableJobs(query: Props) {
     const builder = await queryBuilder<Prisma.PostsWhereInput>(
         query,
-        prisma.posts
+        prisma.posts,
     );
     builder.register("type", "job-restore");
 
@@ -29,7 +29,7 @@ export async function getRestorableJobs(query: Props) {
         await prisma.posts.findMany({
             where: builder.getWhere(),
             ...builder.queryFilters,
-        })
+        }),
     );
 }
 export async function insertJobs() {
@@ -41,7 +41,7 @@ export async function insertJobs() {
     //     },
     //   });
     const installSetting: InstallCostSettings = (await getSettingAction(
-        "install-price-chart"
+        "install-price-chart",
     )) as any;
 
     const inserts: Jobs[] = [];
@@ -61,7 +61,7 @@ export async function insertJobs() {
                     if (cd.title == "Addon") meta.addon = cd.total;
                     else {
                         const s = installSetting.meta.list.find(
-                            (s) => s.title == cd.title
+                            (s) => s.title == cd.title,
                         );
                         if (s) {
                             meta.costData[s.uid] = {

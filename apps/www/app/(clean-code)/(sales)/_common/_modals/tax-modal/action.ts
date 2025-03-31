@@ -1,6 +1,7 @@
 "use server";
 
-import { Taxes } from "@prisma/client";
+import { Taxes } from "@/db";
+
 import { createSalesTax } from "../../data-access/sales-tax.persistent";
 
 export async function createTax(data: Taxes) {

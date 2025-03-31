@@ -1,9 +1,9 @@
 "use server";
 
-import { prisma } from "@/db";
+import { Homes, prisma } from "@/db";
 import { transformData } from "@/lib/utils";
 import { IBuilder, IHome, IHomeTask, IHomeTemplate } from "@/types/community";
-import { Homes } from "@prisma/client";
+
 import { _revalidate } from "../_revalidate";
 
 export async function _updateCommunityHome(home: IHome) {
@@ -50,7 +50,7 @@ export async function createHomesAction(homes: Homes[]) {
     await Promise.all(
         homes.map(async (homeData) => {
             const lblck = [homeData.lot || "-", homeData.block || "-"].join(
-                "/"
+                "/",
             );
             homeData.lotBlock = lblck;
             const home = await prisma.homes.create({
@@ -58,7 +58,7 @@ export async function createHomesAction(homes: Homes[]) {
             });
 
             const builder: IBuilder = builders.find(
-                (b) => b.id == home.builderId
+                (b) => b.id == home.builderId,
             ) as any;
             console.log(builder);
             builder.meta.tasks.map((builderTask) => {
@@ -90,7 +90,7 @@ export async function createHomesAction(homes: Homes[]) {
             await prisma.homeTasks.createMany({
                 data: tasks,
             });
-        })
+        }),
     );
     _revalidate("homes");
 }

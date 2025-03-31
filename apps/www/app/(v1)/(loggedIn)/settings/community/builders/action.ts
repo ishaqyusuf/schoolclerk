@@ -1,15 +1,16 @@
 "use server";
 
-import { prisma } from "@/db";
-import { BaseQuery } from "@/types/action";
-import { Prisma } from "@prisma/client";
-import { getPageInfo, queryFilter } from "../../../../_actions/action-utils";
-import { IBuilder, IBuilderTasks, IHomeTask } from "@/types/community";
 import { revalidatePath } from "next/cache";
-import { transformData } from "@/lib/utils";
 import { composeBuilderTasks } from "@/app/(v2)/(loggedIn)/community-settings/builders/compose-builder-tasks";
-import { _cache } from "../../../../_actions/_cache/load-data";
+import { prisma, Prisma } from "@/db";
+import { transformData } from "@/lib/utils";
+import { BaseQuery } from "@/types/action";
+import { IBuilder, IBuilderTasks, IHomeTask } from "@/types/community";
 import slugify from "slugify";
+
+import { _cache } from "../../../../_actions/_cache/load-data";
+import { getPageInfo, queryFilter } from "../../../../_actions/action-utils";
+
 export interface BuildersQueryParams extends BaseQuery {}
 export async function getBuildersAction(query: BuildersQueryParams) {
     const where = whereBuilder(query);
@@ -56,7 +57,7 @@ export async function staticBuildersAction() {
             });
             return _data;
         },
-        "builders"
+        "builders",
     );
 }
 export async function deleteBuilderAction(id) {}
@@ -109,7 +110,7 @@ export async function saveBuilderTasks(data: IBuilder, deleteIds, newTaskIds) {
                     punchout: p.punchout,
                 },
             });
-        })
+        }),
     );
     if (deleteIds?.length)
         await prisma.homeTasks.deleteMany({
@@ -148,12 +149,12 @@ export async function saveBuilderTasks(data: IBuilder, deleteIds, newTaskIds) {
                     projectId: h.projectId,
                     homeId: h.id,
                     search: h.search,
-                })
+                }),
             )
             .filter(Boolean);
         await composeBuilderTasks(
             data.meta.tasks.filter((t) => newTaskIds.includes(t.uid)),
-            taskData as any
+            taskData as any,
         );
     }
     const homes = await prisma.homes.findMany({
@@ -176,7 +177,7 @@ export async function saveBuilderTasks(data: IBuilder, deleteIds, newTaskIds) {
     let tasks: any[] = [];
     homes.map((home) => {
         let bTasks = data.meta.tasks.filter(
-            (t) => !home.tasks.some((s) => s.taskUid == t.uid)
+            (t) => !home.tasks.some((s) => s.taskUid == t.uid),
         );
         if (bTasks.length) {
             tasks.push(
@@ -186,7 +187,7 @@ export async function saveBuilderTasks(data: IBuilder, deleteIds, newTaskIds) {
                         homeId: home.id,
                         search: home.search,
                     },
-                ])
+                ]),
             );
         }
     });

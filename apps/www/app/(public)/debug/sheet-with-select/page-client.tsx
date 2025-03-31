@@ -1,21 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { CreditCard, DollarSign, User } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-// import { Button } from "@acme/ui/button";
-import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet";
 import {
     Form,
     FormControl,
@@ -32,6 +18,19 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+// import { Button } from "@gnd/ui/button";
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CreditCard, DollarSign, User } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const formSchema = z.object({
     name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -66,7 +65,7 @@ export default function PageClient() {
             <SheetTrigger asChild>
                 <Button>Open Payment Form</Button>
             </SheetTrigger>
-            <SheetContent side="right" className="sm:max-w-md w-full">
+            <SheetContent side="right" className="w-full sm:max-w-md">
                 <SheetHeader>
                     <SheetTitle>Payment Details</SheetTitle>
                     <SheetDescription>

@@ -1,13 +1,14 @@
 "use client";
+
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import useEffectLoader from "@/lib/use-effect-loader";
 import { loadQueryTabsUseCase } from "@/use-cases/query-tab-use-case";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { siteLinks, SiteLinksPage } from "./links";
-import { useSearchParams } from "next/navigation";
-import { useQueryTabStore } from "./data-store";
 
-import { isEqual } from "lodash";
+import { useQueryTabStore } from "./data-store";
+import { siteLinks, SiteLinksPage } from "./links";
 import { openQueryTab } from "./query-tab-form";
+
 export const QueryTabContext = createContext<QueryTab>(null as any);
 export type QueryTab = ReturnType<typeof useQueryTabContext>;
 export const useQueryTab = (page) => {

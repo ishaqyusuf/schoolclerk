@@ -1,13 +1,13 @@
 "use server";
 
-import { prisma } from "@/db";
-import { findDoorSvg } from "../../_utils/find-door-svg";
-import { DykeDoorType, DykeProductMeta, StepProdctMeta } from "../../type";
-import { DykeDoors, Prisma } from "@prisma/client";
-import { IStepProducts } from "../components/step-items-list/item-section/step-products";
+import { DykeDoors, prisma, Prisma } from "@/db";
 
+import { findDoorSvg } from "../../_utils/find-door-svg";
 import { sortStepProducts, transformStepProducts } from "../../dyke-utils";
+import { DykeDoorType, DykeProductMeta, StepProdctMeta } from "../../type";
+import { IStepProducts } from "../components/step-items-list/item-section/step-products";
 import { restoreDoors } from "./restore-doors";
+
 interface Props {
     q;
     omit;

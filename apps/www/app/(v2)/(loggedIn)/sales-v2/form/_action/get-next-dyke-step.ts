@@ -1,23 +1,23 @@
 "use server";
 
-import { DykeProducts, DykeSteps } from "@prisma/client";
-import { prisma } from "@/db";
-import { getStepForm } from "./get-dyke-step";
-import { createDoorSpecies } from "./create-door-species";
-import { DykeDoorType } from "../../type";
-import { generateRandomString } from "@/lib/utils";
-import { includeStepPriceCount } from "../../dyke-utils";
 import {
     DykeStepTitleKv,
     DykeStepTitles,
 } from "@/app/(clean-code)/(sales)/types";
+import { DykeProducts, DykeSteps, prisma } from "@/db";
+import { generateRandomString } from "@/lib/utils";
+
+import { includeStepPriceCount } from "../../dyke-utils";
+import { DykeDoorType } from "../../type";
+import { createDoorSpecies } from "./create-door-species";
+import { getStepForm } from "./get-dyke-step";
 
 export async function getNextDykeStepAction(
     step: DykeSteps,
     product: DykeProducts | null,
     stepProd,
     _steps: any[] = [],
-    doorType: DykeDoorType
+    doorType: DykeDoorType,
 ) {
     console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     let nextStepId = stepProd?.nextStepId;
@@ -32,7 +32,7 @@ export async function getNextDykeStepAction(
             product,
             step.title,
             doorType,
-            step.value
+            step.value,
         );
 
         if (customStep) return [..._steps, customStep];
@@ -82,7 +82,7 @@ export async function getNextDykeStepAction(
             const matchedStep = nextSteps.filter(
                 (s) =>
                     (product?.title && s.value?.endsWith(product.title)) ||
-                    (s.title == "Hand" && s.id == 22)
+                    (s.title == "Hand" && s.id == 22),
             )[0];
             console.log("MATCHED STEP>>>", matchedStep?.id, nextStepId);
             if (matchedStep) nextStepId = matchedStep.id;
@@ -103,15 +103,15 @@ export async function getNextDykeStepAction(
                     null,
                     stepProd,
                     [..._steps, stepForm],
-                    doorType
+                    doorType,
                 );
             }
             let stepProds = stepForm.step?.stepProducts || [];
             stepProds = stepProds.filter(
                 (p, i) =>
                     stepProds?.findIndex(
-                        (p2) => p2.product?.title == p.product?.title
-                    ) == i
+                        (p2) => p2.product?.title == p.product?.title,
+                    ) == i,
             );
 
             if (stepProds.length == 1 && stepProd) {
@@ -123,7 +123,7 @@ export async function getNextDykeStepAction(
                     stepProd?.product as any,
                     stepProd,
                     [..._steps, stepForm],
-                    doorType
+                    doorType,
                 );
             }
         }
@@ -197,7 +197,7 @@ async function CustomStepForm(
     { title: productTitle },
     stepTitle,
     doorType: DykeDoorType,
-    stepVal
+    stepVal,
 ) {
     stepTitle = stepTitle.trim();
 

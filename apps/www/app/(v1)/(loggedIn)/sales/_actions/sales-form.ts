@@ -1,14 +1,14 @@
 "use server";
 
-import { prisma } from "@/db";
+import { CustomerTypes, prisma } from "@/db";
 import { authOptions } from "@/lib/auth-options";
-import { ISalesSettingMeta, PostTypes } from "@/types/post";
-import { ISalesType, ISalesOrder } from "@/types/sales";
-import { getServerSession } from "next-auth";
-import { CustomerTypes } from "@prisma/client";
 import { sum } from "@/lib/utils";
-import { user } from "../../../_actions/utils";
+import { ISalesSettingMeta, PostTypes } from "@/types/post";
+import { ISalesOrder, ISalesType } from "@/types/sales";
 import dayjs from "dayjs";
+import { getServerSession } from "next-auth";
+
+import { user } from "../../../_actions/utils";
 
 export interface ICreateOrderFormQuery {
     customerId?;
@@ -32,7 +32,7 @@ export interface SalesFormCtx {
     items: any[];
 }
 export async function salesFormAction(
-    query: ICreateOrderFormQuery
+    query: ICreateOrderFormQuery,
 ): Promise<SalesFormResponse> {
     const order = await prisma.salesOrders.findFirst({
         where: {
@@ -115,7 +115,7 @@ async function formCtx(): Promise<SalesFormCtx> {
     };
 }
 async function newSalesFormAction(
-    query: ICreateOrderFormQuery
+    query: ICreateOrderFormQuery,
 ): Promise<SalesFormResponse> {
     const ctx = await formCtx();
 

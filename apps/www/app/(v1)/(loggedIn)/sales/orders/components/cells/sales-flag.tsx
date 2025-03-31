@@ -1,14 +1,15 @@
+import React, { useTransition } from "react";
+import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
 import {
     Menu,
     MenuItem,
 } from "@/components/_v1/data-table/data-table-row-actions";
 import { Icons } from "@/components/_v1/icons";
+import { SalesOrders } from "@/db";
 import { IPriority, ISalesOrderMeta } from "@/types/sales";
-import { SalesOrders } from "@prisma/client";
-import React, { useTransition } from "react";
-import { updateOrderPriorityActon } from "../../../_actions/sales-priority";
 import { toast } from "sonner";
-import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
+
+import { updateOrderPriorityActon } from "../../../_actions/sales-priority";
 
 interface Props {
     item;
@@ -48,7 +49,7 @@ export default function SalesFlag({ item, editable = true }: Props) {
                     key={_}
                     Icon={() => (
                         <Icons.flag
-                            className={`h-4 w-4 mr-2 text-${p.color}-500`}
+                            className={`mr-2 h-4 w-4 text-${p.color}-500`}
                         />
                     )}
                     onClick={() => updatePriority(p.title)}

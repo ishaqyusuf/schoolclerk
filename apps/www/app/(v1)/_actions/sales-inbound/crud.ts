@@ -1,13 +1,12 @@
 "use server";
 
-import { prisma } from "@/db";
-import { BaseQuery } from "@/types/action";
-import { getPageInfo, queryFilter } from "../action-utils";
-import { Prisma } from "@prisma/client";
-import { IInboundOrder } from "@/types/sales-inbound";
-import { transformData } from "@/lib/utils";
+import { prisma, Prisma } from "@/db";
 import { nextId } from "@/lib/nextId";
+import { transformData } from "@/lib/utils";
+import { BaseQuery } from "@/types/action";
+import { IInboundOrder } from "@/types/sales-inbound";
 import dayjs from "dayjs";
 
-export interface InboundOrderQueryParamsProps extends BaseQuery {}
+import { getPageInfo, queryFilter } from "../action-utils";
 
+export interface InboundOrderQueryParamsProps extends BaseQuery {}

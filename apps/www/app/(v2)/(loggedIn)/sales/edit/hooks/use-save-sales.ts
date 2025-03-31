@@ -1,20 +1,21 @@
-import { useFormContext } from "react-hook-form";
-import { ISalesForm } from "../type";
 import { useCallback, useContext, useTransition } from "react";
-import { SalesFormContext } from "../ctx";
+import { useRouter } from "next/navigation";
+import usePersistDirtyForm from "@/_v2/hooks/use-persist-dirty-form";
+import { resetSalesStatAction } from "@/app/(clean-code)/(sales)/_common/data-actions/sales-stat-control.action";
+import { SalesOrderItems, SalesOrders } from "@/db";
+import { isProdClient } from "@/lib/is-prod";
 import { numeric, toFixed } from "@/lib/use-number";
 import { removeEmptyValues } from "@/lib/utils";
-import { SalesOrderItems, SalesOrders } from "@prisma/client";
 import { SaveOrderActionProps } from "@/types/sales";
-import { saveSaleAction } from "../../_actions/save-sales.action";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import debounce from "debounce";
+import { useFormContext } from "react-hook-form";
+import { toast } from "sonner";
 import useDeepCompareEffect from "use-deep-compare-effect";
-import { isProdClient } from "@/lib/is-prod";
-import usePersistDirtyForm from "@/_v2/hooks/use-persist-dirty-form";
+
+import { saveSaleAction } from "../../_actions/save-sales.action";
+import { SalesFormContext } from "../ctx";
 import salesFormUtils from "../sales-form-utils";
-import { resetSalesStatAction } from "@/app/(clean-code)/(sales)/_common/data-actions/sales-stat-control.action";
+import { ISalesForm } from "../type";
 
 export default function useSaveSalesHook() {
     const form = useFormContext<ISalesForm>();
@@ -26,12 +27,12 @@ export default function useSaveSalesHook() {
     async function submit(
         and: "close" | "new" | "default" = "default",
         autoSave = false,
-        data: any = null
+        data: any = null,
     ) {
         startTransaction(async () => {
             let _data = formData(
                 !data ? form.getValues() : data,
-                ctx.data.paidAmount
+                ctx.data.paidAmount,
             );
             // console.log(_data.items);
             if (!_data.id && autoSave) return;
@@ -46,13 +47,13 @@ export default function useSaveSalesHook() {
                 _data.order.paymentDueDate =
                     salesFormUtils._calculatePaymentTerm(
                         _data.order.paymentTerm,
-                        _data.order.createdAt
+                        _data.order.createdAt,
                     );
             }
             const order = await saveSaleAction(
                 _data.id,
                 _data.order,
-                _data.items
+                _data.items,
             );
             await resetSalesStatAction(order.id);
             switch (and) {
@@ -78,7 +79,7 @@ export default function useSaveSalesHook() {
                     keepValues: true,
                     keepDirty: false,
                     keepSubmitCount: true,
-                }
+                },
             );
             // form.formState.
         });
@@ -86,7 +87,7 @@ export default function useSaveSalesHook() {
     async function save(
         and: "close" | "new" | "default" = "default",
         autoSave = false,
-        data: any = null
+        data: any = null,
     ) {
         setTimeout(() => {
             form.handleSubmit(() => submit(and, autoSave, data))();
@@ -99,13 +100,13 @@ export default function useSaveSalesHook() {
                     submit("default", true, d);
                 } else {
                     toast.error(
-                        "Autosave paused, requires customer information."
+                        "Autosave paused, requires customer information.",
                     );
                 }
             })();
             // methods.handleSubmit(onSubmit)();
         }, 2000),
-        [form]
+        [form],
     );
     useDeepCompareEffect(() => {
         if (
@@ -127,7 +128,7 @@ function formData(data: ISalesForm, paidAmount): SaveOrderActionProps {
     form.meta = removeEmptyValues(form.meta);
     form.goodUntil = salesFormUtils._calculatePaymentTerm(
         form.paymentTerm,
-        form.createdAt
+        form.createdAt,
     );
     const deleteIds: any = [];
     items = items
@@ -139,7 +140,7 @@ function formData(data: ISalesForm, paidAmount): SaveOrderActionProps {
             item.meta.uid = index;
             return numeric<SalesOrderItems>(
                 ["qty", "price", "rate", "tax", "taxPercenatage", "total"],
-                item
+                item,
             );
         })
         .filter(Boolean);
@@ -147,7 +148,7 @@ function formData(data: ISalesForm, paidAmount): SaveOrderActionProps {
         id,
         order: numeric<SalesOrders>(
             ["grandTotal", "amountDue", "tax", "taxPercentage", "subTotal"],
-            form
+            form,
         ) as any,
         deleteIds,
         items,

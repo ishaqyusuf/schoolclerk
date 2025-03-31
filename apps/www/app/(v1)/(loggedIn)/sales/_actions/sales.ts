@@ -1,26 +1,26 @@
 "use server";
 
-import { prisma } from "@/db";
+import { redirect } from "next/navigation";
+import { isNewSales } from "@/app/(clean-code)/(sales)/_common/utils/sales-utils";
+import { _saveSales } from "@/app/(v2)/(loggedIn)/sales/_data-access/save-sales.persistence";
+import { _updateProdQty } from "@/app/(v2)/(loggedIn)/sales/_data-access/update-prod-qty.dac";
+import { getSales } from "@/data-access/sales";
+import { prisma, Prisma } from "@/db";
+import { removeEmptyValues } from "@/lib/utils";
 import {
     CopyOrderActionProps,
     IOrderPrintMode,
-    ISalesType,
     ISalesOrder,
     ISalesOrderItemMeta,
+    ISalesType,
     SalesQueryParams,
     SaveOrderActionProps,
 } from "@/types/sales";
-import { Prisma } from "@prisma/client";
-import { getProgress, saveProgress } from "../../../_actions/progress";
-import { fixSalesPaymentAction } from "./sales-payment";
-import { removeEmptyValues } from "@/lib/utils";
-import { user, userId } from "../../../_actions/utils";
+
 import { _revalidate } from "../../../_actions/_revalidate";
-import { _saveSales } from "@/app/(v2)/(loggedIn)/sales/_data-access/save-sales.persistence";
-import { _updateProdQty } from "@/app/(v2)/(loggedIn)/sales/_data-access/update-prod-qty.dac";
-import { redirect } from "next/navigation";
-import { getSales } from "@/data-access/sales";
-import { isNewSales } from "@/app/(clean-code)/(sales)/_common/utils/sales-utils";
+import { getProgress, saveProgress } from "../../../_actions/progress";
+import { user, userId } from "../../../_actions/utils";
+import { fixSalesPaymentAction } from "./sales-payment";
 
 export async function getSalesOrder(query: SalesQueryParams) {
     query.type = "order";
@@ -194,7 +194,7 @@ export async function salesPrintAction({
         await Promise.all(
             ids.map(async (id) => {
                 await fixSalesPaymentAction(Number(id));
-            })
+            }),
         );
     const where: Prisma.SalesOrdersWhereInput = {
         deletedAt: null,

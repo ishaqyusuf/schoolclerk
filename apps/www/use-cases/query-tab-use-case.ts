@@ -9,7 +9,7 @@ import {
     saveQueryDta,
     updateQueryDataDta,
 } from "@/data-access/query-tab-dta";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/db";
 
 export type QueryTabs = AsyncFnType<typeof loadQueryTabsUseCase>;
 export async function loadQueryTabsUseCase() {

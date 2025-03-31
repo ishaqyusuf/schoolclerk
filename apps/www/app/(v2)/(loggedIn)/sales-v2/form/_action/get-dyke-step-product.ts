@@ -1,15 +1,15 @@
 "use server";
 
-import { prisma } from "@/db";
+import { DykeDoors, DykeProducts, DykeStepProducts, prisma } from "@/db";
+
+import { findDoorSvg } from "../../_utils/find-door-svg";
+import { sortStepProducts, transformStepProducts } from "../../dyke-utils";
 import {
     DykeProductMeta,
     DykeStepItemMeta,
     DykeStepMeta,
     StepProdctMeta,
 } from "../../type";
-import { DykeDoors, DykeProducts, DykeStepProducts } from "@prisma/client";
-import { findDoorSvg } from "../../_utils/find-door-svg";
-import { sortStepProducts, transformStepProducts } from "../../dyke-utils";
 
 export async function getMouldingStepProduct(specie) {
     const stepProducts = await prisma.dykeStepProducts.findMany({
@@ -59,8 +59,8 @@ export async function getStepProduct(stepId, doorType?) {
                 stepProducts.findIndex(
                     (p) =>
                         p.dykeProductId == _.dykeProductId ||
-                        p.product?.title == _.product?.title
-                ) == i
+                        p.product?.title == _.product?.title,
+                ) == i,
         )
         .map(transformStepProducts);
     // prods[0].meta.

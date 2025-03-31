@@ -1,10 +1,10 @@
 "use server";
 
-import { prisma } from "@/db";
+import { JobPayments, Jobs, prisma } from "@/db";
 import { sum, transformData } from "@/lib/utils";
-import { JobPayments, Jobs } from "@prisma/client";
-import { userId } from "../utils";
+
 import { _notifyProdStarted, _notifyWorkerPaymentPaid } from "../notifications";
+import { userId } from "../utils";
 
 export async function getPayableUsers(userId, single = false) {
     const users = await prisma.users.findMany({

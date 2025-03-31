@@ -1,12 +1,8 @@
 "use client";
 
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { OrderAssignmentSalesDoor, useAssignmentData } from "..";
 import { useEffect, useState, useTransition } from "react";
+import Btn from "@/components/_v1/btn";
+import FormInput from "@/components/common/controls/form-input";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -15,18 +11,20 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-
-import { useForm } from "react-hook-form";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Form } from "@/components/ui/form";
-import Btn from "@/components/_v1/btn";
-
-import { useAssignment } from "../use-assignment";
-import { OrderProductionSubmissions } from "@prisma/client";
-import FormInput from "@/components/common/controls/form-input";
-
-import { __revalidateProductions, _submitProduction } from "../_action/actions";
-import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
+import { OrderProductionSubmissions } from "@/db";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { OrderAssignmentSalesDoor, useAssignmentData } from "..";
+import { __revalidateProductions, _submitProduction } from "../_action/actions";
+import { useAssignment } from "../use-assignment";
 
 interface Props {
     salesDoor: OrderAssignmentSalesDoor;
@@ -42,7 +40,7 @@ export default function SubmitDoorProduction({
 }: Props) {
     const data = useAssignmentData();
     const modal = useAssignment(
-        data.data.isProd ? { type: "prod" } : undefined
+        data.data.isProd ? { type: "prod" } : undefined,
     );
     const group = data.data.doorGroups[groupIndex];
     const [open, onOpenChange] = useState(false);
@@ -104,7 +102,7 @@ export default function SubmitDoorProduction({
                     }
                     size={"sm"}
                     variant={"outline"}
-                    className="p-2 h-6"
+                    className="h-6 p-2"
                 >
                     Submit
                 </Button>
@@ -117,9 +115,9 @@ export default function SubmitDoorProduction({
                         </CardHeader>
                         <CardContent>
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="grid gap-2 col-span-2">
+                                <div className="col-span-2 grid gap-2">
                                     <Label>Qty</Label>
-                                    <div className="flex gap-2 flex-wrap">
+                                    <div className="flex flex-wrap gap-2">
                                         {Array(assignment.__report.pending)
                                             .fill(0)
                                             .map((_, i) => (
@@ -130,7 +128,7 @@ export default function SubmitDoorProduction({
                                                             isLeft
                                                                 ? "lhQty"
                                                                 : "rhQty",
-                                                            i + 1
+                                                            i + 1,
                                                         );
                                                     }}
                                                     variant={

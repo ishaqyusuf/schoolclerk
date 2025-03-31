@@ -86,7 +86,7 @@ export const siteConfig = {
                 },
                 {
                     title: "About us",
-                    href: "https://acme-corp.jumr.dev",
+                    href: "https://gnd-corp.jumr.dev",
                 },
                 {
                     title: "Contact",
