@@ -1,11 +1,12 @@
 "use client";
 
+import { getCustomerFormAction } from "@/actions/get-customer-form";
 import { useCreateCustomerParams } from "@/hooks/use-create-customer-params";
+import useEffectLoader from "@/lib/use-effect-loader";
+
+import { CustomerForm } from "../forms/customer-form";
 import { SheetHeader, SheetTitle } from "../ui/sheet";
 import { CustomSheet, CustomSheetContent } from "./custom-sheet-content";
-import { CustomerForm } from "../forms/customer-form";
-import useEffectLoader from "@/lib/use-effect-loader";
-import { getCustomerFormAction } from "@/actions/get-customer-form";
 
 export function CustomerCreateSheet() {
     const { params, setParams } = useCreateCustomerParams();
@@ -18,7 +19,7 @@ export function CustomerCreateSheet() {
         },
         {
             deps: [opened, params.customerId],
-        }
+        },
     );
     const cData = customerData?.data;
     if (!opened) return;
@@ -36,7 +37,7 @@ export function CustomerCreateSheet() {
         >
             <SheetHeader>
                 <SheetTitle>
-                    {!params.customerId ? "Update " : "Create "}Customer
+                    {!!params.customerId ? "Update " : "Create "}Customer
                 </SheetTitle>
             </SheetHeader>
             <CustomSheetContent>

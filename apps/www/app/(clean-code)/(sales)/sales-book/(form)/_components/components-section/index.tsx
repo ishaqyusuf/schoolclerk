@@ -410,6 +410,7 @@ export function Component({
                     {component.productCode}
                 </div>
             ) : null}
+
             <div
                 className={cn(
                     "absolute left-0 top-0 m-4 flex items-center gap-2",

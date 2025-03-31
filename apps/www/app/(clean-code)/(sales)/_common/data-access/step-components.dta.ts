@@ -71,7 +71,7 @@ export async function getComponentsDta(props: LoadStepComponentsProps) {
         });
     const stepProducts = await prisma.dykeStepProducts.findMany({
         where:
-            wheres.length == 0
+            wheres.length == 1
                 ? wheres[0]
                 : {
                       AND: wheres,
@@ -146,6 +146,7 @@ export function transformStepProduct(
             sortIndex: null,
             sortUid: null,
         },
+        isDeleted: !!component.deletedAt,
     };
 }
 export type GetStepComponent = ReturnType<typeof transformStepProduct>;

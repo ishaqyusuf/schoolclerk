@@ -1,29 +1,30 @@
 "use client";
 
-import { z } from "zod";
-import { Form } from "../ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createCustomerSchema } from "@/actions/schema";
 import { useEffect, useState } from "react";
+import { getCustomerProfilesAction } from "@/actions/cache/get-customer-profiles";
+import { getTaxProfilesAction } from "@/actions/cache/get-tax-profiles";
+import { createCustomerAction } from "@/actions/create-customer-action";
+import { createCustomerSchema } from "@/actions/schema";
+import salesData from "@/app/(clean-code)/(sales)/_common/utils/sales-data";
+import { useCreateCustomerParams } from "@/hooks/use-create-customer-params";
+import useEffectLoader from "@/lib/use-effect-loader";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+import FormInput from "../common/controls/form-input";
+import FormSelect from "../common/controls/form-select";
+import { SubmitButton } from "../submit-button";
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
 } from "../ui/accordion";
-import FormInput from "../common/controls/form-input";
-import FormSelect from "../common/controls/form-select";
-import useEffectLoader from "@/lib/use-effect-loader";
-import { getCustomerProfilesAction } from "@/actions/cache/get-customer-profiles";
-import salesData from "@/app/(clean-code)/(sales)/_common/utils/sales-data";
 import { Button } from "../ui/button";
-import { SubmitButton } from "../submit-button";
-import { useAction } from "next-safe-action/hooks";
-import { createCustomerAction } from "@/actions/create-customer-action";
-import { useCreateCustomerParams } from "@/hooks/use-create-customer-params";
-import { getTaxProfilesAction } from "@/actions/cache/get-tax-profiles";
-import { toast } from "sonner";
+import { Form } from "../ui/form";
 
 export type CustomerFormData = z.infer<typeof createCustomerSchema>;
 type Props = {
@@ -65,7 +66,7 @@ export function CustomerForm({ data }: Props) {
         },
         {
             wait: 120,
-        }
+        },
     );
     const { taxProfiles, salesProfiles } = resp?.data || {};
     const { params, setParams } = useCreateCustomerParams();
@@ -74,7 +75,7 @@ export function CustomerForm({ data }: Props) {
             setSections(["general", "address"]);
             let formData = {};
             Object.entries(data).map(
-                ([k, v]) => (formData[k] = v || undefined)
+                ([k, v]) => (formData[k] = v || undefined),
             );
             form.reset({
                 ...formData,
@@ -84,7 +85,6 @@ export function CustomerForm({ data }: Props) {
     const customerType = form.watch("customerType");
     const createCustomer = useAction(createCustomerAction, {
         onSuccess: ({ data: resp }) => {
-            console.log(resp);
             toast.success(data?.id ? "Updated" : "Created");
             customerFormStaticCallbacks?.created?.(resp.customerId);
 
@@ -99,7 +99,7 @@ export function CustomerForm({ data }: Props) {
             <form
                 // onSubmit={form.handleSubmit(__test)}
                 onSubmit={form.handleSubmit(createCustomer.execute)}
-                className="pb-32 overflow-x-hidden flex flex-col"
+                className="flex flex-col overflow-x-hidden pb-32"
             >
                 <div className="">
                     <Accordion
@@ -161,7 +161,7 @@ export function CustomerForm({ data }: Props) {
                                                 (s) => ({
                                                     ...s,
                                                     id: String(s.id),
-                                                })
+                                                }),
                                             )}
                                         />
                                         <FormSelect
@@ -233,8 +233,8 @@ export function CustomerForm({ data }: Props) {
                         </AccordionItem>
                     </Accordion>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 px-4 bg-white">
-                    <div className="flex justify-end mt-auto space-x-4">
+                <div className="absolute bottom-0 left-0 right-0 bg-white px-4">
+                    <div className="mt-auto flex justify-end space-x-4">
                         <Button
                             variant="outline"
                             // onClick={() => setCustomerParams(null)}

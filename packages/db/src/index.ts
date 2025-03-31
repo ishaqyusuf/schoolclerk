@@ -21,6 +21,36 @@ const prismaClientSingleton = () => {
             "warn",
           ]
         : ["error"],
+  }).$extends({
+    query: {
+      $allModels: {
+        // async $allOperations({args,operation})
+        // {
+        // },
+        async findFirst({ model, operation, args, query }) {
+          if (!args) args = { where: {} };
+          if (!args.where) args.where = {};
+
+          if (!Object.keys(args.where).includes("deletedAt"))
+            args.where = { deletedAt: null, ...args.where };
+          // args.where = {};
+          // console.log(args.where);
+          return query(args);
+        },
+        async findMany({ model, operation, args, query }) {
+          if (!args) args = { where: {} };
+          if (!args.where) args.where = {};
+
+          if (!Object.keys(args.where).includes("deletedAt"))
+            args.where = { deletedAt: null, ...args.where };
+          // args.where.deletedAt = null;
+
+          // args.where = {};
+          // console.log(args.where);
+          return query(args);
+        },
+      },
+    },
   });
 };
 
