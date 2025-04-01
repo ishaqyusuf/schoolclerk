@@ -1,20 +1,31 @@
-import Modal from "@/components/common/modal";
-
-import { useForm } from "react-hook-form";
-
-import { Form } from "@/components/ui/form";
-
-import { _modal } from "@/components/common/modal/provider";
-import { toast } from "sonner";
-import { ComponentHelperClass } from "../../../_utils/helpers/zus/step-component-class";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import FormInput from "@/components/common/controls/form-input";
 import {
     saveComponentPricingUseCase,
     updateComponentPricingUseCase,
 } from "@/app/(clean-code)/(sales)/_common/use-case/sales-book-pricing-use-case";
+import Money from "@/components/_v1/money";
+import { Menu } from "@/components/(clean-code)/menu";
+import FormInput from "@/components/common/controls/form-input";
+import FormSelect from "@/components/common/controls/form-select";
+import Modal from "@/components/common/modal";
+import { _modal } from "@/components/common/modal/provider";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { Form } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
     Table,
     TableBody,
@@ -23,34 +34,20 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-
-import { cn, toNumber } from "@/lib/utils";
-import Money from "@/components/_v1/money";
-import AdminControl from "../../admin-control";
-
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { DoorSizeSelectContext, useCtx, useInitContext } from "./ctx";
+import { cn, toNumber } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { ComponentHelperClass } from "../../../_utils/helpers/zus/step-component-class";
+import AdminControl from "../../admin-control";
 import { Door } from "../door-swap-modal";
-import FormSelect from "@/components/common/controls/form-select";
-import { Menu } from "@/components/(clean-code)/menu";
-import { Input } from "@/components/ui/input";
+import { DoorSizeSelectContext, useCtx, useInitContext } from "./ctx";
 
 interface Props {
     cls: ComponentHelperClass;
@@ -76,7 +73,7 @@ export default function DoorSizeSelectModal({ cls, door }: Props) {
                 <Form {...ctx.form}>
                     <ScrollArea
                         // tabIndex={-1}
-                        className="max-h-[50vh] px-4 -mx-4"
+                        className="-mx-4 max-h-[50vh] px-4"
                     >
                         <Table>
                             <TableHeader>
@@ -298,6 +295,7 @@ function PriceControl({ salesPrice, basePrice, variant }) {
         <Form {...form}>
             <CardHeader>
                 <CardTitle>Edit Price</CardTitle>
+                <CardDescription>{variant.size}</CardDescription>
             </CardHeader>
             <CardContent>
                 <FormInput
