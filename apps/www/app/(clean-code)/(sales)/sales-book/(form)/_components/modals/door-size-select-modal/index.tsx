@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
     saveComponentPricingUseCase,
     updateComponentPricingUseCase,
@@ -217,8 +218,9 @@ function Row({ variant }) {
 function PriceCell({ salesPrice, basePrice, variant }) {
     const ctx = useCtx();
     // return <Menu Trigger={}></Menu>
+    const [opened, setOpened] = useState(false);
     return (
-        <Popover>
+        <Popover open={opened} onOpenChange={setOpened}>
             <PopoverTrigger>
                 <TooltipProvider>
                     <Tooltip>
@@ -250,6 +252,9 @@ function PriceCell({ salesPrice, basePrice, variant }) {
                 }}
             >
                 <PriceControl
+                    priceUpdated={(e) => {
+                        setOpened(false);
+                    }}
                     salesPrice={salesPrice}
                     basePrice={basePrice}
                     variant={variant}
@@ -258,7 +263,7 @@ function PriceCell({ salesPrice, basePrice, variant }) {
         </Popover>
     );
 }
-function PriceControl({ salesPrice, basePrice, variant }) {
+function PriceControl({ salesPrice, basePrice, variant, priceUpdated }) {
     const form = useForm({
         defaultValues: {
             price: basePrice || "",
@@ -290,6 +295,7 @@ function PriceControl({ salesPrice, basePrice, variant }) {
         await ctx.cls.fetchUpdatedPrice();
         toast.success("Pricing Updated.");
         ctx.priceChanged(variant.size, price);
+        priceUpdated?.();
     }
     return (
         <Form {...form}>
