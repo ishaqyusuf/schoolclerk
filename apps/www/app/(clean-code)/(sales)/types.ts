@@ -260,6 +260,8 @@ export interface DykeProductMeta {
 }
 export interface DykeFormStepMeta {
     hidden?: boolean;
+    // custom?: boolean;
+    flatRate?: boolean;
 }
 export interface ShelfItemMeta {
     categoryUid: string;
@@ -414,6 +416,7 @@ export interface SalesFormItem {
         doorStepProductId?;
         groupUid?;
         pricing?: {
+            flatRate?: number;
             components?: {
                 basePrice?: number;
                 salesPrice?: number;
@@ -537,6 +540,7 @@ export interface SalesFormFields {
             meta?: StepMeta;
             salesOrderItemId?;
             componentId?;
+            flatRate?: boolean;
             sectionOverride?: StepComponentMeta["sectionOverride"];
         };
     };

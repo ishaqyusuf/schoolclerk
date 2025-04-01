@@ -336,7 +336,14 @@ export class StepHelperClass extends SettingsClass {
                 const vis = this.isComponentVisible(component);
                 component._metaData.visible = !!vis;
                 component.basePrice = this.getComponentPrice(component.uid);
-                component.salesPrice = this.calculateSales(component.basePrice);
+                component.salesPrice =
+                    // component._metaData.custom
+                    //     ? component.basePrice
+                    //     :
+                    this.calculateSales(component.basePrice);
+                // component.salesPrice = component._metaData.custom
+                //     ? component.basePrice
+                //     : this.calculateSales(component.basePrice);
                 const sort = component._metaData.sorts?.find((s) =>
                     vis?.includes(s.uid),
                 );
@@ -467,6 +474,7 @@ export class StepHelperClass extends SettingsClass {
             nextStepForm = {
                 componentUid: null,
                 meta: nextRoute.meta,
+                flatRate: false,
             };
         }
         nextStepForm.title = nextRoute.title;
@@ -730,7 +738,7 @@ export class ComponentHelperClass extends StepHelperClass {
             this.calculateTotalPrice();
         } else {
             let stepData = this.getStepForm();
-            stepData.salesOrderItemId;
+            // stepData.salesOrderItemId;
             const component = this.getComponent;
             if (stepData.title == "Item Type") {
                 if (component.title == "Moulding") {
@@ -759,8 +767,10 @@ export class ComponentHelperClass extends StepHelperClass {
                     //
                 }
             }
+            // stepData.flat
             stepData = {
                 ...stepData,
+                flatRate: component._metaData?.custom,
                 componentUid: this.componentUid,
                 componentId: component.id,
                 value: component.title,

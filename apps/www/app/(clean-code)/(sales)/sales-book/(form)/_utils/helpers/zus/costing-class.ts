@@ -1,13 +1,14 @@
+import { dotObject, dotSet } from "@/app/(clean-code)/_common/utils/utils";
+import { PricingMetaData } from "@/app/(clean-code)/(sales)/types";
 import { formatMoney } from "@/lib/use-number";
+import { addPercentage, dotArray, percentageValue, sum } from "@/lib/utils";
+import { toast } from "sonner";
+
 import {
     ZusGroupItem,
     ZusSales,
 } from "../../../_common/_stores/form-data-store";
 import { SettingsClass } from "./settings-class";
-import { toast } from "sonner";
-import { addPercentage, dotArray, percentageValue, sum } from "@/lib/utils";
-import { PricingMetaData } from "@/app/(clean-code)/(sales)/types";
-import { dotObject, dotSet } from "@/app/(clean-code)/_common/utils/utils";
 
 export class CostingClass {
     constructor(public setting?: SettingsClass) {}
@@ -16,6 +17,7 @@ export class CostingClass {
     }
     public calculateSales(price) {
         if (!price) return price;
+
         const value = formatMoney(price * this.salesMultiplier);
         return value;
     }
@@ -52,18 +54,18 @@ export class CostingClass {
                     if (prod && prod.productId == productId) {
                         prod.salesPrice = salesPrice;
                         prod.totalPrice = formatMoney(
-                            prod.salesPrice * prod.qty
+                            prod.salesPrice * prod.qty,
                         );
                         data?.dotUpdate(
                             `kvFormItem.${k}.shelfItems.lines.${uid}.products.${puid}`,
-                            prod
+                            prod,
                         );
                     }
                     subTotal += Number(prod?.totalPrice || 0);
                 });
                 data?.dotUpdate(
                     `kvFormItem.${k}.shelfItems.subTotal`,
-                    subTotal
+                    subTotal,
                 );
             });
         });
@@ -71,7 +73,7 @@ export class CostingClass {
     }
     public updateShelfCosts(
         itemUid = this.setting.itemUid,
-        forceUpdate = false
+        forceUpdate = false,
     ) {
         const data = this.setting.zus;
         if (this.setting.staticZus) return;
@@ -87,7 +89,7 @@ export class CostingClass {
                 prod.totalPrice = formatMoney(prod.salesPrice * prod.qty);
                 data.dotUpdate(
                     `kvFormItem.${itemUid}.shelfItems.lines.${uid}.products.${puid}`,
-                    prod
+                    prod,
                 );
                 subTotal += prod.totalPrice;
             });
@@ -107,12 +109,12 @@ export class CostingClass {
         ds.set("pricing.components.basePrice", totalBasePrice);
         ds.set(
             "pricing.components.salesPrice",
-            this.calculateSales(totalBasePrice)
+            this.calculateSales(totalBasePrice),
         );
     }
     public updateComponentCost(
         itemUid = this.setting.itemUid,
-        forceUpdate = false
+        forceUpdate = false,
     ) {
         const data = this.setting.zus;
         if (this.setting.staticZus) return;
@@ -122,17 +124,22 @@ export class CostingClass {
             return;
         }
         let totalBasePrice = 0;
+        let totalFlatRate = 0;
         Object.entries(data.kvStepForm).map(([k, stepData]) => {
             if (k.startsWith(`${itemUid}-`)) {
-                totalBasePrice += stepData?.basePrice || 0;
+                if (!stepData.flatRate)
+                    totalBasePrice += stepData?.basePrice || 0;
+                else totalFlatRate += stepData?.basePrice || 0;
             }
         });
-
+        const pricing = itemForm?.groupItem?.pricing;
         if (
             ((totalBasePrice ||
-                itemForm?.groupItem?.pricing?.components?.basePrice) &&
-                itemForm?.groupItem?.pricing?.components?.basePrice !=
-                    totalBasePrice) ||
+                pricing?.components?.basePrice ||
+                totalFlatRate ||
+                pricing?.flatRate) &&
+                (pricing?.components?.basePrice != totalBasePrice ||
+                    pricing?.flatRate != totalFlatRate)) ||
             forceUpdate
         ) {
             // update component price
@@ -144,6 +151,7 @@ export class CostingClass {
                     itemIds: [],
                     qty: {},
                     pricing: {
+                        flatRate: totalFlatRate,
                         components: {
                             basePrice: totalBasePrice,
                             salesPrice: this.calculateSales(totalBasePrice),
@@ -156,13 +164,13 @@ export class CostingClass {
                 ds.set("pricing.components.basePrice", totalBasePrice);
                 ds.set(
                     "pricing.components.salesPrice",
-                    this.calculateSales(totalBasePrice)
+                    this.calculateSales(totalBasePrice),
                 );
             }
             if (groupItem.form)
                 Object.entries(groupItem.form || {}).map(([k, kform]) => {
                     kform.pricing.itemPrice.salesPrice = this.calculateSales(
-                        kform.pricing.itemPrice.basePrice
+                        kform.pricing.itemPrice.basePrice,
                     );
                 });
             this.saveGroupItem(groupItem, itemUid);
@@ -191,7 +199,7 @@ export class CostingClass {
     }
     public estimateGroupPricing(
         groupItem: ZusGroupItem,
-        itemUid = this.setting.itemUid
+        itemUid = this.setting.itemUid,
     ) {
         groupItem.pricing.total = {
             basePrice: 0,
@@ -202,7 +210,7 @@ export class CostingClass {
             null,
             itemUid,
             null,
-            this.setting.staticZus
+            this.setting.staticZus,
         ).getRouteConfig()?.noHandle;
         Object.entries(groupItem?.form).map(([uid, formData]) => {
             // const noHandle = formData.meta.noHandle;
@@ -220,7 +228,7 @@ export class CostingClass {
         if (!staticData)
             this.setting.zus.dotUpdate(
                 `kvFormItem.${itemUid}.groupItem`,
-                groupItem
+                groupItem,
             );
         else staticData.kvFormItem[itemUid].groupItem = groupItem;
     }
@@ -233,12 +241,13 @@ export class CostingClass {
                 : sum([
                       groupItem?.pricing?.components?.salesPrice,
                       formData?.pricing?.itemPrice?.salesPrice,
+                      formData?.pricing?.flatRate,
                   ]);
 
         const priceList = [pl, formData.pricing?.addon];
         const unitPrice = sum(priceList);
         const totalPrice = formatMoney(
-            sum(priceList) * Number(formData.qty.total)
+            sum(priceList) * Number(formData.qty.total),
         );
         formData.pricing.unitPrice = unitPrice;
         formData.pricing.totalPrice = totalPrice;
@@ -287,7 +296,7 @@ export class CostingClass {
                 estimate.delivery,
                 subGrandTot,
                 estimate.ccc || 0,
-            ])
+            ]),
         );
         if (this.setting?.staticZus)
             this.setting.staticZus.metaData.pricing = estimate;
@@ -303,7 +312,7 @@ export class CostingClass {
             const groupItem = itemData.groupItem;
             if (itemData.shelfItems) {
                 const shelfSubTotal = Number(
-                    itemData.shelfItems?.subTotal || 0
+                    itemData.shelfItems?.subTotal || 0,
                 );
                 estimate.subTotal += shelfSubTotal;
                 estimate.taxxable += shelfSubTotal;
@@ -325,13 +334,13 @@ export class CostingClass {
     }
     public taxCodeChanged() {
         const taxProfile = this.taxList().find(
-            (tax) => tax.taxCode == this.setting.dotGet("metaData.tax.taxCode")
+            (tax) => tax.taxCode == this.setting.dotGet("metaData.tax.taxCode"),
         );
         // this.setting?.zus.dotUpdate("metaData.tax.taxCode", taxProfile.taxCode);
         this.setting?.zus.dotUpdate("metaData.tax.title", taxProfile.title);
         this.setting?.zus.dotUpdate(
             "metaData.tax.percentage",
-            taxProfile.percentage
+            taxProfile.percentage,
         );
         // console.log(taxProfile);
         this.calculateTotalPrice();

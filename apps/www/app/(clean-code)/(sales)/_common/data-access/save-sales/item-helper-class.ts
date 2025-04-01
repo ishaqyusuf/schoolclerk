@@ -196,6 +196,7 @@ export class ItemHelperClass {
                     salesId: this.ctx.salesId,
                     salesItemId: this.itemData.id,
                 } satisfies Prisma.DykeStepFormCreateManyInput;
+
                 this.itemData.formValues.push({
                     data: createData,
                     id: createData.id,
@@ -208,7 +209,9 @@ export class ItemHelperClass {
         });
     }
     public composeStepUpdateData(step) {
-        const meta = {} satisfies DykeFormStepMeta;
+        const meta = {
+            flatRate: step.flatRate,
+        } satisfies DykeFormStepMeta;
         return {
             basePrice: this.ctx.safeInt(step.basePrice),
             price: this.ctx.safeInt(step.salesPrice),

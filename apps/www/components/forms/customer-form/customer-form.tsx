@@ -1,18 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { findExistingCustomers } from "@/actions/cache/find-existing-customers";
 import { getCustomerProfilesAction } from "@/actions/cache/get-customer-profiles";
 import { getTaxProfilesAction } from "@/actions/cache/get-tax-profiles";
 import { createCustomerAction } from "@/actions/create-customer-action";
 import { createCustomerSchema } from "@/actions/schema";
 import salesData from "@/app/(clean-code)/(sales)/_common/utils/sales-data";
 import { useCreateCustomerParams } from "@/hooks/use-create-customer-params";
-import { useDebounce } from "@/hooks/use-debounce";
 import useEffectLoader from "@/lib/use-effect-loader";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 

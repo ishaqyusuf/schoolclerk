@@ -58,6 +58,7 @@ export function SalesCustomerForm() {
                 zus.dotUpdate("metaData.tax.taxCode", resp?.taxCode);
                 zus.dotUpdate("metaData.paymentTerm", resp?.netTerm);
                 setting.taxCodeChanged();
+                setting.salesProfileChanged();
                 setTimeout(() => {
                     setting.calculateTotalPrice();
                 }, 100);
