@@ -5,13 +5,14 @@ import { env } from "@/env.mjs";
 import { getBaseUrl } from "@/envs";
 import { resend } from "@/lib/resend";
 import { sum } from "@/lib/utils";
-import { composeSalesEmail } from "@/modules/email/emails/invoice";
 import { createNoteAction } from "@/modules/notes/actions/create-note-action";
 import { whereSales } from "@/utils/db/where.sales";
 import { composePaymentOrderIdsParam } from "@/utils/format-payment-params";
 import { render } from "@react-email/render";
 import { nanoid } from "nanoid";
 import QueryString from "qs";
+
+import { composeSalesEmail } from "@gnd/email/emails/invoice";
 
 interface Props {
     ids;
@@ -156,6 +157,8 @@ export const __sendInvoiceEmailTrigger = async ({
                     }),
                 );
                 if (response.error) {
+                    console.log(response.error);
+
                     throw new Error(`Unable to send email`);
                 }
             }

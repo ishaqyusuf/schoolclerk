@@ -24,3 +24,7 @@ export function formatAmount({
     maximumFractionDigits,
   }).format(amount);
 }
+export const formatCurrency = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD", // Replace with your desired currency code
+});

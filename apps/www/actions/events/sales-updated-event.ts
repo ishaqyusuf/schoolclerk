@@ -1,13 +1,13 @@
 "use server";
 
-import { composeEmailTemplate } from "@/modules/email/emails/composed-email";
-import { salesEventData } from ".";
+import { user } from "@/app/(v1)/_actions/utils";
 import {
     composeStackLine,
     composeText,
     mailComposer,
 } from "@/utils/email-composer";
-import { user } from "@/app/(v1)/_actions/utils";
+
+import { salesEventData } from ".";
 
 export async function salesUpdatedEvent(id) {
     const data = await salesEventData(id);
@@ -21,13 +21,13 @@ export async function salesUpdatedEvent(id) {
                 [
                     mc.tableRow(
                         mc.text(`${data.type} #`),
-                        mc.text(`${data.orderId}`)
+                        mc.text(`${data.orderId}`),
                     ),
                     mc.tableRow(
                         mc.text(`Sales Rep:`),
-                        mc.text(`${data.salesRep?.name}`)
+                        mc.text(`${data.salesRep?.name}`),
                     ),
-                ]
+                ],
             ),
         ]),
         preview: `${data.type} updated by ${auth?.name}`,

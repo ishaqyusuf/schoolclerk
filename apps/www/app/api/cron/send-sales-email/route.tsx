@@ -1,10 +1,11 @@
 import { prisma } from "@/db";
-import { nanoid } from "nanoid";
-import { resend } from "@/lib/resend";
-import { composeSalesEmail } from "@/modules/email/emails/invoice";
-import QueryString from "qs";
-import { render } from "@react-email/render";
 import { env } from "@/env.mjs";
+import { resend } from "@/lib/resend";
+import { render } from "@react-email/render";
+import { nanoid } from "nanoid";
+import QueryString from "qs";
+
+import { composeSalesEmail } from "@gnd/email/emails/invoice";
 
 export async function POST(request: Request) {
     const body = await request.json();
@@ -67,10 +68,10 @@ export async function POST(request: Request) {
                         slugs: sales.slug,
                         mode: sales.type,
                         preview: false,
-                    }
+                    },
                 )}`,
                 salesRep,
-            })
+            }),
         ),
     });
     if (response.error) throw new Error(`Unable to send email`);

@@ -1,9 +1,11 @@
 "use server";
+
 import { env } from "@/env.mjs";
 import { resend } from "@/lib/resend";
-import { _salesRepPaymentNotificationEmail } from "@/modules/email/emails/sales-rep-payment-notification";
 import { render } from "@react-email/components";
 import { nanoid } from "nanoid";
+
+import { _salesRepPaymentNotificationEmail } from "@gnd/email/emails/sales-rep-payment-notification";
 
 export interface NotifySalesRepPayment {
     repName: string;
@@ -13,7 +15,7 @@ export interface NotifySalesRepPayment {
     email: string;
 }
 export const notifySalesRepPaymentSuccessAction = async (
-    props: NotifySalesRepPayment
+    props: NotifySalesRepPayment,
 ) => {
     if (env.NODE_ENV == "development")
         props.email = ["ishaqyusuf024@gmail.com", "pcruz321@gmail.com"] as any;
