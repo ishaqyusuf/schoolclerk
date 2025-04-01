@@ -1,5 +1,5 @@
 {
-  "name": "@gnd/email",
+  "name": "@midday/email",
   "version": "1.0.0",
   "private": true,
   "main": "index.ts",
@@ -13,6 +13,8 @@
     "start": "email start"
   },
   "dependencies": {
+    "@gnd/ui": "workspace:*",
+    "@gnd/utils": "workspace:*",
     "@react-email/components": "0.0.31",
     "@react-email/render": "0.0.10",
     "@react-email/tailwind": "1.0.4",
