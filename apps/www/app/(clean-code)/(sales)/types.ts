@@ -361,6 +361,7 @@ export interface PricingMetaData {
     grandTotal?: number;
     paid?: number;
     pending?: number;
+    dueAmount?: number | string;
     discount?: number | string;
     delivery?: number | string;
     labour?: number | string;

@@ -23,7 +23,7 @@ export class CostingClass {
     }
     public salesProfileChanged() {
         const profile = this.setting.currentProfile();
-        const multiplier = profile.coefficient
+        const multiplier = profile?.coefficient
             ? formatMoney(1 / profile.coefficient)
             : 1;
         this.setting.zus.dotUpdate("metaData.salesMultiplier", multiplier);

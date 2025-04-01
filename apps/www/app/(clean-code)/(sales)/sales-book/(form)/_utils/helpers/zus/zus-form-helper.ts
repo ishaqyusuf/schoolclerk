@@ -70,6 +70,7 @@ export function zhInitializeState(data: GetSalesBookForm, copy = false) {
             goodUntil: data.order?.goodUntil,
             paymentMethod: data.order?.meta?.payment_option,
             pricing: {
+                dueAmount: data?.order?.amountDue,
                 discount: data.order?.meta?.discount,
                 delivery: data.order?.meta?.deliveryCost,
                 labour: data.order?.meta?.labor_cost,
@@ -92,6 +93,7 @@ export function zhInitializeState(data: GetSalesBookForm, copy = false) {
                 id: data.customer?.id,
                 businessName: data?.customer?.businessName,
                 name: data?.customer?.name,
+                phone: data.customer?.phoneNo,
                 isBusiness: data?.customer?.businessName != null,
             },
             sameAddress:
