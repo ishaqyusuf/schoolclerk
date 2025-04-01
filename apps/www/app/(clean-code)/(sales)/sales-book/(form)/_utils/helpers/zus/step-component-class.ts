@@ -335,12 +335,11 @@ export class StepHelperClass extends SettingsClass {
                 if (!component._metaData) component._metaData = {} as any;
                 const vis = this.isComponentVisible(component);
                 component._metaData.visible = !!vis;
+
                 component.basePrice = this.getComponentPrice(component.uid);
-                component.salesPrice =
-                    // component._metaData.custom
-                    //     ? component.basePrice
-                    //     :
-                    this.calculateSales(component.basePrice);
+                component.salesPrice = component._metaData.custom
+                    ? component.basePrice
+                    : this.calculateSales(component.basePrice);
                 // component.salesPrice = component._metaData.custom
                 //     ? component.basePrice
                 //     : this.calculateSales(component.basePrice);
@@ -739,7 +738,6 @@ export class ComponentHelperClass extends StepHelperClass {
         } else {
             let stepData = this.getStepForm();
             // stepData.salesOrderItemId;
-            const component = this.getComponent;
             if (stepData.title == "Item Type") {
                 if (component.title == "Moulding") {
                     this.dotUpdateItemForm("groupItem.type", "SERVICE");

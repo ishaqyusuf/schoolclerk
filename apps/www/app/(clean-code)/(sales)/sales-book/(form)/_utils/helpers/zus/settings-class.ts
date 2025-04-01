@@ -124,16 +124,16 @@ export class SettingsClass extends CostingClass {
 
         return steps;
     }
-    public getRouteOverrideConfig() {
+    public getRouteOverrideConfig(itemUid = this.itemUid) {
         const override = Object.entries(this.zus.kvStepForm)
-            ?.filter(([k, v]) => k.startsWith(this.itemUid))
+            ?.filter(([k, v]) => k.startsWith(itemUid))
             ?.map(([k, v]) => v?.sectionOverride)
             .filter((s) => s?.overrideMode)?.[0];
         return override;
     }
-    public getRouteConfig() {
+    public getRouteConfig(itemUid = this.itemUid) {
         const route = this.zus.setting.composedRouter;
-        const fItem = this.zus.sequence?.stepComponent?.[this.itemUid];
+        const fItem = this.zus.sequence?.stepComponent?.[itemUid];
         const componentUid = this.zus.kvStepForm[fItem[0]]?.componentUid;
 
         const config = route[componentUid]?.config || {};

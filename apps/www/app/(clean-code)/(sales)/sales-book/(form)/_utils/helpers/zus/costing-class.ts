@@ -4,10 +4,7 @@ import { formatMoney } from "@/lib/use-number";
 import { addPercentage, dotArray, percentageValue, sum } from "@/lib/utils";
 import { toast } from "sonner";
 
-import {
-    ZusGroupItem,
-    ZusSales,
-} from "../../../_common/_stores/form-data-store";
+import { ZusGroupItem } from "../../../_common/_stores/form-data-store";
 import { SettingsClass } from "./settings-class";
 
 export class CostingClass {
@@ -100,30 +97,6 @@ export class CostingClass {
     public groupComponentCost(groupItem, itemUid) {
         const data = this.setting.zus;
         let totalBasePrice = 0;
-        Object.entries(data.kvStepForm).map(([k, stepData]) => {
-            if (k.startsWith(`${itemUid}-`)) {
-                totalBasePrice += stepData?.basePrice || 0;
-            }
-        });
-        const ds = dotSet(groupItem);
-        ds.set("pricing.components.basePrice", totalBasePrice);
-        ds.set(
-            "pricing.components.salesPrice",
-            this.calculateSales(totalBasePrice),
-        );
-    }
-    public updateComponentCost(
-        itemUid = this.setting.itemUid,
-        forceUpdate = false,
-    ) {
-        const data = this.setting.zus;
-        if (this.setting.staticZus) return;
-        const itemForm = data.kvFormItem[itemUid];
-        if (itemForm?.shelfItems?.lineUids) {
-            this.updateShelfCosts(itemUid, forceUpdate);
-            return;
-        }
-        let totalBasePrice = 0;
         let totalFlatRate = 0;
         Object.entries(data.kvStepForm).map(([k, stepData]) => {
             if (k.startsWith(`${itemUid}-`)) {
@@ -132,6 +105,38 @@ export class CostingClass {
                 else totalFlatRate += stepData?.basePrice || 0;
             }
         });
+        const ds = dotSet(groupItem);
+        ds.set("pricing.components.basePrice", totalBasePrice);
+        ds.set(
+            "pricing.components.salesPrice",
+            this.calculateSales(totalBasePrice),
+        );
+        ds.set("pricing.flatRate", totalFlatRate);
+    }
+    public updateComponentCost(
+        itemUid = this.setting.itemUid,
+        forceUpdate = false,
+    ) {
+        const data = this.setting.zus;
+        // if (this.setting.staticZus) return;
+        const itemForm = data.kvFormItem[itemUid];
+        if (itemForm?.shelfItems?.lineUids) {
+            this.updateShelfCosts(itemUid, forceUpdate);
+            return;
+        }
+        let totalBasePrice = 0;
+        let totalFlatRate = 0;
+
+        Object.entries(data.kvStepForm).map(([k, stepData]) => {
+            if (k.startsWith(`${itemUid}-`)) {
+                if (!stepData.flatRate)
+                    totalBasePrice += stepData?.basePrice || 0;
+                else totalFlatRate += stepData?.basePrice || 0;
+            }
+        });
+        console.log({ totalBasePrice, totalFlatRate });
+        const totalSalesPrice = this.calculateSales(totalBasePrice);
+
         const pricing = itemForm?.groupItem?.pricing;
         if (
             ((totalBasePrice ||
@@ -154,7 +159,7 @@ export class CostingClass {
                         flatRate: totalFlatRate,
                         components: {
                             basePrice: totalBasePrice,
-                            salesPrice: this.calculateSales(totalBasePrice),
+                            salesPrice: totalSalesPrice,
                         },
                         total: {},
                     },
@@ -162,13 +167,13 @@ export class CostingClass {
             else {
                 const ds = dotSet(groupItem);
                 ds.set("pricing.components.basePrice", totalBasePrice);
-                ds.set(
-                    "pricing.components.salesPrice",
-                    this.calculateSales(totalBasePrice),
-                );
+                ds.set("pricing.flatRate", totalFlatRate);
+                ds.set("pricing.components.salesPrice", totalSalesPrice);
             }
+
             if (groupItem.form)
                 Object.entries(groupItem.form || {}).map(([k, kform]) => {
+                    // groupItem.pricing.flatRate
                     kform.pricing.itemPrice.salesPrice = this.calculateSales(
                         kform.pricing.itemPrice.basePrice,
                     );
@@ -186,6 +191,7 @@ export class CostingClass {
         if (!groupItem) return;
         if (!groupItem.pricing)
             groupItem.pricing = {
+                flatRate: 0,
                 components: {
                     basePrice: 0,
                     salesPrice: 0,
@@ -195,23 +201,30 @@ export class CostingClass {
                     salesPrice: 0,
                 },
             };
+        console.log({ groupItem });
+
         this.estimateGroupPricing(groupItem, itemUid);
     }
     public estimateGroupPricing(
         groupItem: ZusGroupItem,
         itemUid = this.setting.itemUid,
     ) {
+        console.log({ pricing: groupItem.pricing });
+
         groupItem.pricing.total = {
+            // flatRate: 0,
             basePrice: 0,
             salesPrice: 0,
         };
         this.groupComponentCost(groupItem, itemUid);
-        let noHandle = new SettingsClass(
-            null,
-            itemUid,
-            null,
-            this.setting.staticZus,
-        ).getRouteConfig()?.noHandle;
+        let noHandle = this.setting
+            // new SettingsClass(
+            //     null,
+            //     itemUid,
+            //     null,
+            //     this.setting.staticZus,
+            // )
+            .getRouteConfig(itemUid)?.noHandle;
         Object.entries(groupItem?.form).map(([uid, formData]) => {
             // const noHandle = formData.meta.noHandle;
             // console.log(formData.meta);
@@ -234,15 +247,13 @@ export class CostingClass {
     }
     public getEstimatePricing(groupItem, formData) {
         const cPrice = formData.pricing?.customPrice;
-
-        const pl =
-            cPrice || (cPrice == 0 && cPrice !== "")
-                ? cPrice
-                : sum([
-                      groupItem?.pricing?.components?.salesPrice,
-                      formData?.pricing?.itemPrice?.salesPrice,
-                      formData?.pricing?.flatRate,
-                  ]);
+        const customPricing = cPrice || (cPrice == 0 && cPrice !== "");
+        const pll = [
+            groupItem?.pricing?.components?.salesPrice,
+            formData?.pricing?.itemPrice?.salesPrice,
+            groupItem?.pricing?.flatRate,
+        ];
+        const pl = customPricing ? cPrice : sum(pll);
 
         const priceList = [pl, formData.pricing?.addon];
         const unitPrice = sum(priceList);
@@ -251,6 +262,8 @@ export class CostingClass {
         );
         formData.pricing.unitPrice = unitPrice;
         formData.pricing.totalPrice = totalPrice;
+        console.log({ unitPrice, priceList, pll });
+
         if (formData.selected)
             groupItem.pricing.total.salesPrice += formData.pricing.totalPrice;
         return {

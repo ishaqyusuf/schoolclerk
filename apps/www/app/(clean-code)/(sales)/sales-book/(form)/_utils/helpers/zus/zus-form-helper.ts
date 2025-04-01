@@ -3,14 +3,15 @@ import {
     DykeDoorType,
     SalesFormZusData,
 } from "@/app/(clean-code)/(sales)/types";
-import { getFormState } from "../../../_common/_stores/form-data-store";
-import { StepHelperClass } from "./step-component-class";
-import { generateRandomString } from "@/lib/utils";
 import { formatMoney } from "@/lib/use-number";
+import { generateRandomString } from "@/lib/utils";
+import dayjs from "dayjs";
 
+import { getFormState } from "../../../_common/_stores/form-data-store";
 import { CostingClass } from "./costing-class";
 import { SettingsClass } from "./settings-class";
-import dayjs from "dayjs";
+import { StepHelperClass } from "./step-component-class";
+
 export function zhInitializeState(data: GetSalesBookForm, copy = false) {
     const profile = data.order?.id
         ? data.salesProfile
@@ -166,6 +167,7 @@ export function zhInitializeState(data: GetSalesBookForm, copy = false) {
                 salesOrderItemId: item.item.id,
                 componentId: fs.component?.id,
                 sectionOverride: fs.component?.meta?.sectionOverride,
+                flatRate: fs?.item?.meta?.flatRate,
             });
             if (stp.title == "Item Type") {
                 itemType = stp.value as any;
@@ -193,6 +195,7 @@ export function zhInitializeState(data: GetSalesBookForm, copy = false) {
                 hptId: item.item.housePackageTool?.id,
                 itemType,
                 pricing: {
+                    flatRate: 0,
                     components: {
                         basePrice: 0,
                         salesPrice: 0,
@@ -263,6 +266,7 @@ export function zhInitializeState(data: GetSalesBookForm, copy = false) {
                                         doorForm.jambSizePrice,
                                     ),
                                 },
+
                                 unitPrice: doorForm.unitPrice,
                                 customPrice: customPrice(
                                     doorForm?.meta?.overridePrice,
@@ -354,9 +358,8 @@ export function zhInitializeState(data: GetSalesBookForm, copy = false) {
         }
 
         // shelfItems.map(si => {})
-        const costCls = new CostingClass(
-            new SettingsClass("", uid, "", resp as any),
-        );
+        const setting = new SettingsClass("", uid, "", resp as any);
+        const costCls = new CostingClass(setting);
         costCls.updateComponentCost();
         costCls.updateGroupedCost();
     });
