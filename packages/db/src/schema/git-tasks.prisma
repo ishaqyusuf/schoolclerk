@@ -6,16 +6,19 @@ model GitTasks {
     createdAt DateTime? @default(now()) @db.Timestamp(0)
     updatedAt DateTime? @updatedAt
 
+    todos      Todos[]
     statusList GitTaskStatus[]
     tags       GitTaskTags[]
 }
 
-model Testings {
-    id Int @unique @default(autoincrement())
-
-    deletedAt DateTime? @db.Timestamp(0)
-    createdAt DateTime? @default(now()) @db.Timestamp(0)
-    updatedAt DateTime? @updatedAt
+model Todos {
+    id         Int       @unique @default(autoincrement())
+    task       GitTasks  @relation(fields: [gitTasksId], references: [id])
+    gitTasksId Int
+    status     String
+    deletedAt  DateTime? @db.Timestamp(0)
+    createdAt  DateTime? @default(now()) @db.Timestamp(0)
+    updatedAt  DateTime? @updatedAt
 }
 
 model GitTaskStatus {
