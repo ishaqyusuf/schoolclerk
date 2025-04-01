@@ -12,6 +12,7 @@ import { DeleteRowAction } from "@/components/_v1/data-table/data-table-row-acti
 import { Icons } from "@/components/_v1/icons";
 import { Menu } from "@/components/(clean-code)/menu";
 import { _modal } from "@/components/common/modal/provider";
+import { CustomComponentForm } from "@/components/forms/sales-form/custom-component";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -129,7 +130,8 @@ export function ComponentsSection({ itemStepUid }: Props) {
                             {/* </div> */}
                         </SortableItem>
                     ))}
-                    <CustomComponent ctx={ctx} />
+                    {/* <CustomComponent ctx={ctx} /> */}
+                    <CustomComponentForm itemStepUid={itemStepUid} />
                 </div>
             </Sortable>
             <FloatingAction ctx={ctx} />

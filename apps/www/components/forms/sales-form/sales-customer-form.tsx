@@ -1,30 +1,30 @@
+import { useEffect, useMemo, useState } from "react";
+import {
+    CustomersListData,
+    getCustomersAction,
+} from "@/actions/cache/get-customers";
+import { findCustomerIdFromBilling } from "@/actions/find-customer-id-from-billing";
+import { getCustomerFormAction } from "@/actions/get-customer-form";
 import { useFormDataStore } from "@/app/(clean-code)/(sales)/sales-book/(form)/_common/_stores/form-data-store";
-
+import { SettingsClass } from "@/app/(clean-code)/(sales)/sales-book/(form)/_utils/helpers/zus/settings-class";
+import { Icons } from "@/components/_v1/icons";
+import Button from "@/components/common/button";
 import { Command, CommandInput, CommandList } from "@/components/ui/command";
 import { Label } from "@/components/ui/label";
-import { useEffect, useMemo, useState } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useDebounce } from "@/hooks/use-debounce";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-
-import Button from "@/components/common/button";
-import { Icons } from "@/components/_v1/icons";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCreateCustomerParams } from "@/hooks/use-create-customer-params";
-import {
-    CustomersListData,
-    getCustomersAction,
-} from "@/actions/cache/get-customers";
+import { useDebounce } from "@/hooks/use-debounce";
+
 import {
     CustomerFormData,
     customerFormStaticCallbacks,
-} from "../customer-form";
-import { getCustomerFormAction } from "@/actions/get-customer-form";
-import { SettingsClass } from "@/app/(clean-code)/(sales)/sales-book/(form)/_utils/helpers/zus/settings-class";
-import { findCustomerIdFromBilling } from "@/actions/find-customer-id-from-billing";
+} from "../customer-form/customer-form";
+
 export function SalesCustomerForm() {
     const zus = useFormDataStore();
     const md = zus.metaData;
@@ -53,7 +53,7 @@ export function SalesCustomerForm() {
                 zus.dotUpdate("metaData.shipping.id", resp?.addressId);
                 zus.dotUpdate(
                     "metaData.salesProfileId",
-                    Number(resp?.profileId)
+                    Number(resp?.profileId),
                 );
                 zus.dotUpdate("metaData.tax.taxCode", resp?.taxCode);
                 zus.dotUpdate("metaData.paymentTerm", resp?.netTerm);
@@ -67,7 +67,7 @@ export function SalesCustomerForm() {
     customerFormStaticCallbacks.created = onCustomerSelect;
     const { params, setParams } = useCreateCustomerParams();
     return (
-        <div className="grid sm:grid-cols-2 font-mono gap-4 sm:gap-8">
+        <div className="grid gap-4 font-mono sm:grid-cols-2 sm:gap-8">
             <div className="col-span-2 p-4">
                 {!customer ? (
                     <SelectCustomer
@@ -78,7 +78,7 @@ export function SalesCustomerForm() {
                         </Button>
                     </SelectCustomer>
                 ) : (
-                    <div className="text-sm text-muted-foreground relative">
+                    <div className="relative text-sm text-muted-foreground">
                         <div className="">
                             <span>Customer Data</span>
                         </div>
@@ -89,7 +89,7 @@ export function SalesCustomerForm() {
                         </p>
                         <p>{customer?.email}</p>
                         <p>{/* {customer?.} */}</p>
-                        <div className="absolute flex items-center -mr-5 top-0 right-0">
+                        <div className="absolute right-0 top-0 -mr-5 flex items-center">
                             <SelectCustomer
                                 onSelect={(e) => onCustomerSelect(e.customerId)}
                             >
@@ -162,9 +162,9 @@ function SelectCustomer({ children, onSelect }) {
                                     customerForm: true,
                                 });
                             }}
-                            className="w-full px-3 py-2 text-left hover:bg-accent hover:text-accent-foreground space-y-1"
+                            className="w-full space-y-1 px-3 py-2 text-left hover:bg-accent hover:text-accent-foreground"
                         >
-                            <Label className="text-sm font-medium text-primary truncate">
+                            <Label className="truncate text-sm font-medium text-primary">
                                 Create Customer
                             </Label>
                         </button>
@@ -175,23 +175,23 @@ function SelectCustomer({ children, onSelect }) {
                                     onSelect(address);
                                     setOpen(false);
                                 }}
-                                className="w-full px-3 py-2 text-left hover:bg-accent hover:text-accent-foreground space-y-1"
+                                className="w-full space-y-1 px-3 py-2 text-left hover:bg-accent hover:text-accent-foreground"
                             >
-                                <Label className="text-sm font-medium text-primary truncate">
+                                <Label className="truncate text-sm font-medium text-primary">
                                     {address.name}
                                 </Label>
-                                <div className="text-xs text-muted-foreground truncate">
+                                <div className="truncate text-xs text-muted-foreground">
                                     {address.phone}
                                     {address.address}
                                 </div>
-                                <div className="text-xs text-muted-foreground flex flex-wrap gap-1">
+                                <div className="flex flex-wrap gap-1 text-xs text-muted-foreground">
                                     {address.taxName && (
-                                        <span className="px-1 py-0.5 bg-muted rounded text-muted-foreground">
+                                        <span className="rounded bg-muted px-1 py-0.5 text-muted-foreground">
                                             {address.taxName}
                                         </span>
                                     )}
                                     {address.profileName && (
-                                        <span className="px-1 py-0.5 bg-muted rounded text-muted-foreground">
+                                        <span className="rounded bg-muted px-1 py-0.5 text-muted-foreground">
                                             {address.profileName}
                                         </span>
                                     )}

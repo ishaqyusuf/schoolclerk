@@ -1,30 +1,33 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { findExistingCustomers } from "@/actions/cache/find-existing-customers";
 import { getCustomerProfilesAction } from "@/actions/cache/get-customer-profiles";
 import { getTaxProfilesAction } from "@/actions/cache/get-tax-profiles";
 import { createCustomerAction } from "@/actions/create-customer-action";
 import { createCustomerSchema } from "@/actions/schema";
 import salesData from "@/app/(clean-code)/(sales)/_common/utils/sales-data";
 import { useCreateCustomerParams } from "@/hooks/use-create-customer-params";
+import { useDebounce } from "@/hooks/use-debounce";
 import useEffectLoader from "@/lib/use-effect-loader";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import FormInput from "../common/controls/form-input";
-import FormSelect from "../common/controls/form-select";
-import { SubmitButton } from "../submit-button";
+import FormInput from "../../common/controls/form-input";
+import FormSelect from "../../common/controls/form-select";
+import { SubmitButton } from "../../submit-button";
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-} from "../ui/accordion";
-import { Button } from "../ui/button";
-import { Form } from "../ui/form";
+} from "../../ui/accordion";
+import { Button } from "../../ui/button";
+import { Form } from "../../ui/form";
+import { ExistingCustomerResolver } from "./existing-customer-resolver";
 
 export type CustomerFormData = z.infer<typeof createCustomerSchema>;
 type Props = {
@@ -82,7 +85,9 @@ export function CustomerForm({ data }: Props) {
             });
         }
     }, [data, form]);
-    const customerType = form.watch("customerType");
+
+    const [customerType] = form.watch(["customerType"]);
+
     const createCustomer = useAction(createCustomerAction, {
         onSuccess: ({ data: resp }) => {
             toast.success(data?.id ? "Updated" : "Created");
@@ -112,6 +117,7 @@ export function CustomerForm({ data }: Props) {
                             <AccordionTrigger>General</AccordionTrigger>
                             <AccordionContent>
                                 <div className="space-y-4">
+                                    <ExistingCustomerResolver />
                                     <FormSelect
                                         placeholder="Customer Type"
                                         control={form.control}

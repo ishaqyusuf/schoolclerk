@@ -1,19 +1,18 @@
-import Modal from "@/components/common/modal";
-import { useFormDataStore } from "../../../_common/_stores/form-data-store";
 import { createContext, useContext, useMemo } from "react";
-import { useForm } from "react-hook-form";
-
-import { Form } from "@/components/ui/form";
-
-import { _modal } from "@/components/common/modal/provider";
-import { toast } from "sonner";
-import { ComponentHelperClass } from "../../../_utils/helpers/zus/step-component-class";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import FormInput from "@/components/common/controls/form-input";
 import { saveComponentPricingUseCase } from "@/app/(clean-code)/(sales)/_common/use-case/sales-book-pricing-use-case";
+import FormInput from "@/components/common/controls/form-input";
+import Modal from "@/components/common/modal";
+import { _modal } from "@/components/common/modal/provider";
+import { Badge } from "@/components/ui/badge";
+import { Form } from "@/components/ui/form";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { useFormDataStore } from "../../../_common/_stores/form-data-store";
+import { ComponentHelperClass } from "../../../_utils/helpers/zus/step-component-class";
 
 interface Props {
     cls: ComponentHelperClass;
@@ -30,7 +29,6 @@ export function useInitContext(cls: ComponentHelperClass) {
     const memoied = useMemo(() => {
         const step = cls.getStepForm();
         const priceModel = cls.getComponentPriceModel(cls.componentUid);
-        console.log({ priceModel });
 
         return {
             step,
@@ -56,7 +54,7 @@ export function useInitContext(cls: ComponentHelperClass) {
                     dependenciesUid,
                     dykeStepId: cls.getStepForm().stepId,
                     stepProductUid: cls.componentUid,
-                }))
+                })),
         );
         await cls.fetchUpdatedPrice();
         _modal.close();
@@ -91,7 +89,7 @@ export default function ComponentPriceModal({ cls }: Props) {
                                         Grouped Pricing
                                     </TabsTrigger>
                                 </TabsList>
-                                <ScrollArea className="overflow-auto -mr-6 max-h-[50vh]">
+                                <ScrollArea className="-mr-6 max-h-[50vh] overflow-auto">
                                     <TabsContent value="priceList">
                                         <MainTab />
                                     </TabsContent>
@@ -121,8 +119,8 @@ function MainTab({}) {
                 <div
                     key={index}
                     className={cn(
-                        "flex gap-4 items-center border-b py-2",
-                        variant.current && "bg-emerald-50"
+                        "flex items-center gap-4 border-b py-2",
+                        variant.current && "bg-emerald-50",
                     )}
                 >
                     <div className="flex-1">

@@ -70,3 +70,5 @@ export const salesPaymentMethods: {
     { label: "Zelle", value: "zelle" },
     { label: "Cash", value: "cash" },
 ] as const;
+
+export const CUSTOM_IMG_ID = "ff8zkn817rjqv6ml2qdr";

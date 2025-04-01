@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { saveComponentPricingUseCase } from "@/app/(clean-code)/(sales)/_common/use-case/sales-book-pricing-use-case";
 import {
     createCustomComponentUseCase,
     updateCustomComponentUseCase,
@@ -6,7 +7,10 @@ import {
 import AutoComplete from "@/components/_v1/common/auto-complete";
 import Button from "@/components/common/button";
 import FormInput from "@/components/common/controls/form-input";
+import { NumberInput } from "@/components/currency-input";
+import { LabelInput } from "@/components/label-input";
 import { Form } from "@/components/ui/form";
+import { generateRandomString } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -22,11 +26,12 @@ export function CustomComponent({ ctx }: Props) {
     const stepForm = ctx.cls.getStepForm();
     const form = useForm({
         defaultValues: {
-            title: "",
-            basePrice: "",
-            salesPrice: "",
+            title: undefined,
+            basePrice: undefined,
+            salesPrice: undefined,
         },
     });
+    const [basePrice, title] = form.watch(["basePrice", "title"]);
     const customInputs = useMemo(
         () => ctx.stepComponents?.filter((s) => s._metaData.custom),
         [ctx.stepComponents],
@@ -37,14 +42,24 @@ export function CustomComponent({ ctx }: Props) {
     );
     async function _continue() {
         const data = form.getValues();
-        console.log(data);
+        // console.log(data);
+        let cls: ComponentHelperClass;
+        let eProd = customInputs?.find((s) => s.title == data.title);
+        const productUid = eProd?.uid || generateRandomString(5);
+        const priceModel = ctx.cls.getComponentPriceModel(productUid);
+        // const pm = ctx.cls.getComponentPriceModel(generateRandomString());
+        let currentPricingId = Object.entries(priceModel.priceVariants).find(
+            ([k, d]) => d.current,
+        )[0];
+        const current = priceModel.priceVariants?.[currentPricingId];
+        const currentPricingModel = priceModel?.pricing?.[currentPricingId];
+        // console.log(current);
+        // return;
 
         if (!data.title) {
             toast.error("Invalid custom input");
             return;
         }
-        let cls: ComponentHelperClass;
-        let eProd = customInputs?.find((s) => s.title == data.title);
 
         if (!eProd) {
             eProd = (await createCustomComponentUseCase({
@@ -57,9 +72,6 @@ export function CustomComponent({ ctx }: Props) {
                 eProd.uid,
                 eProd,
             );
-            if (data.basePrice) {
-                await cls.fetchUpdatedPrice();
-            }
             ctx.cls.addStepComponent(eProd);
         } else {
             if (eProd.basePrice != data.basePrice && data.basePrice) {
@@ -72,13 +84,25 @@ export function CustomComponent({ ctx }: Props) {
                     eProd.uid,
                     eProd,
                 );
-                await cls.fetchUpdatedPrice();
             }
         }
         if (eProd) {
+            if (currentPricingModel?.price != data.basePrice) {
+                await saveComponentPricingUseCase([
+                    {
+                        id: currentPricingModel?.id,
+                        price: data.basePrice,
+                        dykeStepId: ctx.cls.getStepForm().stepId,
+                        stepProductUid: productUid,
+                        dependenciesUid: current?.path,
+                    },
+                ]);
+                await cls.fetchUpdatedPrice();
+            }
+            await cls.refreshStepComponentsData(true);
             if (!cls)
                 cls = new ComponentHelperClass(ctx.cls.itemStepUid, eProd.uid);
-            cls.selectComponent();
+            // cls.selectComponent();
         }
     }
     return (
@@ -101,26 +125,44 @@ export function CustomComponent({ ctx }: Props) {
                         perPage={10}
                     />
                 ) : ( */}
-                <FormInput
+                <LabelInput
+                    placeholder="Custom Component"
+                    value={title}
+                    className="border-border uppercase"
+                    onChange={(e) => {
+                        form.setValue("title", e.target.value);
+                    }}
+                />
+                {/* <FormInput
                     label="Custom"
                     size="sm"
                     control={form.control}
                     name="title"
                     className="uppercase"
-                />
+                /> */}
                 {/* )} */}
                 {hasCost ? (
-                    <FormInput
-                        label="Price"
-                        type="number"
-                        size="sm"
+                    <NumberInput
                         prefix="$"
-                        control={form.control}
-                        name="basePrice"
+                        placeholder="Base Price"
+                        value={basePrice}
+                        onValueChange={(values) => {
+                            form.setValue("basePrice", values.floatValue);
+                        }}
                     />
-                ) : null}
+                ) : // <FormInput
+                //     label="Price"
+                //     type="number"
+                //     size="sm"
+                //     prefix="$"
+                //     control={form.control}
+                //     name="basePrice"
+                // />
+                null}
                 <div className="flex justify-end">
-                    <Button onClick={_continue}>Continue</Button>
+                    <Button size="xs" onClick={_continue}>
+                        Continue
+                    </Button>
                 </div>
             </div>
         </Form>

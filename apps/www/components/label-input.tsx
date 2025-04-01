@@ -1,7 +1,8 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
+
 import { Input, InputProps } from "./ui/input";
 
 export function LabelInput({ className, ...props }: InputProps) {
@@ -9,9 +10,9 @@ export function LabelInput({ className, ...props }: InputProps) {
     //   const value = watch(name);
 
     const [isFocused, setIsFocused] = useState(false);
-    const isPlaceholder = !props.value && !isFocused;
+    const isPlaceholder = !props.value && !isFocused && !props.placeholder;
     return (
-        <div className="relative">
+        <div className="midday relative">
             <Input
                 {...props}
                 {...props}
@@ -19,9 +20,9 @@ export function LabelInput({ className, ...props }: InputProps) {
                 autoComplete="off"
                 value={props.value || ""}
                 className={cn(
-                    "border-0 p-0 h-6 border-b border-transparent focus:border-border font-mono text-xs",
+                    "h-6 border-0 border-b border-transparent p-0 font-mono text-xs focus:border-border",
                     isPlaceholder && "opacity-0",
-                    className
+                    className,
                 )}
                 onFocus={(evt) => {
                     setIsFocused(true);
@@ -33,7 +34,7 @@ export function LabelInput({ className, ...props }: InputProps) {
                 }}
             />
             {isPlaceholder && (
-                <div className="absolute inset-0 pointer-events-none">
+                <div className="pointer-events-none absolute inset-0">
                     <div className="h-full w-full bg-[repeating-linear-gradient(-60deg,#DBDBDB,#DBDBDB_1px,transparent_1px,transparent_5px)] dark:bg-[repeating-linear-gradient(-60deg,#2C2C2C,#2C2C2C_1px,transparent_1px,transparent_5px)]" />
                 </div>
             )}

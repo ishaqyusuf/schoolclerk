@@ -71,8 +71,7 @@ export function CustomerProfileTaxUpdatePrompt({}) {
             <DialogContent>
                 <DialogTitle>Customer Profile Changed</DialogTitle>
                 <DialogDescription></DialogDescription>
-                {JSON.stringify(data || [])}
-                {taxCode}
+
                 {data?.map((d) => (
                     <div key={d.code} className="border-b py-2">
                         <Label>

@@ -1,6 +1,7 @@
 import { AsyncFnType } from "@/app/(clean-code)/type";
 import { prisma, Prisma } from "@/db";
 import { generateRandomString } from "@/lib/utils";
+import { dtoStepComponent } from "@/utils/dto-step-component";
 
 import { StepComponentForm, StepComponentMeta } from "../../types";
 
@@ -16,7 +17,7 @@ export async function loadStepComponentsDta(props: LoadStepComponentsProps) {
     const prods = await getComponentsDta(props);
     const resp = prods
         // .filter((p) => p.product || p.door)
-        .map(transformStepProduct);
+        .map(dtoStepComponent);
     const filtered = resp.filter(
         (r, i) => resp.findIndex((s) => s.title == r.title) == i,
     );
@@ -105,51 +106,7 @@ export async function getComponentsDta(props: LoadStepComponentsProps) {
     }));
 }
 
-export function transformStepProduct(
-    component: AsyncFnType<typeof getComponentsDta>[number],
-) {
-    const { door, product, sortIndex, sorts, ...prod } = component;
-    let meta: StepComponentMeta = prod.meta as any;
-    if (!prod.meta)
-        meta = {
-            stepSequence: [],
-            deleted: {},
-            show: {},
-        };
-
-    return {
-        uid: component.uid,
-        sortIndex,
-        id: component.id,
-        title: prod.name || door?.title || product?.title,
-        img: prod.img || product?.img || door?.img,
-        productId: product?.id || door?.id,
-        variations: meta?.variations || [],
-        sectionOverride: meta?.sectionOverride,
-        salesPrice: null,
-        basePrice: null,
-        stepId: component.dykeStepId,
-        productCode: component.productCode,
-        redirectUid: component.redirectUid,
-        _metaData: {
-            sorts: (component.sorts || [])?.map(
-                ({ sortIndex, stepComponentId, uid }) => ({
-                    sortIndex,
-                    stepComponentId,
-                    uid,
-                }),
-            ),
-            custom: component.custom,
-            visible: false,
-            priceId: null,
-            sortId: null,
-            sortIndex: null,
-            sortUid: null,
-        },
-        isDeleted: !!component.deletedAt,
-    };
-}
-export type GetStepComponent = ReturnType<typeof transformStepProduct>;
+export type GetStepComponent = ReturnType<typeof dtoStepComponent>;
 export async function updateStepComponentDta(id, data) {
     return await prisma.dykeStepProducts.update({
         where: { id },

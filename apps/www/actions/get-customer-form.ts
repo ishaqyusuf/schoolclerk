@@ -4,7 +4,7 @@ import {
     AddressBookMeta,
     CustomerMeta,
 } from "@/app/(clean-code)/(sales)/types";
-import { CustomerFormData } from "@/components/forms/customer-form";
+import { CustomerFormData } from "@/components/forms/customer-form/customer-form";
 import { prisma } from "@/db";
 
 export async function getCustomerFormAction(id) {

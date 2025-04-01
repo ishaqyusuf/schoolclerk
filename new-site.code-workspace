@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "name": "new-site",
+      "path": "./apps/",
+    },
+  ],
+  "settings": {
+    "files.exclude": {
+      //   "packages/supabase/functions/": true,
+    },
+  },
+}
