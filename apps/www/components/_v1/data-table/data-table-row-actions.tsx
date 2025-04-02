@@ -13,7 +13,6 @@ import { Info, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button, ButtonProps, buttonVariants } from "@gnd/ui/button";
-
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -23,7 +22,8 @@ import {
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-} from "../../ui/dropdown-menu";
+} from "@gnd/ui/dropdown-menu";
+
 import { IconKeys, Icons } from "../icons";
 import LinkableNode from "../link-node";
 

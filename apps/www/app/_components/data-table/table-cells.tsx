@@ -5,7 +5,6 @@ import Link from "next/link";
 import { MenuItem } from "@/components/_v1/data-table/data-table-row-actions";
 import { Icons } from "@/components/_v1/icons";
 import ProgressStatus from "@/components/_v1/progress-status";
-import { DropdownMenuShortcut } from "@/components/ui/dropdown-menu";
 import { TableCell as TCell } from "@/components/ui/table";
 import { DateFormats, formatDate } from "@/lib/use-day";
 import { catchError, cn, formatCurrency } from "@/lib/utils";
@@ -13,6 +12,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import { toast } from "sonner";
 
 import { Button, ButtonProps, buttonVariants } from "@gnd/ui/button";
+import { DropdownMenuShortcut } from "@gnd/ui/dropdown-menu";
 
 import { useDataTableContext } from "./use-data-table";
 

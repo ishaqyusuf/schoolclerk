@@ -3,6 +3,10 @@
 import Link from "next/link";
 import { Icons } from "@/components/_v1/icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LogOut, User2 } from "lucide-react";
+import { useSession } from "next-auth/react";
+
+import { Button } from "@gnd/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,11 +15,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuShortcut,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { LogOut, User2 } from "lucide-react";
-import { useSession } from "next-auth/react";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/dropdown-menu";
 
 export default function AcccountHeader() {
     const { data: session } = useSession();

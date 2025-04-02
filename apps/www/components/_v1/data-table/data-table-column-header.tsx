@@ -1,15 +1,15 @@
+import { cn } from "@/lib/utils";
+import { Column } from "@tanstack/react-table";
+import { ChevronsUpDown, EyeOff, SortAsc, SortDesc } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import { Column } from "@tanstack/react-table";
-import { ChevronsUpDown, EyeOff, SortAsc, SortDesc } from "lucide-react";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/dropdown-menu";
 
 interface DataTableColumnHeaderProps<TData, TValue>
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -69,4 +69,3 @@ export function DataTableColumnHeader<TData, TValue>({
         </div>
     );
 }
-

@@ -1,60 +1,60 @@
 "use client";
 
-import { TableShellProps } from "@/types/data-table";
-import { ColumnDef } from "@tanstack/react-table";
 import React, { useEffect, useMemo, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { useEmployeeProfiles } from "@/_v2/hooks/use-static-data";
 import {
-    CheckColumn,
-    ColumnHeader,
-    Cell,
-    PrimaryCellContent,
-    DateCellContent,
-    SecondaryCellContent,
-    _FilterColumn,
-} from "../../../../../components/_v1/columns/base-columns";
+    getStaticEmployeeProfiles,
+    setEmployeeProfileAction,
+} from "@/app/(v1)/_actions/hrm/employee-profiles";
+import { _deleteEmployee } from "@/app/(v1)/_actions/hrm/employees.crud";
+import { resetEmployeePassword } from "@/app/(v1)/_actions/hrm/save-employee";
+import PageHeader from "@/components/_v1/page-header";
+import { useModal } from "@/components/common/modal/provider";
+import { openModal } from "@/lib/modal";
+import { useAppSelector } from "@/store";
+import { loadStaticList } from "@/store/slicers";
+import { IBuilder, IProject } from "@/types/community";
+import { TableShellProps } from "@/types/data-table";
+import { IUser } from "@/types/hrm";
+import { ColumnDef } from "@tanstack/react-table";
+import { Key } from "lucide-react";
+import { toast } from "sonner";
 
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@gnd/ui/dropdown-menu";
+
+import EmployeeForm from "../_modals/employee-form";
 import {
     OrderRowAction,
     PrintOrderMenuAction,
 } from "../../../../../components/_v1/actions/sales-menu-actions";
-import { DataTable2 } from "../../../../../components/_v1/data-table/data-table-2";
-
-import { BuilderFilter } from "../../../../../components/_v1/filters/builder-filter";
+import {
+    _FilterColumn,
+    Cell,
+    CheckColumn,
+    ColumnHeader,
+    DateCellContent,
+    PrimaryCellContent,
+    SecondaryCellContent,
+} from "../../../../../components/_v1/columns/base-columns";
 import { HomeProductionStatus } from "../../../../../components/_v1/columns/community-columns";
-import { IBuilder, IProject } from "@/types/community";
+import { DataTable2 } from "../../../../../components/_v1/data-table/data-table-2";
 import {
     DeleteRowAction,
     RowActionCell,
     RowActionMenuItem,
     RowActionMoreMenu,
 } from "../../../../../components/_v1/data-table/data-table-row-actions";
-import { Icons } from "../../../../../components/_v1/icons";
-import { openModal } from "@/lib/modal";
-import { IUser } from "@/types/hrm";
-import { Key } from "lucide-react";
-import { resetEmployeePassword } from "@/app/(v1)/_actions/hrm/save-employee";
-import { toast } from "sonner";
-import { loadStaticList } from "@/store/slicers";
-import { useAppSelector } from "@/store";
-import {
-    setEmployeeProfileAction,
-    getStaticEmployeeProfiles,
-} from "@/app/(v1)/_actions/hrm/employee-profiles";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "../../../../../components/ui/dropdown-menu";
-import { Button } from "../../../../../components/ui/button";
-import { useRouter } from "next/navigation";
-import { RolesFilter } from "../../../../../components/_v1/filters/roles-filter";
-import { _deleteEmployee } from "@/app/(v1)/_actions/hrm/employees.crud";
 import { SmartTable } from "../../../../../components/_v1/data-table/smart-table";
-import { useEmployeeProfiles } from "@/_v2/hooks/use-static-data";
-import PageHeader from "@/components/_v1/page-header";
-import { useModal } from "@/components/common/modal/provider";
-import EmployeeForm from "../_modals/employee-form";
+import { BuilderFilter } from "../../../../../components/_v1/filters/builder-filter";
+import { RolesFilter } from "../../../../../components/_v1/filters/roles-filter";
+import { Icons } from "../../../../../components/_v1/icons";
+import { Button } from "../../../../../components/ui/button";
 
 export default function EmployeesTableShell<T>({
     // data,
@@ -140,7 +140,7 @@ export default function EmployeesTableShell<T>({
                                     modal.openModal(
                                         <EmployeeForm
                                             defaultData={row.original}
-                                        />
+                                        />,
                                     );
                                 }}
                                 Icon={Icons.edit}
@@ -150,10 +150,10 @@ export default function EmployeesTableShell<T>({
                             <RowActionMenuItem
                                 onClick={async () => {
                                     await resetEmployeePassword(
-                                        row.original?.id
+                                        row.original?.id,
                                     );
                                     toast.success(
-                                        "Password reset successfully!"
+                                        "Password reset successfully!",
                                     );
                                 }}
                                 Icon={Key}
@@ -170,7 +170,7 @@ export default function EmployeesTableShell<T>({
                 ),
             },
         ], //.filter(Boolean) as any,
-        [data, isPending]
+        [data, isPending],
     );
     const modal = useModal();
     return (

@@ -20,13 +20,13 @@ import { Key } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
-
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "../../ui/dropdown-menu";
+} from "@gnd/ui/dropdown-menu";
+
 import {
     OrderRowAction,
     PrintOrderMenuAction,

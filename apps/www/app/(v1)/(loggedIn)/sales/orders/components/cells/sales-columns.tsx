@@ -1,24 +1,27 @@
 "use client";
 
-import { IAddressBook, ISalesOrder } from "@/types/sales";
-
-import Link from "next/link";
 import { Fragment, useEffect, useState, useTransition } from "react";
-import { formatDate } from "@/lib/use-day";
-import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import SquarePaymentModal from "@/app/(v2)/(loggedIn)/sales-v2/_components/_square-payment-modal";
+import { useModal } from "@/components/common/modal/provider";
+import { getProgress, Progressor } from "@/lib/status";
 import { getBadgeColor } from "@/lib/status-badge";
-import { Badge } from "../../../../../../../components/ui/badge";
+import { formatDate } from "@/lib/use-day";
+import { toFixed } from "@/lib/use-number";
+import { cn } from "@/lib/utils";
+import { ICustomer } from "@/types/customers";
+import { IAddressBook, ISalesOrder } from "@/types/sales";
+import dayjs from "dayjs";
+import { FlagIcon } from "lucide-react";
+import { toast } from "sonner";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "../../../../../../../components/ui/dropdown-menu";
-import { FlagIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-
-import { toast } from "sonner";
-import { Icons } from "../../../../../../../components/_v1/icons";
+} from "@gnd/ui/dropdown-menu";
 
 import {
     Cell,
@@ -26,19 +29,15 @@ import {
     PrimaryCellContent,
     SecondaryCellContent,
 } from "../../../../../../../components/_v1/columns/base-columns";
-import { toFixed } from "@/lib/use-number";
-import { Progressor, getProgress } from "@/lib/status";
-import ProgressStatus from "../../../../../../../components/_v1/progress-status";
+import { Icons } from "../../../../../../../components/_v1/icons";
 import LinkableNode from "../../../../../../../components/_v1/link-node";
-import { ICustomer } from "@/types/customers";
-import dayjs from "dayjs";
+import ProgressStatus from "../../../../../../../components/_v1/progress-status";
 import StatusBadge from "../../../../../../../components/_v1/status-badge";
-import { useModal } from "@/components/common/modal/provider";
-import SquarePaymentModal from "@/app/(v2)/(loggedIn)/sales-v2/_components/_square-payment-modal";
+import { Badge } from "../../../../../../../components/ui/badge";
 
 export const OrderPriorityFlagCell = (
     order: ISalesOrder,
-    editable: Boolean = false
+    editable: Boolean = false,
 ) => {
     const [isPending, startTransition] = useTransition();
     const router = useRouter();
@@ -95,7 +94,7 @@ export const OrderPriorityFlagCell = (
 };
 export function OrderIdCell(
     order: ISalesOrder,
-    link: string | undefined = undefined
+    link: string | undefined = undefined,
 ) {
     link = link?.replace("slug", order.slug);
     return (
@@ -132,8 +131,8 @@ export function SalesCustomerCell({ order }: { order: ISalesOrder }) {
             <LinkableNode href={link} className={cn("hover:underline")}>
                 <div
                     className={cn(
-                        "font-medium uppercase line-clamp-1s",
-                        order?.customer?.businessName && "text-blue-700"
+                        "line-clamp-1s font-medium uppercase",
+                        order?.customer?.businessName && "text-blue-700",
                     )}
                 >
                     {order?.customer?.businessName ||
@@ -150,7 +149,7 @@ export function SalesCustomerCell({ order }: { order: ISalesOrder }) {
 export function OrderCustomerCell(
     customer: ICustomer | undefined,
     link: string | undefined = undefined,
-    phone = null
+    phone = null,
 ) {
     if (!customer) return <></>;
     link = link?.replace("slug", customer.id?.toString());
@@ -169,7 +168,7 @@ export function OrderCustomerCell(
 }
 export function OrderMemoCell(
     customer: IAddressBook | undefined,
-    link: string | undefined = undefined
+    link: string | undefined = undefined,
 ) {
     if (!customer) return <></>;
     link = link?.replace("slug", customer.id?.toString());
@@ -180,7 +179,7 @@ export function OrderMemoCell(
                 href={link || ""}
                 className={cn(link && "hover:underline")}
             >
-                <span className="text-muted-foreground line-clamp-2">
+                <span className="line-clamp-2 text-muted-foreground">
                     {customer?.address1}
                 </span>
             </LinkableNode>
@@ -216,7 +215,7 @@ export function OrderInvoiceCell({
                     className={cn(
                         (order?.amountDue || 0) > 0
                             ? " text-red-400"
-                            : "text-muted-foreground"
+                            : "text-muted-foreground",
                     )}
                 >
                     (${toFixed(order?.amountDue) || "0.00"})
@@ -242,7 +241,7 @@ export function OrderStatus({
         <div className="min-w-16">
             <Badge
                 variant={"secondary"}
-                className={`h-5 px-1 whitespace-nowrap text-xs text-slate-100 ${color}`}
+                className={`h-5 whitespace-nowrap px-1 text-xs text-slate-100 ${color}`}
             >
                 {/* {order?.prodStatus || "-"} */}
                 {status || "no status"}
@@ -256,12 +255,12 @@ export function OrderStatus({
 }
 export function OrderProductionStatusCell(
     order: ISalesOrder | undefined,
-    link: string | undefined = undefined
+    link: string | undefined = undefined,
 ) {
     if (!order) return <></>;
     return (
         <div className="w-16">
-            <p className="font-medium whitespace-nowrap">
+            <p className="whitespace-nowrap font-medium">
                 {order.producer?.name}
             </p>
             <p className="text-muted-foreground">
@@ -273,7 +272,7 @@ export function OrderProductionStatusCell(
 
 export function ProdOrderCell(
     order: ISalesOrder | undefined,
-    link: string | undefined = undefined
+    link: string | undefined = undefined,
 ) {
     return (
         <Cell row={order} link={link} slug={order?.orderId}>
@@ -293,7 +292,7 @@ export function ProdStatusCell({ order }: { order: ISalesOrder }) {
                 dayjs(order.prodDueDate).diff(dayjs(), "days") < 0 &&
                 order.prodStatus != "Completed"
                 ? true
-                : false
+                : false,
         );
     }, [order]);
     if (order.inventoryStatus == "Pending Items")

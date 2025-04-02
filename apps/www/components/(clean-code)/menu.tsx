@@ -8,6 +8,13 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Icon, IconKeys, Icons } from "@/components/_v1/icons";
+import { cn } from "@/lib/utils";
+import { PrimitiveDivProps } from "@/types/type";
+import { DropdownMenuItemProps } from "@radix-ui/react-dropdown-menu";
+import { VariantProps } from "class-variance-authority";
+import { toast } from "sonner";
+
+import { Button, buttonVariants } from "@gnd/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -19,14 +26,7 @@ import {
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import { PrimitiveDivProps } from "@/types/type";
-import { DropdownMenuItemProps } from "@radix-ui/react-dropdown-menu";
-import { VariantProps } from "class-variance-authority";
-import { toast } from "sonner";
-
-import { Button, buttonVariants } from "@gnd/ui/button";
+} from "@gnd/ui/dropdown-menu";
 
 import { ScrollArea } from "../ui/scroll-area";
 

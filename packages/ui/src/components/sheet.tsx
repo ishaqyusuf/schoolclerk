@@ -97,7 +97,7 @@ const SheetContent = React.forwardRef<
         onOpenAutoFocus={(e) => e.preventDefault()}
         ref={ref}
         className={cn(sheetVariants({ side }), className)}
-        aria-describedby={props["aria-describedby"] || undefined}
+        aria-describedby={props["aria-describedby"] ?? undefined}
         {...props}
       >
         {children}

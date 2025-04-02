@@ -3,17 +3,17 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { useModal } from "@/components/common/modal/provider";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { openModal } from "@/lib/modal";
 import { Plus } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 import { Button } from "@gnd/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@gnd/ui/dropdown-menu";
 
 import SubmitJobModal from "../_modals/submit-job-modal";
 

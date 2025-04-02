@@ -7,13 +7,12 @@ import { Plus } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 import { Button } from "@gnd/ui/button";
-
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "../../ui/dropdown-menu";
+} from "@gnd/ui/dropdown-menu";
 
 export default function TaskAction({}) {
     const { data: session } = useSession({

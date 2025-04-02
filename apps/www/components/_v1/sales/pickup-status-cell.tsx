@@ -1,16 +1,18 @@
 "use client";
 
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Cell, DateCellContent } from "../columns/base-columns";
+import { ISalesOrder } from "@/types/sales";
+import { toast } from "sonner";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "../../ui/dropdown-menu";
-import { useState, useTransition } from "react";
-import { toast } from "sonner";
-import { ISalesOrder } from "@/types/sales";
+} from "@gnd/ui/dropdown-menu";
+
+import { Cell, DateCellContent } from "../columns/base-columns";
 import StatusBadge from "../status-badge";
 
 export function PickupStatusCell({ order }: { order: ISalesOrder }) {

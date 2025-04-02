@@ -1,13 +1,10 @@
 "use client";
 
 import { Icons } from "@/components/_v1/icons";
-import {
-    DropdownMenu,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { createPortal } from "react-dom";
 
 import { Button } from "@gnd/ui/button";
+import { DropdownMenu, DropdownMenuTrigger } from "@gnd/ui/dropdown-menu";
 
 export default Object.assign(({ children }) => {
     const Element = document?.getElementById("headerNav");

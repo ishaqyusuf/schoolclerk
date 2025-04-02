@@ -12,12 +12,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -29,6 +23,12 @@ import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 import { useFieldArray } from "react-hook-form";
 
 import { Button } from "@gnd/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@gnd/ui/dropdown-menu";
 
 import { Context, useSettings, useSettingsContext } from "./ctx";
 

@@ -4,10 +4,10 @@ import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useHotkeys } from "react-hotkeys-hook";
 
+import { DropdownMenu, DropdownMenuTrigger } from "@gnd/ui/dropdown-menu";
 import { Input } from "@gnd/ui/input";
 
 import { Icons } from "../_v1/icons";
-import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 interface Props {
     filters;

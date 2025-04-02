@@ -30,7 +30,6 @@ import { BringToFront } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
-
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -39,7 +38,8 @@ import {
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "@gnd/ui/dropdown-menu";
+
 import { Icons } from "./icons";
 
 export default function Upgrader() {

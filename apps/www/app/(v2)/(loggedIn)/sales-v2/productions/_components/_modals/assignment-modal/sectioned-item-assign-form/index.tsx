@@ -15,11 +15,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Form } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import {
@@ -37,6 +32,11 @@ import { useMediaQuery } from "react-responsive";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+} from "@gnd/ui/dropdown-menu";
 
 import { useAssignmentData } from "..";
 import { createProdAssignment } from "../_action/create-assignment";

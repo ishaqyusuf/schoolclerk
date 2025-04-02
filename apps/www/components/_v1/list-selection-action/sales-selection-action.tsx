@@ -3,12 +3,12 @@
 import { Printer } from "lucide-react";
 
 import { Button } from "@gnd/ui/button";
-
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
-} from "../../ui/dropdown-menu";
+} from "@gnd/ui/dropdown-menu";
+
 import { PrintOrderMenuAction } from "../actions/sales-menu-actions";
 
 export function SalesBatchAction({ items }) {

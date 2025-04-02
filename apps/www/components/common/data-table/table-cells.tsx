@@ -9,10 +9,10 @@ import { PrimitiveDivProps } from "@/types/type";
 import { toast } from "sonner";
 
 import { Button, ButtonProps, buttonVariants } from "@gnd/ui/button";
+import { DropdownMenuShortcut } from "@gnd/ui/dropdown-menu";
 
 import { MenuItem } from "../../_v1/data-table/data-table-row-actions";
 import { Icons } from "../../_v1/icons";
-import { DropdownMenuShortcut } from "../../ui/dropdown-menu";
 
 interface Props {
     children?;

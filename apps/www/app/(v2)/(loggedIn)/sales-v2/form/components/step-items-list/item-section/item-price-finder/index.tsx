@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import { Icons } from "@/components/_v1/icons";
 import Money from "@/components/_v1/money";
 import { TableCol } from "@/components/common/data-table/table-cells";
+import { ServerPromiseType } from "@/types";
+
+import { Button } from "@gnd/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ServerPromiseType } from "@/types";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/dropdown-menu";
 
 import { useDykeForm } from "../../../../_hooks/form-context";
 import {

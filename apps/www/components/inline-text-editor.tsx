@@ -1,10 +1,12 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { Button } from "./ui/button";
-import { Icons } from "./_v1/icons";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import { Icons } from "./_v1/icons";
 import { revalidateTable } from "./(clean-code)/data-table/use-infinity-data-table";
 
 export function InlineTextEditor({
@@ -39,18 +41,18 @@ export function InlineTextEditor({
                     "relative",
                     !editMode
                         ? "hover:cursor-text hover:bg-muted-foreground/20 "
-                        : ""
+                        : "",
                 )}
             >
                 <div
                     className={cn(
-                        !editMode ? "" : "bg-opacity-0 opacity-0 hidden"
+                        !editMode ? "" : "hidden bg-opacity-0 opacity-0",
                     )}
                 >
                     {children}
                 </div>
                 {!editMode || (
-                    <div className="inline-flex gap-2 items-center">
+                    <div className="inline-flex items-center gap-2">
                         <input
                             className={cn("w-full border px-2", className)}
                             defaultValue={_value}
@@ -70,7 +72,7 @@ export function InlineTextEditor({
                         <Button
                             onClick={update}
                             variant="destructive"
-                            className="size-5 bg-green-500 hover:bg-green-600 p-0"
+                            className="size-5 bg-green-500 p-0 hover:bg-green-600"
                         >
                             <Icons.check className="size-3" />
                         </Button>

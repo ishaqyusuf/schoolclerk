@@ -18,13 +18,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, Printer, View } from "lucide-react";
 
 import { Button } from "@gnd/ui/button";
-
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "../../ui/dropdown-menu";
+} from "@gnd/ui/dropdown-menu";
+
 import {
     OrderRowAction,
     PrintOrderMenuAction,

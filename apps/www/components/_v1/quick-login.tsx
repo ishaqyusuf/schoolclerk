@@ -8,13 +8,13 @@ import { Plus } from "lucide-react";
 import { signIn } from "next-auth/react";
 
 import { Button } from "@gnd/ui/button";
-
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "@gnd/ui/dropdown-menu";
+
 import {
     PrimaryCellContent,
     SecondaryCellContent,

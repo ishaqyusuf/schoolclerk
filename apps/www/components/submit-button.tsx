@@ -1,7 +1,8 @@
-import { Loader2 } from "lucide-react";
-// import { cn } from "../utils";
-import { Button, type ButtonProps } from "./ui/button";
 import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
+
+// import { cn } from "../utils";
+import { Button, type ButtonProps } from "@gnd/ui/button";
 
 export function SubmitButton({
     children,
@@ -31,4 +32,3 @@ export function SubmitButton({
         </Button>
     );
 }
-

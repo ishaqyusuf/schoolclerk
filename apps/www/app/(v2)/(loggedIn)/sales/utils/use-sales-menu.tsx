@@ -1,32 +1,34 @@
-import { SalesTableItem } from "../../../../(v1)/(loggedIn)/sales/orders/components/orders-table-shell";
-import { IconKeys } from "@/components/_v1/icons";
-import { truthy } from "@/lib/utils";
-import { useModal } from "@/components/common/modal/provider";
-import SendEmailSheet from "@/components/_v2/email/send-email";
-import { useAssignment } from "@/app/(v2)/(loggedIn)/sales-v2/productions/_components/_modals/assignment-modal/use-assignment";
-import salesData from "@/app/(v2)/(loggedIn)/sales/sales-data";
-import { toast } from "sonner";
-import { updateDeliveryModeDac } from "@/app/(v2)/(loggedIn)/sales/_data-access/update-delivery-mode.dac";
-import { IOrderPrintMode, ISalesType } from "@/types/sales";
-import {
-    copyOrderAction,
-    deleteOrderAction,
-} from "../../../../(v1)/(loggedIn)/sales/_actions/sales";
 import { useRouter } from "next/navigation";
-import { openLink } from "@/lib/open-link";
-import useSalesPdf from "@/app/(v2)/printer/sales/use-sales-pdf";
-import {
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import {
-    DeleteRowAction,
-    MenuItem,
-} from "@/components/_v1/data-table/data-table-row-actions";
 import {
     copySalesUseCase,
     moveOrderUseCase,
 } from "@/app/(clean-code)/(sales)/_common/use-case/sales-book-form-use-case";
+import { useAssignment } from "@/app/(v2)/(loggedIn)/sales-v2/productions/_components/_modals/assignment-modal/use-assignment";
+import { updateDeliveryModeDac } from "@/app/(v2)/(loggedIn)/sales/_data-access/update-delivery-mode.dac";
+import salesData from "@/app/(v2)/(loggedIn)/sales/sales-data";
+import useSalesPdf from "@/app/(v2)/printer/sales/use-sales-pdf";
+import {
+    DeleteRowAction,
+    MenuItem,
+} from "@/components/_v1/data-table/data-table-row-actions";
+import { IconKeys } from "@/components/_v1/icons";
+import SendEmailSheet from "@/components/_v2/email/send-email";
+import { useModal } from "@/components/common/modal/provider";
+import { openLink } from "@/lib/open-link";
+import { truthy } from "@/lib/utils";
+import { IOrderPrintMode, ISalesType } from "@/types/sales";
+import { toast } from "sonner";
+
+import {
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+} from "@gnd/ui/dropdown-menu";
+
+import {
+    copyOrderAction,
+    deleteOrderAction,
+} from "../../../../(v1)/(loggedIn)/sales/_actions/sales";
+import { SalesTableItem } from "../../../../(v1)/(loggedIn)/sales/orders/components/orders-table-shell";
 
 type Mode = "dealer" | "internal";
 export function useSalesMenu(item: SalesTableItem, mode: Mode = "internal") {
@@ -58,7 +60,7 @@ export function useSalesMenu(item: SalesTableItem, mode: Mode = "internal") {
                     path: "sales",
                 }}
                 subtitle={`Sales Order | ${item.orderId}`}
-            />
+            />,
         );
     }
     function prodAction() {
@@ -69,7 +71,7 @@ export function useSalesMenu(item: SalesTableItem, mode: Mode = "internal") {
             await updateDeliveryModeDac(
                 item.id,
                 delivery,
-                !isEstimate ? "orders" : "quotes"
+                !isEstimate ? "orders" : "quotes",
             );
             toast.success("Updated");
         }
@@ -131,7 +133,7 @@ export function useSalesMenu(item: SalesTableItem, mode: Mode = "internal") {
                   _option(
                       "Print Mockup",
                       () => print("quote", "Print Mockup"),
-                      "box"
+                      "box",
                   ),
                   _option("Pdf", () => print("quote", "Pdf"), "pdf"),
               ]
@@ -141,25 +143,25 @@ export function useSalesMenu(item: SalesTableItem, mode: Mode = "internal") {
                       _option(
                           "Order & Packing",
                           () => print("order-packing", groupTitle),
-                          "box"
+                          "box",
                       ),
                       _option(
                           "Order",
                           () => print("order", groupTitle),
-                          "orders"
+                          "orders",
                       ),
                       _option(
                           "Packing List",
                           () => print("packing list", groupTitle),
-                          "packingList"
+                          "packingList",
                       ),
                       _option(
                           "Production",
                           () => print("production", groupTitle),
-                          "production"
+                          "production",
                       ),
                   ])
-                  .flat()
+                  .flat(),
     );
     const _actions = {
         view: _option("View", _viewHref, "view"),
@@ -174,9 +176,9 @@ export function useSalesMenu(item: SalesTableItem, mode: Mode = "internal") {
                 _option(
                     d.text,
                     () => updateDeliveryMode(d.text),
-                    i == 0 ? "pickup" : "delivery2"
-                )
-            )
+                    i == 0 ? "pickup" : "delivery2",
+                ),
+            ),
         ),
         moveToQuote: _option("Move to Quote", moveToQuote, "estimates"),
         moveToSales: _option("Move to Sales", moveToSales, "orders"),
@@ -195,7 +197,7 @@ export function useSalesMenu(item: SalesTableItem, mode: Mode = "internal") {
             ...truthy(
                 !isEstimate,
                 [_actions.production, _actions.delivery, _actions.moveToQuote],
-                [_actions.moveToSales]
+                [_actions.moveToSales],
             ),
             _actions.copy,
             _actions.fullPrint,

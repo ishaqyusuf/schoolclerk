@@ -7,17 +7,17 @@ import {
 import { Icons } from "@/components/_v1/icons";
 import LinkableNode from "@/components/_v1/link-node";
 import { TableCol } from "@/components/common/data-table/table-cells";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { openModal } from "@/lib/modal";
 import { openLink } from "@/lib/open-link";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@gnd/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@gnd/ui/dropdown-menu";
 
 import { GetCustomers } from "../../../type";
 

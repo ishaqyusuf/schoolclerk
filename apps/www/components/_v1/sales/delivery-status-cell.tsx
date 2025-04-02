@@ -6,13 +6,13 @@ import { updateSalesDelivery } from "@/app/(v1)/(loggedIn)/sales/_actions/_sales
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
-
-import { OrderStatus } from "../../../app/(v1)/(loggedIn)/sales/orders/components/cells/sales-columns";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
-} from "../../ui/dropdown-menu";
+} from "@gnd/ui/dropdown-menu";
+
+import { OrderStatus } from "../../../app/(v1)/(loggedIn)/sales/orders/components/cells/sales-columns";
 import { Cell } from "../columns/base-columns";
 import { MenuItem } from "../data-table/data-table-row-actions";
 

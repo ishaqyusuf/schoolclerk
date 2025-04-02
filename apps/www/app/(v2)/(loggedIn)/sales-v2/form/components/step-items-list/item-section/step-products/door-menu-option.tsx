@@ -1,15 +1,14 @@
+import React, { useEffect, useState } from "react";
 import { MenuItem } from "@/components/_v1/data-table/data-table-row-actions";
 import { Icons } from "@/components/_v1/icons";
-import {
-    DropdownMenuGroup,
-    DropdownMenuLabel,
-} from "@/components/ui/dropdown-menu";
-import React, { useEffect, useState } from "react";
-import { IStepProducts } from ".";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ProductImage } from "./product";
 import { cn } from "@/lib/utils";
+
+import { DropdownMenuGroup, DropdownMenuLabel } from "@gnd/ui/dropdown-menu";
+
+import { IStepProducts } from ".";
 import { updateDoorMetaAction } from "../../../../_action/save-step-product";
+import { ProductImage } from "./product";
 
 export default function DoorMenuOption({ setStepProducts, products, prod }) {
     const [prods, setProds] = useState([]);
@@ -25,9 +24,9 @@ export default function DoorMenuOption({ setStepProducts, products, prod }) {
                     let heights = Array.from(
                         new Set(
                             Object.keys(pricings).map(
-                                (k) => k.split(" ").reverse()[0]
-                            )
-                        )
+                                (k) => k.split(" ").reverse()[0],
+                            ),
+                        ),
                     );
                     let prices = Object.entries(pricings).map(([a, b]) => ({
                         height: a.split(" ").reverse()[0],
@@ -37,7 +36,7 @@ export default function DoorMenuOption({ setStepProducts, products, prod }) {
                     heights.map((h) => {
                         let priceData = {};
                         const _p = prices.filter(
-                            (a) => a.height == h && a.price
+                            (a) => a.height == h && a.price,
                         );
                         _p.map((p) => {
                             priceData[p.size] = p.price;
@@ -65,7 +64,7 @@ export default function DoorMenuOption({ setStepProducts, products, prod }) {
                         pricings,
                     };
                 })
-                .filter((a) => a.importables[0]?.count)
+                .filter((a) => a.importables[0]?.count),
         );
     }, []);
     async function importPrice(data) {
@@ -116,8 +115,8 @@ export default function DoorMenuOption({ setStepProducts, products, prod }) {
                                                             <span>
                                                                 {i.title}
                                                             </span>
-                                                            <span className="text-xs font-bold inline-flex items-center space-x-1">
-                                                                <Icons.dollar className="w-3 h-3" />
+                                                            <span className="inline-flex items-center space-x-1 text-xs font-bold">
+                                                                <Icons.dollar className="h-3 w-3" />
                                                                 <span>
                                                                     {i.count}
                                                                 </span>
@@ -127,8 +126,8 @@ export default function DoorMenuOption({ setStepProducts, products, prod }) {
                                                 </div>
                                                 <div
                                                     className={cn(
-                                                        "w-48 h-48",
-                                                        !p.doorImg && "hidden"
+                                                        "h-48 w-48",
+                                                        !p.doorImg && "hidden",
                                                     )}
                                                 >
                                                     <ProductImage

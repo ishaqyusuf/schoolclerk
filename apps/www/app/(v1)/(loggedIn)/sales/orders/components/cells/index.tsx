@@ -1,26 +1,28 @@
-import { SalesTableItem } from "../orders-table-shell";
-import SalesFlag from "./sales-flag";
-import StatusBadge from "@/components/_v1/status-badge";
+import { TableCell } from "@/app/_components/data-table/table-cells";
 import { updateDeliveryModeDac } from "@/app/(v2)/(loggedIn)/sales/_data-access/update-delivery-mode.dac";
-import { toast } from "sonner";
+import salesData from "@/app/(v2)/(loggedIn)/sales/sales-data";
 import {
     DeleteRowAction,
     Menu,
     MenuItem,
 } from "@/components/_v1/data-table/data-table-row-actions";
-import salesData from "@/app/(v2)/(loggedIn)/sales/sales-data";
+import StatusBadge from "@/components/_v1/status-badge";
 import { Badge } from "@/components/ui/badge";
 import { getBadgeColor } from "@/lib/status-badge";
+import { toast } from "sonner";
+
+import {
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+} from "@gnd/ui/dropdown-menu";
+
+import { deleteOrderAction } from "../../../_actions/sales";
 import {
     MenuOption,
     useSalesMenu,
 } from "../../../../../../(v2)/(loggedIn)/sales/utils/use-sales-menu";
-import {
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import { deleteOrderAction } from "../../../_actions/sales";
-import { TableCell } from "@/app/_components/data-table/table-cells";
+import { SalesTableItem } from "../orders-table-shell";
+import SalesFlag from "./sales-flag";
 
 interface Props {
     item: SalesTableItem;
@@ -90,7 +92,7 @@ function Invoice({ item }: Props) {
                 <TableCell.Money
                     className={
                         !item.amountDue
-                            ? "text-green-500 font-semibold"
+                            ? "font-semibold text-green-500"
                             : "text-red-500"
                     }
                 >
@@ -134,7 +136,7 @@ function Dispatch({ item }: Props) {
             await updateDeliveryModeDac(
                 item.id,
                 delivery,
-                item.type == "order" ? "orders" : "quotes"
+                item.type == "order" ? "orders" : "quotes",
             );
 
             toast.success("Updated");
@@ -190,7 +192,7 @@ function Status({ item, delivery }: Props & { delivery? }) {
         <TableCell>
             <Badge
                 variant={"secondary"}
-                className={`h-5 px-1 whitespace-nowrap text-xs text-slate-100 ${color}`}
+                className={`h-5 whitespace-nowrap px-1 text-xs text-slate-100 ${color}`}
             >
                 {/* {order?.prodStatus || "-"} */}
                 {status || "no status"}
@@ -250,7 +252,7 @@ function SalesStatus({ item }: Props) {
         <TableCell>
             <Badge
                 variant={"secondary"}
-                className={`h-5 px-1 whitespace-nowrap text-xs text-slate-100 ${color}`}
+                className={`h-5 whitespace-nowrap px-1 text-xs text-slate-100 ${color}`}
             >
                 {/* {order?.prodStatus || "-"} */}
                 {status || "no status"}

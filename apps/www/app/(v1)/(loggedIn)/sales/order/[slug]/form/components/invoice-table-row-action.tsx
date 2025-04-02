@@ -1,13 +1,3 @@
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { TableCell } from "@/components/ui/table";
 import { deepCopy } from "@/lib/deep-copy";
 import {
@@ -32,6 +22,16 @@ import {
 import { useFieldArray } from "react-hook-form";
 
 import { Button } from "@gnd/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
+} from "@gnd/ui/dropdown-menu";
 
 import salesUtils from "../sales-utils";
 

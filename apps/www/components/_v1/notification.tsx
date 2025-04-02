@@ -18,9 +18,9 @@ import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
 import { AlertTriangle, Archive, Bell, Dot } from "lucide-react";
 
 import { Button } from "@gnd/ui/button";
+import { DropdownMenu, DropdownMenuTrigger } from "@gnd/ui/dropdown-menu";
 
 import { Badge } from "../ui/badge";
-import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { ScrollArea } from "../ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import Btn from "./btn";

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { _modal } from "@/components/common/modal/provider";
+
+import { Button } from "@gnd/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -10,9 +12,7 @@ import {
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/dropdown-menu";
 import { Input } from "@gnd/ui/input";
 // import { Menu } from "@/components/(clean-code)/menu";
 import { Sheet, SheetContent, SheetHeader } from "@gnd/ui/sheet";

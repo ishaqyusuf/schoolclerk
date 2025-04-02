@@ -1,10 +1,9 @@
 import { Menu } from "@/components/(clean-code)/menu";
-import {
-    DropdownMenuGroup,
-    DropdownMenuLabel,
-} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { CheckIcon, CircleCheck, CircleX } from "lucide-react";
+
+import { DropdownMenuGroup, DropdownMenuLabel } from "@gnd/ui/dropdown-menu";
+
 import { refreshTabData } from "../helper";
 import { salesOverviewStore } from "../store";
 

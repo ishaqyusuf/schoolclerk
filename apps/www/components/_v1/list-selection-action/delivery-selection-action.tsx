@@ -5,8 +5,8 @@ import { updateSalesDelivery } from "@/app/(v1)/(loggedIn)/sales/_actions/_sales
 import useQueryParams from "@/lib/use-query-params";
 
 import { Button } from "@gnd/ui/button";
+import { DropdownMenuItem } from "@gnd/ui/dropdown-menu";
 
-import { DropdownMenuItem } from "../../ui/dropdown-menu";
 import { RowActionMoreMenu } from "../data-table/data-table-row-actions";
 
 export function DeliveryBatchAction({ items }) {

@@ -6,14 +6,6 @@ import {
     CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
@@ -24,6 +16,14 @@ import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
 import { ChevronDown, Dot, LucideIcon } from "lucide-react";
 
 import { Button } from "@gnd/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@gnd/ui/dropdown-menu";
 
 type Submenu = {
     href: string;
