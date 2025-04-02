@@ -202,14 +202,15 @@ export function DataTableFilterCommand<TData, TSchema extends z.AnyZodObject>({
                     "overflow-visible rounded-lg border shadow-md [&>div]:border-none",
                     open ? "visible" : "hidden",
                 )}
-                filter={(value, search, keywords) =>
-                    getFilterValue({
-                        value,
-                        search,
-                        keywords,
-                        currentWord,
-                        currentFilter,
-                    })
+                filter={
+                    ((value, search, keywords) =>
+                        getFilterValue({
+                            value,
+                            search,
+                            keywords,
+                            currentWord,
+                            currentFilter,
+                        })) as any
                 }
                 // loop
             >
