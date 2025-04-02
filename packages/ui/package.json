@@ -54,6 +54,7 @@
     "./checkbox": "./src/components/checkbox.tsx",
     "./collapsible": "./src/components/collapsible.tsx",
     "./combobox": "./src/components/combobox.tsx",
+    "./combobox-midday": "./src/components/combobox-midday.tsx",
     "./combobox-dropdown": "./src/components/combobox-dropdown.tsx",
     "./command": "./src/components/command.tsx",
     "./context-menu": "./src/components/context-menu.tsx",
