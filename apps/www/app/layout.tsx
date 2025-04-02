@@ -1,23 +1,16 @@
-import "@/styles/globals.css";
 import "@gnd/ui/globals.css";
+import "@/styles/globals.css";
 
 import { Suspense } from "react";
-import { trashSoftDeletesAction } from "@/actions/trash-soft-deletes";
 import AppProvider from "@/components/_v1/app-provider";
 import { TailwindIndicator } from "@/components/_v1/tailwind-indicator";
 import Upgrader from "@/components/_v1/upgrader";
-import UserAccountUpdateModal from "@/components/modals/user-account-update-required-modal";
 import UserAccountUpdateRequiredModal from "@/components/modals/user-account-update-required-modal";
-// import { siteConfig } from "@/config/site";
-// import { fontSans } from "@/lib/fonts";
 import { Toaster } from "@/components/ui/toaster";
 import { env } from "@/env.mjs";
 import { constructMetadata } from "@/lib/(clean-code)/construct-metadata";
 import PageAnalytics from "@/lib/analytics/page-analytics";
 import { __isProd } from "@/lib/is-prod-server";
-// import { SiteHeader } from "@/components/site-header";
-// import { TailwindIndicator } from "@/components/tailwind-indicator";
-// import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { ReactQueryProvider } from "@/providers/react-query";
 import { SpeedInsights } from "@vercel/speed-insights/next";
