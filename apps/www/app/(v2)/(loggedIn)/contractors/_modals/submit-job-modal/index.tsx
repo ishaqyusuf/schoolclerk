@@ -1,26 +1,28 @@
+import { useEffect } from "react";
+import {
+    useStaticContractors,
+    useStaticProjects,
+} from "@/_v2/hooks/use-static-data";
+import { useModal } from "@/components/common/modal/provider";
+import { Form } from "@/components/ui/form";
+import { IJobs } from "@/types/hrm";
+import { useForm } from "react-hook-form";
+
 import {
     DialogContent,
     DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from "@/components/ui/dialog";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+} from "@gnd/ui/dialog";
+
 import {
     SubmitJobForm,
     SubmitJobModalContent,
     SubmitJobModalFooter,
 } from "./_";
-import {
-    useStaticContractors,
-    useStaticProjects,
-} from "@/_v2/hooks/use-static-data";
-import useSubmitJob, { JobSubmitContext } from "./_/use-submit-job";
 import { SubmitJobModalSubtitle, SubmitJobModalTitle } from "./_/heading";
-import { Form } from "@/components/ui/form";
-import { IJobs } from "@/types/hrm";
-import { useModal } from "@/components/common/modal/provider";
+import useSubmitJob, { JobSubmitContext } from "./_/use-submit-job";
 
 interface Props {
     job?: IJobs;

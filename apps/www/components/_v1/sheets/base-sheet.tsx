@@ -1,18 +1,11 @@
 "use client";
 
-import { useAppSelector } from "@/store";
-import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "../../ui/dialog";
-import { ModalName } from "@/store/slicers";
-
-import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { closeModal } from "@/lib/modal";
+import { cn } from "@/lib/utils";
+import { useAppSelector } from "@/store";
+import { ModalName } from "@/store/slicers";
+
 import {
     Sheet,
     SheetContent,

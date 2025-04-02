@@ -2,14 +2,6 @@ import * as React from "react";
 import { findAddressAction } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-address";
 import { saveSalesAddressAction } from "@/app/(v2)/(loggedIn)/sales/_actions/save-sales-address";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -31,6 +23,14 @@ import { toast } from "sonner";
 import { OkImpl } from "ts-results";
 
 import { Button } from "@gnd/ui/button";
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@gnd/ui/dialog";
 
 import { ScrollArea } from "../../ui/scroll-area";
 import AutoComplete2 from "../auto-complete-tw";

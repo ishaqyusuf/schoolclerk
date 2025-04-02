@@ -1,25 +1,27 @@
 "use client";
 
+import { useEffect } from "react";
 import {
     checkUpdateRequiredStatus,
     updateAccountInfoAction,
 } from "@/actions/user-account-update-required-action";
-import { useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn, useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
 import {
     Dialog,
     DialogContent,
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from "../ui/dialog";
+} from "@gnd/ui/dialog";
+
 import Button from "../common/button";
-import { Form } from "../ui/form";
 import FormInput from "../common/controls/form-input";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import { signIn, useSession } from "next-auth/react";
+import { Form } from "../ui/form";
 
 const schema = z.object({
     email: z.string().email({
@@ -80,7 +82,7 @@ export default function UserAccountUpdateRequiredModal({}) {
                     window.location.reload();
                 } catch (error) {
                     toast.error(
-                        "Unable to complete, check data and try again."
+                        "Unable to complete, check data and try again.",
                     );
                 }
             }

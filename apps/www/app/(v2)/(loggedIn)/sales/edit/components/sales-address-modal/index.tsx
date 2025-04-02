@@ -1,24 +1,26 @@
-import { Form } from "@/components/ui/form";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState, useTransition } from "react";
-import { useForm, useFormContext } from "react-hook-form";
-import salesData from "../../../sales-data";
-import InputControl from "@/_v2/components/common/input-control";
-import { ISalesAddressForm } from "@/types/sales";
-import AutoComplete from "@/components/_v1/common/auto-complete";
-import { Label } from "@/components/ui/label";
-import { _getCustomerSearchList } from "../../../_data-access/get-customer-search.dac";
-import { ICustomer } from "@/types/customers";
-import Btn from "@/components/_v1/btn";
-import { deepCopy } from "@/lib/deep-copy";
-import { toast } from "sonner";
-import { saveSalesAddressAction } from "../../../_actions/save-sales-address";
 import { usePathname } from "next/navigation";
-import { DialogContent, DialogFooter } from "@/components/ui/dialog";
-import { updateSalesAddress } from "../../../_actions/update-sales-address";
+import InputControl from "@/_v2/components/common/input-control";
+import Btn from "@/components/_v1/btn";
+import AutoComplete from "@/components/_v1/common/auto-complete";
 import FormInput from "@/components/common/controls/form-input";
 import { useModal } from "@/components/common/modal/provider";
+import { Form } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { deepCopy } from "@/lib/deep-copy";
+import { ICustomer } from "@/types/customers";
+import { ISalesAddressForm } from "@/types/sales";
+import { useForm, useFormContext } from "react-hook-form";
+import { toast } from "sonner";
+
+import { DialogContent, DialogFooter } from "@gnd/ui/dialog";
+
+import { saveSalesAddressAction } from "../../../_actions/save-sales-address";
+import { updateSalesAddress } from "../../../_actions/update-sales-address";
+import { _getCustomerSearchList } from "../../../_data-access/get-customer-search.dac";
+import salesData from "../../../sales-data";
 
 export default function SalesAddressModal({ form: mainForm }) {
     // const mainForm = useFormContext();
@@ -117,7 +119,7 @@ export default function SalesAddressModal({ form: mainForm }) {
                         id,
                         customerId,
                         billingAddressId,
-                        shippingAddressId
+                        shippingAddressId,
                     );
                 }
                 // closeModal();
@@ -155,7 +157,7 @@ export default function SalesAddressModal({ form: mainForm }) {
                     </TabsList>
                     {tabs.map((t) => (
                         <TabsContent value={t.value} key={t.name}>
-                            <ScrollArea className="max-h-[70vh] overflow-auto -mr-4 pr-4 pb-8 pt-4">
+                            <ScrollArea className="-mr-4 max-h-[70vh] overflow-auto pb-8 pr-4 pt-4">
                                 <AddressForm
                                     customers={customers}
                                     formKey={t.value as any}
@@ -165,7 +167,7 @@ export default function SalesAddressModal({ form: mainForm }) {
                     ))}
                 </Tabs>
                 <DialogFooter className="flex justify-end">
-                    <div className="flex-1 flex items-center justify-between">
+                    <div className="flex flex-1 items-center justify-between">
                         <InputControl
                             label="Same as Shipping"
                             check

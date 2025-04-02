@@ -1,4 +1,8 @@
 "use client";
+
+import { useEffect, useState } from "react";
+import Btn from "@/components/_v1/btn";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     Form,
     FormControl,
@@ -7,14 +11,6 @@ import {
     FormItem,
     FormLabel,
 } from "@/components/ui/form";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
     Select,
@@ -24,11 +20,17 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { CheckedState } from "@radix-ui/react-checkbox";
-import { useEffect, useState } from "react";
-import { UseFormReturn } from "react-hook-form";
 import { ISalesWizardForm } from "@/types/post";
-import Btn from "@/components/_v1/btn";
+import { CheckedState } from "@radix-ui/react-checkbox";
+import { UseFormReturn } from "react-hook-form";
+
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@gnd/ui/dialog";
 
 export default function WizardForm({
     form,
@@ -117,7 +119,7 @@ export default function WizardForm({
                                                             >
                                                                 {opt}
                                                             </SelectItem>
-                                                        )
+                                                        ),
                                                     )}
                                                 </SelectGroup>
                                             </SelectContent>
@@ -244,7 +246,7 @@ export default function WizardForm({
                                                                 >
                                                                     {opt.label}
                                                                 </SelectItem>
-                                                            )
+                                                            ),
                                                         )}
                                                     </SelectGroup>
                                                 </SelectContent>

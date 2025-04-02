@@ -1,13 +1,15 @@
 "use client";
 
-import { SalesType } from "@/app/(clean-code)/(sales)/types";
-import { parseAsString, parseAsStringEnum, useQueryStates } from "nuqs";
-import { Dialog, DialogContent } from "../ui/dialog";
 import { useEffect, useState } from "react";
-import { ScrollArea } from "../ui/scroll-area";
-import SalesPrintDisplay from "@/app/(v2)/printer/sales/sales-print-display";
+import { SalesType } from "@/app/(clean-code)/(sales)/types";
 import { getSalesPrintData } from "@/app/(v2)/printer/sales/get-sales-print-data";
 import { OrderBasePrinter } from "@/app/(v2)/printer/sales/order-base-printer";
+import SalesPrintDisplay from "@/app/(v2)/printer/sales/sales-print-display";
+import { parseAsString, parseAsStringEnum, useQueryStates } from "nuqs";
+
+import { Dialog, DialogContent } from "@gnd/ui/dialog";
+
+import { ScrollArea } from "../ui/scroll-area";
 
 export function useSalesPreviewModal() {
     const [q, setQ] = useQueryStates({

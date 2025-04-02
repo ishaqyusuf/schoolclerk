@@ -1,6 +1,6 @@
 "use client";
 
-import { DialogContent } from "@/components/ui/dialog";
+import { DialogContent } from "@gnd/ui/dialog";
 
 export default function NewStepModal() {
     return (

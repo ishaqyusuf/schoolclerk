@@ -1,6 +1,12 @@
 "use client";
 
+import { useEffect } from "react";
+import { closeModal } from "@/lib/modal";
+import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/store";
+import { ModalName } from "@/store/slicers";
+import { FormProvider, useForm, UseFormReturn } from "react-hook-form";
+
 import {
     Dialog,
     DialogContent,
@@ -8,13 +14,7 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from "../../ui/dialog";
-import { ModalName } from "@/store/slicers";
-
-import { cn } from "@/lib/utils";
-import { useEffect } from "react";
-import { closeModal } from "@/lib/modal";
-import { FormProvider, UseFormReturn, useForm } from "react-hook-form";
+} from "@gnd/ui/dialog";
 
 //@ts-ignore
 type Comp<T, FormType> = { data?: T; form?: UseFormReturn<FormType> };

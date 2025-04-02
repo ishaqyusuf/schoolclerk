@@ -3,14 +3,6 @@
 import { Dispatch, SetStateAction, useCallback, useEffect } from "react";
 import Btn from "@/components/_v1/btn";
 import { Icons } from "@/components/_v1/icons";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
     Sheet,
@@ -27,6 +19,14 @@ import { cva, VariantProps } from "class-variance-authority";
 import { useFormContext } from "react-hook-form";
 
 import { Button, ButtonProps } from "@gnd/ui/button";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@gnd/ui/dialog";
 
 import { _modal, ModalContextProps, ModalType, useModal } from "./provider";
 
