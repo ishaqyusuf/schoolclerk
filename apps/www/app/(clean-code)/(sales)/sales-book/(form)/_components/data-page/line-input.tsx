@@ -1,4 +1,11 @@
-import { Input as BaseInput, InputProps } from "@/components/ui/input";
+import { useMemo } from "react";
+import { dotObject } from "@/app/(clean-code)/_common/utils/utils";
+import { SalesFormZusData } from "@/app/(clean-code)/(sales)/types";
+import { FormSelectProps } from "@/components/common/controls/form-select";
+import { NumberInput } from "@/components/currency-input";
+import { LabelInput } from "@/components/label-input";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
     Select as BaseSelect,
     SelectContent,
@@ -6,18 +13,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { FieldPath, FieldPathValue } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
-import { useFormDataStore } from "../../_common/_stores/form-data-store";
-import { SalesFormZusData } from "@/app/(clean-code)/(sales)/types";
-import { dotObject } from "@/app/(clean-code)/_common/utils/utils";
 import { cn } from "@/lib/utils";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { FormSelectProps } from "@/components/common/controls/form-select";
-import { Label } from "@/components/ui/label";
-import { useMemo } from "react";
-import { LabelInput } from "@/components/label-input";
-import { NumberInput } from "@/components/currency-input";
+import { FieldPath, FieldPathValue } from "react-hook-form";
+
+import { Input as BaseInput, InputProps } from "@gnd/ui/input";
+
+import { useFormDataStore } from "../../_common/_stores/form-data-store";
 
 interface LineInputProps {
     name: FieldPath<SalesFormZusData>;
@@ -28,7 +30,7 @@ interface LineInputProps {
 }
 function getValue<K extends FieldPath<SalesFormZusData>>(
     path: K,
-    state: SalesFormZusData
+    state: SalesFormZusData,
 ): FieldPathValue<SalesFormZusData, K> {
     return dotObject.pick(path, state);
 }
@@ -51,14 +53,14 @@ export function Input({
         <div
             className={cn(
                 label && "grid gap-2",
-                midday && "grid-cols-2 flex items-center   space-x-2 uppercase"
+                midday && "flex grid-cols-2 items-center   space-x-2 uppercase",
             )}
         >
             {label && (
                 <Label
                     className={cn(
                         props.disabled && "text-muted-foreground",
-                        midday && "text-xss font-mono"
+                        midday && "text-xss font-mono",
                     )}
                 >
                     {label}:
@@ -81,7 +83,7 @@ export function Input({
                         />
                     ) : (
                         <LabelInput
-                            className="w-28 midday"
+                            className="midday w-28"
                             value={value as any}
                             onChange={(e) => {
                                 const val =
@@ -136,21 +138,21 @@ export function Select<T>({
         return typeof option == "string"
             ? option
             : titleKey == "label"
-            ? option[titleKey] || option["text"]
-            : option[titleKey];
+              ? option[titleKey] || option["text"]
+              : option[titleKey];
     }
     const isPlaceholder = !value;
     return (
         <div
             className={cn(
                 label && "grid gap-2",
-                midday && "flex items-center  uppercase"
+                midday && "flex items-center  uppercase",
             )}
         >
             {label && (
                 <Label
                     className={cn(
-                        midday && "text-xss font-mono whitespace-nowrap "
+                        midday && "text-xss whitespace-nowrap font-mono ",
                     )}
                 >
                     {label}:
@@ -166,22 +168,22 @@ export function Select<T>({
                 {midday ? (
                     <SelectTrigger
                         noIcon
-                        className="border-none p-0 bg-transparent  relative font-mono uppercases w-auto min-w-[16px] midday h-7"
+                        className="uppercases midday relative  h-7 w-auto min-w-[16px] border-none bg-transparent p-0 font-mono"
                     >
                         {isPlaceholder && (
-                            <div className="absolute inset-0 pointer-events-none">
+                            <div className="pointer-events-none absolute inset-0">
                                 <div className="h-full w-full bg-[repeating-linear-gradient(-60deg,#DBDBDB,#DBDBDB_1px,transparent_1px,transparent_5px)] dark:bg-[repeating-linear-gradient(-60deg,#2C2C2C,#2C2C2C_1px,transparent_1px,transparent_5px)]" />
                             </div>
                         )}
 
                         <SelectValue
                             asChild
-                            className="whitespace-nowrap uppercase font-mono border-none p-0"
+                            className="whitespace-nowrap border-none p-0 font-mono uppercase"
                             // placeholder={props.placeholder}
                         >
                             <span>
                                 {itemText(
-                                    options?.find((o) => itemValue(o) == value)
+                                    options?.find((o) => itemValue(o) == value),
                                 )}
                             </span>
                         </SelectValue>
@@ -212,7 +214,7 @@ export function Select<T>({
                                         <>{itemText(option)}</>
                                     )}
                                 </SelectItem>
-                            )
+                            ),
                         )}
                     </ScrollArea>
                 </SelectContent>

@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
-    SalesFormResponse,
     _getSalesFormAction,
+    SalesFormResponse,
 } from "@/app/(v1)/(loggedIn)/sales/_actions/get-sales-form";
 import AutoComplete from "@/components/_v1/common/auto-complete";
 import {
@@ -10,7 +11,6 @@ import {
     MenuItem,
 } from "@/components/_v1/data-table/data-table-row-actions";
 import { Form, FormField } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
     Table,
     TableBody,
@@ -20,8 +20,9 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+
+import { Input } from "@gnd/ui/input";
 
 export default function InvoiceTable() {
     const form = useForm({
@@ -112,7 +113,7 @@ export default function InvoiceTable() {
                                                             if (index != 0)
                                                                 move(
                                                                     index,
-                                                                    index - 1
+                                                                    index - 1,
                                                                 );
                                                         }}
                                                     >
@@ -127,7 +128,7 @@ export default function InvoiceTable() {
                                                             )
                                                                 move(
                                                                     index,
-                                                                    index + 1
+                                                                    index + 1,
                                                                 );
                                                         }}
                                                     >

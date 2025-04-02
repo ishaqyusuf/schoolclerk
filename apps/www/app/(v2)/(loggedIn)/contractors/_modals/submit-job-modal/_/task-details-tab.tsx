@@ -1,5 +1,11 @@
-import ProjectFormSection from "./project-form-section";
-import { useJobSubmitCtx } from "./use-submit-job";
+import {
+    PrimaryCellContent,
+    SecondaryCellContent,
+} from "@/components/_v1/columns/base-columns";
+import Money from "@/components/_v1/money";
+import { FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
     Table,
     TableBody,
@@ -8,16 +14,12 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import {
-    PrimaryCellContent,
-    SecondaryCellContent,
-} from "@/components/_v1/columns/base-columns";
-import Money from "@/components/_v1/money";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { FormControl, FormField, FormItem } from "@/components/ui/form";
+
+import { Input } from "@gnd/ui/input";
+
+import ProjectFormSection from "./project-form-section";
+import { useJobSubmitCtx } from "./use-submit-job";
 
 export default function TaskDetailsTab({}) {
     const ctx = useJobSubmitCtx();
@@ -26,7 +28,7 @@ export default function TaskDetailsTab({}) {
     // const form = useFormContext();
     // useEffect(() => {},[])
     return (
-        <ScrollArea className="h-[400px] pr-4 grid gap-2">
+        <ScrollArea className="grid h-[400px] gap-2 pr-4">
             <ProjectFormSection />
             {/* {ctx.costList?.fields?.length} */}
             <div className={cn(!ctx.costList?.fields?.length && "hidden")}>
@@ -60,9 +62,9 @@ export default function TaskDetailsTab({}) {
                                                         <Input
                                                             {...field}
                                                             className={cn(
-                                                                "w-16 h-8 hiddens",
+                                                                "hiddens h-8 w-16",
                                                                 fieldState.error &&
-                                                                    "border-red-400"
+                                                                    "border-red-400",
                                                             )}
                                                             type="number"
                                                             min={0}

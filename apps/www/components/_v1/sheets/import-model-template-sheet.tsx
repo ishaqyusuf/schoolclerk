@@ -14,6 +14,7 @@ import { Import } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 import { ModelFormProps } from "../../../app/(v1)/(loggedIn)/settings/community/_components/model-form/model-form";
 import { Checkbox } from "../../ui/checkbox";
@@ -24,7 +25,6 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 import { ScrollArea } from "../../ui/scroll-area";
 import {

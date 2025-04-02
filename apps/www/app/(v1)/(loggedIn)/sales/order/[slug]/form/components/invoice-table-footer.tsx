@@ -1,12 +1,6 @@
-import { Input } from "@/components/ui/input";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-} from "@/components/ui/table";
 import * as React from "react";
+import { SalesFormCtx } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-form";
+import Money from "@/components/_v1/money";
 import {
     Select,
     SelectContent,
@@ -15,12 +9,21 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+} from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 import { store, useAppSelector } from "@/store";
 import { IPaymentOptions, ISalesOrderForm } from "@/types/sales";
-import { SalesFormCtx } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-form";
-import Money from "@/components/_v1/money";
-import { cn } from "@/lib/utils";
+
+import { Input } from "@gnd/ui/input";
+
 import { calculateSalesInvoice } from "../sales-invoice-calculator";
+
 export default function InvoiceTableFooter({
     form,
     floatingFooter,
@@ -103,8 +106,8 @@ function Footer({
         <div
             className={cn(
                 className,
-                "shadow-xl bg-slate-50 dark:bg-muted border-slate-300 border z-10",
-                floatingFooter ? "rounded-full" : "rounded p-2"
+                "z-10 border border-slate-300 bg-slate-50 shadow-xl dark:bg-muted",
+                floatingFooter ? "rounded-full" : "rounded p-2",
             )}
         >
             <Table id="invoiceFooter" className="w-full">
@@ -118,7 +121,7 @@ function Footer({
                                     onValueChange={(value) => {
                                         form.setValue(
                                             "meta.payment_option",
-                                            value as IPaymentOptions
+                                            value as IPaymentOptions,
                                         );
                                     }}
                                 >

@@ -3,12 +3,12 @@ import Link from "next/link";
 import { DataTableFacetedFilter2 } from "@/components/_v1/data-table/data-table-faceted-filter-2";
 import { IconKeys, Icons } from "@/components/_v1/icons";
 import Portal from "@/components/_v1/portal";
-import { Input } from "@/components/ui/input";
 import { timeout } from "@/lib/timeout";
 import useEffectLoader from "@/lib/use-effect-loader";
 import { cn, randomNumber2 } from "@/lib/utils";
 
 import { Button, ButtonProps } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 import { useDataTableContext } from "./use-data-table";
 

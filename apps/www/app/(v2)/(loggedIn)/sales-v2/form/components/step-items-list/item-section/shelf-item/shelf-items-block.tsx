@@ -14,7 +14,6 @@ import {
     CommandList,
 } from "@/components/ui/command";
 import { Form, FormField } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
     Popover,
     PopoverContent,
@@ -43,6 +42,7 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 import { _getShelfCategories } from "../../../../_action/get-shelf-categories";
 import { getShelfProducts } from "../../../../_action/get-shelf-products.actions";

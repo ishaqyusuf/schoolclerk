@@ -1,22 +1,24 @@
-import { useForm } from "react-hook-form";
-import { txStore } from "./store";
-import { getCustomersSelectListUseCase } from "../../use-case/customer-use-case";
 import { useEffect, useState } from "react";
 import AutoComplete from "@/components/_v1/common/auto-complete";
-import { toast } from "sonner";
 import { Form } from "@/components/ui/form";
-import { useDebounceInput } from "@/hooks/use-debounce";
-import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { useDebounceInput } from "@/hooks/use-debounce";
 import { listFilter } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Input } from "@gnd/ui/input";
+
+import { getCustomersSelectListUseCase } from "../../use-case/customer-use-case";
+import { txStore } from "./store";
 
 export default function CustomerSelector({}) {
     const tx = txStore();
     const updateFilter = (value) => {
         setCustomersList(
             // listFilter(tx.customers || [], value, null)?.
-            tx.customers //?.filter((a, i) => i < 15)
+            tx.customers, //?.filter((a, i) => i < 15)
         );
     };
     const deb = useDebounceInput("", 500, updateFilter);

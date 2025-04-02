@@ -21,6 +21,7 @@ import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 import { Badge } from "../../ui/badge";
 import { Checkbox } from "../../ui/checkbox";
@@ -31,7 +32,6 @@ import {
     FormItem,
     FormLabel,
 } from "../../ui/form";
-import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 import { ScrollArea } from "../../ui/scroll-area";
 import Btn from "../btn";

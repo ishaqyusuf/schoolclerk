@@ -8,9 +8,9 @@ import { Cloud, Upload, UploadIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 import { Icons } from "../_v1/icons";
-import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
 interface Props {

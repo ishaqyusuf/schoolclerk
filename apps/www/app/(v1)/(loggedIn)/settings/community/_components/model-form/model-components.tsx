@@ -1,17 +1,19 @@
-import { Label } from "@/components/ui/label";
-import { ModelFormProps } from "./model-form";
-import { Input } from "@/components/ui/input";
-import { HomeTemplateDesign } from "@/types/community";
-import { addSpacesToCamelCase, cn, dotArray } from "@/lib/utils";
-import { _useId } from "@/hooks/use-id";
 import { useState } from "react";
+import { Label } from "@/components/ui/label";
+import { _useId } from "@/hooks/use-id";
+import { addSpacesToCamelCase, cn, dotArray } from "@/lib/utils";
+import { HomeTemplateDesign } from "@/types/community";
+
+import { Input } from "@gnd/ui/input";
+
+import { ModelFormProps } from "./model-form";
 
 interface ModelFormSectionProps<T> {
     section?;
     title?;
     rows(
         f: (ck: keyof T, cells?: CellSize, label?) => any,
-        f2: (ck: keyof T, label?, cells?: CellSize) => any
+        f2: (ck: keyof T, label?, cells?: CellSize) => any,
     );
     node: keyof HomeTemplateDesign;
 }
@@ -52,7 +54,7 @@ export function ModelFormSection<T>({
             <thead className="">
                 {section && (
                     <tr className="border">
-                        <th colSpan={12} className="text-center bg-slate-200">
+                        <th colSpan={12} className="bg-slate-200 text-center">
                             {section}
                         </th>
                     </tr>
@@ -61,7 +63,7 @@ export function ModelFormSection<T>({
                     <tr className="border">
                         <th
                             colSpan={12}
-                            className="text-left bg-slate-100 p-0.5 px-4"
+                            className="bg-slate-100 p-0.5 px-4 text-left"
                         >
                             {title}
                         </th>
@@ -133,7 +135,7 @@ export function ModelComponents<T>({
                         <Label
                             className={cn(
                                 "mr-2 capitalize",
-                                print && "font-semibold"
+                                print && "font-semibold",
                             )}
                         >
                             {label}
@@ -149,7 +151,7 @@ export function ModelComponents<T>({
                             </span>
                         ) : (
                             <Input
-                                className="h-7 uppercase w-full"
+                                className="h-7 w-full uppercase"
                                 {...form.register(formKey as any)}
                             />
                             // <AutoComplete

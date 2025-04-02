@@ -1,8 +1,9 @@
 import { Menu } from "@/components/(clean-code)/menu";
 import Button from "@/components/common/button";
 import Modal from "@/components/common/modal";
-import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+
+import { Input } from "@gnd/ui/input";
 
 export function CustomSheetDebugModal({}) {
     return (

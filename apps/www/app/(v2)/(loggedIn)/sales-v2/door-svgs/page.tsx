@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Icons } from "@/components/_v1/icons";
-import { Input } from "@/components/ui/input";
 import {
     _dykeDoorsSvg,
     doorSvgsById,
@@ -14,6 +13,7 @@ import SVG from "react-inlinesvg";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 export default function DoorSvgsPage() {
     const [doors, setDoors] = useState<typeof dykeDoorsSvg>([]);

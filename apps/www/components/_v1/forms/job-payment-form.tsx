@@ -10,8 +10,8 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
-import { Input } from "../../ui/input";
 import {
     Table,
     TableBody,

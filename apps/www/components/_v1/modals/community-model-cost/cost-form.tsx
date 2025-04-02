@@ -1,20 +1,17 @@
 "use client";
 
-import { _getModelCostStat } from "@/app/(v1)/_actions/community/_model-cost-stat";
-import { deepCopy } from "@/lib/deep-copy";
-import { ICommunityCosts } from "@/types/community";
 import { useEffect, useState, useTransition } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
-
-import { Label } from "@/components/ui/label";
-
+import { _getModelCostStat } from "@/app/(v1)/_actions/community/_model-cost-stat";
 import {
     _deleteCommunityModelCost,
     _saveCommunitModelCostData,
 } from "@/app/(v1)/_actions/community/community-model-cost";
-import { toast } from "sonner";
 import { _getCommunityModelCostUnits } from "@/app/(v1)/_actions/community/community-model-cost-units";
-import { Input } from "@/components/ui/input";
+import Btn from "@/components/_v1/btn";
+import { DatePicker } from "@/components/_v1/date-range-picker";
+import Money from "@/components/_v1/money";
+import ReRender from "@/components/_v1/re-render";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     Form,
     FormControl,
@@ -22,16 +19,19 @@ import {
     FormItem,
     FormLabel,
 } from "@/components/ui/form";
-import ReRender from "@/components/_v1/re-render";
-import { DatePicker } from "@/components/_v1/date-range-picker";
-import { Checkbox } from "@/components/ui/checkbox";
-import Btn from "@/components/_v1/btn";
-import { calculateCommunitModelCost } from "@/lib/community/community-utils";
+import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ModelCostProps } from "./modal";
-import CostUnits from "./cost-units";
-import Money from "@/components/_v1/money";
+import { calculateCommunitModelCost } from "@/lib/community/community-utils";
+import { deepCopy } from "@/lib/deep-copy";
+import { ICommunityCosts } from "@/types/community";
 import dayjs from "dayjs";
+import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Input } from "@gnd/ui/input";
+
+import CostUnits from "./cost-units";
+import { ModelCostProps } from "./modal";
 
 export function CommunityCostForm({ form, data, watchIndex }: ModelCostProps) {
     // const index = form.watch("index");
@@ -62,7 +62,7 @@ export function CommunityCostForm({ form, data, watchIndex }: ModelCostProps) {
         // console.log(_);
         const meta = calculateCommunitModelCost(
             _.meta,
-            data?.project?.builder?.meta?.tasks
+            data?.project?.builder?.meta?.tasks,
         );
         // _setCost(_);
         setTotalTax(meta?.totalTax);
@@ -97,7 +97,7 @@ export function CommunityCostForm({ form, data, watchIndex }: ModelCostProps) {
                 }
                 cost.meta = calculateCommunitModelCost(
                     cost.meta,
-                    data.project?.builder?.meta?.tasks
+                    data.project?.builder?.meta?.tasks,
                 ) as any;
                 cost.model = data.modelName;
 
@@ -106,7 +106,7 @@ export function CommunityCostForm({ form, data, watchIndex }: ModelCostProps) {
                 const c = await _saveCommunitModelCostData(
                     _cost as any,
                     data.id,
-                    data.pivotId
+                    data.pivotId,
                 );
                 toast.success("Saved!");
 
@@ -123,7 +123,7 @@ export function CommunityCostForm({ form, data, watchIndex }: ModelCostProps) {
     // const [startDate, endDate] = costForm.watch("startDate", "endDate");
     return (
         <Form {...costForm}>
-            <Tabs defaultValue="costs" className="space-y-4 flex-1">
+            <Tabs defaultValue="costs" className="flex-1 space-y-4">
                 <TabsList className="">
                     <TabsTrigger value="costs">Task Costs</TabsTrigger>
                     <TabsTrigger value="units">Units</TabsTrigger>
@@ -132,17 +132,17 @@ export function CommunityCostForm({ form, data, watchIndex }: ModelCostProps) {
                     {
                         <>
                             <ReRender form={costForm}></ReRender>
-                            <div className="grid flex-1 grid-cols-4  pl-2 gap-2">
+                            <div className="grid flex-1 grid-cols-4  gap-2 pl-2">
                                 {
                                     <>
                                         <div className="col-span-2 grid gap-2">
                                             <Label>From</Label>
                                             <DatePicker
-                                                className="w-auto h-8"
+                                                className="h-8 w-auto"
                                                 setValue={(e) =>
                                                     costForm.setValue(
                                                         `startDate`,
-                                                        e
+                                                        e,
                                                     )
                                                 }
                                                 value={watchCosts.startDate}
@@ -151,11 +151,11 @@ export function CommunityCostForm({ form, data, watchIndex }: ModelCostProps) {
                                         <div className="col-span-2 grid gap-2">
                                             <Label>To</Label>
                                             <DatePicker
-                                                className="w-auto h-8"
+                                                className="h-8 w-auto"
                                                 setValue={(e) =>
                                                     costForm.setValue(
                                                         `endDate`,
-                                                        e
+                                                        e,
                                                     )
                                                 }
                                                 value={watchCosts.endDate}
@@ -163,7 +163,7 @@ export function CommunityCostForm({ form, data, watchIndex }: ModelCostProps) {
                                         </div>
                                     </>
                                 }
-                                <div className="col-span-5 grid-cols-7 grid bg-slate-100 py-2">
+                                <div className="col-span-5 grid grid-cols-7 bg-slate-100 py-2">
                                     <Label className="col-span-3 mx-2">
                                         Tasks
                                     </Label>
@@ -178,7 +178,7 @@ export function CommunityCostForm({ form, data, watchIndex }: ModelCostProps) {
                                     (t, _i) => (
                                         <div
                                             key={_i}
-                                            className="col-span-4 gap-2 grid-cols-7 grid"
+                                            className="col-span-4 grid grid-cols-7 gap-2"
                                         >
                                             <div className="col-span-3">
                                                 <Label>{t.name}</Label>
@@ -189,7 +189,7 @@ export function CommunityCostForm({ form, data, watchIndex }: ModelCostProps) {
                                                     key="cost"
                                                     className="h-8"
                                                     {...costForm.register(
-                                                        `meta.costs.${t.uid}`
+                                                        `meta.costs.${t.uid}`,
                                                     )}
                                                 />
                                             </div>
@@ -198,14 +198,14 @@ export function CommunityCostForm({ form, data, watchIndex }: ModelCostProps) {
                                                     type="number"
                                                     className="h-8"
                                                     {...costForm.register(
-                                                        `meta.tax.${t.uid}`
+                                                        `meta.tax.${t.uid}`,
                                                     )}
                                                 />
                                             </div>
                                         </div>
-                                    )
+                                    ),
                                 )}
-                                <div className="col-span-5 grid-cols-7 grid">
+                                <div className="col-span-5 grid grid-cols-7">
                                     <div className="col-span-3"></div>
                                     <div className="col-span-4 flex flex-col font-bold text-muted-foreground">
                                         {/* <div className="flex   text-sm p-2">
@@ -218,14 +218,14 @@ export function CommunityCostForm({ form, data, watchIndex }: ModelCostProps) {
                                                 value={totalTax}
                                             />
                                         </div> */}
-                                        <div className="p-2 bg-slate-50 flex justify-end border-t">
+                                        <div className="flex justify-end border-t bg-slate-50 p-2">
                                             <Money
                                                 value={totalTax + totalCost}
                                             />
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-span-4 border-t pt-2 my-3 flex space-x-4">
+                                <div className="col-span-4 my-3 flex space-x-4 border-t pt-2">
                                     {/* <FormField
                                         control={costForm.control}
                                         name={"meta.syncCompletedTasks"}

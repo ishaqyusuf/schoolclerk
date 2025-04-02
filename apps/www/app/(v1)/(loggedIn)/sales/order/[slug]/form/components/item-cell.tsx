@@ -1,16 +1,17 @@
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { SalesFormCtx } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-form";
 import AutoComplete from "@/components/_v1/auto-complete-tw";
-import { Input } from "@/components/ui/input";
+import { FormField } from "@/components/ui/form";
 import { TableCell } from "@/components/ui/table";
 import { deepCopy } from "@/lib/deep-copy";
 import { openComponentModal } from "@/lib/sales/sales-invoice-form";
-
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { InvoiceItemRowContext } from "../invoice-item-row-context";
-import { useFormContext } from "react-hook-form";
 import { ISalesOrder, ISalesOrderForm } from "@/types/sales";
-import { FormField } from "@/components/ui/form";
+import { useFormContext } from "react-hook-form";
+
+import { Input } from "@gnd/ui/input";
+
 import { _getSalesItemPriceByProfile } from "../_actions/get-item-price";
+import { InvoiceItemRowContext } from "../invoice-item-row-context";
 
 export default function ItemCell({
     rowIndex,
@@ -49,19 +50,19 @@ export default function ItemCell({
                 }
             }}
             id="description"
-            className="cursor-pointer p-0 px-1 py-0.5 w-auto"
+            className="w-auto cursor-pointer p-0 px-1 py-0.5"
         >
             {/* <Input
         className="h-8 w-full p-1 font-medium"
         {...register(`${baseKey}.description`)}
       /> */}
             {isComponent == true ? (
-                <button className="border  rounded-md border-input ring-offset-background min-h-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full p-1 font-medium">
+                <button className="min-h-[32px]  w-full rounded-md border border-input p-1 font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
                     <div
                         // dangerouslySetInnerHTML={{
                         //   __html: form.getValues(`${baseKey}.description`),
                         // }}
-                        className="line-clamp-2s font-medium text-primary uppercase text-sm relative w-full p-0.5 text-start"
+                        className="line-clamp-2s relative w-full p-0.5 text-start text-sm font-medium uppercase text-primary"
                     >
                         {form.getValues(`${baseKey}.description`)}
                     </div>
@@ -100,20 +101,20 @@ export default function ItemCell({
                                 // console.log(e as any);
                                 let data = (e as any)?.data as any;
                                 const price = await _getSalesItemPriceByProfile(
-                                    data?.description
+                                    data?.description,
                                 );
                                 console.log(price);
                                 if (price) {
                                     form.setValue(
                                         `items.${rowIndex}.price`,
-                                        data?.price
+                                        data?.price,
                                     );
                                     if (
                                         !form.getValues(`items.${rowIndex}.qty`)
                                     )
                                         form.setValue(
                                             `items.${rowIndex}.qty`,
-                                            1
+                                            1,
                                         );
                                 }
                             }}

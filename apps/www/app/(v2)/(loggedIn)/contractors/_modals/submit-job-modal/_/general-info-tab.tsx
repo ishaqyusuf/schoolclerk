@@ -1,23 +1,25 @@
-import useSubmitJob, { useJobSubmitCtx } from "./use-submit-job";
+import SelectControl from "@/_v2/components/common/select-control";
+import { useStaticContractors } from "@/_v2/hooks/use-static-data";
 import {
     FormControl,
     FormField,
     FormItem,
     FormLabel,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import SelectControl from "@/_v2/components/common/select-control";
-import { useStaticContractors } from "@/_v2/hooks/use-static-data";
+import { cn } from "@/lib/utils";
+
+import { Input } from "@gnd/ui/input";
+
+import useSubmitJob, { useJobSubmitCtx } from "./use-submit-job";
 
 export default function GeneralInfoTab() {
     const ctx = useJobSubmitCtx();
 
     const contractors = useStaticContractors();
     return (
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid gap-4 md:grid-cols-2">
             <CustomInput
                 label="Job Title"
                 name="job.title"
@@ -80,7 +82,7 @@ function CustomInput({ label, name, disabled, type, textarea }: Props) {
                                 {...field}
                                 className={cn(
                                     "h-8",
-                                    fieldState.error && "border-red-400"
+                                    fieldState.error && "border-red-400",
                                 )}
                             />
                         )}

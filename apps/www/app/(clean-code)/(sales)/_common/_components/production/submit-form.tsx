@@ -1,20 +1,22 @@
-import { Label } from "@/components/ui/label";
-import { LineItemOverview } from "../../data-access/dto/sales-item-dto";
-import { useSalesItem } from "./item-production-card";
-import { useAssignment } from "./item-assignments";
+import Button from "@/components/common/button";
+import FormInput from "@/components/common/controls/form-input";
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import FormInput from "@/components/common/controls/form-input";
 import { Form, FormField } from "@/components/ui/form";
-import { ChevronsUpDown } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import Button from "@/components/common/button";
+import { Label } from "@/components/ui/label";
 import { cn, sum } from "@/lib/utils";
+import { ChevronsUpDown } from "lucide-react";
 import { toast } from "sonner";
+
+import { Input } from "@gnd/ui/input";
+
+import { LineItemOverview } from "../../data-access/dto/sales-item-dto";
 import { submitAssignmentUseCase } from "../../use-case/sales-prod.use-case";
+import { useAssignment } from "./item-assignments";
+import { useSalesItem } from "./item-production-card";
 
 export function SubmitForm() {
     const itemCtx = useSalesItem();
@@ -34,7 +36,7 @@ export function SubmitForm() {
                     salesOrderId: item.orderId,
                     ...formData,
                 },
-                item?.analytics?.control?.produceable
+                item?.analytics?.control?.produceable,
             );
             toast.success("Submitted");
         } else {
@@ -42,7 +44,7 @@ export function SubmitForm() {
         }
     }
     return (
-        <div className="border-b py-2 sm:flex gap-4">
+        <div className="gap-4 border-b py-2 sm:flex">
             <Label className="font-mono">Submit Assignment</Label>
             <div className="flex-1">
                 <Form {...form}>
@@ -53,7 +55,7 @@ export function SubmitForm() {
                     </div>
                     <Collapsible>
                         <CollapsibleTrigger asChild>
-                            <Button variant="ghost" className="w-full flex">
+                            <Button variant="ghost" className="flex w-full">
                                 <span>Note</span>
                                 <div className="flex-1"></div>
                                 <span>
@@ -96,11 +98,11 @@ function QtyInput({ label }) {
 
     if (!submitable) return null;
     return (
-        <div className="flex justify-end items-center gap-4">
+        <div className="flex items-center justify-end gap-4">
             <Label className="font-mono uppercase">
                 {label} ({submitable})
             </Label>
-            <div className="flex items-end w-auto">
+            <div className="flex w-auto items-end">
                 {/* <Button size="xs" variant="link">
                     -
                 </Button> */}
@@ -115,7 +117,7 @@ function QtyInput({ label }) {
                                 ctx.form.setValue(qtyFormKey, +e.target.value);
                             }}
                             className={cn(
-                                "border-0 p-1 h-8 font-mono border-b w-20 text-center"
+                                "h-8 w-20 border-0 border-b p-1 text-center font-mono",
                             )}
                             inputMode="numeric"
                             type="number"

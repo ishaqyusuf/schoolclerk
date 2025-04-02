@@ -1,6 +1,8 @@
-import { Input } from "@/components/ui/input";
-import { UseStepContext } from "./ctx";
 import { cn } from "@/lib/utils";
+
+import { Input } from "@gnd/ui/input";
+
+import { UseStepContext } from "./ctx";
 
 interface Props {
     ctx: UseStepContext;
@@ -13,7 +15,7 @@ export default function SearchBar({ ctx }: Props) {
                 disabled={ctx.selectionState?.count > 0}
                 className={cn(
                     "h-8",
-                    ctx.selectionState?.count > 0 ? "w-16" : ""
+                    ctx.selectionState?.count > 0 ? "w-16" : "",
                 )}
                 placeholder="Search"
                 defaultValue={ctx.q}

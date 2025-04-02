@@ -2,6 +2,8 @@
 
 // import { generateTransactionsFilters } from "@/actions/ai/filters/generate-transactions-filters";
 // import { formatAccountName } from "@/utils/format";
+import { useRef, useState } from "react";
+import { Icons } from "@/(midday)/components/icons";
 import { Calendar } from "@/components/ui/calendar";
 import {
     DropdownMenu,
@@ -14,8 +16,7 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Icons } from "@/(midday)/components/icons";
-import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 // import { readStreamableValue } from "ai/rsc";
 import { formatISO } from "date-fns";
 import {
@@ -25,12 +26,13 @@ import {
     parseAsStringLiteral,
     useQueryStates,
 } from "nuqs";
-import { useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
+
+import { Input } from "@gnd/ui/input";
+
 import { AmountRange } from "./amount-range";
 import { FilterList } from "./filter-list";
 import { SelectCategory } from "./select-category";
-import { cn } from "@/lib/utils";
 
 type Props = {
     placeholder: string;
@@ -125,7 +127,7 @@ export function TransactionsSearchFilter({
                     "weekly",
                     "monthly",
                     "annually",
-                ] as const)
+                ] as const),
             ),
             statuses: parseAsArrayOf(
                 parseAsStringLiteral([
@@ -133,13 +135,13 @@ export function TransactionsSearchFilter({
                     "uncompleted",
                     "archived",
                     "excluded",
-                ] as const)
+                ] as const),
             ),
         },
         {
             shallow: false,
             history: "push",
-        }
+        },
     );
 
     useHotkeys(
@@ -152,7 +154,7 @@ export function TransactionsSearchFilter({
         {
             enableOnFormTags: true,
             enabled: Boolean(prompt),
-        }
+        },
     );
 
     useHotkeys("meta+s", (evt) => {
@@ -228,12 +230,12 @@ export function TransactionsSearchFilter({
 
     const hasValidFilters =
         Object.entries(filters).filter(
-            ([key, value]) => value !== null && key !== "q"
+            ([key, value]) => value !== null && key !== "q",
         ).length > 0;
 
     return (
         <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-            <div className="flex space-x-4 items-center">
+            <div className="flex items-center space-x-4">
                 <form
                     className="relative"
                     onSubmit={(e) => {
@@ -241,11 +243,11 @@ export function TransactionsSearchFilter({
                         handleSubmit();
                     }}
                 >
-                    <Icons.Search className="absolute pointer-events-none left-3 top-[11px]" />
+                    <Icons.Search className="pointer-events-none absolute left-3 top-[11px]" />
                     <Input
                         ref={inputRef}
                         placeholder={placeholder}
-                        className="pl-9 w-full md:w-[350px] pr-8"
+                        className="w-full pl-9 pr-8 md:w-[350px]"
                         value={prompt}
                         onChange={handleSearch}
                         autoComplete="off"
@@ -259,9 +261,9 @@ export function TransactionsSearchFilter({
                             onClick={() => setIsOpen((prev) => !prev)}
                             type="button"
                             className={cn(
-                                "absolute z-10 right-3 top-[10px] opacity-50 transition-opacity duration-300 hover:opacity-100",
+                                "absolute right-3 top-[10px] z-10 opacity-50 transition-opacity duration-300 hover:opacity-100",
                                 hasValidFilters && "opacity-100",
-                                isOpen && "opacity-100"
+                                isOpen && "opacity-100",
                             )}
                         >
                             <Icons.Filter />
@@ -447,7 +449,7 @@ export function TransactionsSearchFilter({
                             <DropdownMenuSubContent
                                 sideOffset={14}
                                 alignOffset={-101}
-                                className="p-0 w-[250px] h-[270px]"
+                                className="h-[270px] w-[250px] p-0"
                             >
                                 <SelectCategory
                                     uncategorized
@@ -455,17 +457,17 @@ export function TransactionsSearchFilter({
                                         setFilters({
                                             categories:
                                                 filters?.categories?.includes(
-                                                    selected.slug
+                                                    selected.slug,
                                                 )
                                                     ? filters.categories.filter(
                                                           (s) =>
                                                               s !==
-                                                              selected.slug
+                                                              selected.slug,
                                                       ).length > 0
                                                         ? filters.categories.filter(
                                                               (s) =>
                                                                   s !==
-                                                                  selected.slug
+                                                                  selected.slug,
                                                           )
                                                         : null
                                                     : [
@@ -492,28 +494,28 @@ export function TransactionsSearchFilter({
                             <DropdownMenuSubContent
                                 sideOffset={14}
                                 alignOffset={-4}
-                                className="py-2 max-h-[200px] overflow-y-auto max-w-[220px]"
+                                className="max-h-[200px] max-w-[220px] overflow-y-auto py-2"
                             >
                                 {tags?.length > 0 ? (
                                     tags?.map((tag) => (
                                         <DropdownMenuCheckboxItem
                                             key={tag.id}
                                             checked={filters?.tags?.includes(
-                                                tag.id
+                                                tag.id,
                                             )}
                                             onCheckedChange={() => {
                                                 setFilters({
                                                     tags: filters?.tags?.includes(
-                                                        tag.id
+                                                        tag.id,
                                                     )
                                                         ? filters.tags.filter(
                                                               (s) =>
-                                                                  s !== tag.id
+                                                                  s !== tag.id,
                                                           ).length > 0
                                                             ? filters.tags.filter(
                                                                   (s) =>
                                                                       s !==
-                                                                      tag.id
+                                                                      tag.id,
                                                               )
                                                             : null
                                                         : [
@@ -528,7 +530,7 @@ export function TransactionsSearchFilter({
                                         </DropdownMenuCheckboxItem>
                                     ))
                                 ) : (
-                                    <p className="text-sm text-[#878787] px-2">
+                                    <p className="px-2 text-sm text-[#878787]">
                                         No tags found
                                     </p>
                                 )}
@@ -556,17 +558,17 @@ export function TransactionsSearchFilter({
                                             setFilters({
                                                 accounts:
                                                     filters?.accounts?.includes(
-                                                        account.id
+                                                        account.id,
                                                     )
                                                         ? filters.accounts.filter(
                                                               (s) =>
                                                                   s !==
-                                                                  account.id
+                                                                  account.id,
                                                           ).length > 0
                                                             ? filters.accounts.filter(
                                                                   (s) =>
                                                                       s !==
-                                                                      account.id
+                                                                      account.id,
                                                               )
                                                             : null
                                                         : [

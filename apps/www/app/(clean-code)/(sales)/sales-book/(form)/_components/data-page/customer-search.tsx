@@ -12,7 +12,6 @@ import {
 import { Icons } from "@/components/_v1/icons";
 import { Menu } from "@/components/(clean-code)/menu";
 import { Command, CommandInput, CommandList } from "@/components/ui/command";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
     Popover,
@@ -24,6 +23,7 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { Search, SearchIcon } from "lucide-react";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 import { useFormDataStore } from "../../_common/_stores/form-data-store";
 import { SettingsClass } from "../../_utils/helpers/zus/settings-class";

@@ -10,7 +10,6 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { newsletterSchema } from "@/lib/validations/email";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
@@ -19,6 +18,7 @@ import { toast } from "sonner";
 import type { z } from "zod";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 type Inputs = z.infer<typeof newsletterSchema>;
 

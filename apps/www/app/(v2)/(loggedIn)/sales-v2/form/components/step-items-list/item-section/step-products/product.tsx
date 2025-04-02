@@ -24,7 +24,6 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { env } from "@/env.mjs";
 import { cn, safeFormText } from "@/lib/utils";
@@ -33,6 +32,7 @@ import { Dot } from "lucide-react";
 import SVG from "react-inlinesvg";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 import { IStepProducts } from ".";
 import { useDykeCtx, useDykeItemCtx } from "../../../../_hooks/form-context";

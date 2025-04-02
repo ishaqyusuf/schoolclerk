@@ -6,10 +6,11 @@ import {
     FormItem,
     FormLabel,
 } from "@/components/ui/form";
-import { Input, InputProps } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { FieldPath, useFormContext } from "react-hook-form";
+
+import { Input, InputProps } from "@gnd/ui/input";
 
 interface Props<T> extends InputProps {
     // @ts-ignore
@@ -42,7 +43,7 @@ export default function InputControl<T>({
                 <FormItem
                     className={cn(
                         (inline || check) &&
-                            "flex items-start space-x-3 space-y-0"
+                            "flex items-start space-x-3 space-y-0",
                     )}
                 >
                     {label && !check && <FormLabel>{label}</FormLabel>}

@@ -28,6 +28,8 @@ import {
 import { Eraser } from "lucide-react";
 import { useForm, UseFormReturn } from "react-hook-form";
 
+import { Input } from "@gnd/ui/input";
+
 import AutoComplete2 from "../../components/_v1/auto-complete-tw";
 import Btn from "../../components/_v1/btn";
 import Combobox from "../../components/_v1/combo-box";
@@ -36,7 +38,6 @@ import ReRender from "../../components/_v1/re-render";
 import { ComponentPriceHistory } from "../../components/_v1/sales/component-price-history-pop";
 import { ToolTip } from "../../components/_v1/tool-tip";
 import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
 import {
     Table,
     TableBody,

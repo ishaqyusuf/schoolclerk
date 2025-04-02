@@ -6,8 +6,8 @@ import { IInboundOrderItems } from "@/types/sales-inbound";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
-import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import Btn from "../btn";

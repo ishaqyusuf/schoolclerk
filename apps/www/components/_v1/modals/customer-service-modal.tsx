@@ -1,28 +1,30 @@
 "use client";
 
 import React, { useEffect, useState, useTransition } from "react";
-
 import { useRouter } from "next/navigation";
-
-import { _useAsync } from "@/lib/use-async";
-import Btn from "../btn";
-import BaseModal from "./base-modal";
+import { useStaticProjects } from "@/_v2/hooks/use-static-data";
+import { staticProjectsAction } from "@/app/(v1)/_actions/community/projects";
+import { findHomeOwnerAction } from "@/app/(v1)/_actions/customer-services/find-home-owner";
+import { getProjectUnitList } from "@/app/(v1)/_actions/customer-services/get-project-units";
+import {
+    createCustomerService,
+    updateCustomerService,
+} from "@/app/(v1)/_actions/customer-services/save-customer-service";
+import { deepCopy } from "@/lib/deep-copy";
 import { closeModal } from "@/lib/modal";
-import { toast } from "sonner";
-import { useForm } from "react-hook-form";
-import { Input } from "../../ui/input";
-import { Label } from "../../ui/label";
-
+import { _useAsync } from "@/lib/use-async";
+import { customerServiceSchema } from "@/lib/validations/customer-service";
 import { useAppSelector } from "@/store";
 import { loadStaticList } from "@/store/slicers";
-import { staticProjectsAction } from "@/app/(v1)/_actions/community/projects";
-
-import { ScrollArea } from "../../ui/scroll-area";
-
-import { Textarea } from "../../ui/textarea";
-
-import { getProjectUnitList } from "@/app/(v1)/_actions/customer-services/get-project-units";
 import { IWorkOrder } from "@/types/customer-service";
+import dayjs from "dayjs";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Input } from "@gnd/ui/input";
+
+import { Label } from "../../ui/label";
+import { ScrollArea } from "../../ui/scroll-area";
 import {
     Select,
     SelectContent,
@@ -31,18 +33,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from "../../ui/select";
-import { DatePicker } from "../date-range-picker";
+import { Textarea } from "../../ui/textarea";
 import AutoComplete2 from "../auto-complete-tw";
-
-import { customerServiceSchema } from "@/lib/validations/customer-service";
-import {
-    createCustomerService,
-    updateCustomerService,
-} from "@/app/(v1)/_actions/customer-services/save-customer-service";
-import { findHomeOwnerAction } from "@/app/(v1)/_actions/customer-services/find-home-owner";
-import { deepCopy } from "@/lib/deep-copy";
-import dayjs from "dayjs";
-import { useStaticProjects } from "@/_v2/hooks/use-static-data";
+import Btn from "../btn";
+import { DatePicker } from "../date-range-picker";
+import BaseModal from "./base-modal";
 
 export default function CustomerServiceModal() {
     const route = useRouter();
@@ -84,7 +79,7 @@ export default function CustomerServiceModal() {
                       meta: {
                           lotBlock: "",
                       },
-                  }
+                  },
         );
         if (formData.id) {
             if (formData.scheduleDate)
@@ -96,7 +91,7 @@ export default function CustomerServiceModal() {
         const { meta } = formData;
 
         const pid = projects.data?.find(
-            (p) => p.title == formData.projectName
+            (p) => p.title == formData.projectName,
         )?.id;
 
         if (!meta.lotBlock) {
@@ -129,7 +124,7 @@ export default function CustomerServiceModal() {
         const [projectName, id] = form.getValues(["projectName", "id"]);
         if (!id) {
             Object.entries(
-                await findHomeOwnerAction(projectName, unit.lot, unit.block)
+                await findHomeOwnerAction(projectName, unit.lot, unit.block),
             ).map(([k, v]) => form.setValue(k as any, v));
         }
     }
@@ -142,12 +137,12 @@ export default function CustomerServiceModal() {
             onClose={() => {}}
             modalName="customerServices"
             Title={({ data }) => (
-                <div className="flex space-x-2 items-center">Work Order</div>
+                <div className="flex items-center space-x-2">Work Order</div>
             )}
             Content={({ data }) => (
                 <div>
                     <div className="h-[450px] overflow-auto pr-4 ">
-                        <div className="grid md:grid-cols-2 gap-4">
+                        <div className="grid gap-4 md:grid-cols-2">
                             <div id="projectName" className="grid gap-2">
                                 <AutoComplete2
                                     label="Project"
@@ -178,7 +173,7 @@ export default function CustomerServiceModal() {
                                     }}
                                 />
                             </div>
-                            <div className="grid gap-2 col-span-2">
+                            <div className="col-span-2 grid gap-2">
                                 <Label>Supervisor</Label>
                                 <Input
                                     placeholder=""
@@ -190,7 +185,7 @@ export default function CustomerServiceModal() {
                                 <Label>Request Date</Label>
                                 <DatePicker
                                     format={"YYYY-MM-DD"}
-                                    className="flex-1 w-full h-8"
+                                    className="h-8 w-full flex-1"
                                     setValue={(e) =>
                                         form.setValue("requestDate", e)
                                     }
@@ -242,7 +237,7 @@ export default function CustomerServiceModal() {
                                     {...form.register("homePhone")}
                                 />
                             </div>
-                            <div className="grid gap-2 col-span-2">
+                            <div className="col-span-2 grid gap-2">
                                 <Label>Home Address</Label>
                                 <Input
                                     className="h-8"
@@ -253,7 +248,7 @@ export default function CustomerServiceModal() {
                                 <Label>Schedule Date</Label>
                                 <DatePicker
                                     format={"YYYY-MM-DD"}
-                                    className="flex-1 w-full h-8"
+                                    className="h-8 w-full flex-1"
                                     setValue={(e) =>
                                         form.setValue("scheduleDate", e)
                                     }
@@ -283,14 +278,14 @@ export default function CustomerServiceModal() {
                                                     >
                                                         {opt}
                                                     </SelectItem>
-                                                )
+                                                ),
                                             )}
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
                             </div>
 
-                            <div className="grid gap-2 col-span-2">
+                            <div className="col-span-2 grid gap-2">
                                 <Label>Work Description</Label>
                                 <Textarea
                                     className="h-8"
@@ -303,7 +298,7 @@ export default function CustomerServiceModal() {
             )}
             Footer={({ data }) => {
                 return (
-                    <div className="space-x-4 items-center flex">
+                    <div className="flex items-center space-x-4">
                         <Btn
                             isLoading={isSaving}
                             onClick={submit}

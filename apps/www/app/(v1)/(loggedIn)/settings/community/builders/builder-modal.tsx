@@ -1,35 +1,34 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-
 import { useRouter } from "next/navigation";
-
-import Btn from "../../../../../../components/_v1/btn";
-import BaseModal from "../../../../../../components/_v1/modals/base-modal";
-import { closeModal } from "@/lib/modal";
-import { toast } from "sonner";
-
-import { useFieldArray, useForm, useFormContext } from "react-hook-form";
-import { Label } from "../../../../../../components/ui/label";
-import { Input } from "../../../../../../components/ui/input";
-import { IBuilder } from "@/types/community";
-import { Checkbox } from "../../../../../../components/ui/checkbox";
-import { Button } from "../../../../../../components/ui/button";
-import { Plus, Trash } from "lucide-react";
-import { chunkArray, generateRandomString } from "@/lib/utils";
-import { saveBuilder, saveBuilderInstallations } from "./action";
-import { Form, FormField } from "../../../../../../components/ui/form";
-import { CheckedState } from "@radix-ui/react-checkbox";
-import { _updateBuilderMetaAction } from "@/app/(v2)/(loggedIn)/community-settings/builders/_actions/update-builder-action";
+import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
 import {
     _getBuilderHomeIds,
     _syncBuilderTasks,
 } from "@/app/(v2)/(loggedIn)/community-settings/builders/_actions/save-builder-task-action";
-import { toastArrayAction } from "@/lib/toast-util";
-import { useModal } from "@/components/common/modal/provider";
-import Modal from "@/components/common/modal";
+import { _updateBuilderMetaAction } from "@/app/(v2)/(loggedIn)/community-settings/builders/_actions/update-builder-action";
 import FormInput from "@/components/common/controls/form-input";
-import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
+import Modal from "@/components/common/modal";
+import { useModal } from "@/components/common/modal/provider";
+import { closeModal } from "@/lib/modal";
+import { toastArrayAction } from "@/lib/toast-util";
+import { chunkArray, generateRandomString } from "@/lib/utils";
+import { IBuilder } from "@/types/community";
+import { CheckedState } from "@radix-ui/react-checkbox";
+import { Plus, Trash } from "lucide-react";
+import { useFieldArray, useForm, useFormContext } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Input } from "@gnd/ui/input";
+
+import Btn from "../../../../../../components/_v1/btn";
+import BaseModal from "../../../../../../components/_v1/modals/base-modal";
+import { Button } from "../../../../../../components/ui/button";
+import { Checkbox } from "../../../../../../components/ui/checkbox";
+import { Form, FormField } from "../../../../../../components/ui/form";
+import { Label } from "../../../../../../components/ui/label";
+import { saveBuilder, saveBuilderInstallations } from "./action";
 
 export const useBuilderModal = () => {
     const modal = useModal();
@@ -65,7 +64,7 @@ export default function BuilderModal({
         },
     });
     const [taskIds, setTaskIds] = useState(
-        data?.meta?.tasks?.map((t) => t.uid) || []
+        data?.meta?.tasks?.map((t) => t.uid) || [],
     );
     const modal = useModal();
     async function save() {
@@ -93,13 +92,13 @@ export default function BuilderModal({
                     }
                     const b = await _updateBuilderMetaAction(
                         data.meta,
-                        data.id
+                        data.id,
                     );
                     const homeIds = await _getBuilderHomeIds(data.id);
 
                     const a = await chunkArray(
                         homeIds.map(({ id }) => id),
-                        500
+                        500,
                     );
                     // console.log(a[0]);
                     await toastArrayAction({
@@ -109,7 +108,7 @@ export default function BuilderModal({
                                 data,
                                 deleteIds,
                                 newTaskIds,
-                                units
+                                units,
                             ),
                         loading(item) {
                             return "Synchronizing....";
@@ -138,7 +137,7 @@ export default function BuilderModal({
         <Modal.Content size={type == "main" ? "sm" : "xl"}>
             <Modal.Header title={data?.name || "Builder Form"} />
             <Form {...form}>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid gap-4 md:grid-cols-2">
                     {type == "main" && (
                         <>
                             <FormInput
@@ -187,7 +186,7 @@ function TasksForm({}) {
 
             {fields?.map((f, i) => (
                 <div
-                    className="grid grid-cols-11 gap-2 items-center group"
+                    className="group grid grid-cols-11 items-center gap-2"
                     key={i}
                 >
                     <div className="col-span-4">
@@ -240,7 +239,7 @@ function TasksForm({}) {
                     append({} as any);
                 }}
                 variant="secondary"
-                className="w-full h-7 mt-1"
+                className="mt-1 h-7 w-full"
             >
                 <Plus className="mr-2 size-4" />
                 <span>Add Line</span>

@@ -11,8 +11,8 @@ import { InstallCostLine, InstallCostSettings } from "@/types/settings";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
-import { Input } from "../../ui/input";
 import { ScrollArea } from "../../ui/scroll-area";
 import {
     Table,

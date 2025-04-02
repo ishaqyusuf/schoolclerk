@@ -9,7 +9,8 @@ import { _useAsync } from "@/lib/use-async";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { Input } from "../../ui/input";
+import { Input } from "@gnd/ui/input";
+
 import { Label } from "../../ui/label";
 import Btn from "../btn";
 import BaseModal from "./base-modal";

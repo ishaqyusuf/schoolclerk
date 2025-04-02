@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { updateShelfItemAction } from "@/actions/update-shelf-product";
 import { AnimatedNumber } from "@/components/animated-number";
 import { NumberInput } from "@/components/currency-input";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
     Popover,
@@ -14,6 +13,7 @@ import { useShelf } from "@/hooks/use-shelf";
 import { useShelfItem } from "@/hooks/use-shelf-item";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 export function ShelfPriceCell({ product, prodUid }) {
     const { basePrice, productId, customPrice, salesPrice } = product || {};

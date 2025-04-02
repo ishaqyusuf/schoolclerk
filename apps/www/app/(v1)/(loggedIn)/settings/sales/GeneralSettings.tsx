@@ -8,7 +8,6 @@ import {
     FormItem,
     FormLabel,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
     Select,
     SelectContent,
@@ -21,6 +20,8 @@ import { Separator } from "@/components/ui/separator";
 import { useAppSelector } from "@/store";
 import { ISalesSetting } from "@/types/post";
 import { UseFormReturn } from "react-hook-form";
+
+import { Input } from "@gnd/ui/input";
 
 export default function GeneralSettings({
     form,

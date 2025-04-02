@@ -1,12 +1,13 @@
-import Modal from "@/components/common/modal";
 import { useState } from "react";
-
 import { browseComponentImgUseCase } from "@/app/(clean-code)/(sales)/_common/use-case/step-component-use-case";
+import Modal from "@/components/common/modal";
 import { _modal } from "@/components/common/modal/provider";
-import { ComponentImg } from "../../component-img";
-import { useDebounceInput } from "@/hooks/use-debounce";
-import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useDebounceInput } from "@/hooks/use-debounce";
+
+import { Input } from "@gnd/ui/input";
+
+import { ComponentImg } from "../../component-img";
 
 interface Props {
     onSelect?(img: string);
@@ -21,7 +22,7 @@ export function openImgModal(props: Props) {
 export default function StepComponentFormModal(props: Props) {
     let initialInput = "";
     const [results, setResults] = useState<{ img: string; title: string }[]>(
-        []
+        [],
     );
     const [msg, setMsg] = useState("");
     async function search() {
@@ -61,18 +62,18 @@ export default function StepComponentFormModal(props: Props) {
                 </div>
                 <ScrollArea className="h-[80vh]">
                     {msg && (
-                        <div className="flex justify-center py-4 to-muted-foreground">
+                        <div className="flex justify-center to-muted-foreground py-4">
                             {msg}
                         </div>
                     )}
-                    <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-3">
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3">
                         {results?.map((component, index) => (
                             <div
                                 key={index}
                                 onClick={(e) => {
                                     props.onSelect(component.img);
                                 }}
-                                className="p-2 hover:border-muted-foreground border flex flex-col items-center cursor-pointer"
+                                className="flex cursor-pointer flex-col items-center border p-2 hover:border-muted-foreground"
                                 // component={component}
                                 // swapDoor={door}
                             >

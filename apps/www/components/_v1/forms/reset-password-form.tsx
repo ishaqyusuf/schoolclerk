@@ -12,7 +12,6 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { _useAsync } from "@/lib/use-async";
 import { cn } from "@/lib/utils";
 import { checkEmailSchema, ILogin, loginSchema } from "@/lib/validations/auth";
@@ -23,6 +22,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 export type ResetPasswordRequestInputs = z.infer<typeof checkEmailSchema>;
 export function ResetPasswordForm() {

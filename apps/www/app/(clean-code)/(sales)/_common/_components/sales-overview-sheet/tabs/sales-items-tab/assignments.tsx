@@ -1,26 +1,32 @@
-import { Badge } from "@/components/ui/badge";
-import {
-    AdminOnly,
-    getOpenItem,
-    GuestOnly,
-    loadPageData,
-    refreshTabData,
-} from "../../helper";
-import { useForm, useFormContext } from "react-hook-form";
+import { useState } from "react";
 import ConfirmBtn from "@/components/_v1/confirm-btn";
-import { Form, FormField } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import { Menu } from "@/components/(clean-code)/menu";
+import Button from "@/components/common/button";
+import FormInput from "@/components/common/controls/form-input";
+import { Badge } from "@/components/ui/badge";
+import { Calendar } from "@/components/ui/calendar";
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { Form, FormField } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import { isProdClient } from "@/lib/is-prod";
+import { formatDate } from "@/lib/use-day";
+import useEffectLoader from "@/lib/use-effect-loader";
+import { cn } from "@/lib/utils";
 import { ChevronsUpDown } from "lucide-react";
-import FormInput from "@/components/common/controls/form-input";
+import { useForm, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
-import Button from "@/components/common/button";
+
+import { Input } from "@gnd/ui/input";
+
 import {
     deleteItemAssignmentAction,
     deleteSubmissionAction,
@@ -28,19 +34,15 @@ import {
     updateAssignmentAssignedToAction,
     updateAssignmentDueDateAction,
 } from "../../../../data-actions/production-actions/item-assign-action";
-import { salesOverviewStore } from "../../store";
-import { formatDate } from "@/lib/use-day";
-import { isProdClient } from "@/lib/is-prod";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { useState } from "react";
 import { getSalesProdWorkersAsSelectOption } from "../../../../use-case/sales-prod-workers-use-case";
-import useEffectLoader from "@/lib/use-effect-loader";
-import { Menu } from "@/components/(clean-code)/menu";
+import {
+    AdminOnly,
+    getOpenItem,
+    GuestOnly,
+    loadPageData,
+    refreshTabData,
+} from "../../helper";
+import { salesOverviewStore } from "../../store";
 
 export function ItemAssignments({}) {
     const itemView = getOpenItem();
@@ -49,7 +51,7 @@ export function ItemAssignments({}) {
     if (!assignments.length) return <div className="">No Assignment</div>;
     return (
         <div className="py-2 font-mono">
-            <div className="border-b flex items-center">
+            <div className="flex items-center border-b">
                 <span>Assignments</span>
                 <div className=""></div>
             </div>
@@ -103,7 +105,7 @@ function AssignmentLine({ assignment, index }) {
         refreshTabData("items");
     }
     return (
-        <div key={ass.id} className="py-2 text-sm space-y-4 border-b">
+        <div key={ass.id} className="space-y-4 border-b py-2 text-sm">
             <div className="flex items-center gap-4">
                 <span>{index + 1}.</span>
                 <Menu
@@ -148,7 +150,7 @@ function AssignmentLine({ assignment, index }) {
                 {ass.pills.map((pill, pillId) => (
                     <Badge
                         variant="outline"
-                        className="uppercase p-1 px-2 text-xs"
+                        className="p-1 px-2 text-xs uppercase"
                         key={pillId}
                     >
                         {pill.label}
@@ -184,10 +186,10 @@ function AssignmentLine({ assignment, index }) {
             </div>
             {!show ? (
                 <div className="flex justify-end">
-                    <div className="w-4/5 sm:w-2/3s pl-4">
+                    <div className="sm:w-2/3s w-4/5 pl-4">
                         {ass.submissions?.map((s) => (
                             <div
-                                className="text-muted-foreground border-t flex items-center hover:bg-muted-foreground/20"
+                                className="flex items-center border-t text-muted-foreground hover:bg-muted-foreground/20"
                                 key={s.id}
                             >
                                 <div className="font-mono">
@@ -236,7 +238,7 @@ function AssignmentLine({ assignment, index }) {
                             <CollapsibleTrigger asChild>
                                 <Button
                                     variant="secondary"
-                                    className="w-full flex"
+                                    className="flex w-full"
                                 >
                                     <span>Note</span>
                                     <div className="flex-1"></div>
@@ -284,7 +286,7 @@ function DueDate({ date, dateChanged, disabled }) {
     return (
         <Popover open={open} onOpenChange={onOpenChange}>
             <PopoverTrigger disabled={disabled}>
-                <Badge variant="secondary" className="text-xs py-1">
+                <Badge variant="secondary" className="py-1 text-xs">
                     {_date ? formatDate(_date) : "Due Date"}
                 </Badge>
             </PopoverTrigger>
@@ -309,11 +311,11 @@ function QtyInput({ label, submitable }) {
 
     if (!submitable) return null;
     return (
-        <div className="flex justify-end items-center gap-4">
+        <div className="flex items-center justify-end gap-4">
             <Label className="font-mono uppercase">
                 {label} ({submitable})
             </Label>
-            <div className="flex items-end w-auto">
+            <div className="flex w-auto items-end">
                 {/* <Button size="xs" variant="link">
                     -
                 </Button> */}
@@ -333,14 +335,14 @@ function QtyInput({ label, submitable }) {
                                 if (val > submitable) {
                                     e.preventDefault();
                                     toast.error(
-                                        "Submit cannot exceed assigned"
+                                        "Submit cannot exceed assigned",
                                     );
                                     return;
                                 }
                                 form.setValue(qtyKey, val);
                             }}
                             className={cn(
-                                "border-0 p-1 h-8 font-mono border-b w-20 text-center"
+                                "h-8 w-20 border-0 border-b p-1 text-center font-mono",
                             )}
                             inputMode="numeric"
                             type="number"

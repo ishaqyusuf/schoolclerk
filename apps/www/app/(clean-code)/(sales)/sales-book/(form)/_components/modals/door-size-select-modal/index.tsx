@@ -18,7 +18,6 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
     Popover,
@@ -45,6 +44,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 import { ComponentHelperClass } from "../../../_utils/helpers/zus/step-component-class";
 import AdminControl from "../../admin-control";

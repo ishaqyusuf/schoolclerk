@@ -1,15 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useCombobox } from "downshift";
-import { Label } from "../../ui/label";
-import { PrimitiveDivProps } from "@/types/type";
-import { cn, listFilter, uniqueBy } from "@/lib/utils";
-import { Input } from "../../ui/input";
-import { useVirtualizer } from "@tanstack/react-virtual";
 import JsonSearch from "@/_v2/lib/json-search";
 import useStaticDataLoader from "@/lib/static-data-loader";
+import { cn, listFilter, uniqueBy } from "@/lib/utils";
+import { PrimitiveDivProps } from "@/types/type";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { cva, VariantProps } from "class-variance-authority";
+import { useCombobox } from "downshift";
+
+import { Input } from "@gnd/ui/input";
+
+import { Label } from "../../ui/label";
+
 // import JsonSearch from "search-array";
 export interface AutoCompleteProps {
     options?: any[];
@@ -48,7 +51,7 @@ const inputVariants = cva(
         defaultVariants: {
             size: "default",
         },
-    }
+    },
 );
 export default function AutoComplete({
     options,
@@ -78,7 +81,7 @@ export default function AutoComplete({
     const transformedOptions = transformItems(
         options || [],
         itemText,
-        itemValue
+        itemValue,
     );
     useEffect(() => {
         resetOptions(options);
@@ -87,7 +90,7 @@ export default function AutoComplete({
         const transformedOptions = transformItems(
             _opts || [],
             itemText,
-            itemValue
+            itemValue,
         );
         setItems(transformedOptions);
         setAllItems(transformedOptions);
@@ -124,7 +127,7 @@ export default function AutoComplete({
             let v = ls.find(
                 (item) =>
                     String(item.value)?.toLowerCase() ==
-                    String(text)?.toLowerCase()
+                    String(text)?.toLowerCase(),
             );
             if (!v && !allowCreate) text = "";
             else text = v?.title;
@@ -162,11 +165,11 @@ export default function AutoComplete({
                     transformItems(
                         dataLoader.items || options || [],
                         itemText,
-                        itemValue
+                        itemValue,
                     ),
                     inputValue,
-                    fuzzy
-                )
+                    fuzzy,
+                ),
             );
             let value = items.find((item) => item.title == inputValue);
             // console.log(value);
@@ -198,18 +201,18 @@ export default function AutoComplete({
                         transformItems(
                             dataLoader.items || options || [],
                             itemText,
-                            itemValue
+                            itemValue,
                         ),
                         // changes.inputValue
                         "",
-                        fuzzy
-                    )
+                        fuzzy,
+                    ),
                 );
             } else {
                 // changes.
                 // console.log(changes.selectedItem);
                 let value = items.find(
-                    (item) => item.title == changes.inputValue
+                    (item) => item.title == changes.inputValue,
                 );
                 // console.log([value, changes.selectedItem]);
                 const opt: any = value?.value ? value : changes.selectedItem;
@@ -235,7 +238,7 @@ export default function AutoComplete({
     const inputRef = useRef<HTMLInputElement>();
     return (
         <div>
-            <div className="grid relative gap-2">
+            <div className="relative grid gap-2">
                 {label && <Label>{label}</Label>}
 
                 <div className="flex">
@@ -243,7 +246,7 @@ export default function AutoComplete({
                         className={cn(
                             inputVariants(props),
                             uppercase && "uppercase",
-                            className
+                            className,
                         )}
                         {...getInputProps({ ref: inputRef as any })}
                     />
@@ -256,9 +259,9 @@ export default function AutoComplete({
                     width: `${inputRef.current?.clientWidth}px`,
                 }}
                 className={cn(
-                    "absolute border w-full bg-white dark:bg-accent mt-1 shadow-md max-h-80 overflow-scroll p-0 z-[999]",
+                    "absolute z-[999] mt-1 max-h-80 w-full overflow-scroll border bg-white p-0 shadow-md dark:bg-accent",
                     !(isOpen && items.length) && "hidden",
-                    "min-w-[150px]"
+                    "min-w-[150px]",
                 )}
                 {...getMenuProps({ ref: listRef as any })}
             >
@@ -273,7 +276,7 @@ export default function AutoComplete({
                                             "bg-primary text-accent",
                                         selectedItem === item &&
                                             "bg-accent text-accent-foreground",
-                                        "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none"
+                                        "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none",
                                     )}
                                     key={index}
                                     {...getItemProps({
@@ -284,7 +287,7 @@ export default function AutoComplete({
                                     <span
                                         className={cn(
                                             uppercase && "uppercase",
-                                            "line-clamp-1"
+                                            "line-clamp-1",
                                         )}
                                     >
                                         {item?.title}
@@ -305,8 +308,8 @@ export default function AutoComplete({
                                     highlightedIndex === index && "bg-blue-300",
                                     selectedItem === items[vi.index] &&
                                         "font-bold",
-                                    "py-2 px-3 shadow-sm flex flex-col cursor-default",
-                                    uppercase && "uppercase"
+                                    "flex cursor-default flex-col px-3 py-2 shadow-sm",
+                                    uppercase && "uppercase",
                                 )}
                                 key={index}
                                 {...getItemProps({
@@ -325,7 +328,7 @@ export default function AutoComplete({
                                 <span
                                     className={cn(
                                         uppercase && "uppercase",
-                                        "line-clamp-1"
+                                        "line-clamp-1",
                                     )}
                                 >
                                     {items[vi.index]?.title}

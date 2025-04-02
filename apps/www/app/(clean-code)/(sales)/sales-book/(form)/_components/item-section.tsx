@@ -7,11 +7,11 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Input } from "@/components/ui/input";
 import { swap } from "@/lib/utils";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 import { useFormDataStore } from "../_common/_stores/form-data-store";
 import { ItemClass } from "../_utils/helpers/zus/item-class";

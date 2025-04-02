@@ -11,7 +11,6 @@ import {
     FormItem,
     FormLabel,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
     Select,
     SelectContent,
@@ -31,6 +30,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@gnd/ui/dialog";
+import { Input } from "@gnd/ui/input";
 
 export default function WizardForm({
     form,

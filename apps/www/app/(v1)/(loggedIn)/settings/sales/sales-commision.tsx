@@ -3,28 +3,29 @@ import {
     FormControl,
     FormField,
     FormItem,
-    FormLabel
+    FormLabel,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
     Select,
     SelectContent,
     SelectGroup,
     SelectItem,
     SelectTrigger,
-    SelectValue
+    SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { useAppSelector } from "@/store";
 import { ISalesSetting } from "@/types/post";
 import { UseFormReturn } from "react-hook-form";
 
+import { Input } from "@gnd/ui/input";
+
 // export const orderDeleteCommissionAction = [
 //     { action: "delete", title: "Delete Commission" },
 //     { action: "keep", title: "Keep Commission" }
 // ];
 export default function SalesCommisionSettingSection({
-    form
+    form,
 }: {
     form: UseFormReturn<ISalesSetting>;
 }) {
@@ -60,3 +61,4 @@ export default function SalesCommisionSettingSection({
         </div>
     );
 }
+

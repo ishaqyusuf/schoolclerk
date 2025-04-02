@@ -6,7 +6,6 @@ import Btn from "@/components/_v1/btn";
 import { SecondaryCellContent } from "@/components/_v1/columns/base-columns";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
     Table,
@@ -25,6 +24,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 import BaseModal from "../base-modal";
 

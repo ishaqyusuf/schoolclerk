@@ -3,7 +3,6 @@
 import * as React from "react";
 import Link from "next/link";
 import { DataTableViewOptions } from "@/components/common/data-table/data-table-view-options";
-import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import type {
     DataTableFilterableColumn,
@@ -13,6 +12,7 @@ import { Cross2Icon, PlusCircledIcon, TrashIcon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
 
 import { Button, buttonVariants } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 

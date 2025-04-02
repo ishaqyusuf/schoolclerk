@@ -7,7 +7,6 @@ import Btn from "@/components/_v1/btn";
 import PageHeader from "@/components/_v1/page-header";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { resetPasswordSchema } from "@/lib/validations/auth";
 import { InstallCostMeta, InstallCostSettings } from "@/types/settings";
@@ -18,6 +17,7 @@ import { toast } from "sonner";
 import type { z } from "zod";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 import { HousePackageToolSettings } from "../type";
 import { saveHousePackageTool } from "./save-house-package-tool";

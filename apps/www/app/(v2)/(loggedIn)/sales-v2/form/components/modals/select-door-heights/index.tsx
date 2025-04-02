@@ -13,13 +13,13 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Form } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { cn, ftToIn, safeFormText } from "@/lib/utils";
 import { HousePackageToolMeta } from "@/types/sales";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 import { _addSize } from "../../../../dimension-variants/_actions/add-size";
 import { getDimensionSizeList } from "../../../../dimension-variants/_actions/get-size-list";

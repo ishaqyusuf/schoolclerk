@@ -1,15 +1,5 @@
-import Money from "@/components/_v1/money";
-import { useLoader } from "@/lib/use-loader";
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
-import { useFormContext } from "react-hook-form";
-import { ISalesForm } from "../type";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-} from "@/components/ui/table";
+import Money from "@/components/_v1/money";
 import {
     Select,
     SelectContent,
@@ -18,10 +8,22 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+} from "@/components/ui/table";
+import { useLoader } from "@/lib/use-loader";
 import { cn } from "@/lib/utils";
-import { SalesFormContext } from "../ctx";
+import { useFormContext } from "react-hook-form";
+
+import { Input } from "@gnd/ui/input";
+
 import salesData from "../../sales-data";
+import { SalesFormContext } from "../ctx";
+import { ISalesForm } from "../type";
 
 export default function EstimateFooter({}) {
     const [floatingFooter, setFloatingFooter] = useState(false);
@@ -54,7 +56,7 @@ export default function EstimateFooter({}) {
         <div className={floatingFooter ? "mt-16" : "mt-0"}>
             <div id="lastLine" ref={tableRef} className=""></div>
             {floatingFooter ? (
-                <div className="fixed bottom-0 left-0  right-0 md:grid md:grid-cols-[220px_minmax(0,1fr)]  lg:grid-cols-[240px_minmax(0,1fr)] mb-6">
+                <div className="fixed bottom-0 left-0  right-0 mb-6 md:grid  md:grid-cols-[220px_minmax(0,1fr)] lg:grid-cols-[240px_minmax(0,1fr)]">
                     <div className="hidden  md:block" />
                     <div className="lg:gap-10 2xl:grid 2xl:grid-cols-[1fr_300px] ">
                         <Footer floatingFooter />
@@ -93,8 +95,8 @@ function Footer({
         <div
             className={cn(
                 className,
-                "shadow-xl bg-slate-50 border-slate-300 border z-10",
-                floatingFooter ? "rounded-full" : "rounded p-2"
+                "z-10 border border-slate-300 bg-slate-50 shadow-xl",
+                floatingFooter ? "rounded-full" : "rounded p-2",
             )}
         >
             <Table id="invoiceFooter" className="w-full">
@@ -108,7 +110,7 @@ function Footer({
                                     onValueChange={(value) => {
                                         form.setValue(
                                             "meta.payment_option" as any,
-                                            value as any
+                                            value as any,
                                         );
                                     }}
                                 >
@@ -125,7 +127,7 @@ function Footer({
                                                     >
                                                         {opt}
                                                     </SelectItem>
-                                                )
+                                                ),
                                             )}
                                         </SelectGroup>
                                     </SelectContent>

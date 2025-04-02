@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import "@gnd/ui/globals.css";
 
 import { Suspense } from "react";
 import { trashSoftDeletesAction } from "@/actions/trash-soft-deletes";

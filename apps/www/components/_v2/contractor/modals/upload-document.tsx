@@ -1,18 +1,19 @@
 "use client";
 
+// import cloudinary from "@/lib/cloudinary";
+import { useRef, useTransition } from "react";
 import { _saveDocUpload } from "@/app/(v2)/(loggedIn)/contractors/overview/_actions/upload-contractor-doc";
 import { ContractorOverview } from "@/app/(v2)/(loggedIn)/contractors/overview/type";
 import Btn from "@/components/_v1/btn";
 import BaseModal from "@/components/_v1/modals/base-modal";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { closeModal } from "@/lib/modal";
 import { uploadFile } from "@/lib/upload-file";
 import { IUser } from "@/types/hrm";
-// import cloudinary from "@/lib/cloudinary";
-import { useRef, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { Input } from "@gnd/ui/input";
 
 export default function UploadDocumentModal({}) {
     const fileInputRef = useRef(null);
@@ -68,7 +69,7 @@ export default function UploadDocumentModal({}) {
             }}
             modalName="uploadDoc"
             Title={({ data }) => (
-                <div className="flex space-x-2 items-center">
+                <div className="flex items-center space-x-2">
                     Upload Document
                 </div>
             )}
@@ -85,8 +86,8 @@ export default function UploadDocumentModal({}) {
                     <div className="">
                         <div className="">
                             <div className="">
-                                <div className="border-dashed border-2 border-gray-400 p-4 mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                                <div className="mb-4 border-2 border-dashed border-gray-400 p-4">
+                                    <label className="mb-2 block text-sm font-bold text-gray-700">
                                         Select a file
                                     </label>
                                     <input

@@ -1,5 +1,4 @@
 import PageHeader from "@/components/_v1/page-header";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
     Table,
@@ -9,12 +8,15 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { useDataPage } from "@/lib/data-page-context";
 import { cn } from "@/lib/utils";
+import { useAppSelector } from "@/store";
 import { ISalesOrder } from "@/types/sales";
 import { UseFormReturn } from "react-hook-form";
+
+import { Input } from "@gnd/ui/input";
+
 import { SalesDataPage, TruckLoaderForm } from "./load-delivery";
-import { useAppSelector } from "@/store";
-import { useDataPage } from "@/lib/data-page-context";
 
 interface Props {
     form: UseFormReturn<TruckLoaderForm>;
@@ -40,7 +42,7 @@ export default function OrderInspection({ form, order }: Props) {
                     <Label>Truck Load Location</Label>
                     <Input
                         {...form.register(
-                            `loader.${order.slug}.truckLoadLocation`
+                            `loader.${order.slug}.truckLoadLocation`,
                         )}
                     />
                 </div>
@@ -80,7 +82,7 @@ export function BackOrderLine({ form, order, item, action }) {
             className={cn(
                 loadQty > 0 && "bg-green-100 hover:bg-green-100",
                 loadQty > qty && "bg-red-100 hover:bg-red-100",
-                loadQty < qty && "bg-orange-100 hover:bg-orange-100"
+                loadQty < qty && "bg-orange-100 hover:bg-orange-100",
             )}
             key={item.id}
         >
@@ -88,7 +90,7 @@ export function BackOrderLine({ form, order, item, action }) {
                 onClick={(e) => {
                     form.setValue(`${baseKey}.checked`, !checked);
                 }}
-                className={cn("p-2 uppercase cursor-pointer")}
+                className={cn("cursor-pointer p-2 uppercase")}
             >
                 <p className="text-primary">{item.description}</p>
             </TableCell>
@@ -101,7 +103,7 @@ export function BackOrderLine({ form, order, item, action }) {
                         <Input
                             type="number"
                             {...form.register(`${baseKey}.loadQty` as any)}
-                            className="w-16 h-7"
+                            className="h-7 w-16"
                         />
                     )}
                 </TableCell>

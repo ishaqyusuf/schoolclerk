@@ -1,37 +1,46 @@
 "use client";
 
 import React, { useEffect, useState, useTransition } from "react";
-
 import { useRouter } from "next/navigation";
-
-import Btn from "../../../../../../../components/_v1/btn";
-import BaseModal from "../../../../../../../components/_v1/modals/base-modal";
-import { toast } from "sonner";
-
-import { useFieldArray, useForm } from "react-hook-form";
-import { Label } from "../../../../../../../components/ui/label";
-import { Input } from "../../../../../../../components/ui/input";
+import { updateCommunityModelInstallCost } from "@/app/(v1)/_actions/community/community-template";
+import { updateModelInstallCost } from "@/app/(v1)/_actions/community/install-costs";
+import { getInstallCostsAction } from "@/app/(v1)/_actions/community/install-costs/get-install-costs.action";
+import { getSettingAction } from "@/app/(v1)/_actions/settings";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { deepCopy } from "@/lib/deep-copy";
+import { cn } from "@/lib/utils";
+import { useAppSelector } from "@/store";
+import { loadStaticList } from "@/store/slicers";
 import {
     ICommunityTemplate,
     IHomeTemplate,
-    IProject,
     InstallCost,
+    IProject,
 } from "@/types/community";
-import { ScrollArea } from "../../../../../../../components/ui/scroll-area";
-import { Button } from "../../../../../../../components/ui/button";
-import { Plus } from "lucide-react";
-import { deepCopy } from "@/lib/deep-copy";
 import {
     InstallCostLine,
     InstallCostMeta,
     InstallCostSettings,
 } from "@/types/settings";
-import { getSettingAction } from "@/app/(v1)/_actions/settings";
+import { Plus } from "lucide-react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Input } from "@gnd/ui/input";
+
+import Btn from "../../../../../../../components/_v1/btn";
 import {
     PrimaryCellContent,
     SecondaryCellContent,
 } from "../../../../../../../components/_v1/columns/base-columns";
+import BaseModal from "../../../../../../../components/_v1/modals/base-modal";
 import Money from "../../../../../../../components/_v1/money";
+import { Badge } from "../../../../../../../components/ui/badge";
+import { Button } from "../../../../../../../components/ui/button";
+import { FormField } from "../../../../../../../components/ui/form";
+import { Label } from "../../../../../../../components/ui/label";
+import { ScrollArea } from "../../../../../../../components/ui/scroll-area";
+import { Switch } from "../../../../../../../components/ui/switch";
 import {
     Table,
     TableBody,
@@ -40,16 +49,6 @@ import {
     TableHeader,
     TableRow,
 } from "../../../../../../../components/ui/table";
-import { cn } from "@/lib/utils";
-import { updateModelInstallCost } from "@/app/(v1)/_actions/community/install-costs";
-import { updateCommunityModelInstallCost } from "@/app/(v1)/_actions/community/community-template";
-import { Badge } from "../../../../../../../components/ui/badge";
-import { Switch } from "../../../../../../../components/ui/switch";
-import { FormField } from "../../../../../../../components/ui/form";
-import { loadStaticList } from "@/store/slicers";
-import { useAppSelector } from "@/store";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getInstallCostsAction } from "@/app/(v1)/_actions/community/install-costs/get-install-costs.action";
 
 export default function ModelInstallCostModal({ community = false }) {
     const route = useRouter();
@@ -98,7 +97,7 @@ export default function ModelInstallCostModal({ community = false }) {
                         data.id,
                         data.pivotId,
                         pMeta,
-                        meta
+                        meta,
                     );
                 }
                 toast.message("Saved!");
@@ -138,7 +137,7 @@ export default function ModelInstallCostModal({ community = false }) {
         return costSetting?.meta?.list?.filter(
             (t) =>
                 (type == "punchout" && t.punchout) ||
-                (!t.punchout && type != "punchout")
+                (!t.punchout && type != "punchout"),
         );
     }
     return (
@@ -167,7 +166,7 @@ export default function ModelInstallCostModal({ community = false }) {
             )}
             Content={({ data }) => (
                 <div className="flex w-full divide-x">
-                    <div className="hidden sm:w-1/3 space-y-2 pr-2">
+                    <div className="hidden space-y-2 pr-2 sm:w-1/3">
                         <div className="">
                             <Label>Installations</Label>
                         </div>
@@ -181,17 +180,17 @@ export default function ModelInstallCostModal({ community = false }) {
                                     });
                                 }}
                                 variant="outline"
-                                className="w-full h-7 mt-1"
+                                className="mt-1 h-7 w-full"
                             >
                                 <Plus className="mr-2 size-4" />
                                 <span>New Install</span>
                             </Button>
                         </div>
-                        <ScrollArea className="max-h-[350px] divide-y w-full">
+                        <ScrollArea className="max-h-[350px] w-full divide-y">
                             {fields.map((f, i) => (
                                 <Button
                                     variant={i == index ? "secondary" : "ghost"}
-                                    className="text-sm cursor-pointer hover:bg-slate-200 h-8 text-start tex-sm p-0.5 w-full"
+                                    className="tex-sm h-8 w-full cursor-pointer p-0.5 text-start text-sm hover:bg-slate-200"
                                     key={i}
                                     onClick={() => setIndex(i)}
                                 >
@@ -200,7 +199,7 @@ export default function ModelInstallCostModal({ community = false }) {
                             ))}
                         </ScrollArea>
                     </div>
-                    <div className="flex-1 flex flex-col  pl-2 gap-2">
+                    <div className="flex flex-1 flex-col  gap-2 pl-2">
                         <Tabs defaultValue="contractor" className="">
                             <TabsList>
                                 <TabsTrigger value="contractor">
@@ -216,7 +215,7 @@ export default function ModelInstallCostModal({ community = false }) {
                                     className="flex flex-col"
                                     value={type}
                                 >
-                                    <ScrollArea className="h-[350px] divide-y w-full">
+                                    <ScrollArea className="h-[350px] w-full divide-y">
                                         <Table className="">
                                             <TableHeader>
                                                 <TableRow>
@@ -241,10 +240,10 @@ export default function ModelInstallCostModal({ community = false }) {
                                                     <TableRow
                                                         className={cn(
                                                             form.getValues(
-                                                                `costs.${index}.costings.${l.uid}`
+                                                                `costs.${index}.costings.${l.uid}`,
                                                             ) > 0
                                                                 ? "bg-teal-50"
-                                                                : ""
+                                                                : "",
                                                         )}
                                                         key={i}
                                                     >
@@ -277,7 +276,7 @@ export default function ModelInstallCostModal({ community = false }) {
                                                                 className="h-7 w-20 px-2"
                                                                 type={"number"}
                                                                 {...form.register(
-                                                                    `costs.${index}.costings.${l.uid}`
+                                                                    `costs.${index}.costings.${l.uid}`,
                                                                 )}
                                                             />
                                                         </TableCell>
@@ -344,7 +343,7 @@ function CommunityDefaultQty({
                 !form.getValues(`costs.0.costings.${costLine.uid}`) &&
                     Number(qty) > 0
                     ? "bg-green-200 text-green-700 hover:bg-green-200"
-                    : "bg-slate-200 text-slate-700 hover:bg-slate-200"
+                    : "bg-slate-200 text-slate-700 hover:bg-slate-200",
             )}
         >
             {qty ? qty : "Not set"}

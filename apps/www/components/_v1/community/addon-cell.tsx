@@ -5,13 +5,13 @@ import { updateProjectMeta } from "@/app/(v1)/_actions/community/projects";
 import { IProject } from "@/types/community";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 import Btn from "../btn";
 import { Cell } from "../columns/base-columns";

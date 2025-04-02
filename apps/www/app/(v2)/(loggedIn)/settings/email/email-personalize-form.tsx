@@ -1,6 +1,8 @@
 "use client";
 
+import { useTransition } from "react";
 import { _saveCommunitModelCostData } from "@/app/(v1)/_actions/community/community-model-cost";
+import Btn from "@/components/_v1/btn";
 import {
     Form,
     FormControl,
@@ -8,14 +10,14 @@ import {
     FormItem,
     FormLabel,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { IUser } from "@/types/hrm";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { Input } from "@gnd/ui/input";
+
 import { _saveEmailPersonalizeForm } from "./_save-email-personalize-form";
-import Btn from "@/components/_v1/btn";
-import { useTransition } from "react";
 
 export default function EmailPersolizeForm({ user }: { user: IUser }) {
     const form = useForm<IUser>({
@@ -52,7 +54,7 @@ export default function EmailPersolizeForm({ user }: { user: IUser }) {
                 </div>
                 <Separator />
                 <Form {...form}>
-                    <div className="grid gap-4 grid-cols-2">
+                    <div className="grid grid-cols-2 gap-4">
                         <FormField
                             control={form.control}
                             name="meta.emailTitle"

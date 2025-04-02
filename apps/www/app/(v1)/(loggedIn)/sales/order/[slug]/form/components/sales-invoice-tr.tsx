@@ -1,5 +1,13 @@
 "use client";
-import { Input } from "@/components/ui/input";
+
+import * as React from "react";
+import { SalesFormCtx } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-form";
+import AutoComplete2 from "@/components/_v1/auto-complete-tw";
+import Combobox from "@/components/_v1/combo-box";
+import Money from "@/components/_v1/money";
+import { Checkbox } from "@/components/ui/checkbox";
+import { FormField } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import {
     Table,
     TableBody,
@@ -10,24 +18,17 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { store } from "@/store";
-import * as React from "react";
-
-import { Checkbox } from "@/components/ui/checkbox";
-
-import { CheckedState } from "@radix-ui/react-checkbox";
-import { FormField } from "@/components/ui/form";
+import { updateFooterInfo } from "@/store/invoice-item-component-slice";
 import { ISalesOrder, ISalesOrderForm } from "@/types/sales";
-import Combobox from "@/components/_v1/combo-box";
+import { CheckedState } from "@radix-ui/react-checkbox";
+
+import { Input } from "@gnd/ui/input";
+
+import { InvoiceItemRowContext } from "../invoice-item-row-context";
+import InvoiceTableRowAction from "./invoice-table-row-action";
 import ItemCell from "./item-cell";
 import QtyCostCell from "./qty-cost-cell";
-import { Label } from "@/components/ui/label";
-import { updateFooterInfo } from "@/store/invoice-item-component-slice";
-import { SalesFormCtx } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-form";
-import InvoiceTableRowAction from "./invoice-table-row-action";
 import SwingCell from "./swing-cell";
-import AutoComplete2 from "@/components/_v1/auto-complete-tw";
-import Money from "@/components/_v1/money";
-import { InvoiceItemRowContext } from "../invoice-item-row-context";
 
 interface IProps {
     rowIndex;
@@ -153,7 +154,7 @@ function TaxSwitchCell({
 }) {
     const keyName: any = `items.${rowIndex}.meta.tax`;
     const [checked, setChecked] = React.useState<CheckedState | undefined>(
-        true
+        true,
     );
     React.useEffect(() => {
         const v = form.getValues(keyName);
@@ -172,7 +173,7 @@ function TaxSwitchCell({
                     updateFooterInfo({
                         rowIndex,
                         taxxable: e == true,
-                    })
+                    }),
                 );
             }}
         />

@@ -1,10 +1,10 @@
 "use client";
 
-import { Label } from "@/components/ui/label";
-import { ISalesOrderForm } from "@/types/sales";
-import { SalesCustomerProfileInput } from "./customer-profile-input";
+import { useEffect, useTransition } from "react";
 import { SalesFormResponse } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-form";
-import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/_v1/date-range-picker";
+import { FormField } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import {
     Select,
     SelectContent,
@@ -13,14 +13,15 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { DatePicker } from "@/components/_v1/date-range-picker";
-import { formatDate } from "@/lib/use-day";
-import { useEffect, useTransition } from "react";
-
 import { Switch } from "@/components/ui/switch";
-import { FormField } from "@/components/ui/form";
+import { formatDate } from "@/lib/use-day";
 import { useAppSelector } from "@/store";
+import { ISalesOrderForm } from "@/types/sales";
+
+import { Input } from "@gnd/ui/input";
+
 import salesUtils from "../sales-utils";
+import { SalesCustomerProfileInput } from "./customer-profile-input";
 
 export default function InfoCard({
     form,
@@ -43,7 +44,7 @@ export default function InfoCard({
             salesUtils.calculatePaymentTerm(
                 form,
                 watchPaymentTerm,
-                watchCreatedAt
+                watchCreatedAt,
             );
     }, [watchPaymentTerm, watchType, watchCreatedAt]);
     // function resetTerm() {
@@ -69,10 +70,10 @@ export default function InfoCard({
     //   });
     // }
     const mockupMode = useAppSelector(
-        (state) => state.orderItemComponent?.showMockup
+        (state) => state.orderItemComponent?.showMockup,
     );
     return (
-        <div className="group relative  h-full w-full  rounded border border-slate-300 p-2 text-start hover:bg-slate-100s hover:shadows">
+        <div className="hover:bg-slate-100s hover:shadows  group relative  h-full w-full rounded border border-slate-300 p-2 text-start">
             <div className="grid gap-2 xl:grid-cols-2 xl:gap-x-4">
                 <InfoLine label="Sales Rep">
                     <span>
@@ -188,12 +189,12 @@ export default function InfoCard({
                                     )}
                                 />
 
-                                <div className="text-xs inline-flex text-red-500 items-center font-medium">
+                                <div className="inline-flex items-center text-xs font-medium text-red-500">
                                     {watchGoodUntil && (
                                         <>
                                             <span>{`${formatDate(
                                                 watchGoodUntil,
-                                                "MMM DD"
+                                                "MMM DD",
                                             )}`}</span>
                                             {/* <TooltipProvider>
                                                 <Tooltip>
@@ -250,11 +251,11 @@ export default function InfoCard({
 }
 function InfoLine({ label, children }) {
     return (
-        <div className="md:grid md:grid-cols-2 items-center xl:grid-cols-3">
-            <Label className="text-muted-foreground whitespace-nowrap">
+        <div className="items-center md:grid md:grid-cols-2 xl:grid-cols-3">
+            <Label className="whitespace-nowrap text-muted-foreground">
                 {label}
             </Label>
-            <div className="text-end flex justify-end text-sm xl:col-span-2">
+            <div className="flex justify-end text-end text-sm xl:col-span-2">
                 {children}
             </div>
         </div>

@@ -1,9 +1,12 @@
 "use client";
-import { Label } from "@/components/ui/label";
+
 import { useEffect, useMemo } from "react";
-import { useZusStore } from "./store";
-import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+import { Input } from "@gnd/ui/input";
+
 import { ZusClass } from "./page-class";
+import { useZusStore } from "./store";
 
 export default function PageClient({}) {
     const store = useZusStore();
@@ -73,9 +76,7 @@ function AbcClient({ uid }) {
                     cls.storeName(e.target.value);
                 }}
             />
-            {sequence?.map((s) => (
-                <ExternalContent key={s} stepUid={s} />
-            ))}
+            {sequence?.map((s) => <ExternalContent key={s} stepUid={s} />)}
         </div>
     );
 }

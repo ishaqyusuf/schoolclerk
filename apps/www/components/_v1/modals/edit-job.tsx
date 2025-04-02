@@ -1,28 +1,26 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-
 import { useRouter } from "next/navigation";
-
-import { _useAsync } from "@/lib/use-async";
-import Btn from "../btn";
-import BaseModal from "./base-modal";
-import { closeModal } from "@/lib/modal";
-import { toast } from "sonner";
-
-import { useForm } from "react-hook-form";
-
-import { Input } from "../../ui/input";
-import { Label } from "../../ui/label";
-import { IUser } from "@/types/hrm";
-import AutoComplete2 from "../auto-complete-tw";
-import { staticRolesAction } from "@/app/(v1)/_actions/hrm/static-roles";
-import { employeeSchema } from "@/lib/validations/hrm";
+import { useStaticRoles } from "@/_v2/hooks/use-static-data";
 import {
     createEmployeeAction,
     saveEmployeeAction,
 } from "@/app/(v1)/_actions/hrm/save-employee";
-import { useStaticRoles } from "@/_v2/hooks/use-static-data";
+import { staticRolesAction } from "@/app/(v1)/_actions/hrm/static-roles";
+import { closeModal } from "@/lib/modal";
+import { _useAsync } from "@/lib/use-async";
+import { employeeSchema } from "@/lib/validations/hrm";
+import { IUser } from "@/types/hrm";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Input } from "@gnd/ui/input";
+
+import { Label } from "../../ui/label";
+import AutoComplete2 from "../auto-complete-tw";
+import Btn from "../btn";
+import BaseModal from "./base-modal";
 
 export default function EditJobModal() {
     const route = useRouter();
@@ -61,7 +59,7 @@ export default function EditJobModal() {
                 ? {}
                 : {
                       ...data,
-                  }
+                  },
         );
     }
     return (
@@ -80,8 +78,8 @@ export default function EditJobModal() {
             )}
             Content={({ data }) => (
                 <div>
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <div className="grid gap-2 col-span-2">
+                    <div className="grid gap-4 md:grid-cols-2">
+                        <div className="col-span-2 grid gap-2">
                             <Label>Name</Label>
                             <Input
                                 placeholder=""
@@ -103,7 +101,7 @@ export default function EditJobModal() {
                                 {...form.register("email")}
                             />
                         </div>
-                        <div className="grid gap-2 col-span-2">
+                        <div className="col-span-2 grid gap-2">
                             <Label>Role</Label>
                             <AutoComplete2
                                 form={form}

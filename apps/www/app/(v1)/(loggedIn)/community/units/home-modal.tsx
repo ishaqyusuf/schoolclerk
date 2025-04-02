@@ -1,38 +1,35 @@
 "use client";
 
 import React, { useEffect, useState, useTransition } from "react";
-
 import { useRouter } from "next/navigation";
-
-import { _useAsync } from "@/lib/use-async";
-import Btn from "../../../../../components/_v1/btn";
-import BaseModal from "../../../../../components/_v1/modals/base-modal";
-import { closeModal } from "@/lib/modal";
-import { toast } from "sonner";
-
-import { useFieldArray, useForm } from "react-hook-form";
-
-import { Label } from "../../../../../components/ui/label";
-
-import { ICommunityTemplate, IHome, IProject } from "@/types/community";
-import { homeSchema } from "@/lib/validations/community-validations";
-import { staticProjectsAction } from "@/app/(v1)/_actions/community/projects";
-import { Plus } from "lucide-react";
-import { Button } from "../../../../../components/ui/button";
-import { Input } from "../../../../../components/ui/input";
-import { DatePicker } from "../../../../../components/_v1/date-range-picker";
-import ConfirmBtn from "../../../../../components/_v1/confirm-btn";
-import AutoComplete2 from "../../../../../components/_v1/auto-complete-tw";
+import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
+import { staticCommunity } from "@/app/(v1)/_actions/community/community-template";
 import {
     _updateCommunityHome,
     createHomesAction,
 } from "@/app/(v1)/_actions/community/create-homes";
-import { getModelNumber } from "@/lib/utils";
-import { homeSearchMeta } from "@/lib/community/community-utils";
-import { staticCommunity } from "@/app/(v1)/_actions/community/community-template";
-import { useModal } from "@/components/common/modal/provider";
+import { staticProjectsAction } from "@/app/(v1)/_actions/community/projects";
 import Modal from "@/components/common/modal";
-import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
+import { useModal } from "@/components/common/modal/provider";
+import { homeSearchMeta } from "@/lib/community/community-utils";
+import { closeModal } from "@/lib/modal";
+import { _useAsync } from "@/lib/use-async";
+import { getModelNumber } from "@/lib/utils";
+import { homeSchema } from "@/lib/validations/community-validations";
+import { ICommunityTemplate, IHome, IProject } from "@/types/community";
+import { Plus } from "lucide-react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Input } from "@gnd/ui/input";
+
+import AutoComplete2 from "../../../../../components/_v1/auto-complete-tw";
+import Btn from "../../../../../components/_v1/btn";
+import ConfirmBtn from "../../../../../components/_v1/confirm-btn";
+import { DatePicker } from "../../../../../components/_v1/date-range-picker";
+import BaseModal from "../../../../../components/_v1/modals/base-modal";
+import { Button } from "../../../../../components/ui/button";
+import { Label } from "../../../../../components/ui/label";
 
 interface FormProps {
     units: IHome[];
@@ -77,7 +74,7 @@ export default function HomeModal({ home }: Props) {
                 if (home?.id) {
                     const unit = formData.units[0] as any;
                     unit.modelName = communityTemplates.find(
-                        (f) => f.id == unit.communityTemplateId
+                        (f) => f.id == unit.communityTemplateId,
                     )?.modelName as any;
                     await _updateCommunityHome(unit);
                     msg = "Unit updated!";
@@ -88,11 +85,11 @@ export default function HomeModal({ home }: Props) {
                     const unitForms = formData.units?.map((u) => {
                         const pid = (u.projectId = Number(formData.projectId));
                         u.modelName = communityTemplates.find(
-                            (f) => f.id == u.communityTemplateId
+                            (f) => f.id == u.communityTemplateId,
                         )?.modelName as any;
                         u.modelNo = getModelNumber(u.modelName);
                         u.builderId = Number(
-                            projects.find((p) => p.id == pid)?.builderId
+                            projects.find((p) => p.id == pid)?.builderId,
                         );
                         // u.communityTemplateId = Number(
                         //     communityTemplates.find(
@@ -155,7 +152,7 @@ export default function HomeModal({ home }: Props) {
                 subtitle={home?.id && home?.project?.title}
             />
             <div>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid gap-4 md:grid-cols-2">
                     <div className="col-span-2">
                         <IsReady>
                             <AutoComplete2
@@ -178,8 +175,8 @@ export default function HomeModal({ home }: Props) {
               /> */}
                     </div>
 
-                    <div className="grid col-span-2 md:grid-cols-2 gap-4">
-                        <div className="md:col-span-2 grid gap-2">
+                    <div className="col-span-2 grid gap-4 md:grid-cols-2">
+                        <div className="grid gap-2 md:col-span-2">
                             <div className="grid w-full grid-cols-7 gap-2">
                                 <Label className="col-span-2">Model Name</Label>
                                 <Label className="col-span-1">Blk</Label>
@@ -189,7 +186,7 @@ export default function HomeModal({ home }: Props) {
                             </div>
                             {fields?.map((f, i) => (
                                 <div
-                                    className="grid w-full grid-cols-7 gap-2 items-center group"
+                                    className="group grid w-full grid-cols-7 items-center gap-2"
                                     key={i}
                                 >
                                     <div className="col-span-2">
@@ -206,7 +203,8 @@ export default function HomeModal({ home }: Props) {
                                                 formKey={`units.${i}.communityTemplateId`}
                                                 options={communityTemplates?.filter(
                                                     (m) =>
-                                                        m.projectId == projectId
+                                                        m.projectId ==
+                                                        projectId,
                                                 )}
                                                 onSelect={(e) => {
                                                     console.log(e);
@@ -234,19 +232,19 @@ export default function HomeModal({ home }: Props) {
 
                                     <div className="col-span-2">
                                         <DatePicker
-                                            className="w-auto h-7"
+                                            className="h-7 w-auto"
                                             setValue={(e) =>
                                                 form.setValue(
                                                     `units.${i}.createdAt`,
-                                                    e
+                                                    e,
                                                 )
                                             }
                                             value={form.getValues(
-                                                `units.${i}.createdAt`
+                                                `units.${i}.createdAt`,
                                             )}
                                         />
                                     </div>
-                                    <div className="col-span-1 flex justify-between items-center">
+                                    <div className="col-span-1 flex items-center justify-between">
                                         <Input
                                             className="h-7"
                                             placeholder=""
@@ -276,7 +274,7 @@ export default function HomeModal({ home }: Props) {
                                         } as Partial<IHome> as any);
                                     }}
                                     variant="secondary"
-                                    className="w-full h-7 mt-1"
+                                    className="mt-1 h-7 w-full"
                                 >
                                     <Plus className="mr-2 size-4" />
                                     <span>Add Task</span>

@@ -1,24 +1,26 @@
 "use client";
 
+import { useEffect, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { _readyForDelivery } from "@/app/(v1)/(loggedIn)/sales/_actions/delivery/ready-for-delivery";
+import { _startSalesDelivery } from "@/app/(v1)/(loggedIn)/sales/_actions/delivery/start-sales-delivery";
+import Btn from "@/components/_v1/btn";
+import PageHeader from "@/components/_v1/page-header";
+import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useDataPage } from "@/lib/data-page-context";
+import { openModal } from "@/lib/modal";
+import { truckBackOrder } from "@/lib/sales/truck-backorder";
+import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 import { ISalesOrder, ISalesOrderItem } from "@/types/sales";
-import { useEffect, useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
-import OrderInspection from "./order-inspection";
-import PageHeader from "@/components/_v1/page-header";
-import Btn from "@/components/_v1/btn";
-import { truckBackOrder } from "@/lib/sales/truck-backorder";
-import { openModal } from "@/lib/modal";
-import { _startSalesDelivery } from "@/app/(v1)/(loggedIn)/sales/_actions/delivery/start-sales-delivery";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { cn } from "@/lib/utils";
-import { _readyForDelivery } from "@/app/(v1)/(loggedIn)/sales/_actions/delivery/ready-for-delivery";
 import { IDataPage } from "@/types/type";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { useDataPage } from "@/lib/data-page-context";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Input } from "@gnd/ui/input";
+
+import OrderInspection from "./order-inspection";
 
 export interface TruckLoaderForm {
     loader: {
@@ -121,16 +123,16 @@ export default function LoadDelivery({ title }) {
     }, [dataPage]);
     function Tips({ color, info }) {
         return (
-            <div className="inline-flex space-x-2 items-center">
-                <div className={cn(`w-6 h-3 rounded shadow `)}></div>
+            <div className="inline-flex items-center space-x-2">
+                <div className={cn(`h-3 w-6 rounded shadow `)}></div>
             </div>
         );
     }
     return (
         <div className="space-y-4">
-            <div className="flex justify-between items-end">
+            <div className="flex items-end justify-between">
                 <PageHeader title="Load Orders" />
-                <div className="flex-1 flex justify-end space-x-2">
+                <div className="flex flex-1 justify-end space-x-2">
                     <Btn onClick={load} className="" isLoading={loadingTruck}>
                         {title}
                     </Btn>
@@ -147,7 +149,7 @@ export default function LoadDelivery({ title }) {
                 defaultValue={currentTab}
             >
                 <div className="col-span-3">
-                    <TabsList className=" justify-start h-auto grid max-sm:hidden w-full">
+                    <TabsList className=" grid h-auto w-full justify-start max-sm:hidden">
                         {dataPage?.data?.orders?.map((order) => (
                             <TabsTrigger
                                 key={order.slug}

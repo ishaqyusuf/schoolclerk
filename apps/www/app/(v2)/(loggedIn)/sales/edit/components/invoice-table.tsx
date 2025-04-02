@@ -10,7 +10,6 @@ import { Icons } from "@/components/_v1/icons";
 import Money from "@/components/_v1/money";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FormField } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
     Table,
@@ -29,6 +28,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
 
 import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 
 import { SalesFormContext, SalesRowContext } from "../ctx";
 import {

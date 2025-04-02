@@ -1,11 +1,13 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useHotkeys } from "react-hotkeys-hook";
-import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { Icons } from "../_v1/icons";
-import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
+import { useHotkeys } from "react-hotkeys-hook";
+
+import { Input } from "@gnd/ui/input";
+
+import { Icons } from "../_v1/icons";
+import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 interface Props {
     filters;
@@ -34,7 +36,7 @@ export function MiddaySearchFilter({
         {
             enableOnFormTags: true,
             enabled: Boolean(prompt),
-        }
+        },
     );
 
     useHotkeys("meta+s", (evt) => {
@@ -63,11 +65,11 @@ export function MiddaySearchFilter({
     };
     const hasValidFilters =
         Object.entries(filters).filter(
-            ([key, value]) => value !== null && key !== "q"
+            ([key, value]) => value !== null && key !== "q",
         ).length > 0;
     return (
         <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-            <div className="flex space-x-4 items-center">
+            <div className="flex items-center space-x-4">
                 <form
                     className="relative"
                     onSubmit={(e) => {
@@ -75,11 +77,11 @@ export function MiddaySearchFilter({
                         handleSubmit();
                     }}
                 >
-                    <Icons.Search className="absolute pointer-events-none left-3 top-[11px]" />
+                    <Icons.Search className="pointer-events-none absolute left-3 top-[11px]" />
                     <Input
                         ref={inputRef}
                         placeholder={placeholder}
-                        className="pl-9 w-full md:w-[350px] pr-8"
+                        className="w-full pl-9 pr-8 md:w-[350px]"
                         value={prompt}
                         onChange={handleSearch}
                         autoComplete="off"
@@ -92,9 +94,9 @@ export function MiddaySearchFilter({
                             onClick={() => setIsOpen((prev) => !prev)}
                             type="button"
                             className={cn(
-                                "absolute z-10 right-3 top-[10px] opacity-50 transition-opacity duration-300 hover:opacity-100",
+                                "absolute right-3 top-[10px] z-10 opacity-50 transition-opacity duration-300 hover:opacity-100",
                                 hasValidFilters && "opacity-100",
-                                isOpen && "opacity-100"
+                                isOpen && "opacity-100",
                             )}
                         >
                             <Icons.Filter />

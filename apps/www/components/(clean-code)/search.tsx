@@ -1,8 +1,9 @@
-import { Input, InputProps } from "@/components/ui/input";
+import React, { createContext, ReactNode, useContext, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useCombobox } from "downshift";
-import React, { createContext, useContext, ReactNode, useState } from "react";
+
+import { Input, InputProps } from "@gnd/ui/input";
 
 // Type alias for Item component
 type Item<T> = ({ item }: { item: T }) => React.ReactNode;
@@ -78,7 +79,7 @@ const useSearchContext = () => {
     const context = useContext(SearchContext);
     if (!context) {
         throw new Error(
-            "useSearchContext must be used within a SearchProvider"
+            "useSearchContext must be used within a SearchProvider",
         );
     }
     return context;
