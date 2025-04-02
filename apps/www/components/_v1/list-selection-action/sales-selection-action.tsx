@@ -1,7 +1,9 @@
 "use client";
 
 import { Printer } from "lucide-react";
-import { Button } from "../../ui/button";
+
+import { Button } from "@gnd/ui/button";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -19,7 +21,7 @@ export function SalesBatchAction({ items }) {
                         aria-label="Toggle columns"
                         variant="default"
                         size="icon"
-                        className="ml-auto bg-rose-600 hidden h-8 lg:flex"
+                        className="ml-auto hidden h-8 bg-rose-600 lg:flex"
                     >
                         <Printer className=" h-4 w-4" />
                         {/* View */}

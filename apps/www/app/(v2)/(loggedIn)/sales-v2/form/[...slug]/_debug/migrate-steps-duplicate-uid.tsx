@@ -1,8 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { stepUpdateDebug } from "./debug-steps";
 import { useEffect } from "react";
+
+import { Button } from "@gnd/ui/button";
+
+import { stepUpdateDebug } from "./debug-steps";
 
 export default function MigrateStepDuplicateUid({ data = null }) {
     useEffect(() => {}, []);

@@ -12,7 +12,6 @@ import { DataSkeleton } from "@/components/data-skeleton";
 import { SubmitButton } from "@/components/submit-button";
 import { Form } from "@/components/ui/form";
 import { SelectItem } from "@/components/ui/select";
-import { SheetFooter } from "@/components/ui/sheet";
 import {
     Table,
     TableBody,
@@ -34,6 +33,8 @@ import { CheckCircle, Dot } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+import { SheetFooter } from "@gnd/ui/sheet";
 
 import { CustomSheetContentPortal } from "../custom-sheet-content";
 

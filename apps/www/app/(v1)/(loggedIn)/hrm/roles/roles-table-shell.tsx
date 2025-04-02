@@ -1,28 +1,28 @@
 "use client";
 
-import { TableShellProps } from "@/types/data-table";
-import { ColumnDef } from "@tanstack/react-table";
 import { useMemo, useState, useTransition } from "react";
+import { TableShellProps } from "@/types/data-table";
+import { IRole } from "@/types/hrm";
+import { ColumnDef } from "@tanstack/react-table";
+
+import { Button } from "@gnd/ui/button";
+
 import {
-    ColumnHeader,
     Cell,
+    ColumnHeader,
     PrimaryCellContent,
     SecondaryCellContent,
 } from "../../../../../components/_v1/columns/base-columns";
 import { DataTable2 } from "../../../../../components/_v1/data-table/data-table-2";
-
-import { BuilderFilter } from "../../../../../components/_v1/filters/builder-filter";
 import {
     DeleteRowAction,
     EditRowAction,
     RowActionCell,
 } from "../../../../../components/_v1/data-table/data-table-row-actions";
-
 import { SmartTable } from "../../../../../components/_v1/data-table/smart-table";
-import { IRole } from "@/types/hrm";
-import PageHeader from "../../../../../components/_v1/page-header";
-import { Button } from "@/components/ui/button";
+import { BuilderFilter } from "../../../../../components/_v1/filters/builder-filter";
 import { Icons } from "../../../../../components/_v1/icons";
+import PageHeader from "../../../../../components/_v1/page-header";
 import { useRoleModal } from "./role-modal";
 import { deleteRoleAction } from "./roles.actions";
 
@@ -58,7 +58,7 @@ export default function RolesTableShell({
             table.simpleColumn("Permissions", (data) => ({
                 story: [
                     table.status(
-                        `${data._count?.RoleHasPermissions} Permissions`
+                        `${data._count?.RoleHasPermissions} Permissions`,
                     ),
                 ],
             })),
@@ -83,7 +83,7 @@ export default function RolesTableShell({
                 ),
             },
         ],
-        [data, isPending]
+        [data, isPending],
     );
     const modal = useRoleModal();
     return (
@@ -98,7 +98,7 @@ export default function RolesTableShell({
                                 modal.open();
                             }}
                         >
-                            <Icons.add className="size-4 mr-4" />
+                            <Icons.add className="mr-4 size-4" />
                             <span>New</span>
                         </Button>
                     </>

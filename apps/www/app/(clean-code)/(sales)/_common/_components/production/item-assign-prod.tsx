@@ -1,7 +1,9 @@
-import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/_v1/icons";
+
+import { Button } from "@gnd/ui/button";
+
 import { Admin } from "../overview-sheet.bin/common/admin";
 import { useSalesItem } from "./item-production-card";
-import { Icons } from "@/components/_v1/icons";
 
 export function ItemAssignProd({}) {
     const ctx = useSalesItem();

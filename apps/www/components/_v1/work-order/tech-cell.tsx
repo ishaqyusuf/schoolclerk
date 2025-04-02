@@ -13,7 +13,8 @@ import { IWorkOrder } from "@/types/customer-service";
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { toast } from "sonner";
 
-import { Button } from "../../ui/button";
+import { Button } from "@gnd/ui/button";
+
 import {
     Command,
     CommandGroup,

@@ -1,34 +1,34 @@
 "use client";
 
-import { useTableCompose } from "@/components/(clean-code)/data-table/use-table-compose";
+import { useMemo } from "react";
+import Link from "next/link";
+import QueryTab from "@/app/(clean-code)/_common/query-tab";
+import { QueryTabAction } from "@/app/(clean-code)/_common/query-tab/query-tab-edit";
+import { Icons } from "@/components/_v1/icons";
 import {
     DataTable,
     InfiniteDataTablePageProps,
 } from "@/components/(clean-code)/data-table";
-import { OrderCells as Cells } from "./orders-page-cells";
 import { DataTableFilterCommand } from "@/components/(clean-code)/data-table/filter-command";
-
-import { DataTableInfinityToolbar } from "@/components/(clean-code)/data-table/infinity/data-table-toolbar";
-import { _modal } from "@/components/common/modal/provider";
-import { OrderOverviewSheet } from "../../../_common/_components/overview-sheet.bin/order-overview-sheet";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/_v1/icons";
-import { __filters } from "../../../_common/utils/contants";
-import QueryTab from "@/app/(clean-code)/_common/query-tab";
-import { QueryTabAction } from "@/app/(clean-code)/_common/query-tab/query-tab-edit";
-
-import { openTxForm } from "../../../_common/_components/tx-form";
-import { openSalesOverview } from "../../../_common/_components/sales-overview-sheet";
 import {
     BatchBtn,
     BatchDelete,
 } from "@/components/(clean-code)/data-table/infinity/batch-action";
-import { PrintAction } from "../../../_common/_components/overview-sheet.bin/footer/print.action";
+import { DataTableInfinityToolbar } from "@/components/(clean-code)/data-table/infinity/data-table-toolbar";
 import { useInfiniteDataTable } from "@/components/(clean-code)/data-table/use-data-table";
-import { useMemo } from "react";
-import { deleteSalesByOrderIds } from "../../../_common/data-actions/sales-actions";
+import { useTableCompose } from "@/components/(clean-code)/data-table/use-table-compose";
+import { _modal } from "@/components/common/modal/provider";
 import { SalesEmailMenuItem } from "@/components/sales-email-menu-item";
+
+import { Button } from "@gnd/ui/button";
+
+import { PrintAction } from "../../../_common/_components/overview-sheet.bin/footer/print.action";
+import { OrderOverviewSheet } from "../../../_common/_components/overview-sheet.bin/order-overview-sheet";
+import { openSalesOverview } from "../../../_common/_components/sales-overview-sheet";
+import { openTxForm } from "../../../_common/_components/tx-form";
+import { deleteSalesByOrderIds } from "../../../_common/data-actions/sales-actions";
+import { __filters } from "../../../_common/utils/contants";
+import { OrderCells as Cells } from "./orders-page-cells";
 
 export default function OrdersPageClient({
     filterFields,
@@ -78,7 +78,7 @@ export default function OrdersPageClient({
             >
                 <BatchActions />
                 <DataTable.Header top="lg" className="bg-white">
-                    <div className="flex justify-between items-end mb-2 gap-2 sm:sticky">
+                    <div className="mb-2 flex items-end justify-between gap-2 sm:sticky">
                         <div className="">
                             <QueryTab page="orders" />
                         </div>
@@ -97,7 +97,7 @@ export default function OrdersPageClient({
                         </Button> */}
                         <Button asChild size="sm">
                             <Link href="/sales-book/create-order">
-                                <Icons.add className="size-4 mr-2" />
+                                <Icons.add className="mr-2 size-4" />
                                 <span>New</span>
                             </Link>
                         </Button>
@@ -120,7 +120,7 @@ function BatchActions() {
     const ctx = useInfiniteDataTable();
     const slugs = useMemo(() => {
         const slugs = ctx.selectedRows?.map(
-            (r) => (r.original as any)?.orderId
+            (r) => (r.original as any)?.orderId,
         );
         return slugs;
     }, [ctx.selectedRows]);

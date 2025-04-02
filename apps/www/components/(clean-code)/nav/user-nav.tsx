@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -20,6 +19,8 @@ import {
 import { getInitials } from "@/utils/format";
 import { LayoutGrid, LogOut, User } from "lucide-react";
 import { useSession } from "next-auth/react";
+
+import { Button } from "@gnd/ui/button";
 
 export function UserNav() {
     const { data: session } = useSession();

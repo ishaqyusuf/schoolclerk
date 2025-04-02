@@ -1,6 +1,8 @@
 "use client";
 
 import { Dispatch, SetStateAction, useCallback, useEffect } from "react";
+import Btn from "@/components/_v1/btn";
+import { Icons } from "@/components/_v1/icons";
 import {
     Dialog,
     DialogContent,
@@ -9,7 +11,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { _modal, ModalContextProps, ModalType, useModal } from "./provider";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
     Sheet,
     SheetContent,
@@ -19,14 +21,14 @@ import {
     SheetHeader,
     SheetTitle,
 } from "@/components/ui/sheet";
-import { VariantProps, cva } from "class-variance-authority";
 import { cn } from "@/lib/utils";
-import { Button, ButtonProps } from "@/components/ui/button";
-import Btn from "@/components/_v1/btn";
-import { Icons } from "@/components/_v1/icons";
-import { useFormContext } from "react-hook-form";
 import { PrimitiveDivProps } from "@/types/type";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { cva, VariantProps } from "class-variance-authority";
+import { useFormContext } from "react-hook-form";
+
+import { Button, ButtonProps } from "@gnd/ui/button";
+
+import { _modal, ModalContextProps, ModalType, useModal } from "./provider";
 
 function BaseModal({
     children,
@@ -45,7 +47,7 @@ function BaseModal({
                 setShowModal(false);
             }
         },
-        [setShowModal]
+        [setShowModal],
     );
     const Modal = type == "modal" ? Dialog : Sheet;
     useEffect(() => {
@@ -109,7 +111,7 @@ function Content({ children, size, ...props }: ContentProps) {
             className={cn(
                 contentVariants({ size }),
                 props.className,
-                "sm:max-w-none"
+                "sm:max-w-none",
             )}
         >
             {children}
@@ -118,7 +120,7 @@ function Content({ children, size, ...props }: ContentProps) {
 }
 function _ScrollArea({ children, className = "" }) {
     return (
-        <ScrollArea className={cn("flex-1 -mx-6 px-6", className)}>
+        <ScrollArea className={cn("-mx-6 flex-1 px-6", className)}>
             {children}
         </ScrollArea>
     );
@@ -164,7 +166,7 @@ function Header({
                     )}
                     <div className="flex-1 flex-col justify-start">
                         <div className="flex items-center">
-                            {Icon && <Icon className="size-4 mr-4" />}
+                            {Icon && <Icon className="mr-4 size-4" />}
                             {title && (
                                 <Title className="line-clamp-1">{title}</Title>
                             )}
@@ -221,7 +223,7 @@ function Footer({
     const [Footer] = isModal ? [DialogFooter] : [SheetFooter];
     const form = useFormContext();
     return (
-        <Footer className={cn("flex shadow-lgs space-x-4", className)}>
+        <Footer className={cn("shadow-lgs flex space-x-4", className)}>
             {children}
             {(onSubmit || cancelBtn) && (
                 <div className="flex justify-end space-x-4">
@@ -262,7 +264,7 @@ function Footer({
 function MultiPane({ children }) {
     return (
         <Content size="none" className="side-modal-rounded">
-            <div className="flex-1 flex" id="">
+            <div className="flex flex-1" id="">
                 <div className="" id="multiPane"></div>
                 {children}
             </div>
@@ -281,7 +283,7 @@ function SecondaryPane({ children }) {
 }
 function Pane({ children }) {
     return (
-        <div className="w-full lg:w-[600px] flex flex-col side-modal-rounded-h-content">
+        <div className="side-modal-rounded-h-content flex w-full flex-col lg:w-[600px]">
             {children}
         </div>
     );

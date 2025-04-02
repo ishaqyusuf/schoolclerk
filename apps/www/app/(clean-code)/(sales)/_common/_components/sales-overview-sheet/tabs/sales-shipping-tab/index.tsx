@@ -1,5 +1,8 @@
-import { salesOverviewStore } from "../../store";
+import Link from "next/link";
+import { openSalesPrint } from "@/app/(v2)/printer/utils";
 import { Icons } from "@/components/_v1/icons";
+import { TCell } from "@/components/(clean-code)/data-table/table-cells";
+import { Menu } from "@/components/(clean-code)/menu";
 import {
     Table,
     TableBody,
@@ -7,16 +10,15 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { TCell } from "@/components/(clean-code)/data-table/table-cells";
-import { Menu } from "@/components/(clean-code)/menu";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { deleteDispatchAction } from "../../../../data-actions/dispatch-actions/delete-dispatch-action";
-import { refreshTabData } from "../../helper";
-import { toast } from "sonner";
-import { openSalesPrint } from "@/app/(v2)/printer/utils";
-import { resetSalesStatAction } from "../../../../data-actions/sales-stat-control.action";
 import { timeout } from "@/lib/timeout";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import { deleteDispatchAction } from "../../../../data-actions/dispatch-actions/delete-dispatch-action";
+import { resetSalesStatAction } from "../../../../data-actions/sales-stat-control.action";
+import { refreshTabData } from "../../helper";
+import { salesOverviewStore } from "../../store";
 
 export function SalesShippingTab({}) {
     const store = salesOverviewStore();
@@ -24,7 +26,7 @@ export function SalesShippingTab({}) {
     if (!shipping) return null;
     return (
         <div className="flex-col gap-4">
-            <div className="border-b gap-4 py-2 flex">
+            <div className="flex gap-4 border-b py-2">
                 <div className="flex-1"></div>
                 <Button
                     disabled={!shipping?.dispatches?.length}
@@ -36,7 +38,7 @@ export function SalesShippingTab({}) {
                         target="_blank"
                         href={`/printer/sales?slugs=${store.overview?.orderId}&mode=packing list&dispatchId=all`}
                     >
-                        <Icons.print className="size-4 mr-2" />
+                        <Icons.print className="mr-2 size-4" />
                         <span>Print All</span>
                     </Link>
                 </Button>
@@ -46,13 +48,13 @@ export function SalesShippingTab({}) {
                     }}
                     size="xs"
                 >
-                    <Icons.add className="size-4 mr-2" />
+                    <Icons.add className="mr-2 size-4" />
                     <span>Create</span>
                 </Button>
             </div>
             <div className="">
                 <Table className="styled table-sm">
-                    <TableHeader className="uppercase font-mono">
+                    <TableHeader className="font-mono uppercase">
                         <TableHead>Date</TableHead>
                         <TableHead>Dispatch #</TableHead>
                         <TableHead>Type</TableHead>
@@ -106,7 +108,7 @@ export function SalesShippingTab({}) {
                                                 toast.promise(
                                                     async () => {
                                                         await deleteDispatchAction(
-                                                            dispatch.id
+                                                            dispatch.id,
                                                         );
                                                         return true;
                                                     },
@@ -116,17 +118,17 @@ export function SalesShippingTab({}) {
                                                             await timeout(1000);
                                                             await resetSalesStatAction(
                                                                 store?.overview
-                                                                    ?.id
+                                                                    ?.id,
                                                             );
                                                             refreshTabData(
-                                                                "shipping"
+                                                                "shipping",
                                                             );
                                                             return "Deleted";
                                                             // toast.success(
                                                             //     "deleted!"
                                                             // );
                                                         },
-                                                    }
+                                                    },
                                                 );
                                             }}
                                         >

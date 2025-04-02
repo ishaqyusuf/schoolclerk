@@ -5,7 +5,8 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { cn } from "@/lib/utils";
 import { UseFormReturn } from "react-hook-form";
 
-import { Button } from "../ui/button";
+import { Button } from "@gnd/ui/button";
+
 import {
     Command,
     CommandEmpty,

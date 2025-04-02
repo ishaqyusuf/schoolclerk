@@ -1,9 +1,11 @@
 "use client";
 
+import { useState, useTransition } from "react";
+import { updateProjectMeta } from "@/app/(v1)/_actions/community/projects";
 import { IProject } from "@/types/community";
-import { Cell } from "../columns/base-columns";
-import Money from "../money";
-import { Button } from "../../ui/button";
+
+import { Button } from "@gnd/ui/button";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,9 +13,9 @@ import {
 } from "../../ui/dropdown-menu";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
-import { useState, useTransition } from "react";
-import { updateProjectMeta } from "@/app/(v1)/_actions/community/projects";
 import Btn from "../btn";
+import { Cell } from "../columns/base-columns";
+import Money from "../money";
 
 interface Props {
     project: IProject;
@@ -57,7 +59,7 @@ export default function AddonCell({ project }: Props) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                     align="end"
-                    className="w-[185px] p-4 grid gap-2"
+                    className="grid w-[185px] gap-2 p-4"
                 >
                     <div className="grid gap-2">
                         <Label>Addon</Label>

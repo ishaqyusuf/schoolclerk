@@ -1,26 +1,10 @@
-import Modal from "@/components/common/modal";
-
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Icons } from "@/components/_v1/icons";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Context, useSettings, useSettingsContext } from "./ctx";
-import { useFieldArray } from "react-hook-form";
-import {
-    Sortable,
-    SortableDragHandle,
-    SortableItem,
-} from "@/components/ui/sortable";
-
-import { DragHandleDots2Icon } from "@radix-ui/react-icons";
+import { useEffect } from "react";
 import ConfirmBtn from "@/components/_v1/confirm-btn";
+import { Icons } from "@/components/_v1/icons";
+import { Menu } from "@/components/(clean-code)/menu";
+import FormCheckbox from "@/components/common/controls/form-checkbox";
 import FormSelect from "@/components/common/controls/form-select";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import Modal from "@/components/common/modal";
 import {
     Card,
     CardContent,
@@ -28,9 +12,25 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import FormCheckbox from "@/components/common/controls/form-checkbox";
-import { Menu } from "@/components/(clean-code)/menu";
-import { useEffect } from "react";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+    Sortable,
+    SortableDragHandle,
+    SortableItem,
+} from "@/components/ui/sortable";
+import { DragHandleDots2Icon } from "@radix-ui/react-icons";
+import { useFieldArray } from "react-hook-form";
+
+import { Button } from "@gnd/ui/button";
+
+import { Context, useSettings, useSettingsContext } from "./ctx";
 
 export default function FormSettingsModal({}) {
     const value = useSettingsContext();
@@ -45,15 +45,15 @@ export default function FormSettingsModal({}) {
                             "Configure form step sequence for each item section"
                         }
                     />
-                    <ScrollArea className="h-[90vh]   overflow-auto -mx-6 px-6 flex-col  gap-4">
-                        <div className="pb-16 gap-4 flex flex-col">
+                    <ScrollArea className="-mx-6   h-[90vh] flex-col gap-4 overflow-auto  px-6">
+                        <div className="flex flex-col gap-4 pb-16">
                             {arr.fields.map((k) => (
                                 <RouteSection key={k._id} uid={k.uid} />
                             ))}
                             <div className="flex justify-end"></div>
                         </div>
                     </ScrollArea>
-                    <div className="absolute bg-white border-t shadow-lg w-full z-[9999] bottom-0 right-0 p-4">
+                    <div className="absolute bottom-0 right-0 z-[9999] w-full border-t bg-white p-4 shadow-lg">
                         <Modal.Footer submitText="Save" onSubmit={value.save}>
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild className="flex">
@@ -73,14 +73,15 @@ export default function FormSettingsModal({}) {
                                                     createSection(stepProd.uid)
                                                 }
                                                 disabled={arr.fields.some(
-                                                    (s) => s.uid == stepProd.uid
+                                                    (s) =>
+                                                        s.uid == stepProd.uid,
                                                 )}
                                                 className="uppercase"
                                                 key={stepProd.uid}
                                             >
                                                 {stepProd.product?.title}
                                             </DropdownMenuItem>
-                                        )
+                                        ),
                                     )}
                                 </DropdownMenuContent>
                             </DropdownMenu>
@@ -142,7 +143,7 @@ function RouteSection({ uid }) {
                     />
                 </div>
                 <div className="">
-                    <div className="grid gap-4 grid-cols-2 pb-4">
+                    <div className="grid grid-cols-2 gap-4 pb-4">
                         <FormCheckbox
                             switchInput
                             control={ctx.form.control}
@@ -211,7 +212,7 @@ function RouteSection({ uid }) {
                         ))}
                     </div>
                 </Sortable>
-                <div className="flex justify-end mt-4">
+                <div className="mt-4 flex justify-end">
                     <Button
                         onClick={() => {
                             arr.append({ uid: "" });

@@ -1,8 +1,10 @@
 "use client";
 
 import { TableCell } from "@/app/_components/data-table/table-cells";
+
+import { Button } from "@gnd/ui/button";
+
 import { GetDealersAction } from "./action";
-import { Button } from "@/components/ui/button";
 import { useDealerSheet } from "./dealer-overview-sheet";
 
 interface CellProps {

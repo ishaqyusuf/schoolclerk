@@ -1,10 +1,5 @@
 import * as React from "react";
-import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
-import { Table, type Column } from "@tanstack/react-table";
-
-import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
     Command,
     CommandEmpty,
@@ -20,8 +15,13 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
-import { Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { DataTableFilterableColumn } from "@/types/data-table";
+import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
+import { Table, type Column } from "@tanstack/react-table";
+import { Check } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
 
 export interface Option {
     label: string;
@@ -118,8 +118,8 @@ export function DataTableFacetedFilter<TData, TValue>({
                                     options
                                         .filter((option) =>
                                             _selectedValues.has(
-                                                option[valueKey]?.toString()
-                                            )
+                                                option[valueKey]?.toString(),
+                                            ),
                                         )
                                         .map((option) => (
                                             <Badge
@@ -149,7 +149,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                         <CommandGroup>
                             {options?.map((option) => {
                                 const isSelected = _selectedValues.has(
-                                    option[valueKey]
+                                    option[valueKey],
                                 );
 
                                 return (
@@ -184,14 +184,14 @@ export function DataTableFacetedFilter<TData, TValue>({
                                             //     : undefined
 
                                             column?.setFilterValue(
-                                                filterValues
+                                                filterValues,
                                             );
                                             setSelectedValue(ns);
                                             setValue &&
                                                 setValue(
                                                     single
                                                         ? filterValues?.[0]
-                                                        : filterValues
+                                                        : filterValues,
                                                 );
                                         }}
                                     >
@@ -201,7 +201,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                                                     "mr-2  flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
                                                     isSelected
                                                         ? "bg-primary text-primary-foreground"
-                                                        : "opacity-50 [&_svg]:invisible"
+                                                        : "opacity-50 [&_svg]:invisible",
                                                 )}
                                             >
                                                 <Check
@@ -225,14 +225,14 @@ export function DataTableFacetedFilter<TData, TValue>({
 
                         {_selectedValues.size > 0 && (
                             <div className="h-[34px]">
-                                <div className="absolute bottom-0 bg-white w-full">
+                                <div className="absolute bottom-0 w-full bg-white">
                                     <CommandSeparator />
                                     <CommandGroup>
                                         <CommandItem
                                             onSelect={() => {
                                                 setSelectedValue(new Set());
                                                 column?.setFilterValue(
-                                                    undefined
+                                                    undefined,
                                                 );
                                                 setValue && setValue(undefined);
                                             }}

@@ -1,9 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { useQueryTabStore } from "./data-store";
 import { Icons } from "@/components/_v1/icons";
-import { _modal } from "@/components/common/modal/provider";
 import Modal from "@/components/common/modal";
+import { _modal } from "@/components/common/modal/provider";
 import { useForm } from "react-hook-form";
+
+import { Button } from "@gnd/ui/button";
+
+import { useQueryTabStore } from "./data-store";
 
 export function QueryTabAction({}) {
     const t = useQueryTabStore();

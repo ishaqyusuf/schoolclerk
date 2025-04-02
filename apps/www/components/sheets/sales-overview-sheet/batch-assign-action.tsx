@@ -1,27 +1,29 @@
-import { Menu } from "@/components/(clean-code)/menu";
-import { useSalesOverviewItemsTab } from "./items-tab-context";
-import { TabFloatingAction } from "./tab-floating-action";
-import { Icons } from "@/components/_v1/icons";
-import { AnimateReveal } from "@/components/animate-reveal";
 import { useEffect, useState } from "react";
-import { Label } from "@/components/ui/label";
-import useEffectLoader from "@/lib/use-effect-loader";
+import { refreshTabData } from "@/app/(clean-code)/(sales)/_common/_components/sales-overview-sheet/helper";
+import { salesOverviewStore } from "@/app/(clean-code)/(sales)/_common/_components/sales-overview-sheet/store";
+import { assignAllPendingToProductionAction } from "@/app/(clean-code)/(sales)/_common/data-actions/production-actions/batch-action";
 import { getSalesProdWorkersAsSelectOption } from "@/app/(clean-code)/(sales)/_common/use-case/sales-prod-workers-use-case";
-import { useForm, useFormContext } from "react-hook-form";
+import { Icons } from "@/components/_v1/icons";
+import { Menu } from "@/components/(clean-code)/menu";
+import { AnimateReveal } from "@/components/animate-reveal";
+import CustomBtn from "@/components/common/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Form } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
 import { formatDate } from "@/lib/use-day";
-import { assignAllPendingToProductionAction } from "@/app/(clean-code)/(sales)/_common/data-actions/production-actions/batch-action";
-import { salesOverviewStore } from "@/app/(clean-code)/(sales)/_common/_components/sales-overview-sheet/store";
-import CustomBtn from "@/components/common/button";
+import useEffectLoader from "@/lib/use-effect-loader";
+import { useForm, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
-import { refreshTabData } from "@/app/(clean-code)/(sales)/_common/_components/sales-overview-sheet/helper";
-import { Button } from "@/components/ui/button";
+
+import { Button } from "@gnd/ui/button";
+
+import { useSalesOverviewItemsTab } from "./items-tab-context";
+import { TabFloatingAction } from "./tab-floating-action";
 
 export function BatchAssignActionMenu() {
     const ctx = useSalesOverviewItemsTab();
@@ -44,7 +46,7 @@ export function BatchAssignActionMenu() {
                                         (a) =>
                                             a.produceable &&
                                             a.status.qty?.total >
-                                                a.status.prodAssigned?.total
+                                                a.status.prodAssigned?.total,
                                     )
                                     .map((a) => ({
                                         itemUid: a.itemControlUid,
@@ -66,7 +68,7 @@ export function BatchAssignActionMenu() {
                             onClick={() => {
                                 ctx.form.setValue(
                                     "batchAction",
-                                    "assign-production"
+                                    "assign-production",
                                 );
                                 ctx.form.setValue("selectMode", true);
                             }}
@@ -102,7 +104,7 @@ export function BatchAssignAction() {
             <Form {...form}>
                 <AnimateReveal opened={opened}>
                     {/* <div className="border flex items-center space-x-2"> */}
-                    <Label className="font-mono whitespace-nowrap px-2">
+                    <Label className="whitespace-nowrap px-2 font-mono">
                         <span className="font-bold">{ctx.selectCount}</span>
                         {/* {" of "} */}
                         {/* <span className="font-bold">{total}</span> */}
@@ -145,7 +147,7 @@ function AssignBtn() {
             }),
             {
                 loading: "Assigning...",
-            }
+            },
         );
         await assignAllPendingToProductionAction(
             {
@@ -154,7 +156,7 @@ function AssignBtn() {
                 assignedToId,
                 controlIds: ctx.selections?.map((a) => a.itemUid),
             },
-            true
+            true,
         );
         toast.success("Assigned to production");
         refreshTabData("items");
@@ -184,10 +186,10 @@ function DueDate() {
             <PopoverTrigger>
                 <Button
                     size="xs"
-                    className="whitespace-nowrap p-0 rounded-none text-start"
+                    className="whitespace-nowrap rounded-none p-0 text-start"
                     variant="ghost"
                 >
-                    <Label className="font-mono px-2  w-24 line-clamp-1">
+                    <Label className="line-clamp-1 w-24  px-2 font-mono">
                         <span className="font-bold">
                             {_date ? formatDate(_date) : "Due Date"}
                         </span>
@@ -215,7 +217,7 @@ function AssignTo() {
     const form = useFormContext();
     const assignedToId = form.watch("assignedToId");
     const assignedTo = workers.data?.find(
-        (worker) => worker.value == assignedToId
+        (worker) => worker.value == assignedToId,
     );
 
     return (
@@ -223,10 +225,10 @@ function AssignTo() {
             Trigger={
                 <Button
                     size="xs"
-                    className="whitespace-nowrap p-0 rounded-none text-start"
+                    className="whitespace-nowrap rounded-none p-0 text-start"
                     variant="ghost"
                 >
-                    <Label className="font-mono px-2  w-24 line-clamp-1">
+                    <Label className="line-clamp-1 w-24  px-2 font-mono">
                         {assignedTo ? (
                             <span className="">{assignedTo?.label}</span>
                         ) : (

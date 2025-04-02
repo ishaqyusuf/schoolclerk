@@ -1,17 +1,19 @@
 "use client";
-import { TableCol } from "@/components/common/data-table/table-cells";
-import { ProductionListItemType } from ".";
-import { Badge } from "@/components/ui/badge";
 
-import { useAssignment } from "../_modals/assignment-modal/use-assignment";
-import { cn, sum } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Dot } from "lucide-react";
+import { openSalesProductionModal } from "@/app/(clean-code)/(sales)/_common/_components/sales-overview-sheet";
 import {
     MenuItem,
     RowActionMoreMenu,
 } from "@/components/_v1/data-table/data-table-row-actions";
-import { openSalesProductionModal } from "@/app/(clean-code)/(sales)/_common/_components/sales-overview-sheet";
+import { TableCol } from "@/components/common/data-table/table-cells";
+import { Badge } from "@/components/ui/badge";
+import { cn, sum } from "@/lib/utils";
+import { Dot } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
+
+import { ProductionListItemType } from ".";
+import { useAssignment } from "../_modals/assignment-modal/use-assignment";
 
 interface Props {
     item: ProductionListItemType;
@@ -77,8 +79,8 @@ function ProductionStatus({ item }: Props) {
     }
     const submitted = sum(
         item.assignments.map((a) =>
-            sum(a.submissions.map((s) => sum([s.lhQty, s.rhQty])))
-        )
+            sum(a.submissions.map((s) => sum([s.lhQty, s.rhQty]))),
+        ),
     );
     const totalDoors = item._meta.totalDoors;
     // console.log(item.productionStatus?.status);
@@ -99,7 +101,7 @@ function AssignedTo({ item }: Props) {
     const assignedTo = item.assignments?.filter(
         (a, i) =>
             i ==
-            item.assignments.findIndex((b) => b.assignedToId == a.assignedToId)
+            item.assignments.findIndex((b) => b.assignedToId == a.assignedToId),
     );
     return (
         <TableCol
@@ -109,7 +111,7 @@ function AssignedTo({ item }: Props) {
         >
             <TableCol.Secondary className="hover:cursor-pointer">
                 {assignedTo.length ? (
-                    <div className="flex space-x-2 items-center flex-wrap gap-1">
+                    <div className="flex flex-wrap items-center gap-1 space-x-2">
                         {assignedTo
                             ?.filter((_, i) => i < 2)
                             .map((user) => (
@@ -118,7 +120,7 @@ function AssignedTo({ item }: Props) {
                                     className="h-auto"
                                     key={user.id}
                                 >
-                                    <span className="line-clamp-2 whitespace-nowrap max-w-[80px]">
+                                    <span className="line-clamp-2 max-w-[80px] whitespace-nowrap">
                                         {user.assignedTo?.name}
                                     </span>
                                 </Badge>
@@ -171,7 +173,7 @@ function DueDate({ item }: Props) {
             (a) =>
                 a.dueDate &&
                 a.submissions.map((s) => s.qty).reduce((a, b) => a + b, 0) !=
-                    a.qtyAssigned
+                    a.qtyAssigned,
         )
         .sort((a, b) => (a as any).dueDate - (b as any).dueDate)?.[0]?.dueDate;
     return (

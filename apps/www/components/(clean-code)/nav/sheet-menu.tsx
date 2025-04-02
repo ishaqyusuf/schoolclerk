@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Icons } from "@/components/_v1/icons";
 import {
     Sheet,
     SheetContent,
@@ -6,13 +7,13 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import { MenuIcon } from "lucide-react";
-import Link from "next/link";
-import Menu from "./menu";
-
-import { Icons } from "@/components/_v1/icons";
 import { cn } from "@/lib/utils";
+import { MenuIcon } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
+
 import { siteNavStore } from "../site-nav/store";
+import Menu from "./menu";
 
 export function SheetMenu() {
     const store = siteNavStore();
@@ -25,7 +26,7 @@ export function SheetMenu() {
                 </Button>
             </SheetTrigger>
             <SheetContent
-                className="sm:w-72 px-3 h-full flex flex-col"
+                className="flex h-full flex-col px-3 sm:w-72"
                 side="left"
                 aria-describedby={undefined}
             >
@@ -33,10 +34,10 @@ export function SheetMenu() {
                     <SheetTitle className="w-full" asChild>
                         <Button
                             className={cn(
-                                "transition-transform ease-in-out duration-300 mb-1",
+                                "mb-1 transition-transform duration-300 ease-in-out",
                                 store?.sideNavOpened === false
                                     ? "translate-x-1"
-                                    : "translate-x-0"
+                                    : "translate-x-0",
                             )}
                             variant="ghost"
                             asChild

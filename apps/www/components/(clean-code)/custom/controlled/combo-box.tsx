@@ -1,5 +1,5 @@
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
 import {
     Command,
     CommandEmpty,
@@ -23,8 +23,9 @@ import {
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { useState } from "react";
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
+
+import { buttonVariants } from "@gnd/ui/button";
 
 export const comboBoxVariants = cva("", {
     variants: {
@@ -45,7 +46,7 @@ interface Props<T> {
 export function ComboxBox<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-    TOptionType = any
+    TOptionType = any,
 >({
     valueKey = "value",
     label,
@@ -69,8 +70,8 @@ export function ComboxBox<
                     Array.isArray(field.value)
                         ? field.value
                         : field.value
-                        ? [field.value]
-                        : []
+                          ? [field.value]
+                          : [],
                 );
                 const onSelect = (value) => {
                     if (maxSelection > 1) {
@@ -82,7 +83,7 @@ export function ComboxBox<
                         return;
                     }
                     const filterField = filterFields.find(
-                        (col) => optValue(col) === value
+                        (col) => optValue(col) === value,
                     );
 
                     if (!filterField) return;
@@ -101,8 +102,8 @@ export function ComboxBox<
                                             buttonVariants({
                                                 variant: "outline",
                                             }),
-                                            "h-8 w-32 justify-between gap-4 flex rounded focus:outline-none focus:ring-1 focus:ring-ring focus-visible:ring-0 items-center",
-                                            className
+                                            "flex h-8 w-32 items-center justify-between gap-4 rounded focus:outline-none focus:ring-1 focus:ring-ring focus-visible:ring-0",
+                                            className,
                                         )}
                                         aria-label="Select filter field"
                                     >
@@ -114,10 +115,10 @@ export function ComboxBox<
                                                         filterFields.find(
                                                             (opt) =>
                                                                 optValue(
-                                                                    opt
+                                                                    opt,
                                                                 ) ===
-                                                                field.value
-                                                        )
+                                                                field.value,
+                                                        ),
                                                     ) || "Select field"}
                                                 </span>
                                                 <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
@@ -150,30 +151,30 @@ export function ComboxBox<
                                                                 filterFields
                                                                     ?.filter(
                                                                         (
-                                                                            option
+                                                                            option,
                                                                         ) =>
                                                                             selectedValues.has(
                                                                                 optValue(
-                                                                                    option
-                                                                                )
-                                                                            )
+                                                                                    option,
+                                                                                ),
+                                                                            ),
                                                                     )
                                                                     .map(
                                                                         (
-                                                                            option
+                                                                            option,
                                                                         ) => (
                                                                             <Badge
                                                                                 variant="secondary"
                                                                                 key={optValue(
-                                                                                    option
+                                                                                    option,
                                                                                 )}
                                                                                 className="truncate rounded-sm px-1 font-normal"
                                                                             >
                                                                                 {optLabel(
-                                                                                    option
+                                                                                    option,
                                                                                 )}
                                                                             </Badge>
-                                                                        )
+                                                                        ),
                                                                     )
                                                             )}
                                                         </div>
@@ -205,7 +206,7 @@ export function ComboxBox<
                                                         value={optValue(opt)}
                                                         onSelect={onSelect}
                                                         selected={selectedValues.has(
-                                                            optValue(opt)
+                                                            optValue(opt),
                                                         )}
                                                     >
                                                         {/* {opt?.icon && (
@@ -239,15 +240,15 @@ export function ComboxBox<
                                                             className={cn(
                                                                 "ml-auto size-4 shrink-0",
                                                                 optValue(
-                                                                    opt
+                                                                    opt,
                                                                 ) ===
                                                                     field.value
                                                                     ? "opacity-100"
-                                                                    : "opacity-0"
+                                                                    : "opacity-0",
                                                             )}
                                                         />
                                                     </CommandItem>
-                                                )
+                                                ),
                                             )}
                                         </CommandGroup>
                                     </CommandList>

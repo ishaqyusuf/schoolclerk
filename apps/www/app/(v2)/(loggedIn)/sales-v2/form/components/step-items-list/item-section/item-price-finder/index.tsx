@@ -1,22 +1,24 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Icons } from "@/components/_v1/icons";
-import { Button } from "@/components/ui/button";
+import Money from "@/components/_v1/money";
+import { TableCol } from "@/components/common/data-table/table-cells";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useEffect, useState } from "react";
-import { getDoorPrices } from "./get-price";
 import { ServerPromiseType } from "@/types";
-import Money from "@/components/_v1/money";
-import { TableCol } from "@/components/common/data-table/table-cells";
+
+import { Button } from "@gnd/ui/button";
+
+import { useDykeForm } from "../../../../_hooks/form-context";
 import {
     UseMultiComponentItem,
     UseMultiComponentSizeRow,
 } from "../../../../_hooks/use-multi-component-item";
-import { useDykeForm } from "../../../../_hooks/form-context";
+import { getDoorPrices } from "./get-price";
 
 export interface ItemPriceFinderProps {
     dykeDoorId?;
@@ -47,7 +49,7 @@ export default function ItemPriceFinder({
             !sizeRow
                 ? `${componentItem?.multiComponentComponentTitleKey}.unitPrice`
                 : (`${sizeRow?.sizeRootKey}.${priceTab?.priceKey}` as any),
-            price?.value
+            price?.value,
         );
     }
     useEffect(() => {
@@ -68,7 +70,7 @@ export default function ItemPriceFinder({
                     <Button
                         disabled={!priceChart?.hasPrice}
                         size={"icon"}
-                        className="w-8 h-8"
+                        className="h-8 w-8"
                         variant={!priceChart?.hasPrice ? "ghost" : "outline"}
                     >
                         <Icons.dollar className="size-4" />
@@ -95,10 +97,10 @@ export default function ItemPriceFinder({
                     ) : (
                         <></>
                     )}
-                    <div className="mt-4 min-w-[200px] min-h-[100px] max-h-[25vh] overflow-auto">
+                    <div className="mt-4 max-h-[25vh] min-h-[100px] min-w-[200px] overflow-auto">
                         {emptyPriceList() ? (
-                            <div className="h-[100px] flex flex-col items-center justify-center space-y-4">
-                                <Icons.dollar className="w-10 h-10 text-muted-foreground text-opacity-25" />
+                            <div className="flex h-[100px] flex-col items-center justify-center space-y-4">
+                                <Icons.dollar className="h-10 w-10 text-muted-foreground text-opacity-25" />
                                 <TableCol.Secondary>
                                     No Price History
                                 </TableCol.Secondary>
@@ -107,7 +109,7 @@ export default function ItemPriceFinder({
                             currentPriceList()?.map((price, priceIndex) => (
                                 <Button
                                     onClick={() => selectPrice(priceIndex)}
-                                    className="w-full flex"
+                                    className="flex w-full"
                                     key={priceIndex}
                                     variant={"ghost"}
                                 >

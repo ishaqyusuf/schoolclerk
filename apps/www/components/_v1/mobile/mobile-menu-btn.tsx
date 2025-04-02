@@ -1,10 +1,12 @@
 "use client";
 
-import { ModalName } from "@/store/slicers";
-import { Button } from "../../ui/button";
-import { MenuIcon, MoreHorizontal } from "lucide-react";
-import { openModal } from "@/lib/modal";
 import { useModal } from "@/components/common/modal/provider";
+import { openModal } from "@/lib/modal";
+import { ModalName } from "@/store/slicers";
+import { MenuIcon, MoreHorizontal } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
+
 import MobileMenuCtx from "./mobile-menu-ctx";
 
 interface Props {
@@ -18,7 +20,7 @@ export default function MobileMenuBtn({ data }: Props) {
                 modal.openSheet(<MobileMenuCtx item={data} />);
             }}
             size="icon"
-            className="p-0 h-5 w-5"
+            className="h-5 w-5 p-0"
             variant={"secondary"}
         >
             <MoreHorizontal className="size-4" />

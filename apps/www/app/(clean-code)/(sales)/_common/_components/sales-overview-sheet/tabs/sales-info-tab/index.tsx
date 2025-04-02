@@ -1,25 +1,27 @@
-import { salesOverviewStore } from "../../store";
-import Button from "@/components/common/button";
-import { Icons } from "@/components/_v1/icons";
-import { ExternalLink } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
+import DevOnly from "@/_v2/components/common/dev-only";
+import { Icons } from "@/components/_v1/icons";
 import Money from "@/components/_v1/money";
-import { Label } from "@/components/ui/label";
-import { composeSalesUrl } from "../../../../utils/sales-utils";
-import { openCustomerOverviewSheet } from "../../../customer-overview-sheet";
-import Note from "@/modules/notes";
-import { noteTagFilter } from "@/modules/notes/utils";
+import Button from "@/components/common/button";
+import { _modal } from "@/components/common/modal/provider";
+import { SalesInvoiceDueStatus } from "@/components/sales-invoice-due-status";
 import { LaborCostInline } from "@/components/sheets/sales-overview-sheet/labor-cost-inline";
 import { PoInline } from "@/components/sheets/sales-overview-sheet/po-inline";
 import { SalesDateInline } from "@/components/sheets/sales-overview-sheet/sales-date-inline";
 import { SalesDeliveryCostInline } from "@/components/sheets/sales-overview-sheet/sales-delivery-cost-inline";
-import { SalesInvoiceDueStatus } from "@/components/sales-invoice-due-status";
+import { Label } from "@/components/ui/label";
 import { useCustomerOverviewQuery } from "@/hooks/use-customer-overview-query";
-import DevOnly from "@/_v2/components/common/dev-only";
-import { _modal } from "@/components/common/modal/provider";
 import { useSalesOverviewQuery } from "@/hooks/use-sales-overview-query";
+import { cn } from "@/lib/utils";
+import Note from "@/modules/notes";
+import { noteTagFilter } from "@/modules/notes/utils";
+import { ExternalLink } from "lucide-react";
+
+import { buttonVariants } from "@gnd/ui/button";
+
+import { composeSalesUrl } from "../../../../utils/sales-utils";
+import { openCustomerOverviewSheet } from "../../../customer-overview-sheet";
+import { salesOverviewStore } from "../../store";
 
 export function SalesInfoTab({}) {
     const store = salesOverviewStore();
@@ -36,13 +38,13 @@ export function SalesInfoTab({}) {
                         buttonVariants({
                             size: "xs",
                             variant: "link",
-                        })
+                        }),
                     )}
                     href={composeSalesUrl(overview)}
                     target="_blank"
                 >
                     Edit
-                    <ExternalLink className="size-4 ml-2" />
+                    <ExternalLink className="ml-2 size-4" />
                 </Link>
             </InfoLine>
             <InfoLine
@@ -66,7 +68,7 @@ export function SalesInfoTab({}) {
                                 onClick={() => {
                                     _modal.close();
                                     customerOverviewQuery.open(
-                                        overview.phoneNo
+                                        overview.phoneNo,
                                     );
                                 }}
                             >
@@ -105,7 +107,7 @@ export function SalesInfoTab({}) {
                 }
             ></InfoLine>
 
-            <div className="grid my-4 sm:grid-cols-2 gap-4">
+            <div className="my-4 grid gap-4 sm:grid-cols-2">
                 {[overview.billing, overview.shipping].map((k, i) => (
                     <div key={i}>
                         <Label>
@@ -113,7 +115,7 @@ export function SalesInfoTab({}) {
                             {" Address"}
                         </Label>
                         {!k?.length ? (
-                            <div className="min-h-16 flex flex-col items-center justify-center">
+                            <div className="flex min-h-16 flex-col items-center justify-center">
                                 No Address
                             </div>
                         ) : (
@@ -122,7 +124,7 @@ export function SalesInfoTab({}) {
                                 return (
                                     <div
                                         key={ki}
-                                        className="flex gap-4 py-1 border-b"
+                                        className="flex gap-4 border-b py-1"
                                     >
                                         {Ico && (
                                             <Ico className="size-4 text-muted-foreground" />
@@ -170,12 +172,12 @@ export function InfoLine({
     children?;
 }) {
     return (
-        <div className="flex gap-4 p-1 py-2 b border-b items-center">
-            <span className="text-sm uppercase font-semibold text-muted-foreground">
+        <div className="b flex items-center gap-4 border-b p-1 py-2">
+            <span className="text-sm font-semibold uppercase text-muted-foreground">
                 {label}:
             </span>
             <div className="flex-1"></div>
-            <span className="text-sm uppercase font-mono">{value}</span>
+            <span className="font-mono text-sm uppercase">{value}</span>
             {children}
         </div>
     );

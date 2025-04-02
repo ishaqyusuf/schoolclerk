@@ -1,20 +1,22 @@
 "use client";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/_v1/icons";
+import FormInput from "@/components/common/controls/form-input";
 import {
+    Card,
     CardContent,
     CardFooter,
-    Card,
     CardHeader,
 } from "@/components/ui/card";
-import { Icons } from "@/components/_v1/icons";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import FormInput from "@/components/common/controls/form-input";
 import { Form } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { Button } from "@gnd/ui/button";
 
 export default function CustomerLoginPage() {
     const form = useForm({
@@ -23,7 +25,7 @@ export default function CustomerLoginPage() {
                 email: z.string().min(1),
                 password: z.string().min(1),
                 type: z.string().min(1),
-            })
+            }),
         ),
         defaultValues: {
             email: "",
@@ -36,7 +38,7 @@ export default function CustomerLoginPage() {
         <div className="  bg-gray-50 dark:bg-gray-900">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(submit)}>
-                    <div className="mx-auto px-4  min-h-[70vh]  flex flex-col justify-center max-w-3xl space-y-8">
+                    <div className="mx-auto flex  min-h-[70vh]  max-w-3xl flex-col justify-center space-y-8 px-4">
                         <div className="flex items-center space-x-4">
                             <Icons.logoLg />
                             <div className="text-2xl font-bold">
@@ -69,7 +71,7 @@ export default function CustomerLoginPage() {
                                 <div className="text-sm">
                                     {"Don't"} have an account?
                                     <Link
-                                        className="underline ml-1"
+                                        className="ml-1 underline"
                                         href="/register"
                                     >
                                         Create an Account

@@ -27,7 +27,8 @@ import { Plus, Trash } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { Button } from "../../ui/button";
+import { Button } from "@gnd/ui/button";
+
 import { Checkbox } from "../../ui/checkbox";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";

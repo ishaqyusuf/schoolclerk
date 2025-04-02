@@ -1,19 +1,22 @@
 "use client";
+
+import QueryTab from "@/app/(clean-code)/_common/query-tab";
+import { QueryTabAction } from "@/app/(clean-code)/_common/query-tab/query-tab-edit";
+import { Icons } from "@/components/_v1/icons";
 import {
     DataTable,
     InfiniteDataTablePageProps,
 } from "@/components/(clean-code)/data-table";
-import { useTableCompose } from "@/components/(clean-code)/data-table/use-table-compose";
-import { GetCustomersDta } from "../../../_common/data-access/customer.dta";
-import { TCell } from "@/components/(clean-code)/data-table/table-cells";
-import { __filters } from "../../../_common/utils/contants";
 import { DataTableFilterCommand } from "@/components/(clean-code)/data-table/filter-command";
 import { DataTableInfinityToolbar } from "@/components/(clean-code)/data-table/infinity/data-table-toolbar";
-import QueryTab from "@/app/(clean-code)/_common/query-tab";
-import { QueryTabAction } from "@/app/(clean-code)/_common/query-tab/query-tab-edit";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/_v1/icons";
+import { TCell } from "@/components/(clean-code)/data-table/table-cells";
+import { useTableCompose } from "@/components/(clean-code)/data-table/use-table-compose";
 import { Badge } from "@/components/ui/badge";
+
+import { Button } from "@gnd/ui/button";
+
+import { GetCustomersDta } from "../../../_common/data-access/customer.dta";
+import { __filters } from "../../../_common/utils/contants";
 
 export default function CustomersPageClient(props: InfiniteDataTablePageProps) {
     const table = useTableCompose({
@@ -40,14 +43,14 @@ export default function CustomersPageClient(props: InfiniteDataTablePageProps) {
             >
                 {/* <DataTable.BatchAction></DataTable.BatchAction> */}
                 <DataTable.Header className="bg-white">
-                    <div className="flex justify-between items-end mb-2 gap-2 sm:sticky">
+                    <div className="mb-2 flex items-end justify-between gap-2 sm:sticky">
                         <div className="">
                             <QueryTab page="customers" />
                         </div>
                         <div className="flex-1"></div>
                         <QueryTabAction />
                         <Button size="sm">
-                            <Icons.add className="size-4 mr-2" />
+                            <Icons.add className="mr-2 size-4" />
                             <span>New</span>
                         </Button>
                     </div>

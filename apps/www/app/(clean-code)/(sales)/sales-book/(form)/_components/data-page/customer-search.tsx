@@ -1,11 +1,16 @@
+import { useEffect, useMemo, useState } from "react";
+import { SearchAddressType } from "@/app/(clean-code)/(sales)/_common/data-access/sales-address-dta";
 import {
     AddressSearchType,
     getAddressFormUseCase,
     searchAddressUseCase,
 } from "@/app/(clean-code)/(sales)/_common/use-case/sales-address-use-case";
-import { Menu } from "@/components/(clean-code)/menu";
+import {
+    AddressForm,
+    SalesFormZusData,
+} from "@/app/(clean-code)/(sales)/types";
 import { Icons } from "@/components/_v1/icons";
-import { Button } from "@/components/ui/button";
+import { Menu } from "@/components/(clean-code)/menu";
 import { Command, CommandInput, CommandList } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,13 +22,10 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDebounce } from "@/hooks/use-debounce";
 import { Search, SearchIcon } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+
+import { Button } from "@gnd/ui/button";
+
 import { useFormDataStore } from "../../_common/_stores/form-data-store";
-import {
-    AddressForm,
-    SalesFormZusData,
-} from "@/app/(clean-code)/(sales)/types";
-import { SearchAddressType } from "@/app/(clean-code)/(sales)/_common/data-access/sales-address-dta";
 import { SettingsClass } from "../../_utils/helpers/zus/settings-class";
 
 interface Props {
@@ -56,7 +58,7 @@ export function CustomerSearch({ addressType }) {
                     state: response.state || "",
                     zipCode: response.meta?.zip_code || "",
                     id: response.id,
-                } as AddressForm
+                } as AddressForm,
             );
             zus.dotUpdate("metaData.customer", {
                 id: response?.customer?.id,
@@ -66,14 +68,14 @@ export function CustomerSearch({ addressType }) {
             if (address.salesProfile?.id) {
                 zus.dotUpdate(
                     "metaData.salesProfileId",
-                    address.salesProfile?.id
+                    address.salesProfile?.id,
                 );
                 setting.salesProfileChanged();
             }
             if (address.taxProfile?.taxCode) {
                 zus.dotUpdate(
                     "metaData.tax.taxCode",
-                    address.taxProfile?.taxCode
+                    address.taxProfile?.taxCode,
                 );
                 setting.taxCodeChanged();
             }
@@ -116,22 +118,22 @@ export function CustomerSearch({ addressType }) {
                                 <button
                                     key={key}
                                     onClick={() => selectAddress(address)}
-                                    className="w-full px-3 py-2 text-left hover:bg-accent hover:text-accent-foreground space-y-1"
+                                    className="w-full space-y-1 px-3 py-2 text-left hover:bg-accent hover:text-accent-foreground"
                                 >
-                                    <Label className="text-sm font-medium text-primary truncate">
+                                    <Label className="truncate text-sm font-medium text-primary">
                                         {address.name}
                                     </Label>
-                                    <div className="text-xs text-muted-foreground truncate">
+                                    <div className="truncate text-xs text-muted-foreground">
                                         {address.phoneAddress}
                                     </div>
-                                    <div className="text-xs text-muted-foreground flex flex-wrap gap-1">
+                                    <div className="flex flex-wrap gap-1 text-xs text-muted-foreground">
                                         {address.taxProfile?.title && (
-                                            <span className="px-1 py-0.5 bg-muted rounded text-muted-foreground">
+                                            <span className="rounded bg-muted px-1 py-0.5 text-muted-foreground">
                                                 {address.taxProfile.title}
                                             </span>
                                         )}
                                         {address.salesProfile?.name && (
-                                            <span className="px-1 py-0.5 bg-muted rounded text-muted-foreground">
+                                            <span className="rounded bg-muted px-1 py-0.5 text-muted-foreground">
                                                 {address.salesProfile.name}
                                             </span>
                                         )}

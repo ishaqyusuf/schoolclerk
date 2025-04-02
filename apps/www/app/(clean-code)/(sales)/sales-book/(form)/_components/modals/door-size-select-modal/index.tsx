@@ -10,7 +10,6 @@ import FormSelect from "@/components/common/controls/form-select";
 import Modal from "@/components/common/modal";
 import { _modal } from "@/components/common/modal/provider";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
     CardContent,
     CardDescription,
@@ -44,6 +43,8 @@ import {
 import { cn, toNumber } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
 
 import { ComponentHelperClass } from "../../../_utils/helpers/zus/step-component-class";
 import AdminControl from "../../admin-control";

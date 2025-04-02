@@ -1,5 +1,7 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@gnd/ui/button";
+
 import "./style.css";
+
 import Link from "next/link";
 
 interface Props {
@@ -13,7 +15,7 @@ export default function NewFeatureBtn({ children, href }: Props) {
             asChild
             // variant="ghost"
             size="sm"
-            className="relative h-8  rounded-lg   gradient-border overflow-hidden"
+            className="gradient-border relative  h-8   overflow-hidden rounded-lg"
         >
             <Link href={href} className="">
                 {children}

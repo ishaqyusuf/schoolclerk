@@ -1,19 +1,21 @@
 "use client";
 
-import { ISalesType, ISalesOrder } from "@/types/sales";
+import Link from "next/link";
+import { _updateOrderInventoryStatus } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-inventory";
+import { ISalesOrder, ISalesType } from "@/types/sales";
+import { MoreHorizontal, View } from "lucide-react";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { Button } from "../../ui/button";
-import { MoreHorizontal, View } from "lucide-react";
-import Link from "next/link";
-import { PrintOrderMenuAction } from "./sales-menu-actions";
 import { RowActionMenuItem } from "../data-table/data-table-row-actions";
-import { _updateOrderInventoryStatus } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-inventory";
-import { toast } from "sonner";
+import { PrintOrderMenuAction } from "./sales-menu-actions";
 
 export interface IOrderRowProps {
     row: ISalesOrder;
@@ -64,7 +66,7 @@ export function ProdActions(props: IOrderRowProps) {
                                         >
                                             {status}
                                         </RowActionMenuItem>
-                                    )
+                                    ),
                                 )}
                             </>
                         }

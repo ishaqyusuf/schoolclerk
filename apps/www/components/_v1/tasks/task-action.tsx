@@ -1,16 +1,19 @@
 "use client";
-import { useSession } from "next-auth/react";
+
 import { useState } from "react";
-import { Button } from "../../ui/button";
+import { usePathname } from "next/navigation";
+import { openModal } from "@/lib/modal";
 import { Plus } from "lucide-react";
+import { useSession } from "next-auth/react";
+
+import { Button } from "@gnd/ui/button";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { openModal } from "@/lib/modal";
-import { usePathname } from "next/navigation";
 
 export default function TaskAction({}) {
     const { data: session } = useSession({
@@ -23,7 +26,7 @@ export default function TaskAction({}) {
             can?.viewTech && "punchout",
             can?.viewInstallation && "installation",
             can?.viewDecoShutterInstall && "Deco-Shutter",
-        ].filter(Boolean)
+        ].filter(Boolean),
     );
     function open(_type) {
         let type = _type?.toLowerCase();
@@ -43,7 +46,7 @@ export default function TaskAction({}) {
                 size="sm"
                 className="h-8"
             >
-                <Plus className="h-4 w-4 mr-2" />
+                <Plus className="mr-2 h-4 w-4" />
                 <span>Task</span>
             </Button>
         );
@@ -52,7 +55,7 @@ export default function TaskAction({}) {
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button size="sm" className="h-8">
-                        <Plus className="h-4 w-4 mr-2" />
+                        <Plus className="mr-2 h-4 w-4" />
                         <span>Task</span>
                     </Button>
                 </DropdownMenuTrigger>

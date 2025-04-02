@@ -1,19 +1,20 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import {
     _getSalesCustomerSystemData,
     GetSalesCustomerSystemData,
 } from "@/actions/get-sales-customer-system-data";
+import { ChevronDown } from "lucide-react";
+
 import {
     Dialog,
     DialogContent,
     DialogDescription,
     DialogHeader,
     DialogTitle,
-} from "@/components/ui/dialog";
-import React, { useEffect, useState } from "react";
-import { Table, TableBody, TableCell, TableRow } from "../ui/table";
-import { Label } from "../ui/label";
+} from "@gnd/ui/dialog";
+
 import {
     Combobox,
     ComboboxAnchor,
@@ -24,7 +25,8 @@ import {
     ComboboxTrigger,
 } from "../ui/combobox";
 import { CommandInput } from "../ui/command";
-import { ChevronDown } from "lucide-react";
+import { Label } from "../ui/label";
+import { Table, TableBody, TableCell, TableRow } from "../ui/table";
 
 export default function CustomerProfileUpdateModal({ phoneNo, profileId }) {
     const [data, setData] = useState<GetSalesCustomerSystemData>(null);

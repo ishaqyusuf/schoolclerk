@@ -1,4 +1,4 @@
-import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
+import { InputHTMLAttributes } from "react";
 import {
     FormControl,
     FormField,
@@ -6,13 +6,14 @@ import {
     FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { InputHTMLAttributes } from "react";
-import { useDataSkeleton } from "@/hooks/use-data-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
+import { useDataSkeleton } from "@/hooks/use-data-skeleton";
+import { cn } from "@/lib/utils";
+import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
+
+import { Button } from "@gnd/ui/button";
 
 interface Props<T> {
     label?: string;
@@ -68,7 +69,7 @@ export default function FormInput<
                     <FormControl {...inputProps}>
                         {load?.loading ? (
                             <>
-                                <Skeleton className="w-full h-8" />
+                                <Skeleton className="h-8 w-full" />
                             </>
                         ) : (
                             <>
@@ -83,7 +84,7 @@ export default function FormInput<
                                         <div
                                             className={cn(
                                                 size == "sm" && "",
-                                                "sbg-muted-foreground/50 text-sm px-1 h-full",
+                                                "sbg-muted-foreground/50 h-full px-1 text-sm",
                                             )}
                                         >
                                             {prefix}

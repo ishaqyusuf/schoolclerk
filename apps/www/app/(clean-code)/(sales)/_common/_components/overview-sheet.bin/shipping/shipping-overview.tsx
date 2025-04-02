@@ -1,21 +1,20 @@
-import { SecondaryTabSheet } from "@/components/(clean-code)/data-table/item-overview-sheet";
-import { useItemProdViewContext } from "../production/use-hooks";
-
 import { createContext, useEffect } from "react";
-
-import { ScrollArea } from "@/components/ui/scroll-area";
-
-import { Icons } from "@/components/_v1/icons";
-import { toast } from "sonner";
-import { qtyDiff } from "../../../data-access/dto/sales-item-dto";
-import Badge from "../components/badge";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Label } from "@/components/ui/label";
-import { Progress } from "@/components/(clean-code)/progress";
+import { Icons } from "@/components/_v1/icons";
+import { SecondaryTabSheet } from "@/components/(clean-code)/data-table/item-overview-sheet";
 import { Menu } from "@/components/(clean-code)/menu";
-import { dispatchStatusList } from "../../../utils/contants";
+import { Progress } from "@/components/(clean-code)/progress";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import { qtyDiff } from "../../../data-access/dto/sales-item-dto";
 import { updateDispatchStatusUseCase } from "../../../use-case/sales-dispatch-use-case";
+import { dispatchStatusList } from "../../../utils/contants";
+import Badge from "../components/badge";
+import { useItemProdViewContext } from "../production/use-hooks";
 
 let context = null;
 type Ctx = ReturnType<typeof useShippingOverviewCtx>;
@@ -25,7 +24,7 @@ const useShippingOverview = (): Ctx => {
     return useShippingOverviewCtx(ctx);
 };
 const useShippingOverviewCtx = (
-    ctx: ReturnType<typeof useItemProdViewContext>
+    ctx: ReturnType<typeof useItemProdViewContext>,
 ) => {
     // const ctx = useItemProdViewContext();
     // if (_) return _;
@@ -35,7 +34,7 @@ const useShippingOverviewCtx = (
     const slug = mainCtx.tabData?.payloadSlug;
     const shippingOverview = mainCtx.overview?.shipping;
     const shipping = mainCtx.overview?.shipping?.list?.find(
-        (ls) => ls.id == slug
+        (ls) => ls.id == slug,
     );
     if (!shipping) {
         toast.error("Shipping not found");
@@ -52,8 +51,8 @@ const useShippingOverviewCtx = (
                 (i) =>
                     i.itemId == item.id &&
                     item.assignments.some((a) =>
-                        a.submissions.some((s) => s.id == i.submissionId)
-                    )
+                        a.submissions.some((s) => s.id == i.submissionId),
+                    ),
             );
 
             const [d1, d2, ...rest] = deliveries;
@@ -96,7 +95,7 @@ export function ShippingOverview({}) {
         try {
             const resp = await updateDispatchStatusUseCase(
                 shipping.id,
-                progress
+                progress,
             );
             toast.success("Dispatch updated");
             ctx.mainCtx.refresh();
@@ -120,7 +119,7 @@ export function ShippingOverview({}) {
                             href={`/printer/sales?slugs=${mainCtx.overview.orderId}&mode=packing list&dispatchId=${shipping.id}`}
                             target="_blank"
                         >
-                            <Icons.print className="size-4 mr-2" />
+                            <Icons.print className="mr-2 size-4" />
                             <span>Print</span>
                         </Link>
                     </Button>
@@ -129,12 +128,12 @@ export function ShippingOverview({}) {
                     // className="w-[600px] h-[80vh] flex flex-col"
                     className="o-scrollable-content-area"
                 >
-                    <div className="p-4 border-b">
+                    <div className="border-b p-4">
                         <div className="">
                             <Menu
                                 Trigger={
                                     <Button variant="outline">
-                                        <div className="flex gap-2 items-center">
+                                        <div className="flex items-center gap-2">
                                             <Label>Status:</Label>
                                             <Progress.Status>
                                                 {shipping.status || "queue"}
@@ -160,10 +159,10 @@ export function ShippingOverview({}) {
                             </Menu>
                         </div>
                     </div>
-                    <div className="px-4 sm:p-8s">
+                    <div className="sm:p-8s px-4">
                         {ctx.items?.map(({ item, qty, deliveries }, index) => (
                             <div
-                                className="border-b p-2 bg-white rounded"
+                                className="rounded border-b bg-white p-2"
                                 key={index}
                             >
                                 <div className="flex">

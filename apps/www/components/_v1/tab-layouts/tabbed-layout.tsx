@@ -1,16 +1,16 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-import { ISidebar, nav } from "@/lib/navs";
-import { Button } from "../../ui/button";
 import Link from "next/link";
-import { createPortal } from "react-dom";
+import { redirect, usePathname, useRouter } from "next/navigation";
+import { ISidebar, nav } from "@/lib/navs";
+import { timeout } from "@/lib/timeout";
 import { cn } from "@/lib/utils";
 import { PrimitiveDivProps } from "@/types/type";
-import { timeout } from "@/lib/timeout";
+import { useSession } from "next-auth/react";
+import { createPortal } from "react-dom";
+
+import { Button } from "@gnd/ui/button";
 
 export default function TabbedLayout({
     children,
@@ -36,7 +36,7 @@ export default function TabbedLayout({
     // const [tabs, setTabs] = useState<{ label; value }[]>([]);
     const route = useRouter();
     const [TabElement, setTabElement] = useState(
-        document?.getElementById("tab")
+        document?.getElementById("tab"),
     );
     useEffect(() => {
         (async () => {
@@ -54,8 +54,8 @@ export default function TabbedLayout({
                             <Button
                                 size="sm"
                                 className={cn(
-                                    "p-1 h-8 px-4",
-                                    c.path != tab && "text-muted-foreground"
+                                    "h-8 p-1 px-4",
+                                    c.path != tab && "text-muted-foreground",
                                 )}
                                 variant={c.path == tab ? "ghost" : "ghost"}
                                 asChild
@@ -64,14 +64,14 @@ export default function TabbedLayout({
                             </Button>
                             <div
                                 className={cn(
-                                    "h-0.5 w-full mt-1",
-                                    c.path == tab && "bg-primary"
+                                    "mt-1 h-0.5 w-full",
+                                    c.path == tab && "bg-primary",
                                 )}
                             ></div>
                         </div>
                     ))}
                 </div>,
-                TabElement
+                TabElement,
             )}
             {/* <Tabs
         defaultValue={tab}
@@ -95,7 +95,7 @@ export default function TabbedLayout({
         </TabsList>
       </Tabs> */}
             {children && (
-                <div className={cn("px-4 sm:px-8 space-y-4", className)}>
+                <div className={cn("space-y-4 px-4 sm:px-8", className)}>
                     {children}
                 </div>
             )}

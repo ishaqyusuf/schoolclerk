@@ -1,17 +1,19 @@
 "use client";
 
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Cell } from "../columns/base-columns";
+import { updateSalesDelivery } from "@/app/(v1)/(loggedIn)/sales/_actions/_sales-pickup";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import { OrderStatus } from "../../../app/(v1)/(loggedIn)/sales/orders/components/cells/sales-columns";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { useState, useTransition } from "react";
-import { Button } from "../../ui/button";
-import { toast } from "sonner";
-import { OrderStatus } from "../../../app/(v1)/(loggedIn)/sales/orders/components/cells/sales-columns";
-import { updateSalesDelivery } from "@/app/(v1)/(loggedIn)/sales/_actions/_sales-pickup";
+import { Cell } from "../columns/base-columns";
 import { MenuItem } from "../data-table/data-table-row-actions";
 
 export function DeliveryStatusCell({ order }: { order }) {
@@ -38,7 +40,7 @@ export function DeliveryStatusCell({ order }: { order }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                         align="end"
-                        className="w-[185px] p-4 grid gap-2 text-sm"
+                        className="grid w-[185px] gap-2 p-4 text-sm"
                     >
                         {["Ready", "In Transit", "Returned", "Delivered"]?.map(
                             (e) => (
@@ -49,7 +51,7 @@ export function DeliveryStatusCell({ order }: { order }) {
                                 >
                                     {e}
                                 </MenuItem>
-                            )
+                            ),
                         )}
                     </DropdownMenuContent>
                 </DropdownMenu>

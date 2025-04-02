@@ -1,11 +1,11 @@
 "use client";
 
 import * as React from "react";
-
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Input, type InputProps } from "@/components/ui/input";
 import { Icons } from "@/components/_v1/icons";
+import { Input, type InputProps } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+
+import { Button } from "@gnd/ui/button";
 
 const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
     ({ className, ...props }, ref) => {
@@ -38,7 +38,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
                 </Button>
             </div>
         );
-    }
+    },
 );
 PasswordInput.displayName = "PasswordInput";
 

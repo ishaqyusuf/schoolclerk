@@ -1,13 +1,15 @@
 "use client";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+
 import Link from "next/link";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+import { Button } from "@gnd/ui/button";
 
 export default function RegisterPage() {
     return (
         <div className="px-4 py-12 sm:px-6 lg:px-8">
-            <div className="mx-auto min-h-[90vh]  flex flex-col justify-center max-w-2xl space-y-8">
+            <div className="mx-auto flex  min-h-[90vh] max-w-2xl flex-col justify-center space-y-8">
                 <div className="space-y-2 text-center">
                     <h1 className="text-3xl font-bold">Create an Account</h1>
                     <p className="text-gray-500 dark:text-gray-400">

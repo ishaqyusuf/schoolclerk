@@ -1,12 +1,5 @@
 import { useContext } from "react";
 import {
-    DykeItemFormContext,
-    useDykeForm,
-} from "../../../../_hooks/form-context";
-import { useFieldArray } from "react-hook-form";
-import ShelfItemsBlock from "./shelf-items-block";
-import { Button } from "@/components/ui/button";
-import {
     Table,
     TableBody,
     TableCell,
@@ -15,6 +8,15 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { generateRandomString } from "@/lib/utils";
+import { useFieldArray } from "react-hook-form";
+
+import { Button } from "@gnd/ui/button";
+
+import {
+    DykeItemFormContext,
+    useDykeForm,
+} from "../../../../_hooks/form-context";
+import ShelfItemsBlock from "./shelf-items-block";
 
 export default function ShelfItemIndex() {
     const item = useContext(DykeItemFormContext);
@@ -30,7 +32,7 @@ export default function ShelfItemIndex() {
                 <TableRow>
                     <TableHead className="w-10">Item</TableHead>
                     <TableHead className="w-1/4">Category</TableHead>
-                    <TableHead className="flex  w-full  space-x-4 items-center">
+                    <TableHead className="flex  w-full  items-center space-x-4">
                         <div className="flex-1">Product</div>
                         <div className="w-20">Qty</div>
                         <div className="w-24 text-right">Rate</div>

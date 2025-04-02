@@ -1,20 +1,19 @@
 "use client";
 
 import React, { useEffect, useState, useTransition } from "react";
-
 import { useRouter } from "next/navigation";
-
+import { getSettingAction } from "@/app/(v1)/_actions/settings";
+import { useDebounce } from "@/hooks/use-debounce";
+import { openModal } from "@/lib/modal";
+import { IJobs } from "@/types/hrm";
+import { ISalesOrder } from "@/types/sales";
+import { InstallCostLine, InstallCostSettings } from "@/types/settings";
 import { toast } from "sonner";
 
-import BaseSheet from "./base-sheet";
-import { IJobs } from "@/types/hrm";
-import { Info } from "../info";
-import {
-    DateCellContent,
-    PrimaryCellContent,
-    SecondaryCellContent,
-} from "../columns/base-columns";
-import Money from "../money";
+import { Button } from "@gnd/ui/button";
+
+import { Input } from "../../ui/input";
+import { ScrollArea } from "../../ui/scroll-area";
 import {
     Table,
     TableBody,
@@ -23,14 +22,14 @@ import {
     TableHeader,
     TableRow,
 } from "../../ui/table";
-import { useDebounce } from "@/hooks/use-debounce";
-import { Input } from "../../ui/input";
-import { ScrollArea } from "../../ui/scroll-area";
-import { getSettingAction } from "@/app/(v1)/_actions/settings";
-import { InstallCostLine, InstallCostSettings } from "@/types/settings";
-import { Button } from "../../ui/button";
-import { openModal } from "@/lib/modal";
-import { ISalesOrder } from "@/types/sales";
+import {
+    DateCellContent,
+    PrimaryCellContent,
+    SecondaryCellContent,
+} from "../columns/base-columns";
+import { Info } from "../info";
+import Money from "../money";
+import BaseSheet from "./base-sheet";
 
 export default function SalesSupplySheet() {
     const route = useRouter();
@@ -66,7 +65,7 @@ export default function SalesSupplySheet() {
                                     });
                                 }}
                                 variant={"default"}
-                                className="px-2 h-6"
+                                className="h-6 px-2"
                                 size={"sm"}
                             >
                                 <span>Edit</span>
@@ -78,7 +77,7 @@ export default function SalesSupplySheet() {
             Content={({ data }) => (
                 <div>
                     <ScrollArea className="h-screen ">
-                        <div className="grid grid-cols-2 items-start gap-4 text-sm mt-6 mb-28">
+                        <div className="mb-28 mt-6 grid grid-cols-2 items-start gap-4 text-sm">
                             <Content data={data as any} />
                         </div>
                     </ScrollArea>
@@ -100,13 +99,13 @@ export default function SalesSupplySheet() {
 function Content({ data }: { data: IJobs }) {
     const [job, setJob] = useState<IJobs>(data);
     const [costSetting, setCostSetting] = useState<InstallCostSettings>(
-        {} as any
+        {} as any,
     );
     useEffect(() => {
         getSettingAction<InstallCostSettings>("install-price-chart").then(
             (res) => {
                 setCostSetting(res);
-            }
+            },
         );
     }, []);
     const [divider, setDivider] = useState(data?.coWorkerId ? 2 : 1);
@@ -116,7 +115,7 @@ function Content({ data }: { data: IJobs }) {
         <>
             <section
                 id="info"
-                className="grid grid-cols-2 items-start gap-4 col-span-2"
+                className="col-span-2 grid grid-cols-2 items-start gap-4"
             >
                 <Info label="Done By">
                     <p>{data?.user?.name}</p>
@@ -166,7 +165,7 @@ function Content({ data }: { data: IJobs }) {
                                 ?.filter(
                                     (l) =>
                                         (job.meta?.costData[l.uid]?.qty || 0) >
-                                        0
+                                        0,
                                 )
                                 .map((cd, i) => (
                                     <TaskRow
@@ -220,7 +219,7 @@ function TaskRow({ row, index, job, setJob }: TaskRowProps) {
                     value={qty}
                     onChange={(e) => setQty(e.target.value)}
                     type="number"
-                    className="w-16 h-8"
+                    className="h-8 w-16"
                 />
             </TableCell>
             <TableCell className="px-1">

@@ -1,11 +1,13 @@
 "use client";
 
-import { Button, ButtonProps } from "../ui/button";
-import { cn } from "@/lib/utils";
-import { useBool } from "@/lib/use-loader";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { useBool } from "@/lib/use-loader";
+import { cn } from "@/lib/utils";
 import { Info, Trash } from "lucide-react";
+
+import { Button, ButtonProps } from "@gnd/ui/button";
+
 import { Icons } from "./icons";
 
 interface Props extends ButtonProps {
@@ -44,10 +46,10 @@ export default function ConfirmBtn({
     const Icone: any = confirm.bool
         ? Info
         : isPending
-        ? Icons.spinner
-        : size == "icon" || trash
-        ? Trash
-        : Icon;
+          ? Icons.spinner
+          : size == "icon" || trash
+            ? Trash
+            : Icon;
     return (
         <Button
             size={size}
@@ -61,7 +63,7 @@ export default function ConfirmBtn({
                 size == "xs" && "h-6 w-6 p-0",
                 variant != "destructive" &&
                     trash &&
-                    "text-red-500 hover:text-red-600"
+                    "text-red-500 hover:text-red-600",
             )}
             {...props}
         >
@@ -69,7 +71,7 @@ export default function ConfirmBtn({
                 <Icone
                     className={cn(
                         `${isPending ? "h-3.5 w-3.5 animate-spin" : "h-4 w-4"}`,
-                        size == "xs" && "size-3"
+                        size == "xs" && "size-3",
                     )}
                 />
             )}

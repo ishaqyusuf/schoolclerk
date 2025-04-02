@@ -1,26 +1,28 @@
+import { useState } from "react";
+import ConfirmBtn from "@/components/_v1/confirm-btn";
+import { Icons } from "@/components/_v1/icons";
+import { SecondaryTabSheet } from "@/components/(clean-code)/data-table/item-overview-sheet";
+import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { formatDate } from "@/lib/use-day";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import {
+    deleteAssignmentSubmissionUseCase,
+    deleteAssignmentUseCase,
+} from "../../../use-case/sales-prod.use-case";
 import {
     ItemAssignment,
     ItemAssignmentSubmission,
     LineItem,
 } from "../item-view/sales-items-overview";
-import { Icons } from "@/components/_v1/icons";
-import { cn } from "@/lib/utils";
-import { SecondaryTabSheet } from "@/components/(clean-code)/data-table/item-overview-sheet";
-import { formatDate } from "@/lib/use-day";
-import { ItemProdViewContext, useItemProdViewContext } from "./use-hooks";
 import { AssignForm } from "./assigne-form";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import SubmitProductionForm from "./submit-form";
-import { useState } from "react";
-import {
-    deleteAssignmentSubmissionUseCase,
-    deleteAssignmentUseCase,
-} from "../../../use-case/sales-prod.use-case";
-import ConfirmBtn from "@/components/_v1/confirm-btn";
-import { toast } from "sonner";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ItemProdViewContext, useItemProdViewContext } from "./use-hooks";
 
 export function ItemProdView({}) {
     const ctx = useItemProdViewContext();
@@ -67,7 +69,7 @@ function Assignment({ assignment }: { assignment: ItemAssignment }) {
     async function deleteAssignment() {
         await deleteAssignmentUseCase(
             assignment.id,
-            item.analytics.control.produceable
+            item.analytics.control.produceable,
         );
         toast.success("Deleted");
         mainCtx.refresh();
@@ -80,7 +82,7 @@ function Assignment({ assignment }: { assignment: ItemAssignment }) {
                         <Label className="text-base leading-relaxed">
                             {assignment.assignedTo}
                         </Label>
-                        <div className="flex items-center text-sm gap-2">
+                        <div className="flex items-center gap-2 text-sm">
                             <Icons.calendar className="size-4" />
                             <span>{formatDate(assignment.dueDate)}</span>
                         </div>
@@ -90,7 +92,7 @@ function Assignment({ assignment }: { assignment: ItemAssignment }) {
                             <>
                                 <Badge
                                     className={cn(
-                                        !assignment.qty.rh && "hidden"
+                                        !assignment.qty.rh && "hidden",
                                     )}
                                     variant="outline"
                                 >
@@ -101,7 +103,7 @@ function Assignment({ assignment }: { assignment: ItemAssignment }) {
                                 </Badge>
                                 <Badge
                                     className={cn(
-                                        !assignment.qty.lh && "hidden"
+                                        !assignment.qty.lh && "hidden",
                                     )}
                                     variant="outline"
                                 >
@@ -143,7 +145,7 @@ function Assignment({ assignment }: { assignment: ItemAssignment }) {
                     </div>
                 </div>
                 {showSubmit && <SubmitProductionForm assignment={assignment} />}
-                <div className="pl-4 border-t">
+                <div className="border-t pl-4">
                     {assignment.submissions?.map((s) => (
                         <AssignmentSubmissionLine submission={s} key={s.id} />
                     ))}
@@ -161,16 +163,16 @@ function AssignmentSubmissionLine({
     async function _deleteSubmission() {
         await deleteAssignmentSubmissionUseCase(
             submission.id,
-            ctx.item.analytics.control.produceable
+            ctx.item.analytics.control.produceable,
         );
         toast.error("Deleted");
         ctx.mainCtx.refresh();
     }
     return (
-        <div className="flex justify-between items-center">
-            <div className="text-muted-foreground text-sm font-mono">
+        <div className="flex items-center justify-between">
+            <div className="font-mono text-sm text-muted-foreground">
                 {`${submission.qty?.total} submitted on ${formatDate(
-                    submission.date
+                    submission.date,
                 )}`}
             </div>
             <div>

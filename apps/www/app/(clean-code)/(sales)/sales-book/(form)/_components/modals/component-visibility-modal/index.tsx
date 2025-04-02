@@ -1,20 +1,21 @@
-import Modal from "@/components/common/modal";
-import { useFormDataStore } from "../../../_common/_stores/form-data-store";
 import { createContext, useContext, useEffect, useMemo } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/_v1/icons";
-import { Form } from "@/components/ui/form";
-import FormSelect from "@/components/common/controls/form-select";
-import { ComboxBox } from "@/components/(clean-code)/custom/controlled/combo-box";
-import ConfirmBtn from "@/components/_v1/confirm-btn";
-
 import { saveComponentVariantUseCase } from "@/app/(clean-code)/(sales)/_common/use-case/step-component-use-case";
+import ConfirmBtn from "@/components/_v1/confirm-btn";
+import { Icons } from "@/components/_v1/icons";
+import { ComboxBox } from "@/components/(clean-code)/custom/controlled/combo-box";
+import FormSelect from "@/components/common/controls/form-select";
+import Modal from "@/components/common/modal";
 import { _modal } from "@/components/common/modal/provider";
-import { toast } from "sonner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Form } from "@/components/ui/form";
 import { AlertCircle } from "lucide-react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import { useFormDataStore } from "../../../_common/_stores/form-data-store";
 import { ComponentHelperClass } from "../../../_utils/helpers/zus/step-component-class";
 
 interface Props {
@@ -26,10 +27,10 @@ const Context = createContext<ReturnType<typeof useInitContext>>(null);
 const useCtx = () => useContext(Context);
 export function openComponentVariantModal(
     cls: ComponentHelperClass,
-    componentsUid
+    componentsUid,
 ) {
     _modal.openModal(
-        <ComponentVariantModal componentsUid={componentsUid} cls={cls} />
+        <ComponentVariantModal componentsUid={componentsUid} cls={cls} />,
     );
 }
 export function useInitContext(cls: ComponentHelperClass, componentsUid) {
@@ -120,7 +121,7 @@ export default function ComponentVariantModal({ cls, componentsUid }: Props) {
                             size="sm"
                             className="h-8 text-xs"
                         >
-                            <Icons.add className="size-4 mr-2" />
+                            <Icons.add className="mr-2 size-4" />
                             <span>Add Rule</span>
                         </Button>
                     </div>
@@ -155,7 +156,7 @@ function RuleComponent({ index }) {
     }
     function ComponentInput({ fieldIndex }) {
         const stepUid = ctx.form.watch(
-            `variations.${index}.rules.${fieldIndex}.stepUid`
+            `variations.${index}.rules.${fieldIndex}.stepUid`,
         );
         return (
             <ComboxBox
@@ -211,7 +212,7 @@ function RuleComponent({ index }) {
                     onClick={addRuleFilter}
                     className="h-7 text-xs"
                 >
-                    <Icons.add className="size-4 mr-2" />
+                    <Icons.add className="mr-2 size-4" />
                     <span>Add Filter</span>
                 </Button>
             </div>

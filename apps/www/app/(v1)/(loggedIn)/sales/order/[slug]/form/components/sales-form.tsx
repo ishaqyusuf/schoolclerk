@@ -1,41 +1,42 @@
 "use client";
-import { SalesFormResponse } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-form";
-import { ISalesOrder } from "@/types/sales";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { PrintOrderMenuAction } from "@/components/_v1/actions/sales-menu-actions";
-import OrderPrinter from "@/components/_v1/print/order/order-printer";
+
 import { useCallback, useEffect, useState, useTransition } from "react";
-import { toast } from "sonner";
-import { saveOrderAction } from "@/app/(v1)/(loggedIn)/sales/_actions/sales";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-import { SalesCustomerModal } from "@/components/_v1/modals/sales-address-modal";
-import SalesInvoiceTable from "./sales-invoice-table";
-import { store, useAppSelector } from "@/store";
-
-import InfoCard from "./sales-info-address-form";
-import { Switch } from "@/components/ui/switch";
-import {
-    resetFooterInfo,
-    toggleMockup,
-} from "@/store/invoice-item-component-slice";
-import { Label } from "@/components/ui/label";
+import RenderForm from "@/_v2/components/common/render-form";
+import { saveOrderAction } from "@/app/(v1)/(loggedIn)/sales/_actions/sales";
+import { SalesFormResponse } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-form";
+import { SaveMode } from "@/app/(v2)/(loggedIn)/sales-v2/type";
+import { PrintOrderMenuAction } from "@/components/_v1/actions/sales-menu-actions";
 import {
     Menu,
     MenuItem,
 } from "@/components/_v1/data-table/data-table-row-actions";
 import { Icons } from "@/components/_v1/icons";
-import { openModal } from "@/lib/modal";
+import { SalesCustomerModal } from "@/components/_v1/modals/sales-address-modal";
+import OrderPrinter from "@/components/_v1/print/order/order-printer";
 import UpdateSalesDate from "@/components/_v1/sales/update-sales-date";
-import salesUtils from "../sales-utils";
-import debounce from "debounce";
-import useDeepCompareEffect from "use-deep-compare-effect";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { isProdClient } from "@/lib/is-prod";
-import RenderForm from "@/_v2/components/common/render-form";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { useDataPage } from "@/lib/data-page-context";
-import { SaveMode } from "@/app/(v2)/(loggedIn)/sales-v2/type";
+import { isProdClient } from "@/lib/is-prod";
+import { openModal } from "@/lib/modal";
+import { store, useAppSelector } from "@/store";
+import {
+    resetFooterInfo,
+    toggleMockup,
+} from "@/store/invoice-item-component-slice";
+import { ISalesOrder } from "@/types/sales";
+import debounce from "debounce";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { toast } from "sonner";
+import useDeepCompareEffect from "use-deep-compare-effect";
+
+import { Button } from "@gnd/ui/button";
+
+import salesUtils from "../sales-utils";
+import InfoCard from "./sales-info-address-form";
+import SalesInvoiceTable from "./sales-invoice-table";
 
 interface Props {
     data: SalesFormResponse;
@@ -66,13 +67,13 @@ export default function SalesForm({ data, newTitle, slug }: Props) {
                 } else {
                     console.log("no customer id.... not saving");
                     toast.error(
-                        "Autosave paused, requires customer information."
+                        "Autosave paused, requires customer information.",
                     );
                 }
             })();
             // methods.handleSubmit(onSubmit)();
         }, 5000),
-        [form]
+        [form],
     );
     useDeepCompareEffect(() => {
         // console.log(watchForm.items?.[2]?.description);
@@ -111,7 +112,7 @@ export default function SalesForm({ data, newTitle, slug }: Props) {
 
         const _formData: any = resp?.form || { meta: {} };
         const { _items, footer } = salesUtils.initInvoiceItems(
-            resp?.form?.items
+            resp?.form?.items,
         );
 
         store.dispatch(resetFooterInfo(footer));
@@ -152,7 +153,7 @@ export default function SalesForm({ data, newTitle, slug }: Props) {
                         else {
                             if (slug != response.orderId)
                                 router.push(
-                                    `/sales/${type}/${response.orderId}/form`
+                                    `/sales/${type}/${response.orderId}/form`,
                                 );
                             else {
                                 // form.reset(data);
@@ -170,7 +171,7 @@ export default function SalesForm({ data, newTitle, slug }: Props) {
                         keepValues: true,
                         keepDirty: false,
                         keepSubmitCount: true,
-                    }
+                    },
                 );
             });
         } catch (error) {
@@ -181,7 +182,7 @@ export default function SalesForm({ data, newTitle, slug }: Props) {
     }
 
     const mockupMode = useAppSelector(
-        (state) => state.orderItemComponent?.showMockup
+        (state) => state.orderItemComponent?.showMockup,
     );
     const mockPercent = form.watch("meta.mockupPercentage");
 
@@ -277,7 +278,7 @@ export default function SalesForm({ data, newTitle, slug }: Props) {
                     </section>
                     <section
                         id="topForm"
-                        className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-5 gap-x-8"
+                        className="mt-4 grid gap-4 gap-x-8 md:grid-cols-2 xl:grid-cols-5"
                     >
                         <div className="xl:col-span-3">
                             <InfoCard data={data} form={form} />
@@ -303,7 +304,7 @@ function AutoExpandInput() {
     const [lineCount, setLineCount] = useState(1);
     useEffect(() => {
         const textarea: HTMLElement = document.querySelector(
-            ".auto-expand-input"
+            ".auto-expand-input",
         ) as any;
         if (!textarea) return;
         const adjustHeight = () => {
@@ -330,7 +331,7 @@ function AutoExpandInput() {
             <textarea
                 value={text}
                 onChange={handleTextChange}
-                className="auto-expand-input w-full h-[32px] resize-none overflow-hidden border p-0.5 rounded-md"
+                className="auto-expand-input h-[32px] w-full resize-none overflow-hidden rounded-md border p-0.5"
                 placeholder="Type something..."
             />
             {lineCount}

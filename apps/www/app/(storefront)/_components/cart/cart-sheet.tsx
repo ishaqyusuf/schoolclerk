@@ -1,9 +1,9 @@
 "use client";
-import Link from "next/link";
 
-import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { Icons } from "@/components/_v1/icons";
+import Money from "@/components/_v1/money";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
     Sheet,
@@ -13,25 +13,26 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import { Icons } from "@/components/_v1/icons";
-import Money from "@/components/_v1/money";
+import { cn } from "@/lib/utils";
+
+import { buttonVariants } from "@gnd/ui/button";
 
 export function CartSheet() {
     const cartLineItems = [] as any; //await getCart();
 
     const itemCount = cartLineItems.reduce(
         (total, item) => total + Number(item.quantity),
-        0
+        0,
     );
 
     const cartTotal = cartLineItems.reduce(
         (total, item) => total + item.quantity * Number(item.price),
-        0
+        0,
     );
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <button className="inline-flex space-x-1 items-center">
+                <button className="inline-flex items-center space-x-1">
                     <Badge variant="destructive" className="px-1.5">
                         0
                     </Badge>
@@ -121,7 +122,7 @@ export function CartSheet() {
                                         size: "sm",
                                         className:
                                             "text-sm text-muted-foreground",
-                                    })
+                                    }),
                                 )}
                             >
                                 Add items to your cart to checkout

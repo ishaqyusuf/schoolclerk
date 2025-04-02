@@ -1,13 +1,14 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
     Menu,
     MenuItem,
 } from "@/components/_v1/data-table/data-table-row-actions";
 import { Icons } from "@/components/_v1/icons";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+
+import { Button } from "@gnd/ui/button";
 
 interface Props {
     type?: "quote" | "order" | "customer";
@@ -63,7 +64,7 @@ export default function NewSalesBtn({ type }: Props) {
                     asChild
                 >
                     <Link href={b.href}>
-                        <Icons.add className="size-4 mr-2" />
+                        <Icons.add className="mr-2 size-4" />
                         <span>{b.text}</span>
                     </Link>
                 </Button>

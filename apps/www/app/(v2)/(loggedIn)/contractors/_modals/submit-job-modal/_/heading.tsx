@@ -1,7 +1,9 @@
-import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/_v1/icons";
+
+import { Button } from "@gnd/ui/button";
+
 import { SubmitJobModalProps, useSubmitJobForm } from ".";
 import useSubmitJob, { useJobSubmitCtx } from "./use-submit-job";
-import { Icons } from "@/components/_v1/icons";
 
 export function SubmitJobModalTitle({ data }: SubmitJobModalProps) {
     const ctx = useJobSubmitCtx();
@@ -11,7 +13,7 @@ export function SubmitJobModalTitle({ data }: SubmitJobModalProps) {
         ctx.form.setValue("tab", (tab1 as any)?.title);
     }
     return (
-        <div className="flex space-x-2 items-center">
+        <div className="flex items-center space-x-2">
             {ctx.tabHistory.fields.length > 0 && (
                 <Button
                     variant={"ghost"}

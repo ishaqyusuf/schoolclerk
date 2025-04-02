@@ -1,9 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Button, ButtonProps } from "../../ui/button";
-import LinkableNode from "../link-node";
+
+import { Button, ButtonProps } from "@gnd/ui/button";
+
 import { Icons } from "../icons";
+import LinkableNode from "../link-node";
 
 interface Props {
     Icon?;
@@ -32,9 +34,9 @@ export function MobileOption({
         >
             <LinkableNode
                 href={href}
-                className="flex text-start flex-1 items-center"
+                className="flex flex-1 items-center text-start"
             >
-                {Icon && <Icon className="size-4 mr-4" />}
+                {Icon && <Icon className="mr-4 size-4" />}
                 <p className="w-full">{label || children}</p>
                 {more && <Icons.chevronRight className="size-4" />}
             </LinkableNode>

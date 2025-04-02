@@ -1,4 +1,6 @@
-import { Button } from "@/components/ui/button";
+import * as React from "react";
+import { findAddressAction } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-address";
+import { saveSalesAddressAction } from "@/app/(v2)/(loggedIn)/sales/_actions/save-sales-address";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
     Dialog,
@@ -19,20 +21,20 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useLoader } from "@/lib/use-loader";
-import { Edit2, MapPin, Phone, User } from "lucide-react";
-import * as React from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
-import { AddressType, ISalesAddressForm, ISalesOrderForm } from "@/types/sales";
-import Btn from "../btn";
-import { findAddressAction } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-address";
-import AutoComplete2 from "../auto-complete-tw";
 import { deepCopy } from "@/lib/deep-copy";
-import { ScrollArea } from "../../ui/scroll-area";
+import { useLoader } from "@/lib/use-loader";
 import { cn } from "@/lib/utils";
-import { OkImpl } from "ts-results";
+import { AddressType, ISalesAddressForm, ISalesOrderForm } from "@/types/sales";
+import { Edit2, MapPin, Phone, User } from "lucide-react";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
-import { saveSalesAddressAction } from "@/app/(v2)/(loggedIn)/sales/_actions/save-sales-address";
+import { OkImpl } from "ts-results";
+
+import { Button } from "@gnd/ui/button";
+
+import { ScrollArea } from "../../ui/scroll-area";
+import AutoComplete2 from "../auto-complete-tw";
+import Btn from "../btn";
 
 export function SalesCustomerModal({
     form,
@@ -277,7 +279,7 @@ function OrderAddress({
 
     const profile = form.watch("profile.title");
     return (
-        <ScrollArea className="h-[400px] px-4  -mx-4 -mr-6">
+        <ScrollArea className="-mx-4 -mr-6  h-[400px] px-4">
             <div className="grid grid-cols-2 gap-4 py-4 pb-10 ">
                 <div className="col-span-2 grid gap-2">
                     <div className="col-span-3 ">
@@ -308,7 +310,7 @@ function OrderAddress({
                                     )
                                         form.setValue(
                                             "profile",
-                                            customer.profile
+                                            customer.profile,
                                         );
                                 }
                             }}
@@ -336,7 +338,7 @@ function OrderAddress({
                 <div
                     className={cn(
                         "col-span-2 grid gap-2",
-                        type != "billingAddress" && "hidden"
+                        type != "billingAddress" && "hidden",
                     )}
                 >
                     <Label htmlFor="name" className="">
@@ -430,7 +432,7 @@ function OrderAddress({
                     />
                 </div>
 
-                <div className="grid gap-2 hidden">
+                <div className="grid hidden gap-2">
                     <Label htmlFor="profile" className="">
                         Profile
                     </Label>
@@ -439,13 +441,13 @@ function OrderAddress({
                         disabled={type != "billingAddress"}
                         onValueChange={(value) => {
                             const selection = profiles.find(
-                                (profile) => profile.title == value
+                                (profile) => profile.title == value,
                             );
                             if (selection) {
                                 form.setValue("profile.title", value);
                                 form.setValue(
                                     "profile.coefficient",
-                                    selection.coefficient
+                                    selection.coefficient,
                                 );
                                 form.setValue("profile.id", selection.id);
                             }

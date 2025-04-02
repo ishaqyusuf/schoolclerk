@@ -1,32 +1,29 @@
 "use client";
 
 import React, { useEffect, useState, useTransition } from "react";
-
 import { useRouter } from "next/navigation";
-
-import Btn from "../btn";
-import BaseModal from "./base-modal";
-import { closeModal } from "@/lib/modal";
-import { toast } from "sonner";
-
-import { useFieldArray, useForm } from "react-hook-form";
-import { Label } from "../../ui/label";
-import { Input } from "../../ui/input";
-import { ExtendedHome, IHomeTask, IHomeTaskList } from "@/types/community";
-
-import { Button } from "../../ui/button";
-import { Plus } from "lucide-react";
-
-import { DatePicker } from "../date-range-picker";
-import ConfirmBtn from "../confirm-btn";
 import { deleteInvoiceTasks } from "@/app/(v1)/_actions/community-invoice/delete-invoice-task";
 import {
-    UpdateIvoiceTasksActionProps,
     updateInvoiceTasksAction,
+    UpdateIvoiceTasksActionProps,
 } from "@/app/(v1)/_actions/community-invoice/update-invoice-tasks";
+import { closeModal } from "@/lib/modal";
+import { ExtendedHome, IHomeTask, IHomeTaskList } from "@/types/community";
 import { UpdateOrderPriorityProps } from "@/types/sales";
-import Money from "../money";
+import { Plus } from "lucide-react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
 import { ScrollArea } from "../../ui/scroll-area";
+import Btn from "../btn";
+import ConfirmBtn from "../confirm-btn";
+import { DatePicker } from "../date-range-picker";
+import Money from "../money";
+import BaseModal from "./base-modal";
 
 export default function EditInvoiceModal() {
     const route = useRouter();
@@ -155,8 +152,8 @@ export default function EditInvoiceModal() {
                 </div>
             )}
             Content={({ data }) => (
-                <ScrollArea className="min-h-max max-h-[50vh]">
-                    <div className="grid md:grid-cols-2 gap-4">
+                <ScrollArea className="max-h-[50vh] min-h-max">
+                    <div className="grid gap-4 md:grid-cols-2">
                         <div className="col-span-2 grid gap-2">
                             <div className="grid grid-cols-7 gap-2">
                                 <Label className="col-span-2">Task Name</Label>
@@ -167,7 +164,7 @@ export default function EditInvoiceModal() {
                             </div>
                             {fields?.map((f, i) => (
                                 <div
-                                    className="grid grid-cols-7 gap-2 items-center group"
+                                    className="group grid grid-cols-7 items-center gap-2"
                                     key={i}
                                 >
                                     <div className="col-span-2">
@@ -206,15 +203,15 @@ export default function EditInvoiceModal() {
                                         <div className="flex-1">
                                             <DatePicker
                                                 format={"YYYY-MM-DD"}
-                                                className="flex-1 w-full h-7"
+                                                className="h-7 w-full flex-1"
                                                 setValue={(e) =>
                                                     form.setValue(
                                                         `tasks.${i}.checkDate`,
-                                                        e
+                                                        e,
                                                     )
                                                 }
                                                 value={form.getValues(
-                                                    `tasks.${i}.checkDate`
+                                                    `tasks.${i}.checkDate`,
                                                 )}
                                             />
                                         </div>
@@ -250,7 +247,7 @@ export default function EditInvoiceModal() {
                                     } as Partial<IHomeTask> as any);
                                 }}
                                 variant="secondary"
-                                className="w-full h-7 mt-1"
+                                className="mt-1 h-7 w-full"
                             >
                                 <Plus className="mr-2 size-4" />
                                 <span>Add Task</span>

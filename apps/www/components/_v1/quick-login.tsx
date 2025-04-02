@@ -1,22 +1,24 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { getEmployees } from "@/app/(v1)/_actions/hrm/get-employess";
+import { env } from "@/env.mjs";
+import { IUser } from "@/types/hrm";
 import { Plus } from "lucide-react";
-import { Button } from "../ui/button";
+import { signIn } from "next-auth/react";
+
+import { Button } from "@gnd/ui/button";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useEffect, useState } from "react";
-import { IUser } from "@/types/hrm";
-import { getEmployees } from "@/app/(v1)/_actions/hrm/get-employess";
-import { signIn } from "next-auth/react";
 import {
     PrimaryCellContent,
     SecondaryCellContent,
 } from "./columns/base-columns";
-import { env } from "@/env.mjs";
 
 export default function QuickLogin() {
     const [employees, setEmployees] = useState<IUser[]>([]);
@@ -45,7 +47,7 @@ export default function QuickLogin() {
                         variant="secondary"
                         className="flex h-8  data-[state=open]:bg-muted"
                     >
-                        <Plus className="h-4 w-4 mr-2" />
+                        <Plus className="mr-2 h-4 w-4" />
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent

@@ -1,25 +1,21 @@
 import { useEffect, useState, useTransition } from "react";
-import { useDykeCtx, useDykeItemCtx } from "../../../../_hooks/form-context";
-import { cn, safeFormText } from "@/lib/utils";
 import Image from "next/image";
-import { env } from "@/env.mjs";
-import SVG from "react-inlinesvg";
-import { Label } from "@/components/ui/label";
-import Money from "@/components/_v1/money";
-import { IStepProducts } from ".";
-import { Icons } from "@/components/_v1/icons";
+import { useLegacyDykeFormStep } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
+import stepHelpers from "@/app/(clean-code)/(sales)/sales-book/(form)/_utils/helpers/step-helper";
+import { DykeStep } from "@/app/(v2)/(loggedIn)/sales-v2/type";
+import Btn from "@/components/_v1/btn";
 import {
     DeleteRowAction,
     Menu,
     MenuItem,
 } from "@/components/_v1/data-table/data-table-row-actions";
-
-import { motion } from "framer-motion";
-import { Input } from "@/components/ui/input";
-import Btn from "@/components/_v1/btn";
-import { DykeStep } from "@/app/(v2)/(loggedIn)/sales-v2/type";
+import { Icons } from "@/components/_v1/icons";
 import { Info } from "@/components/_v1/info";
-import { updateStepItemPrice } from "./_actions";
+import Money from "@/components/_v1/money";
+import Img from "@/components/(clean-code)/img";
+import { PlaceholderImage } from "@/components/placeholder-image";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Badge } from "@/components/ui/badge";
 import {
     Card,
     CardContent,
@@ -27,18 +23,22 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { PlaceholderImage } from "@/components/placeholder-image";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { env } from "@/env.mjs";
+import { cn, safeFormText } from "@/lib/utils";
+import { motion } from "framer-motion";
 import { Dot } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import SVG from "react-inlinesvg";
 
+import { Button } from "@gnd/ui/button";
+
+import { IStepProducts } from ".";
+import { useDykeCtx, useDykeItemCtx } from "../../../../_hooks/form-context";
+import { updateStepItemPrice } from "./_actions";
 import DoorMenuOption from "./door-menu-option";
 
-import { Button } from "@/components/ui/button";
-import Img from "@/components/(clean-code)/img";
-import stepHelpers from "@/app/(clean-code)/(sales)/sales-book/(form)/_utils/helpers/step-helper";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useLegacyDykeFormStep } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
 interface Props {
     item: IStepProducts[number] & { _selected: boolean };
     select;
@@ -83,7 +83,7 @@ Props) {
     const itemData = ctx.get.itemArray();
 
     const doorPriceCount = Object.entries(
-        item.product?.meta?.doorPrice || {}
+        item.product?.meta?.doorPrice || {},
     ).filter(([k, v]) => {
         return v > 0 && k?.endsWith(itemData.item?.housePackageTool?.height);
     }).length;
@@ -120,16 +120,16 @@ Props) {
             <>
                 <CardHeader
                     onClick={onClick}
-                    className="border-b realtive flex-1 p-0 py-4"
+                    className="realtive flex-1 border-b p-0 py-4"
                 >
-                    <div className="absolute -m-4 z-10 left-0 top-0">
+                    <div className="absolute left-0 top-0 z-10 -m-4">
                         {item.productCode && (
                             <Badge variant="outline">#{item.productCode}</Badge>
                         )}
                     </div>
-                    <div className="absolute p-2 z-10 px-4 top-0 right-0 flex gap-4">
+                    <div className="absolute right-0 top-0 z-10 flex gap-4 p-2 px-4">
                         {item.meta?.stepSequence?.length ? (
-                            <Dot className="w-8 h-8 text-cyan-600" />
+                            <Dot className="h-8 w-8 text-cyan-600" />
                         ) : null}
                         {stepForm.step.title == "Door" ? (
                             <span className="inline-flex space-x-1 text-muted-foreground">
@@ -161,7 +161,7 @@ Props) {
                 </CardHeader>
                 <CardContent
                     onClick={onClick}
-                    className="space-y-1.5 inline-flex items-center justify-between p-2"
+                    className="inline-flex items-center justify-between space-y-1.5 p-2"
                 >
                     {/* <span>{item.deletedAt ? "yes" : "no"}</span> */}
                     <CardTitle className="line-clamp-1s text-sm">
@@ -217,10 +217,10 @@ Props) {
     return (
         <Card
             className={cn(
-                "size-full overflow-hiddens rounded-lg relative border-muted-foreground/10 flex flex-col flex-1",
+                "overflow-hiddens relative flex size-full flex-1 flex-col rounded-lg border-muted-foreground/10",
                 className,
-                selected ? "hover:border-green-500 border-green-500" : "",
-                loadingStep ? "cursor-not-allowed" : "cursor-pointer"
+                selected ? "border-green-500 hover:border-green-500" : "",
+                loadingStep ? "cursor-not-allowed" : "cursor-pointer",
             )}
         >
             {/* {formCtx.superAdmin && <batchCtx.CheckBox uid={item.uid} />} */}
@@ -230,18 +230,20 @@ Props) {
                     !menuOpen && "hidden",
                     stepCtx.hasSelection || !formCtx.superAdmin
                         ? ""
-                        : "absolute top-0 right-0  rounded-lg shadow-xl -m-4 bg-white z-20 group-hover:flex"
+                        : "absolute right-0 top-0  z-20 -m-4 rounded-lg bg-white shadow-xl group-hover:flex",
                     // !formCtx.superAdmin ? "hidden" : "group-hover:flex"
                 )}
             >
                 <Menu open={menuOpen} onOpenChanged={menuOpenChange}>
                     {editPrice ? (
-                        <div className="p-2 grid gap-2">
+                        <div className="grid gap-2 p-2">
                             <div
                                 className={cn(
                                     "grid",
                                     dependencies.length && "border-b pt-2",
-                                    dependencies.length > 1 ? "grid-cols-2" : ""
+                                    dependencies.length > 1
+                                        ? "grid-cols-2"
+                                        : "",
                                 )}
                             >
                                 {dependencies.map((i) => (
@@ -314,7 +316,7 @@ Props) {
             <div
                 className={cn(
                     !stepCtx?.hasSelection && "hidden",
-                    "absolute top-0 left-0 bg-white"
+                    "absolute left-0 top-0 bg-white",
                 )}
             >
                 <Checkbox checked={stepCtx.selections?.[item.uid]?.selected} />
@@ -361,7 +363,7 @@ export function ProductImage({ item, aspectRatio = 4 / 2 }: ProductImageProps) {
     );
     return (
         <motion.div
-            className="flex flex-1 h-full flex-col items-center space-y-2 justify-center relative "
+            className="relative flex h-full flex-1 flex-col items-center justify-center space-y-2 "
             whileHover={{ scale: 1.01 }}
             transition={{ type: "spring", stiffness: 300 }}
         >

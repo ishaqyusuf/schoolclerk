@@ -5,7 +5,6 @@ import { Icons } from "@/components/_v1/icons";
 import Money from "@/components/_v1/money";
 import FormSelect from "@/components/common/controls/form-select";
 import { useModal } from "@/components/common/modal/provider";
-import { Button } from "@/components/ui/button";
 import {
     Command,
     CommandEmpty,
@@ -42,6 +41,8 @@ import { cn } from "@/lib/utils";
 // import { ArrowDown } from "lucide-react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
 
 import { _getShelfCategories } from "../../../../_action/get-shelf-categories";
 import { getShelfProducts } from "../../../../_action/get-shelf-products.actions";

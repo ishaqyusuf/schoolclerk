@@ -1,5 +1,4 @@
 import FormInput from "@/components/common/controls/form-input";
-import { Button } from "@/components/ui/button";
 import {
     FormControl,
     FormField,
@@ -8,6 +7,8 @@ import {
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
+
+import { Button } from "@gnd/ui/button";
 
 interface Props<T> {
     label?: string;
@@ -20,7 +21,7 @@ interface Props<T> {
 export default function NumberPicker<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-    TOptionType = any
+    TOptionType = any,
 >({
     label,
     size,
@@ -41,7 +42,7 @@ export default function NumberPicker<
                 <FormItem
                     className={cn(
                         "flex",
-                        !inline ? "flex-col" : " items-center space-y-0 gap-2"
+                        !inline ? "flex-col" : " items-center gap-2 space-y-0",
                     )}
                 >
                     <div className="flex items-center gap-2">
@@ -61,13 +62,13 @@ export default function NumberPicker<
                         </Button>
                     </div>
                     <FormControl className="flex items-center">
-                        <div className="flex gap-2s flex-wrap items-center">
+                        <div className="gap-2s flex flex-wrap items-center">
                             {disabled && !inputs.length ? (
                                 <Button disabled></Button>
                             ) : null}
                             {inputs.map((i) => (
                                 <Button
-                                    className="border-nones h-8 font-mono rounded-full text-xs font-bold"
+                                    className="border-nones h-8 rounded-full font-mono text-xs font-bold"
                                     disabled={disabled}
                                     variant={
                                         (field.value || 0) >= i

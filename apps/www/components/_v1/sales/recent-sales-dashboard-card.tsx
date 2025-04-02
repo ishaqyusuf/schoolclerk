@@ -1,22 +1,24 @@
 "use client";
 
-import { ISalesOrder } from "@/types/sales";
-import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+import Link from "next/link";
+import { useDataPage } from "@/lib/data-page-context";
+import { formatDate } from "@/lib/use-day";
 import { cn } from "@/lib/utils";
-import { ICustomer } from "@/types/customers";
 import { useAppSelector } from "@/store";
+import { ICustomer } from "@/types/customers";
+import { ISalesDashboard } from "@/types/dashboard";
+import { ISalesOrder } from "@/types/sales";
+
+import { Button } from "@gnd/ui/button";
+
+import { OrderInvoiceCell } from "../../../app/(v1)/(loggedIn)/sales/orders/components/cells/sales-columns";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { Table, TableBody, TableCell, TableRow } from "../../ui/table";
 import {
     Cell,
     PrimaryCellContent,
     SecondaryCellContent,
 } from "../columns/base-columns";
-import { formatDate } from "@/lib/use-day";
-import { OrderInvoiceCell } from "../../../app/(v1)/(loggedIn)/sales/orders/components/cells/sales-columns";
-import { ISalesDashboard } from "@/types/dashboard";
-import Link from "next/link";
-import { Button } from "../../ui/button";
-import { useDataPage } from "@/lib/data-page-context";
 
 interface Props {
     className?;
@@ -26,7 +28,7 @@ export default function RecentSalesDashboardCard({ className }: Props) {
     return (
         <Card className={cn(className)}>
             <CardHeader className="">
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                     <CardTitle>Recent Sales</CardTitle>
                     <Button asChild variant="link">
                         <Link href="/sales/orders" className="text-sm">

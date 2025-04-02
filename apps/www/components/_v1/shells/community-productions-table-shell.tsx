@@ -1,59 +1,59 @@
 "use client";
 
-import { TableShellProps } from "@/types/data-table";
-import { ColumnDef } from "@tanstack/react-table";
 import { useMemo, useState, useTransition } from "react";
+import Link from "next/link";
+import { deleteHome } from "@/app/(v1)/_actions/community/home";
+import { openModal } from "@/lib/modal";
+import { sum } from "@/lib/utils";
+import { dispatchSlice } from "@/store/slicers";
 import {
-    CheckColumn,
-    ColumnHeader,
-    Cell,
-    PrimaryCellContent,
-    DateCellContent,
-    SecondaryCellContent,
-    _FilterColumn,
-} from "../columns/base-columns";
-
-import {
-    OrderRowAction,
-    PrintOrderMenuAction,
-    ProductionAction,
-} from "../actions/sales-menu-actions";
-import { DataTable2 } from "../data-table/data-table-2";
-
-import {
+    ExtendedHomeTasks,
     IHome,
+    IHomeTask,
     IInvoice,
     IProject,
-    IHomeTask,
-    ExtendedHomeTasks,
 } from "@/types/community";
-import { BuilderFilter } from "../filters/builder-filter";
-import {
-    HomeInstallationStatus,
-    HomeProductionStatus,
-} from "../columns/community-columns";
+import { TableShellProps } from "@/types/data-table";
+import { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontal, Printer, View } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { Button } from "../../ui/button";
-import { MoreHorizontal, Printer, View } from "lucide-react";
-import Link from "next/link";
-import { deleteHome } from "@/app/(v1)/_actions/community/home";
-import { dispatchSlice } from "@/store/slicers";
-import { HomesBatchAction } from "../community/homes-selection-action";
-import { RowActionCell } from "../data-table/data-table-row-actions";
-import Money from "../money";
-import { sum } from "@/lib/utils";
-import { Icons } from "../icons";
-import { openModal } from "@/lib/modal";
-import { ProjectsFilter } from "../filters/projects-filter";
-import StatusBadge from "../status-badge";
+import {
+    OrderRowAction,
+    PrintOrderMenuAction,
+    ProductionAction,
+} from "../actions/sales-menu-actions";
 import UnitTaskProductionAction from "../actions/unit-task-production-actions";
-import { TaskFilters } from "../filters/task-filters";
+import {
+    _FilterColumn,
+    Cell,
+    CheckColumn,
+    ColumnHeader,
+    DateCellContent,
+    PrimaryCellContent,
+    SecondaryCellContent,
+} from "../columns/base-columns";
+import {
+    HomeInstallationStatus,
+    HomeProductionStatus,
+} from "../columns/community-columns";
+import { HomesBatchAction } from "../community/homes-selection-action";
+import { DataTable2 } from "../data-table/data-table-2";
+import { RowActionCell } from "../data-table/data-table-row-actions";
 import { SmartTable } from "../data-table/smart-table";
+import { BuilderFilter } from "../filters/builder-filter";
+import { ProjectsFilter } from "../filters/projects-filter";
+import { TaskFilters } from "../filters/task-filters";
+import { Icons } from "../icons";
+import Money from "../money";
+import StatusBadge from "../status-badge";
 
 export default function CommunityProductionsTableShell<T>({
     data,
@@ -67,7 +67,7 @@ export default function CommunityProductionsTableShell<T>({
         data.map((task) => {
             task.__taskSubtitle = `${task.project.title} ${task.home.modelName} ${task.home.lot}/${task.home.block}`;
             return task;
-        })
+        }),
     );
     const columns = useMemo<ColumnDef<ExtendedHomeTasks, unknown>[]>(
         () => [
@@ -92,7 +92,7 @@ export default function CommunityProductionsTableShell<T>({
                     table.status(
                         data?.home?._count?.jobs
                             ? "Completed"
-                            : data.productionStatus || "unknown"
+                            : data.productionStatus || "unknown",
                     ),
                 ],
             })),
@@ -101,7 +101,7 @@ export default function CommunityProductionsTableShell<T>({
                 "_q",
                 "_task",
                 "_projectId",
-                "_builderId"
+                "_builderId",
             ),
             {
                 accessorKey: "actions",
@@ -118,7 +118,7 @@ export default function CommunityProductionsTableShell<T>({
                 ),
             },
         ], //.filter(Boolean) as any,
-        [data, isPending]
+        [data, isPending],
     );
     return (
         <>

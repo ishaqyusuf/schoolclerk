@@ -1,12 +1,15 @@
 "use client";
-import { useDataPage } from "@/lib/data-page-context";
-import { SalesOverviewType } from "../overview-shell";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { useModal } from "@/components/common/modal/provider";
+
 import { Icons } from "@/components/_v1/icons";
+import { useModal } from "@/components/common/modal/provider";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useDataPage } from "@/lib/data-page-context";
+
+import { Button } from "@gnd/ui/button";
+
 import SalesNoteModal from "../../../_components/_sales-note/_modal";
 import Note from "../../../_components/_sales-note/note";
+import { SalesOverviewType } from "../overview-shell";
 
 export default function TimelineSection() {
     const { data } = useDataPage<SalesOverviewType>();
@@ -26,7 +29,7 @@ export default function TimelineSection() {
                                             edit
                                             id={data.id}
                                             orderId={data.orderId}
-                                        />
+                                        />,
                                     );
                                 }}
                                 className="h-8 w-8 p-0"

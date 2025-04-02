@@ -1,20 +1,21 @@
 "use client";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
-import { Plus } from "lucide-react";
 
-import { openModal } from "@/lib/modal";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { useModal } from "@/components/common/modal/provider";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { openModal } from "@/lib/modal";
+import { Plus } from "lucide-react";
+import { useSession } from "next-auth/react";
+
+import { Button } from "@gnd/ui/button";
 
 import SubmitJobModal from "../_modals/submit-job-modal";
-import { useModal } from "@/components/common/modal/provider";
 
 export default function SubmitJobBtn({}) {
     const { data: session } = useSession({
@@ -27,7 +28,7 @@ export default function SubmitJobBtn({}) {
             can?.viewTech && "punchout",
             can?.viewInstallation && "installation",
             can?.viewDecoShutterInstall && "Deco-Shutter",
-        ].filter(Boolean)
+        ].filter(Boolean),
     );
     const modal = useModal();
     function open(_type) {
@@ -44,7 +45,7 @@ export default function SubmitJobBtn({}) {
                 size="sm"
                 className="h-8"
             >
-                <Plus className="h-4 w-4 mr-2" />
+                <Plus className="mr-2 h-4 w-4" />
                 <span>Task</span>
             </Button>
         );
@@ -53,7 +54,7 @@ export default function SubmitJobBtn({}) {
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button size="sm" className="h-8">
-                        <Plus className="h-4 w-4 mr-2" />
+                        <Plus className="mr-2 h-4 w-4" />
                         <span>Job</span>
                     </Button>
                 </DropdownMenuTrigger>

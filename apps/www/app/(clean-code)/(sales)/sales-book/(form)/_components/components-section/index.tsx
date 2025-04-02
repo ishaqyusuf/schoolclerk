@@ -14,7 +14,6 @@ import { Menu } from "@/components/(clean-code)/menu";
 import { _modal } from "@/components/common/modal/provider";
 import { CustomComponentForm } from "@/components/forms/sales-form/custom-component";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -33,6 +32,8 @@ import {
     Variable,
     VariableIcon,
 } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
 
 import {
     useFormDataStore,

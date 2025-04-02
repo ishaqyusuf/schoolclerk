@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { restoreMissingComponentData } from "@/actions/restore-missing-component-data";
 import ConfirmBtn from "@/components/_v1/confirm-btn";
 import { Menu } from "@/components/(clean-code)/menu";
-import { Button } from "@/components/ui/button";
 import {
     Collapsible,
     CollapsibleContent,
@@ -11,6 +10,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { swap } from "@/lib/utils";
 import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
 
 import { useFormDataStore } from "../_common/_stores/form-data-store";
 import { ItemClass } from "../_utils/helpers/zus/item-class";

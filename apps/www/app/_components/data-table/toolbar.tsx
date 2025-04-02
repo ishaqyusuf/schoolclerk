@@ -1,14 +1,16 @@
-import { IconKeys, Icons } from "@/components/_v1/icons";
-import { useDataTableContext } from "./use-data-table";
-import { Button, ButtonProps } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { DataTableFacetedFilter2 } from "@/components/_v1/data-table/data-table-faceted-filter-2";
 import { Fragment, useEffect, useState } from "react";
+import Link from "next/link";
+import { DataTableFacetedFilter2 } from "@/components/_v1/data-table/data-table-faceted-filter-2";
+import { IconKeys, Icons } from "@/components/_v1/icons";
+import Portal from "@/components/_v1/portal";
+import { Input } from "@/components/ui/input";
+import { timeout } from "@/lib/timeout";
 import useEffectLoader from "@/lib/use-effect-loader";
 import { cn, randomNumber2 } from "@/lib/utils";
-import { timeout } from "@/lib/timeout";
-import Portal from "@/components/_v1/portal";
-import Link from "next/link";
+
+import { Button, ButtonProps } from "@gnd/ui/button";
+
+import { useDataTableContext } from "./use-data-table";
 
 interface Props {
     children?;
@@ -18,7 +20,7 @@ function BaseTableToolbar({ children }: Props) {
     const isFiltered = table.getState().columnFilters.length > 0;
     return (
         <div className="flex w-full items-center space-x-2 overflow-auto p-1">
-            <div className="flex gap-2 items-center flex-wrap">
+            <div className="flex flex-wrap items-center gap-2">
                 {children}
                 {isFiltered && (
                     <Button
@@ -132,7 +134,7 @@ function Filter<T>({
                               value: valueKeyFn
                                   ? valueKeyFn(opt)
                                   : opt[valueKey],
-                          }
+                          },
                 )}
             />
         </>

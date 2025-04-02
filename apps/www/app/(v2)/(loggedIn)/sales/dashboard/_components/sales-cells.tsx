@@ -1,28 +1,29 @@
 import { TableCell } from "@/app/_components/data-table/table-cells";
-import StatusBadge from "@/components/_v1/status-badge";
+import { deleteOrderAction } from "@/app/(v1)/(loggedIn)/sales/_actions/sales";
 import { updateDeliveryModeDac } from "@/app/(v2)/(loggedIn)/sales/_data-access/update-delivery-mode.dac";
-import { toast } from "sonner";
+import salesData from "@/app/(v2)/(loggedIn)/sales/sales-data";
 import {
     DeleteRowAction,
     Menu,
     MenuItem,
 } from "@/components/_v1/data-table/data-table-row-actions";
-import salesData from "@/app/(v2)/(loggedIn)/sales/sales-data";
+import StatusBadge from "@/components/_v1/status-badge";
+import FStatusBadge from "@/components/(clean-code)/fikr-ui/f-status-badge";
 import { Badge } from "@/components/ui/badge";
-import { getBadgeColor } from "@/lib/status-badge";
-
 import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { MenuOption, useSalesMenu } from "../../utils/use-sales-menu";
-import { deleteOrderAction } from "@/app/(v1)/(loggedIn)/sales/_actions/sales";
-import { cn, sum } from "@/lib/utils";
 import { GetSales } from "@/data-access/sales";
+import { getBadgeColor } from "@/lib/status-badge";
+import { cn, sum } from "@/lib/utils";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
 import { useAssignment } from "../../../sales-v2/productions/_components/_modals/assignment-modal/use-assignment";
-import { Button } from "@/components/ui/button";
-import FStatusBadge from "@/components/(clean-code)/fikr-ui/f-status-badge";
 import { useSalesStatus } from "../../hooks/sales-hooks";
+import { MenuOption, useSalesMenu } from "../../utils/use-sales-menu";
 
 export interface SalesCellProps {
     item: GetSales["data"][number];
@@ -33,7 +34,7 @@ function OrderDispatch({ item, href }: SalesCellProps & { href? }) {
             <TableCell.Medium
                 className={cn(
                     item.isDyke ? "font-bold" : "",
-                    "whitespace-nowrap"
+                    "whitespace-nowrap",
                 )}
             >
                 {item.orderId}
@@ -83,7 +84,7 @@ function SalesRep({ item }: SalesCellProps) {
             <TableCell.Secondary
                 className={cn(
                     !item?.salesRep?.name && "text-red-500",
-                    "w-16 truncate"
+                    "w-16 truncate",
                 )}
             >
                 {item?.salesRep?.name || item?.customer?.businessName}
@@ -101,7 +102,7 @@ function Invoice({ item }: SalesCellProps) {
                 <TableCell.Money
                     className={
                         !item.amountDue
-                            ? "text-green-500 font-semibold"
+                            ? "font-semibold text-green-500"
                             : "text-red-500"
                     }
                 >
@@ -147,7 +148,7 @@ function Dispatch({ item }: SalesCellProps) {
             await updateDeliveryModeDac(
                 item.id,
                 delivery,
-                item.type == "order" ? "orders" : "quotes"
+                item.type == "order" ? "orders" : "quotes",
             );
 
             toast.success("Updated");
@@ -203,7 +204,7 @@ function Status({ item, delivery }: SalesCellProps & { delivery? }) {
         <TableCell>
             <Badge
                 variant={"secondary"}
-                className={`h-5 px-1 whitespace-nowrap text-xs text-slate-100 ${color}`}
+                className={`h-5 whitespace-nowrap px-1 text-xs text-slate-100 ${color}`}
             >
                 {/* {order?.prodStatus || "-"} */}
                 {status || "no status"}
@@ -272,8 +273,8 @@ function SalesStatus({ item }: SalesCellProps) {
 function ProductionStatus({ item }: SalesCellProps) {
     const submitted = sum(
         item.assignments.map((a) =>
-            sum(a.submissions.map((s) => sum([s.lhQty, s.rhQty])))
-        )
+            sum(a.submissions.map((s) => sum([s.lhQty, s.rhQty]))),
+        ),
     );
     // item.assignments[0].
     const totalDoors = item._meta.totalDoors;

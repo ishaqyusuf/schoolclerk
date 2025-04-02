@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -19,7 +18,6 @@ import {
 import { store, useAppSelector } from "@/store";
 import { openItemComponent } from "@/store/invoice-item-component-slice";
 import { ISalesOrderForm, ISalesOrderItem } from "@/types/sales";
-
 import {
     ArrowDown,
     ArrowUp,
@@ -32,6 +30,9 @@ import {
     Trash,
 } from "lucide-react";
 import { useFieldArray } from "react-hook-form";
+
+import { Button } from "@gnd/ui/button";
+
 import salesUtils from "../sales-utils";
 
 export default function InvoiceTableRowAction({
@@ -44,7 +45,7 @@ export default function InvoiceTableRowAction({
     startTransition;
 }) {
     const orderItemComponentSlice = useAppSelector(
-        (state) => state.orderItemComponent
+        (state) => state.orderItemComponent,
     );
     const baseKey: any = `items.${rowIndex}`;
     const watchItems = form.watch("items");
@@ -72,7 +73,7 @@ export default function InvoiceTableRowAction({
         startTransition(() => {
             let _fields = watchItems || [];
             let copy: ISalesOrderItem = copySalesItem(
-                _fields?.[rowIndex]
+                _fields?.[rowIndex],
             ) as any;
 
             if (copy) {
@@ -98,7 +99,7 @@ export default function InvoiceTableRowAction({
                         onClick={() => {
                             openComponentModal(
                                 deepCopy(form.getValues(baseKey)),
-                                rowIndex
+                                rowIndex,
                             );
                         }}
                     >

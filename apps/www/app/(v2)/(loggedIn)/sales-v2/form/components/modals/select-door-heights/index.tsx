@@ -1,30 +1,30 @@
-import Modal from "@/components/common/modal";
-
-import { DykeForm } from "../../../../type";
-import { UseFormReturn, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-
-import { getDimensionSizeList } from "../../../../dimension-variants/_actions/get-size-list";
-import { Form } from "@/components/ui/form";
-import FormCheckbox from "@/components/common/controls/form-checkbox";
-import { useModal } from "@/components/common/modal/provider";
-import { cn, ftToIn, safeFormText } from "@/lib/utils";
-import FormInput from "@/components/common/controls/form-input";
-import { toast } from "sonner";
-import { _addSize } from "../../../../dimension-variants/_actions/add-size";
-import { IStepProducts } from "../../step-items-list/item-section/step-products";
+import salesFormUtils from "@/app/(clean-code)/(sales)/_common/utils/sales-form-utils";
+import { Icons } from "@/components/_v1/icons";
 import Money from "@/components/_v1/money";
-import { HousePackageToolMeta } from "@/types/sales";
+import FormCheckbox from "@/components/common/controls/form-checkbox";
+import FormInput from "@/components/common/controls/form-input";
+import Modal from "@/components/common/modal";
+import { useModal } from "@/components/common/modal/provider";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/_v1/icons";
-import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import salesFormUtils from "@/app/(clean-code)/(sales)/_common/utils/sales-form-utils";
+import { cn, ftToIn, safeFormText } from "@/lib/utils";
+import { HousePackageToolMeta } from "@/types/sales";
+import { useForm, UseFormReturn } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import { _addSize } from "../../../../dimension-variants/_actions/add-size";
+import { getDimensionSizeList } from "../../../../dimension-variants/_actions/get-size-list";
+import { DykeForm } from "../../../../type";
+import { IStepProducts } from "../../step-items-list/item-section/step-products";
 
 export type SizeForm = {
     [id in string]: {
@@ -61,7 +61,7 @@ export default function SelectDoorHeightsModal({
 
     const heights: ComponentHeight = form.getValues(heightsKey as any);
     const height = form.getValues(
-        `itemArray.${rowIndex}.item.housePackageTool.height`
+        `itemArray.${rowIndex}.item.housePackageTool.height`,
     );
     let hIn = ftToIn(height);
 
@@ -80,7 +80,7 @@ export default function SelectDoorHeightsModal({
     });
     if (!stepProd.product.meta.doorPrice) stepProd.product.meta.doorPrice = {};
     const [heightPrices, setHeightPrices] = useState(
-        stepProd.product.meta.doorPrice
+        stepProd.product.meta.doorPrice,
     );
     useEffect(() => {
         (async () => {
@@ -96,7 +96,7 @@ export default function SelectDoorHeightsModal({
                     basePrice: heightPrices[s?.dimFt],
                     price: salesFormUtils.salesProfileCost(
                         form,
-                        heightPrices[s?.dimFt]
+                        heightPrices[s?.dimFt],
                     ),
                 };
             });
@@ -110,10 +110,10 @@ export default function SelectDoorHeightsModal({
                         basePrice: heightPrices[s?.dimFt],
                         price: salesFormUtils.salesProfileCost(
                             form,
-                            heightPrices[s?.dimFt]
+                            heightPrices[s?.dimFt],
                         ),
                     };
-                })
+                }),
             );
         })();
     }, []);
@@ -121,7 +121,7 @@ export default function SelectDoorHeightsModal({
     function _onSubmit() {
         const sizesData = sizeForm.getValues("sizes");
         const priceTags: HousePackageToolMeta["priceTags"] = form.getValues(
-            `${baseKey}.priceTags` as any
+            `${baseKey}.priceTags` as any,
         ) || {
             doorSizePriceTag: {},
         };
@@ -147,8 +147,8 @@ export default function SelectDoorHeightsModal({
                     salesFormUtils.componentPrice.update(
                         form,
                         pData,
-                        size.basePrice
-                    )
+                        size.basePrice,
+                    ),
                 );
             }
         });
@@ -211,7 +211,7 @@ export default function SelectDoorHeightsModal({
             // if (show) setNewPrice(price);
         }, [show]);
         return (
-            <div className="flex border justify-between p-3 py-2 group items-start">
+            <div className="group flex items-start justify-between border p-3 py-2">
                 <FormCheckbox
                     control={sizeForm.control}
                     name={`sizes.${size.dim}.checked` as any}
@@ -227,7 +227,7 @@ export default function SelectDoorHeightsModal({
                 <DropdownMenu open={show} onOpenChange={setShow}>
                     <DropdownMenuTrigger
                         className={cn(
-                            !show && "opacity-0 group-hover:opacity-100"
+                            !show && "opacity-0 group-hover:opacity-100",
                         )}
                     >
                         <Button
@@ -263,7 +263,7 @@ export default function SelectDoorHeightsModal({
         <Modal.Content size="lg">
             <Modal.Header title="Select Sizes" subtitle={productTitle || ""} />
             <Form {...sizeForm}>
-                <div className="grid sgap-3  grid-cols-3">
+                <div className="sgap-3 grid  grid-cols-3">
                     {sizes.map((size, index) => {
                         return <CheckControl size={size} key={index} />;
                     })}

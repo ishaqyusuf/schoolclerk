@@ -2,7 +2,9 @@
 
 import { Icons } from "@/components/_v1/icons";
 import { useModal } from "@/components/common/modal/provider";
-import { Button } from "@/components/ui/button";
+
+import { Button } from "@gnd/ui/button";
+
 import CustomerProfileModal from "./employee-profile-modal";
 
 export default function PageAction() {
@@ -15,7 +17,7 @@ export default function PageAction() {
                 }}
                 size={"sm"}
             >
-                <Icons.add className="size-4 mr-4" />
+                <Icons.add className="mr-4 size-4" />
                 <span>New</span>
             </Button>
         </>

@@ -1,15 +1,17 @@
 "use client";
 
+import { deepCopy } from "@/lib/deep-copy";
+import { dispatchSlice } from "@/store/slicers";
 import { Printer } from "lucide-react";
-import { Button } from "../../ui/button";
+
+import { Button } from "@gnd/ui/button";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
 import { PrintOrderMenuAction } from "../actions/sales-menu-actions";
-import { dispatchSlice } from "@/store/slicers";
-import { deepCopy } from "@/lib/deep-copy";
 
 export function HomesBatchAction({ items }) {
     return (
@@ -24,7 +26,7 @@ export function HomesBatchAction({ items }) {
                         homes: items?.map((row) => deepCopy(row)),
                     });
                 }}
-                className="ml-auto bg-rose-950 hidden h-8 lg:flex"
+                className="ml-auto hidden h-8 bg-rose-950 lg:flex"
             >
                 <Printer className=" h-4 w-4" />
                 {/* View */}

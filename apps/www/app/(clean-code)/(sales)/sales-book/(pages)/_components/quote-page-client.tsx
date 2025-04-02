@@ -1,22 +1,22 @@
 "use client";
 
-import { useTableCompose } from "@/components/(clean-code)/data-table/use-table-compose";
-import { DataTable } from "@/components/(clean-code)/data-table";
-
-import { DataTableFilterCommand } from "@/components/(clean-code)/data-table/filter-command";
-
-import { DataTableInfinityToolbar } from "@/components/(clean-code)/data-table/infinity/data-table-toolbar";
-import { _modal } from "@/components/common/modal/provider";
-import { OrderOverviewSheet } from "../../../_common/_components/overview-sheet.bin/order-overview-sheet";
-import { QuotesCell } from "./quotes-page-cells";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/_v1/icons";
 import Link from "next/link";
 import QueryTab from "@/app/(clean-code)/_common/query-tab";
 import { QueryTabAction } from "@/app/(clean-code)/_common/query-tab/query-tab-edit";
-import { __filters } from "../../../_common/utils/contants";
+import { Icons } from "@/components/_v1/icons";
+import { DataTable } from "@/components/(clean-code)/data-table";
+import { DataTableFilterCommand } from "@/components/(clean-code)/data-table/filter-command";
+import { DataTableInfinityToolbar } from "@/components/(clean-code)/data-table/infinity/data-table-toolbar";
+import { useTableCompose } from "@/components/(clean-code)/data-table/use-table-compose";
+import { _modal } from "@/components/common/modal/provider";
 import { isProdClient } from "@/lib/is-prod";
+
+import { Button } from "@gnd/ui/button";
+
+import { OrderOverviewSheet } from "../../../_common/_components/overview-sheet.bin/order-overview-sheet";
 import { openQuoteOVerview } from "../../../_common/_components/sales-overview-sheet";
+import { __filters } from "../../../_common/utils/contants";
+import { QuotesCell } from "./quotes-page-cells";
 
 interface Props {
     // promise;
@@ -67,7 +67,7 @@ export default function QuotesPageClient({ filterFields, queryKey }: Props) {
                 }
             >
                 <DataTable.Header top="lg" className="bg-white">
-                    <div className="flex justify-between items-end mb-2 gap-2 sm:sticky">
+                    <div className="mb-2 flex items-end justify-between gap-2 sm:sticky">
                         <div className="">
                             <QueryTab page="quotes" />
                         </div>
@@ -75,7 +75,7 @@ export default function QuotesPageClient({ filterFields, queryKey }: Props) {
                         <QueryTabAction />
                         <Button asChild size="sm">
                             <Link href="/sales-book/create-quote">
-                                <Icons.add className="size-4 mr-2" />
+                                <Icons.add className="mr-2 size-4" />
                                 <span>New</span>
                             </Link>
                         </Button>

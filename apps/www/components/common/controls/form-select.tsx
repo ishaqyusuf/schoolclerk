@@ -1,26 +1,4 @@
-import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
-import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-} from "@/components/ui/form";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { CheckIcon, ChevronsUpDown } from "lucide-react";
 import {
     Command,
     CommandEmpty,
@@ -28,9 +6,32 @@ import {
     CommandInput,
     CommandItem,
 } from "@/components/ui/command";
+import {
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+} from "@/components/ui/form";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useDataSkeleton } from "@/hooks/use-data-skeleton";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useDataSkeleton } from "@/hooks/use-data-skeleton";
+import { cn } from "@/lib/utils";
+import { CheckIcon, ChevronsUpDown } from "lucide-react";
+import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
+
+import { Button } from "@gnd/ui/button";
 
 export interface FormSelectProps<T> {
     label?;
@@ -118,7 +119,7 @@ export default function FormSelect<
                     <FormControl>
                         {load?.loading ? (
                             <>
-                                <Skeleton className="w-full h-8" />
+                                <Skeleton className="h-8 w-full" />
                             </>
                         ) : (
                             <>

@@ -1,13 +1,14 @@
-import { Button } from "@/components/ui/button";
+import { useShelf } from "@/hooks/use-shelf";
+import { useShelfItem } from "@/hooks/use-shelf-item";
+
+import { Button } from "@gnd/ui/button";
 import {
     Dialog,
     DialogContent,
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from "@/components/ui/dialog";
-import { useShelf } from "@/hooks/use-shelf";
-import { useShelfItem } from "@/hooks/use-shelf-item";
+} from "@gnd/ui/dialog";
 
 export function ClearCategoryModal({ onClear, open, openChange }) {
     const shelf = useShelf();

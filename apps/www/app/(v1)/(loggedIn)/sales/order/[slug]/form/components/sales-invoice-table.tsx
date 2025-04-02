@@ -1,3 +1,6 @@
+import * as React from "react";
+import usePersistDirtyForm from "@/_v2/hooks/use-persist-dirty-form";
+import { SalesFormResponse } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-form";
 import {
     Table,
     TableBody,
@@ -5,21 +8,21 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useFieldArray } from "react-hook-form";
-import * as React from "react";
-import { Layers } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useLoader } from "@/lib/use-loader";
-import { ISalesOrderForm } from "@/types/sales";
-import { SalesInvoiceTr } from "./sales-invoice-tr";
-import InvoiceTableFooter from "./invoice-table-footer";
-import { SalesFormResponse } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-form";
-import { useMediaQuery } from "react-responsive";
 import { screens } from "@/lib/responsive";
-import { cn } from "@/lib/utils";
-import salesUtils from "../sales-utils";
-import usePersistDirtyForm from "@/_v2/hooks/use-persist-dirty-form";
 import SalesComponentModal from "@/lib/sales/sales-component-modal";
+import { useLoader } from "@/lib/use-loader";
+import { cn } from "@/lib/utils";
+import { ISalesOrderForm } from "@/types/sales";
+import { Layers } from "lucide-react";
+import { useFieldArray } from "react-hook-form";
+import { useMediaQuery } from "react-responsive";
+
+import { Button } from "@gnd/ui/button";
+
+import salesUtils from "../sales-utils";
+import InvoiceTableFooter from "./invoice-table-footer";
+import { SalesInvoiceTr } from "./sales-invoice-tr";
+
 export default function SalesInvoiceTable({
     form,
     data,
@@ -125,7 +128,7 @@ export default function SalesInvoiceTable({
                     onClick={() => {
                         hideFooter.action(() => {
                             replace(
-                                salesUtils.moreInvoiceLines(watchItems as any)
+                                salesUtils.moreInvoiceLines(watchItems as any),
                             );
                         });
                     }}
@@ -146,7 +149,7 @@ export default function SalesInvoiceTable({
                 form={form}
                 ctx={data.ctx}
             />
-            <div className="hidden fixed h-[40vh] border shadow p-2 rounded overflow-auto top-0 left-0 bg-white w-1/5 z-[999] m-4">
+            <div className="fixed left-0 top-0 z-[999] m-4 hidden h-[40vh] w-1/5 overflow-auto rounded border bg-white p-2 shadow">
                 {fields.map((field, index) => (
                     <p key={field.id}>
                         {index + 1}

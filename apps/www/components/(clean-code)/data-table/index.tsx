@@ -1,11 +1,9 @@
-import { ColumnDef, flexRender } from "@tanstack/react-table";
-import {
-    dataTableContext,
-    TableRowModel,
-    useDataTable,
-    useDataTableContext,
-    useInfiniteDataTable,
-} from "./use-data-table";
+import { Fragment, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import DevOnly from "@/_v2/components/common/dev-only";
+import { __revalidatePath } from "@/app/(v1)/_actions/_revalidate";
+import { DataTablePagination } from "@/components/common/data-table/data-table-pagination";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     Table,
     TableBody,
@@ -14,21 +12,24 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
-import { Fragment, useEffect } from "react";
-import { DataTablePagination } from "@/components/common/data-table/data-table-pagination";
-import { cellVariants, TableCellProps, TCell } from "./table-cells";
-import { useInfiniteDataTableContext } from "./use-infinity-data-table";
-import { Button } from "@/components/ui/button";
-import { LoaderCircle } from "lucide-react";
 import { formatCompactNumber } from "@/lib/format";
-import { TableProps } from "./use-table-compose";
+import { cn } from "@/lib/utils";
+import { ColumnDef, flexRender } from "@tanstack/react-table";
+import { LoaderCircle } from "lucide-react";
 
-import { usePathname } from "next/navigation";
-import { __revalidatePath } from "@/app/(v1)/_actions/_revalidate";
-import { Checkbox } from "@/components/ui/checkbox";
-import DevOnly from "@/_v2/components/common/dev-only";
+import { Button } from "@gnd/ui/button";
+
 import { BatchAction } from "./infinity/batch-action";
+import { cellVariants, TableCellProps, TCell } from "./table-cells";
+import {
+    dataTableContext,
+    TableRowModel,
+    useDataTable,
+    useDataTableContext,
+    useInfiniteDataTable,
+} from "./use-data-table";
+import { useInfiniteDataTableContext } from "./use-infinity-data-table";
+import { TableProps } from "./use-table-compose";
 
 interface BaseProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -70,12 +71,12 @@ function Header({
     return (
         <div
             className={cn(
-                "z-10 sticky  p-4 sm:px-8s",
+                "sm:px-8s sticky  z-10 p-4",
                 top == "md" && "top-[60px]",
                 top == "sm" && "top-[60px]",
                 top == "lg" && "top-24",
                 "flex flex-col",
-                className
+                className,
             )}
             ref={ctx.topBarRef}
         >
@@ -97,7 +98,7 @@ function Infinity({
         <dataTableContext.Provider value={ctx}>
             <div
                 // className="w-full space-y-3 overflow-auto min-h-[80vh]"
-                className="flex max-w-full flex-1 flex-col ssm:border-l border-border overflow-clip"
+                className="ssm:border-l flex max-w-full flex-1 flex-col overflow-clip border-border"
             >
                 {children}
             </div>
@@ -159,7 +160,7 @@ function _Table({}) {
             >
                 <TableHeader
                     className={cn(
-                        ctx.topBarHeight ? "md:sticky bg-muted z-10" : ""
+                        ctx.topBarHeight ? "z-10 bg-muted md:sticky" : "",
                     )}
                     style={{ top: `${ctx.topBarHeight}px` }}
                 >
@@ -172,7 +173,7 @@ function _Table({}) {
                                         <TableHead
                                             className={cn(
                                                 cellVariants(ctx.cellVariants),
-                                                "whitespace-nowrap"
+                                                "whitespace-nowrap",
                                             )}
                                             key={`${header.id}_${index}`}
                                         >
@@ -181,7 +182,7 @@ function _Table({}) {
                                                 : flexRender(
                                                       header.column.columnDef
                                                           .header,
-                                                      header.getContext()
+                                                      header.getContext(),
                                                   )}
                                         </TableHead>
                                     );
@@ -232,10 +233,10 @@ function Tr({ row, rowIndex }: TrProps) {
                         <Fragment key={`${cell.id}_cell_${index}`}>
                             {flexRender(
                                 cell.column.columnDef.cell,
-                                cell.getContext()
+                                cell.getContext(),
                             )}
                         </Fragment>
-                    )
+                    ),
                 )
                 .filter(Boolean)}
             {ctx.ActionCell && (
@@ -282,9 +283,9 @@ function LoadMore() {
                     Load More
                 </Button>
             ) : (
-                <p className="text-muted-foreground text-sm">
+                <p className="text-sm text-muted-foreground">
                     No more data to load (total:{" "}
-                    <span className="font-medium font-mono">
+                    <span className="font-mono font-medium">
                         {formatCompactNumber(totalRows)}
                     </span>{" "}
                     rows)

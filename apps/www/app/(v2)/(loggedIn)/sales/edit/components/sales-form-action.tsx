@@ -1,20 +1,22 @@
 import { useContext, useState } from "react";
-import { SalesFormContext } from "../ctx";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { useFormContext, useWatch } from "react-hook-form";
-import { ISalesForm } from "../type";
-import { DatePicker } from "@/components/_v1/date-range-picker";
+import Link from "next/link";
+import { openSalesOverview } from "@/app/(clean-code)/(sales)/_common/_components/sales-overview-sheet";
+import { PrintOrderMenuAction } from "@/components/_v1/actions/sales-menu-actions";
 import {
     Menu,
     MenuItem,
 } from "@/components/_v1/data-table/data-table-row-actions";
+import { DatePicker } from "@/components/_v1/date-range-picker";
 import { Icons } from "@/components/_v1/icons";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { useFormContext, useWatch } from "react-hook-form";
+
+import { Button } from "@gnd/ui/button";
+
+import { SalesFormContext } from "../ctx";
 import useSaveSalesHook from "../hooks/use-save-sales";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { PrintOrderMenuAction } from "@/components/_v1/actions/sales-menu-actions";
-import { openSalesOverview } from "@/app/(clean-code)/(sales)/_common/_components/sales-overview-sheet";
+import { ISalesForm } from "../type";
 
 export default function SalesFormAction() {
     const ctx = useContext(SalesFormContext);
@@ -24,7 +26,7 @@ export default function SalesFormAction() {
 
     const [value, setValue] = useState("");
     return (
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
             <div className="">
                 <h2 className="text-2xl font-bold tracking-tight">
                     {ctx.data?.form?.orderId &&
@@ -53,7 +55,7 @@ export default function SalesFormAction() {
                     <Label>Date Created:</Label>
                     <DatePicker
                         setValue={(e) => form.setValue("createdAt", e)}
-                        className="w-auto h-8"
+                        className="h-8 w-auto"
                         value={date}
                     />
                 </div>

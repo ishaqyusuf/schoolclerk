@@ -1,13 +1,13 @@
 "use client";
 
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useAssignmentData } from "..";
 import { useEffect, useState, useTransition } from "react";
-import { Button } from "@/components/ui/button";
+import { useStaticProducers } from "@/_v2/hooks/use-static-data";
+import Btn from "@/components/_v1/btn";
+import { DatePicker } from "@/components/_v1/date-range-picker";
+import { Icons } from "@/components/_v1/icons";
+import FormInput from "@/components/common/controls/form-input";
+import FormSelect from "@/components/common/controls/form-select";
+import { TableCol } from "@/components/common/data-table/table-cells";
 import {
     Card,
     CardContent,
@@ -15,7 +15,13 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { TableCol } from "@/components/common/data-table/table-cells";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Form } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import {
     Table,
     TableBody,
@@ -24,24 +30,19 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/form";
-import FormInput from "@/components/common/controls/form-input";
-import Btn from "@/components/_v1/btn";
-import { useStaticProducers } from "@/_v2/hooks/use-static-data";
-import FormSelect from "@/components/common/controls/form-select";
-import { cn } from "@/lib/utils";
-import { useValidateAssignment } from "./validate-assignment";
-import { createProdAssignment } from "../_action/create-assignment";
-import { toast } from "sonner";
-import { useAssignment } from "../use-assignment";
-import { Label } from "@/components/ui/label";
-import { DatePicker } from "@/components/_v1/date-range-picker";
-
-import { GetOrderAssignmentData } from "../_action/get-order-assignment-data";
-import { Icons } from "@/components/_v1/icons";
-import { useMediaQuery } from "react-responsive";
 import { screens } from "@/lib/responsive";
+import { cn } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import { useMediaQuery } from "react-responsive";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import { useAssignmentData } from "..";
+import { createProdAssignment } from "../_action/create-assignment";
+import { GetOrderAssignmentData } from "../_action/get-order-assignment-data";
+import { useAssignment } from "../use-assignment";
+import { useValidateAssignment } from "./validate-assignment";
 
 export interface IAssignGroupForm {
     assignToId?: number;
@@ -58,7 +59,7 @@ interface Props {
 export function SectionedItemAssignForm({ index, salesDoorIndex = -1 }: Props) {
     const data = useAssignmentData();
     const modal = useAssignment(
-        data.data.isProd ? { type: "prod" } : undefined
+        data.data.isProd ? { type: "prod" } : undefined,
     );
     const group = data.data.doorGroups[index];
     const [open, onOpenChange] = useState(false);
@@ -124,7 +125,7 @@ export function SectionedItemAssignForm({ index, salesDoorIndex = -1 }: Props) {
                         _data,
                         // data.data.productionStatus?.id,
                         data.data.totalQty,
-                        prodDueDate
+                        prodDueDate,
                     );
                     toast.success("Production assigned");
                     modal.open(data.data.id);
@@ -148,11 +149,11 @@ export function SectionedItemAssignForm({ index, salesDoorIndex = -1 }: Props) {
                               ?.pendingAssignment == 0
                         : group.report.pendingAssignment == 0
                 }
-                className="whitespace-nowrap p-2 h-8"
+                className="h-8 whitespace-nowrap p-2"
             >
                 <DropdownMenuTrigger>
                     <span className="hidden sm:inline-block">Assign</span>
-                    <span className="sm:hidden mr-2">
+                    <span className="mr-2 sm:hidden">
                         <Icons.production className="size-4 " />
                     </span>
                     <span>
@@ -170,12 +171,12 @@ export function SectionedItemAssignForm({ index, salesDoorIndex = -1 }: Props) {
                 className=""
             >
                 <Form {...form}>
-                    <Card className="w-[100vw]  sm:w-[500px] border-transparent">
+                    <Card className="w-[100vw]  border-transparent sm:w-[500px]">
                         <CardHeader>
                             <CardTitle>Assign to Production</CardTitle>
                         </CardHeader>
-                        <CardContent className="sm:max-h-[50vh] overflow-auto">
-                            <div className="grid sm:grid-cols-2 gap-4">
+                        <CardContent className="overflow-auto sm:max-h-[50vh]">
+                            <div className="grid gap-4 sm:grid-cols-2">
                                 <FormSelect
                                     control={form.control}
                                     options={prodUsers.data}
@@ -187,7 +188,7 @@ export function SectionedItemAssignForm({ index, salesDoorIndex = -1 }: Props) {
                                 <div className="grid gap-4">
                                     <Label>Due Date</Label>
                                     <DatePicker
-                                        className="w-auto h-7s"
+                                        className="h-7s w-auto"
                                         value={prodDueDate}
                                         setValue={(v) => {
                                             form.setValue("prodDueDate", v);
@@ -195,7 +196,7 @@ export function SectionedItemAssignForm({ index, salesDoorIndex = -1 }: Props) {
                                     />
                                 </div>
                             </div>
-                            <div className="sm:hidden mt-4">
+                            <div className="mt-4 sm:hidden">
                                 <div className="">Sections</div>
                                 {group.salesDoors
                                     ?.filter(
@@ -203,13 +204,13 @@ export function SectionedItemAssignForm({ index, salesDoorIndex = -1 }: Props) {
                                             s.report?.pendingAssignment &&
                                             (salesDoorIndex >= 0
                                                 ? salesDoorIndex == i
-                                                : true)
+                                                : true),
                                     )
                                     .map((salesDoor, index) => (
                                         <div
                                             className={cn(
-                                                "py-2 grid grid-cols-2 gap-2",
-                                                index > 0 && "border-t"
+                                                "grid grid-cols-2 gap-2 py-2",
+                                                index > 0 && "border-t",
                                             )}
                                             key={salesDoor.salesDoor.id}
                                         >
@@ -262,7 +263,7 @@ export function SectionedItemAssignForm({ index, salesDoorIndex = -1 }: Props) {
                                                 s.report?.pendingAssignment &&
                                                 (salesDoorIndex >= 0
                                                     ? salesDoorIndex == i
-                                                    : true)
+                                                    : true),
                                         )
                                         .map((salesDoor) => (
                                             <TableRow
@@ -283,7 +284,7 @@ export function SectionedItemAssignForm({ index, salesDoorIndex = -1 }: Props) {
 
                                                 {hands.map((h) => (
                                                     <TableCell key={h.title}>
-                                                        <div className="flex space-x-2 items-center">
+                                                        <div className="flex items-center space-x-2">
                                                             <FormInput
                                                                 disabled={
                                                                     salesDoor
@@ -309,7 +310,7 @@ export function SectionedItemAssignForm({ index, salesDoorIndex = -1 }: Props) {
                                                                         ._unassigned[
                                                                         h.handle
                                                                     ] == 0 &&
-                                                                        "text-muted-foreground cursor-not-allowed"
+                                                                        "cursor-not-allowed text-muted-foreground",
                                                                 )}
                                                             >
                                                                 /{" "}

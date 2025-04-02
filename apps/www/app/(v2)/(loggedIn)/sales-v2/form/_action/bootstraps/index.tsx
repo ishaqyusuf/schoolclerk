@@ -1,10 +1,12 @@
 import DevOnly from "@/_v2/components/common/dev-only";
-import { Button } from "@/components/ui/button";
-import { setStepsUids } from "./set-step-uids";
+
+import { Button } from "@gnd/ui/button";
+
 import {
     bootstrapDykeStepDuplicates,
     bootstrapHousePackageTools,
 } from "./actions";
+import { setStepsUids } from "./set-step-uids";
 
 export default function Bootstrap() {
     return (

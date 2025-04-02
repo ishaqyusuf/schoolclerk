@@ -6,7 +6,6 @@ import Money from "@/components/_v1/money";
 import ProgressStatus from "@/components/_v1/progress-status";
 import { DataSkeleton } from "@/components/data-skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
@@ -31,6 +30,8 @@ import { formatDate } from "@/lib/use-day";
 import { formatMoney } from "@/lib/use-number";
 import { getInitials } from "@/utils/format";
 import { Wallet } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
 
 import { Footer } from "./footer";
 import { SalesList } from "./sales-list";

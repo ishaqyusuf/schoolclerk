@@ -1,29 +1,29 @@
-import { History } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
+import React from "react";
+import { getComponentCostHistoryAction } from "@/app/(v1)/(loggedIn)/sales/_actions/inventory";
+import { Icons } from "@/components/_v1/icons";
+import { ToolTip } from "@/components/_v1/tool-tip";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import { ToolTip } from "@/components/_v1/tool-tip";
-import React from "react";
-import { useBool } from "@/lib/use-loader";
-
 import {
-    TableBody,
     Table,
+    TableBody,
     TableCell,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Icons } from "@/components/_v1/icons";
-import { UseFormReturn } from "react-hook-form";
-import { ISalesWizardForm } from "@/types/post";
-import { IComponentForm } from "../../../lib/sales/sales-component-modal";
+import { useBool } from "@/lib/use-loader";
 import { IOrderInventory } from "@/types/inventory";
-import { getComponentCostHistoryAction } from "@/app/(v1)/(loggedIn)/sales/_actions/inventory";
+import { ISalesWizardForm } from "@/types/post";
+import { History } from "lucide-react";
+import { UseFormReturn } from "react-hook-form";
+
+import { Button } from "@gnd/ui/button";
+
+import { IComponentForm } from "../../../lib/sales/sales-component-modal";
 
 export function ComponentPriceHistory({
     form,
@@ -107,7 +107,7 @@ export function ComponentPriceHistory({
                                             setOpen(false);
                                             form.setValue(
                                                 `components.${rowIndex}.price`,
-                                                field?.price
+                                                field?.price,
                                             );
                                         }}
                                         className="cursor-pointer hover:bg-slate-800 hover:text-slate-100"

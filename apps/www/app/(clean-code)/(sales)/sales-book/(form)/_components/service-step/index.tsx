@@ -1,3 +1,9 @@
+import ConfirmBtn from "@/components/_v1/confirm-btn";
+import { Icons } from "@/components/_v1/icons";
+import Money from "@/components/_v1/money";
+import TextWithTooltip from "@/components/(clean-code)/custom/text-with-tooltip";
+import { AnimatedNumber } from "@/components/animated-number";
+import { Input } from "@/components/ui/input";
 import {
     Table,
     TableBody,
@@ -7,16 +13,12 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Context, useCreateContext, useCtx } from "./ctx";
-import Money from "@/components/_v1/money";
-import ConfirmBtn from "@/components/_v1/confirm-btn";
 import { cn } from "@/lib/utils";
-import TextWithTooltip from "@/components/(clean-code)/custom/text-with-tooltip";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/_v1/icons";
-import { Input } from "@/components/ui/input";
+
+import { Button } from "@gnd/ui/button";
+
 import { LineInput, LineSwitch } from "../line-input";
-import { AnimatedNumber } from "@/components/animated-number";
+import { Context, useCreateContext, useCtx } from "./ctx";
 
 interface Props {
     itemStepUid;
@@ -27,7 +29,7 @@ export default function ServiceLineItem({ itemStepUid }: Props) {
     return (
         <>
             <Context.Provider value={ctx}>
-                <Table className="p-4 text-xs table-fixed font-medium">
+                <Table className="table-fixed p-4 text-xs font-medium">
                     <TableHeader>
                         <TableRow className="uppercase">
                             <TableHead className="w-10">Sn.</TableHead>
@@ -61,7 +63,7 @@ export default function ServiceLineItem({ itemStepUid }: Props) {
                                         ctx.ctx.addServiceLine();
                                     }}
                                 >
-                                    <Icons.add className="size-4 mr-2" />
+                                    <Icons.add className="mr-2 size-4" />
                                     <span>Line</span>
                                 </Button>
                             </TableCell>
@@ -83,7 +85,7 @@ function ServiceRow({ lineUid, sn }: { sn; lineUid }) {
         <>
             <TableRow className={cn(!mfd?.selected && "hidden")}>
                 <TableCell className="font-mono">{sn}.</TableCell>
-                <TableCell className="font-mono font-medium text-sm">
+                <TableCell className="font-mono text-sm font-medium">
                     <LineInput
                         cls={ctx.ctx}
                         name="meta.description"

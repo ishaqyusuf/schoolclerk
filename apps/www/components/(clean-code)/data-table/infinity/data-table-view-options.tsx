@@ -1,9 +1,11 @@
 "use client";
 
-import { Check, GripVertical, Settings2 } from "lucide-react";
-import type { Table } from "@tanstack/react-table";
-
-import { Button } from "@/components/ui/button";
+import { useMemo, useState } from "react";
+import {
+    Sortable,
+    SortableDragHandle,
+    SortableItem,
+} from "@/components/(clean-code)/custom/sortable";
 import {
     Command,
     CommandEmpty,
@@ -17,13 +19,11 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
-import {
-    Sortable,
-    SortableDragHandle,
-    SortableItem,
-} from "@/components/(clean-code)/custom/sortable";
+import type { Table } from "@tanstack/react-table";
+import { Check, GripVertical, Settings2 } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
 
 interface DataTableViewOptionsProps<TData> {
     table: Table<TData>;
@@ -48,14 +48,14 @@ export function DataTableViewOptions<TData>({
                     (column) =>
                         typeof column.accessorFn !== "undefined" &&
                         column.getCanHide() &&
-                        !(column?.columnDef?.meta as any)?.isHidden
+                        !(column?.columnDef?.meta as any)?.isHidden,
                 )
                 .sort((a, b) => {
                     return (
                         columnOrder.indexOf(a.id) - columnOrder.indexOf(b.id)
                     );
                 }),
-        [table, columnOrder]
+        [table, columnOrder],
     );
 
     return (
@@ -89,7 +89,7 @@ export function DataTableViewOptions<TData>({
                                     table.setColumnOrder(items.map((c) => c.id))
                                 }
                                 overlay={
-                                    <div className="w-full h-8 rounded-md bg-muted/60" />
+                                    <div className="h-8 w-full rounded-md bg-muted/60" />
                                 }
                                 onDragStart={() => setDrag(true)}
                                 onDragEnd={() => setDrag(false)}
@@ -105,7 +105,7 @@ export function DataTableViewOptions<TData>({
                                             value={column.id}
                                             onSelect={() =>
                                                 column.toggleVisibility(
-                                                    !column.getIsVisible()
+                                                    !column.getIsVisible(),
                                                 )
                                             }
                                             className={"capitalize"}
@@ -116,7 +116,7 @@ export function DataTableViewOptions<TData>({
                                                     "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
                                                     column.getIsVisible()
                                                         ? "bg-primary text-primary-foreground"
-                                                        : "opacity-50 [&_svg]:invisible"
+                                                        : "opacity-50 [&_svg]:invisible",
                                                 )}
                                             >
                                                 <Check
@@ -131,7 +131,7 @@ export function DataTableViewOptions<TData>({
                                                 <SortableDragHandle
                                                     variant="ghost"
                                                     size="icon"
-                                                    className="size-5 ml-auto text-muted-foreground hover:text-foreground focus:bg-muted focus:text-foreground"
+                                                    className="ml-auto size-5 text-muted-foreground hover:text-foreground focus:bg-muted focus:text-foreground"
                                                 >
                                                     <GripVertical
                                                         className="size-4"

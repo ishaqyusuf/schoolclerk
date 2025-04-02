@@ -1,14 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { PaperPlaneIcon } from "@radix-ui/react-icons";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import type { z } from "zod";
-
-import { newsletterSchema } from "@/lib/validations/email";
-import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/_v1/icons";
 import {
     Form,
     FormControl,
@@ -18,7 +11,14 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Icons } from "@/components/_v1/icons";
+import { newsletterSchema } from "@/lib/validations/email";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PaperPlaneIcon } from "@radix-ui/react-icons";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import type { z } from "zod";
+
+import { Button } from "@gnd/ui/button";
 
 type Inputs = z.infer<typeof newsletterSchema>;
 
@@ -49,7 +49,7 @@ export function JoinNewsletterForm() {
                 switch (response.status) {
                     case 409:
                         toast.error(
-                            "You are already subscribed to our newsletter."
+                            "You are already subscribed to our newsletter.",
                         );
                         break;
                     case 422:
@@ -60,12 +60,12 @@ export function JoinNewsletterForm() {
                         break;
                     case 500:
                         toast.error(
-                            "Something went wrong. Please try again later."
+                            "Something went wrong. Please try again later.",
                         );
                         break;
                     default:
                         toast.error(
-                            "Something went wrong. Please try again later."
+                            "Something went wrong. Please try again later.",
                         );
                 }
                 return;

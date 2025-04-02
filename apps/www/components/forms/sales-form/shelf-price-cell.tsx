@@ -1,7 +1,7 @@
+import { useEffect, useState } from "react";
 import { updateShelfItemAction } from "@/actions/update-shelf-product";
 import { AnimatedNumber } from "@/components/animated-number";
 import { NumberInput } from "@/components/currency-input";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/popover";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useShelf } from "@/hooks/use-shelf";
-import { useEffect, useState } from "react";
 import { useShelfItem } from "@/hooks/use-shelf-item";
+
+import { Button } from "@gnd/ui/button";
+
 export function ShelfPriceCell({ product, prodUid }) {
     const { basePrice, productId, customPrice, salesPrice } = product || {};
     const ctx = useShelfItem();
@@ -34,7 +36,7 @@ export function ShelfPriceCell({ product, prodUid }) {
                 shelf.costCls.shelfItemCostUpdated(
                     shelf.itemUid,
                     _salesPrice,
-                    productId
+                    productId,
                 );
                 // shelf.costCls.updateShelfCosts(shelf.itemUid);
             });
@@ -89,7 +91,7 @@ export function ShelfPriceCell({ product, prodUid }) {
                                         ctx.dotUpdateProduct(
                                             prodUid,
                                             "customPrice",
-                                            values.floatValue
+                                            values.floatValue,
                                         );
                                     }}
                                     prefix={"$"}

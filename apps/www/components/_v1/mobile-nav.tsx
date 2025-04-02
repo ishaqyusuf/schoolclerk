@@ -3,13 +3,15 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/_v1/icons";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Icons } from "@/components/_v1/icons";
 import { ISidebar } from "@/lib/navs";
-import SiteNav from "./layouts/site-nav";
 import { cn } from "@/lib/utils";
+
+import { Button } from "@gnd/ui/button";
+
+import SiteNav from "./layouts/site-nav";
 
 interface MobileNavProps {
     //   mainNavItems?: MainNavItem[]
@@ -32,7 +34,7 @@ export function MobileNav({ nav }: MobileNavProps) {
                     <span className="sr-only">Toggle Menu</span>
                 </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="pl-1 pr-0 w-56">
+            <SheetContent side="left" className="w-56 pl-1 pr-0">
                 <ScrollArea className="h-[calc(100vh-2rem)] ">
                     <div className="pl-1 ">
                         <SiteNav
@@ -68,7 +70,7 @@ function MobileLink({
             className={cn(
                 "text-foreground/70 transition-colors hover:text-foreground",
                 pathname === href && "text-foreground",
-                disabled && "pointer-events-none opacity-60"
+                disabled && "pointer-events-none opacity-60",
             )}
             onClick={() => setIsOpen(false)}
         >

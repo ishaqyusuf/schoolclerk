@@ -1,25 +1,27 @@
-import { Menu } from "@/components/(clean-code)/menu";
 import ConfirmBtn from "@/components/_v1/confirm-btn";
 import { Icons } from "@/components/_v1/icons";
-import { useSalesOverview } from "../overview-provider";
-import { toast } from "sonner";
+import { Menu } from "@/components/(clean-code)/menu";
 import { RefreshCcw } from "lucide-react";
-import { CopyAction } from "./copy.action";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
 import {
     deleteSalesUseCase,
     restoreDeleteUseCase,
 } from "../../../use-case/sales-use-case";
-import { MoveAction } from "./move.action";
-import { PrintAction } from "./print.action";
-import { PayAction } from "./pay.action";
-import { Button } from "@/components/ui/button";
 import { openSalesOverview } from "../../sales-overview-sheet";
+import { useSalesOverview } from "../overview-provider";
+import { CopyAction } from "./copy.action";
+import { MoveAction } from "./move.action";
+import { PayAction } from "./pay.action";
+import { PrintAction } from "./print.action";
 
 export default function ActionFooter({}) {
     const ctx = useSalesOverview();
 
     return (
-        <div className="absolute flex gap-4 bottom-0 px-4 py-2 bg-white border-t sbg-muted w-full shadow-sm">
+        <div className="sbg-muted absolute bottom-0 flex w-full gap-4 border-t bg-white px-4 py-2 shadow-sm">
             <div className="flex-1"></div>
             <Button
                 onClick={() => {

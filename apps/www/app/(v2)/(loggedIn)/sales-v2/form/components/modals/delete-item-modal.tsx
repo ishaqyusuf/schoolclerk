@@ -1,19 +1,21 @@
-import Modal from "@/components/common/modal";
-import { Form } from "@/components/ui/form";
-import { useForm, UseFormReturn } from "react-hook-form";
-import { DykeForm, DykeStep } from "../../../type";
 import { useEffect, useState } from "react";
+import FormCheckbox from "@/components/common/controls/form-checkbox";
+import Modal from "@/components/common/modal";
+import { useModal } from "@/components/common/modal/provider";
+import { Form } from "@/components/ui/form";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { useForm, UseFormReturn } from "react-hook-form";
+
+import { Button } from "@gnd/ui/button";
+
+import { updateDykeStepProductMeta } from "../../_action/dyke-step-setting";
+import { DykeForm, DykeStep } from "../../../type";
 import { IStepProducts } from "../step-items-list/item-section/step-products";
+import { _deleteStepItem } from "../step-items-list/item-section/step-products/_actions";
 import {
     getDykeStepState,
     getFormSteps,
 } from "../step-items-list/item-section/step-products/init-step-components";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import FormCheckbox from "@/components/common/controls/form-checkbox";
-import { updateDykeStepProductMeta } from "../../_action/dyke-step-setting";
-import { useModal } from "@/components/common/modal/provider";
-import { _deleteStepItem } from "../step-items-list/item-section/step-products/_actions";
-import { Button } from "@/components/ui/button";
 
 interface Props {
     lineItemIndex: number;
@@ -43,7 +45,7 @@ export default function DeleteItemModal({
     >([]);
     useEffect(() => {
         const formArray = invoiceForm.getValues(
-            `itemArray.${lineItemIndex}.item.formStepArray`
+            `itemArray.${lineItemIndex}.item.formStepArray`,
         );
         const _depFormSteps = getFormSteps(formArray, stepIndex);
         const stateDeps = getDykeStepState(_depFormSteps, stepForm);
@@ -65,10 +67,10 @@ export default function DeleteItemModal({
                                 ([k, v]) => {
                                     if (k?.includes(a))
                                         delete stepItemMeta.show?.[k];
-                                }
+                                },
                             );
                         }
-                    }
+                    },
                 );
                 stepItemMeta.deleted = stateDeps;
                 await updateDykeStepProductMeta(stepItem.id, stepItemMeta);
@@ -76,7 +78,7 @@ export default function DeleteItemModal({
                 stepItem.meta = stepItemMeta;
                 // console.log(stepItemMeta);
                 return stepItem;
-            })
+            }),
         );
         onComplete && onComplete(_stepItems);
         modal.close();
@@ -89,7 +91,7 @@ export default function DeleteItemModal({
                 stepItems.map((s) => {
                     s.deletedAt = new Date();
                     return s;
-                })
+                }),
             );
         modal.close();
     }

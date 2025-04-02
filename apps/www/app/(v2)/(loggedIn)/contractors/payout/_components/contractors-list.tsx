@@ -1,17 +1,19 @@
 "use client";
 
-import useEffectLoader from "@/lib/use-effect-loader";
-import { getContractorsPayroll } from "../action";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import useEffectLoader from "@/lib/use-effect-loader";
+
+import { Button } from "@gnd/ui/button";
+
+import { getContractorsPayroll } from "../action";
 
 export default function ContractorsList({}) {
     const data = useEffectLoader(getContractorsPayroll);
     return (
         <div className="">
             <div className="">
-                <ScrollArea className="h-screen f">
+                <ScrollArea className="f h-screen">
                     <div className="flex flex-col">
                         {data.data?.map((c) => (
                             <Button

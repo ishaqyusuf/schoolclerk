@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
-import { Column, Table } from "@tanstack/react-table";
-import { CalendarIcon } from "lucide-react";
-
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
-import { Calendar } from "../../ui/calendar";
-import { DateRange } from "react-day-picker";
-import { Checkbox } from "../../ui/checkbox";
-import { formatDate } from "@/lib/use-day";
 import { typedMemo } from "@/lib/hocs/typed-memo";
+import { formatDate } from "@/lib/use-day";
 import { DataTableFilterableColumn } from "@/types/data-table";
+import { Column, Table } from "@tanstack/react-table";
+import { CalendarIcon } from "lucide-react";
+import { DateRange } from "react-day-picker";
+
+import { Button } from "@gnd/ui/button";
+
+import { Calendar } from "../../ui/calendar";
+import { Checkbox } from "../../ui/checkbox";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { DataTableFacetedFilter2 } from "./data-table-faceted-filter-2";
 
@@ -116,7 +116,7 @@ export function DataTableFacetedDate<TData, TValue>({
                             <DataTableFacetedFilter2
                                 key={String(filter.id)}
                                 column={table.getColumn(
-                                    filter.id ? String(filter.id) : ""
+                                    filter.id ? String(filter.id) : "",
                                 )}
                                 title={filter.title}
                                 single={filter.single}
@@ -159,7 +159,7 @@ export function DataTableFacetedDate<TData, TValue>({
                             const { from, to } = e;
                             if (from && to) {
                                 fd = [from, to].map((d) =>
-                                    formatDate(d, "YYYY-MM-DD")
+                                    formatDate(d, "YYYY-MM-DD"),
                                 );
 
                                 setOpen(false);

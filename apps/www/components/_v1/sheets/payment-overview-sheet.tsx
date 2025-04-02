@@ -1,20 +1,24 @@
 "use client";
 
 import React, { useEffect, useState, useTransition } from "react";
-
 import { useRouter } from "next/navigation";
-
+import { getSettingAction } from "@/app/(v1)/_actions/settings";
+import { useDebounce } from "@/hooks/use-debounce";
+import { cn } from "@/lib/utils";
+import { IJobPayment, IJobs } from "@/types/hrm";
+import { InstallCostLine, InstallCostSettings } from "@/types/settings";
+import { ChevronsUpDown } from "lucide-react";
 import { toast } from "sonner";
 
-import BaseSheet from "./base-sheet";
-import { IJobPayment, IJobs } from "@/types/hrm";
-import { Info } from "../info";
+import { Button } from "@gnd/ui/button";
+
 import {
-    DateCellContent,
-    PrimaryCellContent,
-    SecondaryCellContent,
-} from "../columns/base-columns";
-import Money from "../money";
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from "../../ui/collapsible";
+import { Input } from "../../ui/input";
+import { ScrollArea } from "../../ui/scroll-area";
 import {
     Table,
     TableBody,
@@ -23,19 +27,14 @@ import {
     TableHeader,
     TableRow,
 } from "../../ui/table";
-import { useDebounce } from "@/hooks/use-debounce";
-import { Input } from "../../ui/input";
-import { ScrollArea } from "../../ui/scroll-area";
-import { getSettingAction } from "@/app/(v1)/_actions/settings";
-import { InstallCostLine, InstallCostSettings } from "@/types/settings";
-import { Button } from "../../ui/button";
 import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from "../../ui/collapsible";
-import { ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+    DateCellContent,
+    PrimaryCellContent,
+    SecondaryCellContent,
+} from "../columns/base-columns";
+import { Info } from "../info";
+import Money from "../money";
+import BaseSheet from "./base-sheet";
 
 export default function PaymentOverviewSheet() {
     const route = useRouter();
@@ -44,11 +43,11 @@ export default function PaymentOverviewSheet() {
         getSettingAction<InstallCostSettings>("install-price-chart").then(
             (res) => {
                 setCostSetting(res);
-            }
+            },
         );
     }, []);
     const [costSetting, setCostSetting] = useState<InstallCostSettings>(
-        {} as any
+        {} as any,
     );
     async function init(data) {}
     return (
@@ -90,7 +89,7 @@ export default function PaymentOverviewSheet() {
             Content={({ data }) => (
                 <div>
                     <ScrollArea className="h-screen ">
-                        <div className="grid   items-start   text-sm mt-6 mb-28">
+                        <div className="mb-28   mt-6   grid items-start text-sm">
                             {data?.jobs.map((job, index) => (
                                 <Content
                                     key={index}
@@ -144,8 +143,8 @@ function Content({
         >
             <CollapsibleTrigger
                 className={cn(
-                    "flex items-center w-full border-b space-x-4 p-2",
-                    isOpen && "bg-accent"
+                    "flex w-full items-center space-x-4 border-b p-2",
+                    isOpen && "bg-accent",
                 )}
             >
                 <div className="inline-flex">
@@ -169,7 +168,7 @@ function Content({
                 <>
                     <section
                         id="info"
-                        className="grid grid-cols-2 items-start gap-4 col-span-2"
+                        className="col-span-2 grid grid-cols-2 items-start gap-4"
                     >
                         {/* <Info label="Done By">
           <p>{data?.user?.name}</p>
@@ -227,7 +226,7 @@ function Content({
                                         ?.filter(
                                             (l) =>
                                                 (job.meta.costData[l.uid]
-                                                    ?.qty || 0) > 0
+                                                    ?.qty || 0) > 0,
                                         )
                                         .map((cd, i) => (
                                             <TaskRow
@@ -283,7 +282,7 @@ function TaskRow({ row, index, job, setJob }: TaskRowProps) {
                     value={qty}
                     onChange={(e) => setQty(e.target.value)}
                     type="number"
-                    className="w-16 h-8"
+                    className="h-8 w-16"
                 />
             </TableCell>
             <TableCell className="px-1">

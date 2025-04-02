@@ -1,16 +1,18 @@
 "use client";
 
-import { RowActionCell } from "../data-table/data-table-row-actions";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { useState, useTransition } from "react";
-import { Label } from "../../ui/label";
-import { Input } from "../../ui/input";
-import { Button } from "../../ui/button";
-import { Icons } from "../icons";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import Btn from "../btn";
 import { IInboundOrderItems } from "@/types/sales-inbound";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+import Btn from "../btn";
+import { RowActionCell } from "../data-table/data-table-row-actions";
+import { Icons } from "../icons";
 
 interface Props {
     data: IInboundOrderItems;

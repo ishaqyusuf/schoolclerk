@@ -10,7 +10,6 @@ import { AnimatedNumber } from "@/components/animated-number";
 import { FormSelectProps } from "@/components/common/controls/form-select";
 import { NumberInput } from "@/components/currency-input";
 import { LabelInput } from "@/components/label-input";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -22,6 +21,8 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { NumericFormatProps } from "react-number-format";
+
+import { Button } from "@gnd/ui/button";
 
 import { Footer } from "./footer";
 import { SalesCustomerForm } from "./sales-customer-form";

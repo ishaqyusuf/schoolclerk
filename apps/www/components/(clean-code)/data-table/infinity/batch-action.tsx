@@ -1,13 +1,16 @@
-import { Label } from "@/components/ui/label";
-import { useInfiniteDataTable } from "../use-data-table";
-import { Button } from "@/components/ui/button";
-import { IconKeys, Icons } from "@/components/_v1/icons";
-import { Menu } from "../../menu";
-import { cn } from "@/lib/utils";
-import ConfirmBtn from "@/components/_v1/confirm-btn";
-import { toast } from "sonner";
 import { useRef, useState } from "react";
+import ConfirmBtn from "@/components/_v1/confirm-btn";
+import { IconKeys, Icons } from "@/components/_v1/icons";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import { Menu } from "../../menu";
+import { useInfiniteDataTable } from "../use-data-table";
+
 export function BatchAction({ children = null }) {
     const ctx = useInfiniteDataTable();
     const selectCount = ctx.selectedRows?.length;
@@ -20,8 +23,8 @@ export function BatchAction({ children = null }) {
             ref={ref}
             className={cn(
                 show
-                    ? "fixed left-1/2 transform -translate-x-1/2 m-4 bottom-10 z-10"
-                    : "hidden"
+                    ? "fixed bottom-10 left-1/2 z-10 m-4 -translate-x-1/2 transform"
+                    : "hidden",
             )}
         >
             <motion.div
@@ -39,10 +42,10 @@ export function BatchAction({ children = null }) {
                     opacity: ctx.checkMode ? 1 : 0,
                     scale: ctx.checkMode ? 1 : 0,
                 }}
-                className="border flex sgap-4 items-center rounded-xl bg-white overflow-hidden border-muted-foreground/50 divide-x divide-muted-foreground/50 shadow-xl relative"
+                className="sgap-4 relative flex items-center divide-x divide-muted-foreground/50 overflow-hidden rounded-xl border border-muted-foreground/50 bg-white shadow-xl"
             >
                 {/* <div className="border flex sgap-4 items-center rounded-xl bg-white overflow-hidden border-muted-foreground/50 divide-x divide-muted-foreground/50 shadow-xl  relative "> */}
-                <Label className="font-mono px-2">
+                <Label className="px-2 font-mono">
                     <span className="font-bold">{selectCount}</span>
                     {" of "}
                     <span className="font-bold">{total}</span>
@@ -77,7 +80,7 @@ export function BatchBtn(props: BatchBtnProps) {
             <Menu
                 Trigger={
                     <Button className="rounded-none" variant="ghost">
-                        {Icon && <Icon className={cn("size-3.5 mr-2")} />}
+                        {Icon && <Icon className={cn("mr-2 size-3.5")} />}
                         {props.children}
                     </Button>
                 }
@@ -99,7 +102,7 @@ export function BatchDelete(props: BatchBtnProps) {
             }}
             variant="ghost"
             trash
-            className="text-red-600 rounded-none"
+            className="rounded-none text-red-600"
         >
             {/* <div className="flex items-center"> */}
             {/* <Icons.trash className="size-3.5 mr-2" /> */}

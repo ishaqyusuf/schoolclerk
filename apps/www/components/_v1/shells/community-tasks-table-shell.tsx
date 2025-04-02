@@ -1,21 +1,21 @@
 "use client";
 
+import { useMemo, useState, useTransition } from "react";
+import { openModal } from "@/lib/modal";
+import { ExtendedHomeTasks } from "@/types/community";
 import { TableShellProps } from "@/types/data-table";
 import { ColumnDef } from "@tanstack/react-table";
-import { useMemo, useState, useTransition } from "react";
-import { ColumnHeader, _FilterColumn } from "../columns/base-columns";
 
-import { DataTable2 } from "../data-table/data-table-2";
+import { Button } from "@gnd/ui/button";
 
-import { ExtendedHomeTasks } from "@/types/community";
-import { Button } from "../../ui/button";
+import { _FilterColumn, ColumnHeader } from "../columns/base-columns";
 import { HomesBatchAction } from "../community/homes-selection-action";
+import { DataTable2 } from "../data-table/data-table-2";
 import { RowActionCell } from "../data-table/data-table-row-actions";
-import { openModal } from "@/lib/modal";
-import { ProjectsFilter } from "../filters/projects-filter";
-import { TaskFilters } from "../filters/task-filters";
 import { SmartTable } from "../data-table/smart-table";
 import { BuilderFilter } from "../filters/builder-filter";
+import { ProjectsFilter } from "../filters/projects-filter";
+import { TaskFilters } from "../filters/task-filters";
 
 export default function CommunityTaskTableShell({
     data,
@@ -29,7 +29,7 @@ export default function CommunityTaskTableShell({
         data.map((task) => {
             task.__taskSubtitle = `${task.project.title} ${task.home.modelName} ${task.home.lot}/${task.home.block}`;
             return task;
-        })
+        }),
     );
     const columns = useMemo<ColumnDef<ExtendedHomeTasks, unknown>[]>(
         () => [
@@ -59,7 +59,7 @@ export default function CommunityTaskTableShell({
                         }}
                         key={1}
                         size="sm"
-                        className="p-1 h-7 px-2"
+                        className="h-7 p-1 px-2"
                         variant={data?.assignedToId ? "secondary" : "outline"}
                     >
                         {data?.assignedTo?.name || "Not Assigned"}
@@ -74,7 +74,7 @@ export default function CommunityTaskTableShell({
                 "_q",
                 "_task",
                 "_projectId",
-                "_builderId"
+                "_builderId",
             ),
             {
                 accessorKey: "actions",
@@ -91,7 +91,7 @@ export default function CommunityTaskTableShell({
                 ),
             },
         ], //.filter(Boolean) as any,
-        [data, isPending]
+        [data, isPending],
     );
     return (
         <>

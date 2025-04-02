@@ -1,12 +1,9 @@
 "use client";
 
-import { useDataPage } from "@/lib/data-page-context";
-import { SalesOverview } from "../../type";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { DateCellContent } from "@/components/_v1/columns/base-columns";
 import { Icons } from "@/components/_v1/icons";
 import { useModal } from "@/components/common/modal/provider";
-import CreateDeliveryModal from "../../_modal/create-delivery";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
     Table,
     TableBody,
@@ -15,7 +12,12 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { DateCellContent } from "@/components/_v1/columns/base-columns";
+import { useDataPage } from "@/lib/data-page-context";
+
+import { Button } from "@gnd/ui/button";
+
+import CreateDeliveryModal from "../../_modal/create-delivery";
+import { SalesOverview } from "../../type";
 
 export default function DeliveryTabIndex() {
     const { data: order } = useDataPage<SalesOverview>();
@@ -30,7 +32,7 @@ export default function DeliveryTabIndex() {
         <div>
             <Card className="">
                 <CardHeader className="">
-                    <div className="flex justify-between items-center">
+                    <div className="flex items-center justify-between">
                         <CardTitle className="">
                             <span>Deliveries</span>
                         </CardTitle>
@@ -43,7 +45,7 @@ export default function DeliveryTabIndex() {
                                 }}
                                 size={"sm"}
                             >
-                                <Icons.add className="size-4 mr-4" />
+                                <Icons.add className="mr-4 size-4" />
                                 <span>Create Delivery</span>
                             </Button>
                         </div>
@@ -79,7 +81,7 @@ export default function DeliveryTabIndex() {
                         </Table>
                     </CardContent>
                 ) : (
-                    <CardContent className="h-[40vh] flex flex-col justify-center text-muted-foreground items-center">
+                    <CardContent className="flex h-[40vh] flex-col items-center justify-center text-muted-foreground">
                         {/* <Icons. */}
                         <span>No Deliveries</span>
                     </CardContent>

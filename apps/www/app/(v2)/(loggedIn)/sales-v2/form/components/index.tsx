@@ -1,19 +1,21 @@
 "use client";
 
+import { useEffect } from "react";
 import RenderForm from "@/_v2/components/common/render-form";
-import { Button } from "@/components/ui/button";
-import { addDoorUnitAction } from "../_action/add-door-unit";
-import SalesMetaData from "./sales-meta-data";
-import HeaderSection from "./dyke-sales-header-section";
-import SalesAddressSection from "../../../sales/edit/components/sales-address-section";
-import { Icons } from "@/components/_v1/icons";
-import DykeSalesFooterSection from "./dyke-sales-footer-section";
-import { DykeInvoiceItemSection } from "./item-section/item-section";
 import {
     LegacyDykeFormContext,
     useLegacyDykeFormContext,
 } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy-hooks";
-import { useEffect } from "react";
+import { Icons } from "@/components/_v1/icons";
+
+import { Button } from "@gnd/ui/button";
+
+import { addDoorUnitAction } from "../_action/add-door-unit";
+import SalesAddressSection from "../../../sales/edit/components/sales-address-section";
+import DykeSalesFooterSection from "./dyke-sales-footer-section";
+import HeaderSection from "./dyke-sales-header-section";
+import { DykeInvoiceItemSection } from "./item-section/item-section";
+import SalesMetaData from "./sales-meta-data";
 
 interface Props {
     defaultValues: any;
@@ -31,7 +33,7 @@ export default function SalesFormComponent({ defaultValues }: Props) {
                 <HeaderSection />
                 <section
                     id="detailsSection"
-                    className="border-y my-2 py-1 grid gap-4 md:grid-cols-2 xl:grid-cols-5 gap-x-8"
+                    className="my-2 grid gap-4 gap-x-8 border-y py-1 md:grid-cols-2 xl:grid-cols-5"
                 >
                     {!dealerMode && <SalesMetaData />}
                     <SalesAddressSection />
@@ -39,7 +41,7 @@ export default function SalesFormComponent({ defaultValues }: Props) {
                 {itemArray.fields.map((field, index) => (
                     <DykeInvoiceItemSection key={field.id} rowIndex={index} />
                 ))}
-                <div className="flex justify-end space-x-2 mt-2">
+                <div className="mt-2 flex justify-end space-x-2">
                     <Button
                         className=""
                         onClick={async () => {
@@ -47,7 +49,7 @@ export default function SalesFormComponent({ defaultValues }: Props) {
                             itemArray.append(doorUnit as any);
                         }}
                     >
-                        <Icons.add className="size-4 mr-2" />
+                        <Icons.add className="mr-2 size-4" />
                         <span>Add Item</span>
                     </Button>
                 </div>

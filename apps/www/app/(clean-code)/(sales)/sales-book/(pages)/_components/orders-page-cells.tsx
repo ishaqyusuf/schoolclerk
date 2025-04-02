@@ -1,14 +1,16 @@
-import { TCell } from "@/components/(clean-code)/data-table/table-cells";
-import { GetSalesOrdersDta } from "../../../_common/data-access/sales-dta";
-import { cn } from "@/lib/utils";
-import { useTRContext } from "@/components/(clean-code)/data-table/use-data-table";
-import { Progress } from "@/components/(clean-code)/progress";
-import { Menu } from "@/components/(clean-code)/menu";
-import { Button } from "@/components/ui/button";
-import { useTheme } from "next-themes";
-import TextWithTooltip from "@/components/(clean-code)/custom/text-with-tooltip";
 import ConfirmBtn from "@/components/_v1/confirm-btn";
+import TextWithTooltip from "@/components/(clean-code)/custom/text-with-tooltip";
+import { TCell } from "@/components/(clean-code)/data-table/table-cells";
+import { useTRContext } from "@/components/(clean-code)/data-table/use-data-table";
+import { Menu } from "@/components/(clean-code)/menu";
+import { Progress } from "@/components/(clean-code)/progress";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { useTheme } from "next-themes";
+
+import { Button } from "@gnd/ui/button";
+
+import { GetSalesOrdersDta } from "../../../_common/data-access/sales-dta";
 
 export interface ItemProps {
     item: GetSalesOrdersDta["data"][number];
@@ -49,7 +51,7 @@ function Customer({ item }: ItemProps) {
             <TCell.Primary
                 className={cn(
                     item.isBusiness && "text-blue-700",
-                    "whitespace-nowrap uppercase"
+                    "whitespace-nowrap uppercase",
                 )}
             >
                 <TextWithTooltip
@@ -184,9 +186,9 @@ function InvoicePending({ item }: ItemProps) {
             <TCell.Money
                 value={Math.abs(invoice.pending || 0)}
                 className={cn(
-                    "text-muted-foreground font-mono font-medium",
+                    "font-mono font-medium text-muted-foreground",
                     invoice.pending > 0 && "text-red-700/80",
-                    invoice.pending < 0 && "bg-emerald-700 text-white"
+                    invoice.pending < 0 && "bg-emerald-700 text-white",
                 )}
             />
         </TCell>

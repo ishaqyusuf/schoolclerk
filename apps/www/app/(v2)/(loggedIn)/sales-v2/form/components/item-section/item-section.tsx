@@ -1,11 +1,23 @@
+import {
+    LegacyDykeFormItemContext,
+    useLegacyDykeFormItemContext,
+} from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy-hooks";
+import {
+    Menu,
+    MenuItem,
+} from "@/components/_v1/data-table/data-table-row-actions";
 import { Icons } from "@/components/_v1/icons";
-import { Button } from "@/components/ui/button";
+import FormInput from "@/components/common/controls/form-input";
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { cn, generateRandomString } from "@/lib/utils";
 
+import { Button } from "@gnd/ui/button";
+
+import { _deleteDykeItem } from "../../_action/delete-item";
 import {
     DykeItemFormContext,
     useDykeCtx,
@@ -13,17 +25,6 @@ import {
     useDykeItemCtx,
 } from "../../_hooks/form-context";
 import useDykeItem, { IDykeItemFormContext } from "../../_hooks/use-dyke-item";
-import { cn, generateRandomString } from "@/lib/utils";
-import { _deleteDykeItem } from "../../_action/delete-item";
-import FormInput from "@/components/common/controls/form-input";
-import {
-    Menu,
-    MenuItem,
-} from "@/components/_v1/data-table/data-table-row-actions";
-import {
-    LegacyDykeFormItemContext,
-    useLegacyDykeFormItemContext,
-} from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy-hooks";
 import { DykeInvoiceItemStepSection } from "./components-section";
 
 interface Props {
@@ -50,7 +51,7 @@ export function DykeInvoiceItemSection({ rowIndex }: Props) {
                 >
                     <ItemHeader item={item} />
                     <CollapsibleContent className="">
-                        <div className="grid sm:grid-cols-3 overflow-auto max-h-[110vh]">
+                        <div className="grid max-h-[110vh] overflow-auto sm:grid-cols-3">
                             <div className="sm:col-span-3">
                                 {item.formStepArray.map((formStep, bIndex) => (
                                     <DykeInvoiceItemStepSection
@@ -90,7 +91,7 @@ function ItemHeader({ item }: ItemHeaderProps) {
         dykeCtx.itemArray.move(rowIndex, to);
     }
     return (
-        <div className="flex bg-accent p-2 px-4 justify-between">
+        <div className="flex justify-between bg-accent p-2 px-4">
             <CollapsibleTrigger asChild>
                 <div
                     className="w-[500px] "
@@ -116,7 +117,7 @@ function ItemHeader({ item }: ItemHeaderProps) {
                 </Button>
                 <Button
                     onClick={deleteSection}
-                    className="p-0 h-6 w-6"
+                    className="h-6 w-6 p-0"
                     variant={"destructive"}
                 >
                     <Icons.trash className="size-4" />
@@ -132,7 +133,7 @@ function ItemHeader({ item }: ItemHeaderProps) {
                                         .map((_, pos) => (
                                             <MenuItem
                                                 key={pos}
-                                                className="w-10 inline-flex justify-center"
+                                                className="inline-flex w-10 justify-center"
                                                 disabled={pos == rowIndex}
                                                 onClick={() => move(pos)}
                                             >

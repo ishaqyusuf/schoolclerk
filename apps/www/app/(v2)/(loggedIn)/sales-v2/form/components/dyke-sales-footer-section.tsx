@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useContext, useEffect, useState } from "react";
-import { useDykeForm } from "../_hooks/form-context";
+import Money from "@/components/_v1/money";
+import FormInput from "@/components/common/controls/form-input";
+import FormSelect from "@/components/common/controls/form-select";
+import { Label } from "@/components/ui/label";
 import {
     Table,
     TableBody,
@@ -10,23 +13,19 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { cn, generateRandomString } from "@/lib/utils";
-import FormSelect from "@/components/common/controls/form-select";
-import salesData from "../../../sales/sales-data";
-import FormInput from "@/components/common/controls/form-input";
-import { Label } from "@/components/ui/label";
-import Money from "@/components/_v1/money";
 import { formatMoney } from "@/lib/use-number";
-import "./style.css";
-import { TableCol } from "@/components/common/data-table/table-cells";
-import { calculateFooterEstimate } from "../footer-estimate";
+import { cn, generateRandomString } from "@/lib/utils";
 
-import {
-    FieldArray,
-    useFieldArray,
-    UseFieldArrayReturn,
-} from "react-hook-form";
-import { DykeForm } from "../../type";
+import { useDykeForm } from "../_hooks/form-context";
+import salesData from "../../../sales/sales-data";
+
+import "./style.css";
+
+import TaxModal from "@/app/(clean-code)/(sales)/_common/_modals/tax-modal/tax-modal";
+import { useLegacyDykeForm } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy-hooks";
+import { Icons } from "@/components/_v1/icons";
+import { TableCol } from "@/components/common/data-table/table-cells";
+import { useModal } from "@/components/common/modal/provider";
 import {
     Select,
     SelectContent,
@@ -34,11 +33,17 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { useModal } from "@/components/common/modal/provider";
-import TaxModal from "@/app/(clean-code)/(sales)/_common/_modals/tax-modal/tax-modal";
-import { Icons } from "@/components/_v1/icons";
-import { Button } from "@/components/ui/button";
-import { useLegacyDykeForm } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy-hooks";
+import {
+    FieldArray,
+    useFieldArray,
+    UseFieldArrayReturn,
+} from "react-hook-form";
+
+import { Button } from "@gnd/ui/button";
+
+import { DykeForm } from "../../type";
+import { calculateFooterEstimate } from "../footer-estimate";
+
 const defaultValues = {
     taxPercentage: null,
     tax: null,
@@ -116,7 +121,7 @@ export default function DykeSalesFooterSection({}) {
             form.setValue(`_taxForm.taxByCode.${k}.data.tax`, v.data?.tax);
             form.setValue(
                 `_taxForm.taxByCode.${k}.data.taxxable`,
-                v.data?.taxxable
+                v.data?.taxxable,
             );
         });
         // estimate.taxes.map((tax) => {
@@ -181,12 +186,12 @@ export default function DykeSalesFooterSection({}) {
 function CustomTableCell({ children }) {
     return (
         <TableCell align="right" className="flex w-full p-1">
-            <div className="flex justify-end items-center ">{children}</div>
+            <div className="flex items-center justify-end ">{children}</div>
         </TableCell>
     );
 }
 function XTableHead({ children }) {
-    return <TableHead className="p-1 h-auto">{children}</TableHead>;
+    return <TableHead className="h-auto p-1">{children}</TableHead>;
 }
 const Details = {
     PaymentOptions() {
@@ -272,11 +277,11 @@ const Details = {
 function FloatingFooter() {
     const _ctx = useContext(ctx);
     return (
-        <div className="fixed bottom-0 left-0  right-0 md:grid smd:grid-cols-[220px_minmax(0,1fr)]  lg:grid-cols-[240px_minmax(0,1fr)] mb-6">
+        <div className="smd:grid-cols-[220px_minmax(0,1fr)] fixed bottom-0  left-0 right-0 mb-6  md:grid lg:grid-cols-[240px_minmax(0,1fr)]">
             <div className="hidden  md:block" />
-            <div className="lg:gap-10 2xl:grid 2xl:grid-cols-[1fr_300px] mx-2">
+            <div className="mx-2 lg:gap-10 2xl:grid 2xl:grid-cols-[1fr_300px]">
                 {/* <Footer floatingFooter /> */}
-                <div className="flex rounded-lg border bg-white dark:bg-muted p-1 shadow">
+                <div className="flex rounded-lg border bg-white p-1 shadow dark:bg-muted">
                     <Table>
                         <TableBody>
                             <TableRow>
@@ -310,7 +315,7 @@ function Footer() {
     return (
         <div className="flex  justify-end">
             <div className="md:max-w-xs" id="dykeFooter">
-                <Table className="table-fixed  border rounded">
+                <Table className="table-fixed  rounded border">
                     <TableHeader>
                         <TableRow>
                             <TableHead className="" colSpan={2}>
@@ -384,7 +389,7 @@ function TaxForm({}) {
                             selectionChanged(tax.taxCode);
                         }, 500);
                     }}
-                />
+                />,
             );
         } else {
             footerCtx.changeTax(e);
@@ -404,7 +409,7 @@ function TaxForm({}) {
                             {s.title} {` (${s.percentage}%)`}
                         </TableHead>
                         <TableCell className="w-full">
-                            <div className="flex justify-end  w-full space-x-2 items-center">
+                            <div className="flex w-full  items-center justify-end space-x-2">
                                 <div>
                                     <TaxAmount code={s.taxCode} />
                                 </div>
@@ -413,10 +418,10 @@ function TaxForm({}) {
                                     onClick={() =>
                                         footerCtx.removeTaxSelection(
                                             s.taxCode,
-                                            i
+                                            i,
                                         )
                                     }
-                                    className="w-8 h-8"
+                                    className="h-8 w-8"
                                     size="icon"
                                 >
                                     <Icons.X />
@@ -431,7 +436,7 @@ function TaxForm({}) {
     return (
         <>
             <TableRow>
-                <TableHead className="bg-red-400 w-full" colSpan={2}>
+                <TableHead className="w-full bg-red-400" colSpan={2}>
                     <div className="flex items-center gap-4">
                         <Label>Select Tax</Label>
                         <Select

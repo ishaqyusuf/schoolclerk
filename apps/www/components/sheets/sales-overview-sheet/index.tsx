@@ -2,14 +2,11 @@
 
 import { salesOverviewStore } from "@/app/(clean-code)/(sales)/_common/_components/sales-overview-sheet/store";
 import Button from "@/components/common/button";
-import {
-    Sheet,
-    SheetContent,
-    SheetHeader,
-    SheetTitle,
-} from "@/components/ui/sheet";
 import { useCustomerOverviewQuery } from "@/hooks/use-customer-overview-query";
 import { useSalesOverviewQuery } from "@/hooks/use-sales-overview-query";
+
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@gnd/ui/sheet";
+
 import { CustomSheet, CustomSheetContent } from "../custom-sheet-content";
 
 export default function SalesOverviewSheet() {

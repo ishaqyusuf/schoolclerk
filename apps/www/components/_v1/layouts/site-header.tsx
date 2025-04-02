@@ -1,6 +1,8 @@
 "use client";
-import { cn } from "@/lib/utils";
-import { Icons } from "../icons";
+
+import Link from "next/link";
+import { ModeToggle } from "@/components/(clean-code)/layouts/mode-toggle";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,15 +13,17 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { ISidebar } from "@/lib/navs";
+import { cn } from "@/lib/utils";
 import { LogOut } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { ISidebar } from "@/lib/navs";
-import Notifications from "../notification";
+
+import { Button } from "@gnd/ui/button";
+
+import { Icons } from "../icons";
 import { MobileNav } from "../mobile-nav";
-import { ModeToggle } from "@/components/(clean-code)/layouts/mode-toggle";
+import Notifications from "../notification";
+
 export default function SiteHeader({ nav }: { nav: ISidebar }) {
     const { data: session } = useSession();
 
@@ -29,15 +33,15 @@ export default function SiteHeader({ nav }: { nav: ISidebar }) {
         <header
             className={cn(
                 `flex flex-col border-b px-4`,
-                nav.noSideBar && "lg:px-16"
+                nav.noSideBar && "lg:px-16",
             )}
         >
-            <div className="h-14 flex items-center  space-x-3">
+            <div className="flex h-14 items-center  space-x-3">
                 <MobileNav nav={nav} />
                 <div
                     className={cn(
                         !nav.noSideBar && "md:hidden",
-                        "mr-4  h-10 w-10"
+                        "mr-4  h-10 w-10",
                     )}
                 >
                     <Icons.logo />

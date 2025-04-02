@@ -5,7 +5,6 @@ import PaymentModal from "@/app/(v2)/(loggedIn)/sales-v2/_components/_payments-m
 import { DeleteRowAction } from "@/components/_v1/data-table/data-table-row-actions";
 import Money from "@/components/_v1/money";
 import { useModal } from "@/components/common/modal/provider";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useDataPage } from "@/lib/data-page-context";
@@ -14,6 +13,8 @@ import { formatDate } from "@/lib/use-day";
 import { useAppSelector } from "@/store";
 import { ISalesOrder } from "@/types/sales";
 import { Plus } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
 
 export default function PaymentHistory() {
     const { data: order } = useDataPage<ISalesOrder>();
@@ -32,7 +33,7 @@ export default function PaymentHistory() {
                                         <PaymentModal
                                             id={order.id}
                                             orderId={order.orderId}
-                                        />
+                                        />,
                                     );
                                 }}
                                 className="h-8 w-8 p-0"
@@ -85,7 +86,7 @@ export default function PaymentHistory() {
                                                     {
                                                         ...item,
                                                         order: order,
-                                                    }
+                                                    },
                                                 );
                                             }}
                                         />

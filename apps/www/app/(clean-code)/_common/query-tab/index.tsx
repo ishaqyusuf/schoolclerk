@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Icons } from "@/components/_v1/icons";
-import { Button } from "@/components/ui/button";
 import { isEmpty } from "lodash";
+
+import { Button } from "@gnd/ui/button";
 
 import { useQueryTabStore } from "./data-store";
 import { SiteLinksPage } from "./links";

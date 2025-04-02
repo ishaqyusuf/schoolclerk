@@ -1,16 +1,18 @@
 "use client";
 
+import { deepCopy } from "@/lib/deep-copy";
+import { openModal } from "@/lib/modal";
+import { dispatchSlice } from "@/store/slicers";
 import { Printer } from "lucide-react";
-import { Button } from "../../ui/button";
+
+import { Button } from "@gnd/ui/button";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
 import { PrintOrderMenuAction } from "../actions/sales-menu-actions";
-import { dispatchSlice } from "@/store/slicers";
-import { deepCopy } from "@/lib/deep-copy";
-import { openModal } from "@/lib/modal";
 
 export function HomeBatchAction({ items }) {
     return (
@@ -26,7 +28,7 @@ export function HomeBatchAction({ items }) {
                         homes: deepCopy(items),
                     });
                 }}
-                className="ml-auto bg-rose-600 hover:bg-rose-700 hidden h-8 lg:flex"
+                className="ml-auto hidden h-8 bg-rose-600 hover:bg-rose-700 lg:flex"
             >
                 <Printer className=" h-4 w-4" />
                 {/* View */}

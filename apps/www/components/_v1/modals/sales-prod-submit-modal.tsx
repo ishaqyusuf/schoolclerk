@@ -1,8 +1,17 @@
 "use client";
 
+import { useCallback, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { orderItemProductionAction } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-production";
+import { useDataPage } from "@/lib/data-page-context";
+import { closeModal } from "@/lib/modal";
+import { useAppSelector } from "@/store";
 import { ISalesOrder, ISalesOrderItem } from "@/types/sales";
-import BaseModal from "./base-modal";
-import { Info } from "../info";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
 import {
     Select,
     SelectContent,
@@ -11,17 +20,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from "../../ui/select";
-import { Button } from "../../ui/button";
 import { Textarea } from "../../ui/textarea";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import { useCallback, useState, useTransition } from "react";
-import { orderItemProductionAction } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-production";
-import { closeModal } from "@/lib/modal";
 import Btn from "../btn";
-import { toast } from "sonner";
-import { useAppSelector } from "@/store";
-import { useDataPage } from "@/lib/data-page-context";
+import { Info } from "../info";
+import BaseModal from "./base-modal";
+
 export interface ICompleteItemProd {
     itemId;
     note;
@@ -63,7 +66,7 @@ export default function SalesProdSubmitModal() {
         (q) => {
             form.setValue("qty", q);
         },
-        [form]
+        [form],
     );
 
     return (

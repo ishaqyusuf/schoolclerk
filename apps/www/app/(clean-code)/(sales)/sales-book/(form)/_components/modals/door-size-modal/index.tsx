@@ -1,23 +1,25 @@
-import Modal from "@/components/common/modal";
-import { useFormDataStore } from "../../../_common/_stores/form-data-store";
 import { createContext, useContext, useEffect, useMemo } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/_v1/icons";
-import { Form } from "@/components/ui/form";
-import FormSelect from "@/components/common/controls/form-select";
-import { ComboxBox } from "@/components/(clean-code)/custom/controlled/combo-box";
-import ConfirmBtn from "@/components/_v1/confirm-btn";
 import { updateStepMetaUseCase } from "@/app/(clean-code)/(sales)/_common/use-case/step-component-use-case";
-import { _modal } from "@/components/common/modal/provider";
-import { toast } from "sonner";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
-import { StepHelperClass } from "../../../_utils/helpers/zus/step-component-class";
-import { Label } from "@/components/ui/label";
 import { widthList } from "@/app/(clean-code)/(sales)/_common/utils/contants";
+import ConfirmBtn from "@/components/_v1/confirm-btn";
+import { Icons } from "@/components/_v1/icons";
+import { ComboxBox } from "@/components/(clean-code)/custom/controlled/combo-box";
+import FormSelect from "@/components/common/controls/form-select";
+import Modal from "@/components/common/modal";
+import { _modal } from "@/components/common/modal/provider";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Form } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { AlertCircle } from "lucide-react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import { useFormDataStore } from "../../../_common/_stores/form-data-store";
+import { StepHelperClass } from "../../../_utils/helpers/zus/step-component-class";
 
 interface Props {
     cls: StepHelperClass;
@@ -42,7 +44,7 @@ export function useInitContext(cls: StepHelperClass) {
     async function save() {
         const resp = await updateStepMetaUseCase(
             step.stepId,
-            form.getValues("meta")
+            form.getValues("meta"),
         );
         _modal.close();
         toast.success("Door Heights saved.");
@@ -77,7 +79,7 @@ export default function DoorSizeModal({ cls }: Props) {
                 <Form {...ctx.form}>
                     <ScrollArea
                         tabIndex={-1}
-                        className="max-h-[50vh] bg-muted px-4  -mx-4"
+                        className="-mx-4 max-h-[50vh] bg-muted  px-4"
                     >
                         {ctx.varArray.fields?.length == 0 ? (
                             <>
@@ -95,7 +97,7 @@ export default function DoorSizeModal({ cls }: Props) {
                                 </div>
                             </>
                         ) : (
-                            <div className="gap-4 flex flex-col ">
+                            <div className="flex flex-col gap-4 ">
                                 {ctx.varArray.fields?.map((field, index) => (
                                     <RuleComponent index={index} key={index} />
                                 ))}
@@ -107,7 +109,7 @@ export default function DoorSizeModal({ cls }: Props) {
                                 size="sm"
                                 className="h-8 text-xs"
                             >
-                                <Icons.add className="size-4 mr-2" />
+                                <Icons.add className="mr-2 size-4" />
                                 <span>Add Rule</span>
                             </Button>
                         </div>
@@ -134,7 +136,7 @@ function RuleComponent({ index }) {
     }
     function ComponentInput({ fieldIndex }) {
         const stepUid = ctx.form.watch(
-            `meta.doorSizeVariation.${index}.rules.${fieldIndex}.stepUid`
+            `meta.doorSizeVariation.${index}.rules.${fieldIndex}.stepUid`,
         );
         return (
             <ComboxBox
@@ -149,7 +151,7 @@ function RuleComponent({ index }) {
         );
     }
     return (
-        <div className="flex flex-col gap-2 border rounded overflow-y-auto p-2 bg-white">
+        <div className="flex flex-col gap-2 overflow-y-auto rounded border bg-white p-2">
             {rulesArray?.fields?.map((field, fieldIndex) => (
                 <div className="flex items-center gap-2" key={fieldIndex}>
                     <div className="min-w-[4.5rem] text-center">
@@ -190,7 +192,7 @@ function RuleComponent({ index }) {
                     onClick={addRuleFilter}
                     className="h-7 text-xs"
                 >
-                    <Icons.add className="size-4 mr-2" />
+                    <Icons.add className="mr-2 size-4" />
                     <span>Add Filter</span>
                 </Button>
             </div>

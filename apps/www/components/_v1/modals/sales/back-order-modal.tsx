@@ -1,6 +1,13 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import Btn from "@/components/_v1/btn";
+import { SecondaryCellContent } from "@/components/_v1/columns/base-columns";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
     Table,
     TableBody,
@@ -9,22 +16,18 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useRouter } from "next/navigation";
-import { IBackOrderForm, ISalesOrder } from "@/types/sales";
-import { _useAsync } from "@/lib/use-async";
-import BaseModal from "../base-modal";
-import { closeModal } from "@/lib/modal";
-import { toast } from "sonner";
-import { SecondaryCellContent } from "@/components/_v1/columns/base-columns";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { closeModal } from "@/lib/modal";
+import { _useAsync } from "@/lib/use-async";
 import { cn } from "@/lib/utils";
-import Btn from "@/components/_v1/btn";
+import { IBackOrderForm, ISalesOrder } from "@/types/sales";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import BaseModal from "../base-modal";
+
 // import { UseFormReturn } from "react-hook-form/dist/types";
 
 export default function BackOrderModal() {
@@ -76,7 +79,7 @@ export default function BackOrderModal() {
                             <div className="-mx-4 sm:mx-0">
                                 <ScrollArea
                                     id="employees"
-                                    className="h-[350px] hidden sm:block w-full"
+                                    className="hidden h-[350px] w-full sm:block"
                                 >
                                     <Table>
                                         <TableHeader>
@@ -85,19 +88,19 @@ export default function BackOrderModal() {
                                                     <Checkbox
                                                         checked={checkAll}
                                                         onCheckedChange={(
-                                                            e
+                                                            e,
                                                         ) => {
                                                             setCheckAll(
-                                                                e as any
+                                                                e as any,
                                                             );
                                                             // if(e) {
                                                             data?.items?.map(
                                                                 (item) => {
                                                                     form.setValue(
                                                                         `backOrders.${item.meta.uid}.checked` as any,
-                                                                        e
+                                                                        e,
                                                                     );
-                                                                }
+                                                                },
                                                             );
                                                             // }
                                                         }}
@@ -125,7 +128,7 @@ export default function BackOrderModal() {
                                         </TableBody>
                                     </Table>
                                 </ScrollArea>
-                                <div className="flex justify-end -mb-8 mt-4">
+                                <div className="-mb-8 mt-4 flex justify-end">
                                     <Btn
                                         isLoading={pending}
                                         size={"sm"}
@@ -201,10 +204,10 @@ function BackOrderLine({ form, item }) {
                 onClick={(e) => {
                     form.setValue(
                         `backOrders.${item.meta.uid}.checked`,
-                        !checked
+                        !checked,
                     );
                 }}
-                className={cn("p-2 uppercase cursor-pointer")}
+                className={cn("cursor-pointer p-2 uppercase")}
             >
                 <p className="text-primary">{item.description}</p>
             </TableCell>
@@ -217,9 +220,9 @@ function BackOrderLine({ form, item }) {
                 <Input
                     type="number"
                     {...form.register(
-                        `backOrders.${item.meta.uid}.backQty` as any
+                        `backOrders.${item.meta.uid}.backQty` as any,
                     )}
-                    className="w-16 h-7"
+                    className="h-7 w-16"
                 />
             </TableCell>
         </TableRow>

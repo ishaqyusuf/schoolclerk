@@ -1,6 +1,8 @@
+import { useState } from "react";
 import Money from "@/components/_v1/money";
 import FormInput from "@/components/common/controls/form-input";
-import { Button } from "@/components/ui/button";
+import { TableCol } from "@/components/common/data-table/table-cells";
+import { Form } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import {
     Popover,
@@ -8,12 +10,12 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { TableCell } from "@/components/ui/table";
-import { useDykeCtx, useDykeForm } from "../../../../_hooks/form-context";
 import { cn, sum } from "@/lib/utils";
+
+import { Button } from "@gnd/ui/button";
+
+import { useDykeCtx, useDykeForm } from "../../../../_hooks/form-context";
 import { useMultiComponentItem } from "../../../../_hooks/use-multi-component-item";
-import { Form } from "@/components/ui/form";
-import { TableCol } from "@/components/common/data-table/table-cells";
-import { useState } from "react";
 
 interface Props {
     sizeRow?;
@@ -39,11 +41,11 @@ export default function PriceBreakDownCell({ sizeRow, componentItem }: Props) {
                                               sizeRow.componentsTotal,
                                           ])
                                     : componentItem.overridePrice
-                                    ? componentItem.overridePrice
-                                    : sum([
-                                          componentItem.mouldingPrice,
-                                          componentItem.componentsTotal,
-                                      ])
+                                      ? componentItem.overridePrice
+                                      : sum([
+                                            componentItem.mouldingPrice,
+                                            componentItem.componentsTotal,
+                                        ])
                             }
                         />
                     </Button>
@@ -71,7 +73,7 @@ export default function PriceBreakDownCell({ sizeRow, componentItem }: Props) {
                                                 <Label htmlFor="maxWidth">
                                                     {a.step.title}
                                                 </Label>
-                                                <div className="text-left col-span-2">
+                                                <div className="col-span-2 text-left">
                                                     <Money
                                                         value={a.item.price}
                                                     />
@@ -100,8 +102,8 @@ export default function PriceBreakDownCell({ sizeRow, componentItem }: Props) {
                                 )}
                                 <div
                                     className={cn(
-                                        "pt-2 border-t",
-                                        ctx.dealerMode && "hidden"
+                                        "border-t pt-2",
+                                        ctx.dealerMode && "hidden",
                                     )}
                                 >
                                     <FormInput

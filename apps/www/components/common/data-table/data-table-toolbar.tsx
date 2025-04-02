@@ -2,6 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { DataTableViewOptions } from "@/components/common/data-table/data-table-view-options";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import type {
     DataTableFilterableColumn,
     DataTableSearchableColumn,
@@ -9,11 +12,8 @@ import type {
 import { Cross2Icon, PlusCircledIcon, TrashIcon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
 
-import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button, buttonVariants } from "@gnd/ui/button";
 
-import { DataTableViewOptions } from "@/components/common/data-table/data-table-view-options";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 
 interface DataTableToolbarProps<TData, TValue> {
@@ -47,7 +47,7 @@ export function DataTableToolbar<TData, TValue>({
                     searchableColumns.map(
                         (column) =>
                             table.getColumn(
-                                column.id ? String(column.id) : ""
+                                column.id ? String(column.id) : "",
                             ) && (
                                 <Input
                                     key={String(column.id)}
@@ -64,7 +64,7 @@ export function DataTableToolbar<TData, TValue>({
                                     }
                                     className="h-8 w-[150px] lg:w-[250px]"
                                 />
-                            )
+                            ),
                     )}
                 {/* {filterableColumns.length > 0 &&
                     filterableColumns.map(
@@ -147,7 +147,7 @@ export function DataTableToolbar<TData, TValue>({
                                     variant: "outline",
                                     size: "sm",
                                     className: "h-8",
-                                })
+                                }),
                             )}
                         >
                             <PlusCircledIcon

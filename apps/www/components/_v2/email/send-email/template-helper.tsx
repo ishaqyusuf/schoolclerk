@@ -1,15 +1,17 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import FormInput from "@/components/common/controls/form-input";
 import FormSelect from "@/components/common/controls/form-select";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { useEffect, useState } from "react";
+import { htmlIsEmpty } from "@/lib/utils";
 import { useFormContext } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
 import { getEmailTemplates } from "../_actions/get-template";
 import { saveEmailTemplate } from "../_actions/save-template";
-import { toast } from "sonner";
-import { htmlIsEmpty } from "@/lib/utils";
 
 export function SendEmailTemplateSection() {
     const form = useFormContext();
@@ -32,7 +34,7 @@ export function SendEmailTemplateSection() {
     useEffect(() => {
         // console.log(templateId);
         setTab(
-            templateId > 0 ? "default" : templateId == -1 ? "new" : "default"
+            templateId > 0 ? "default" : templateId == -1 ? "new" : "default",
         );
         const t = templates.find((t) => t.id == templateId);
         if (t) {
@@ -81,7 +83,7 @@ export function SendEmailTemplateSection() {
         <div className="col-span-2">
             <Tabs className="" value={tab}>
                 <TabsContent
-                    className="flex focus:outline-none items-end gap-2"
+                    className="flex items-end gap-2 focus:outline-none"
                     value="default"
                 >
                     <FormSelect

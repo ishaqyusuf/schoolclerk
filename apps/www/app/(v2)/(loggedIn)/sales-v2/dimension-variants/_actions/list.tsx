@@ -2,25 +2,25 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import { saveSettingAction } from "@/app/(v1)/_actions/settings";
+import Btn from "@/components/_v1/btn";
+import PageHeader from "@/components/_v1/page-header";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { resetPasswordSchema } from "@/lib/validations/auth";
+import { InstallCostMeta, InstallCostSettings } from "@/types/settings";
+import { Delete, Move, Plus, Trash } from "lucide-react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 
-import { resetPasswordSchema } from "@/lib/validations/auth";
-import { Button } from "@/components/ui/button";
+import { Button } from "@gnd/ui/button";
 
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { InstallCostMeta, InstallCostSettings } from "@/types/settings";
-import PageHeader from "@/components/_v1/page-header";
-import { Input } from "@/components/ui/input";
-import { Delete, Move, Plus, Trash } from "lucide-react";
-import { Label } from "@/components/ui/label";
-import Btn from "@/components/_v1/btn";
-import { saveSettingAction } from "@/app/(v1)/_actions/settings";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Checkbox } from "@/components/ui/checkbox";
-import { saveHousePackageTool } from "./save-house-package-tool";
 import { HousePackageToolSettings } from "../type";
+import { saveHousePackageTool } from "./save-house-package-tool";
 
 export type ResetPasswordFormInputs = z.infer<typeof resetPasswordSchema>;
 
@@ -47,7 +47,7 @@ export function DimensionList({ data }: { data: HousePackageToolSettings }) {
                 console.log(form.getValues("data"));
                 await saveHousePackageTool(
                     form.getValues("id"),
-                    form.getValues("data")
+                    form.getValues("data"),
                 );
                 toast.success("Saved.");
             } catch (err: any) {
@@ -89,23 +89,23 @@ export function DimensionList({ data }: { data: HousePackageToolSettings }) {
                                         ref={provided.innerRef}
                                         {...provided.droppableProps}
                                     >
-                                        <div className="grid grid-cols-12 w-full">
-                                            <div className="col-span-6 p-0.5 border bg-slate-200 px-2">
+                                        <div className="grid w-full grid-cols-12">
+                                            <div className="col-span-6 border bg-slate-200 p-0.5 px-2">
                                                 <Label>Size (ft)</Label>
                                             </div>
-                                            <div className="col-span-2 p-0.5 border bg-slate-200 px-2">
+                                            <div className="col-span-2 border bg-slate-200 p-0.5 px-2">
                                                 <Label>Size (in)</Label>
                                             </div>
-                                            <div className="col-span-1 p-0.5 border bg-slate-200 px-2">
+                                            <div className="col-span-1 border bg-slate-200 p-0.5 px-2">
                                                 <Label>Width</Label>
                                             </div>
                                             {/* <div className="col-span-1 p-0.5 border bg-slate-200 px-2">
                                                 <Label>Contractor</Label>
                                             </div> */}
-                                            <div className="col-span-1 p-0.5 border bg-slate-200 px-2">
+                                            <div className="col-span-1 border bg-slate-200 p-0.5 px-2">
                                                 <Label>Height</Label>
                                             </div>
-                                            <div className="col-span-1 p-0.5 border bg-slate-200 px-2"></div>
+                                            <div className="col-span-1 border bg-slate-200 p-0.5 px-2"></div>
                                         </div>
                                         {fields.map((field, rowIndex) => (
                                             <Draggable
@@ -122,7 +122,7 @@ export function DimensionList({ data }: { data: HousePackageToolSettings }) {
                                                                 provided.innerRef
                                                             }
                                                             key={field.id}
-                                                            className="grid grid-cols-12 w-full items-center rounded  group"
+                                                            className="group grid w-full grid-cols-12 items-center  rounded"
                                                         >
                                                             <div className="col-span-6 border">
                                                                 <CostInput
@@ -144,7 +144,7 @@ export function DimensionList({ data }: { data: HousePackageToolSettings }) {
                                                             ].map((k) => (
                                                                 <div
                                                                     key={k}
-                                                                    className="col-span-1 flex justify-center border h-7"
+                                                                    className="col-span-1 flex h-7 justify-center border"
                                                                 >
                                                                     <FormField
                                                                         control={
@@ -156,7 +156,7 @@ export function DimensionList({ data }: { data: HousePackageToolSettings }) {
                                                                         render={({
                                                                             field,
                                                                         }) => (
-                                                                            <FormItem className="space-x-2 space-y-0 flex items-center">
+                                                                            <FormItem className="flex items-center space-x-2 space-y-0">
                                                                                 <FormControl>
                                                                                     <Checkbox
                                                                                         checked={
@@ -173,12 +173,12 @@ export function DimensionList({ data }: { data: HousePackageToolSettings }) {
                                                                 </div>
                                                             ))}
 
-                                                            <div className="col-span-1 space-x-2  border h-7 flex items-center">
-                                                                <Move className="size-4 mx-2 text-slate-300 group-hover:text-gray-600" />
+                                                            <div className="col-span-1 flex  h-7 items-center space-x-2 border">
+                                                                <Move className="mx-2 size-4 text-slate-300 group-hover:text-gray-600" />
                                                                 <Button
                                                                     onClick={() => {
                                                                         remove(
-                                                                            rowIndex
+                                                                            rowIndex,
                                                                         );
                                                                     }}
                                                                     size="icon"
@@ -203,7 +203,7 @@ export function DimensionList({ data }: { data: HousePackageToolSettings }) {
                             append({} as any);
                         }}
                         variant="secondary"
-                        className="w-full h-7 mt-1"
+                        className="mt-1 h-7 w-full"
                     >
                         <Plus className="mr-2 size-4" />
                         <span>Add Line</span>

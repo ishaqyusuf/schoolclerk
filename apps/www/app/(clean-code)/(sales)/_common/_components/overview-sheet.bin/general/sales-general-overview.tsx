@@ -1,12 +1,14 @@
-import { useSalesOverview } from "../overview-provider";
+import Link from "next/link";
 import { DataLine } from "@/components/(clean-code)/data-table/Dl";
 import { TCell } from "@/components/(clean-code)/data-table/table-cells";
 import { Label } from "@/components/ui/label";
-import { SalesItemStatus } from "../sales-item-status";
 import { ExternalLink } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+
+import { Button } from "@gnd/ui/button";
+
 import { composeSalesUrl } from "../../../utils/sales-utils";
+import { useSalesOverview } from "../overview-provider";
+import { SalesItemStatus } from "../sales-item-status";
 
 export function SalesGeneralOverview({}) {
     const { item, overview, ...ctx } = useSalesOverview();
@@ -16,7 +18,7 @@ export function SalesGeneralOverview({}) {
                 <DataLine
                     label="Order Id"
                     value={
-                        <div className="inline-flex gap-2 items-center">
+                        <div className="inline-flex items-center gap-2">
                             <span>{item.orderId}</span>
                             <Button
                                 size="sm"
@@ -99,7 +101,7 @@ export function SalesGeneralOverview({}) {
                         />
                     </>
                 )}
-                <div className="grid py-4 grid-cols-2 px-4 sm:px-8 gap-4">
+                <div className="grid grid-cols-2 gap-4 px-4 py-4 sm:px-8">
                     {[item?.addressData?.billing, item?.addressData?.shipping]
                         .filter(Boolean)
                         .map((address, index) => (

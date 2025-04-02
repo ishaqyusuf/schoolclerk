@@ -1,9 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { upgradeDeliveries } from "../_action/upgrade-deliveries";
-import { toast } from "sonner";
 import { env } from "@/env.mjs";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import { upgradeDeliveries } from "../_action/upgrade-deliveries";
 
 export default function UpgradeBtn() {
     if (env.NEXT_PUBLIC_NODE_ENV === "production") return null;

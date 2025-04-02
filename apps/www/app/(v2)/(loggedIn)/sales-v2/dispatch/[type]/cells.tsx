@@ -1,8 +1,10 @@
 import { TableCol } from "@/components/common/data-table/table-cells";
-import { DispatchPromiseResponse } from "./dispatch-table";
-import { ProductionCells } from "../../productions/_components/production-list/sales-prod-cells";
+
+import { Button } from "@gnd/ui/button";
+
 import { useAssignment } from "../../productions/_components/_modals/assignment-modal/use-assignment";
-import { Button } from "@/components/ui/button";
+import { ProductionCells } from "../../productions/_components/production-list/sales-prod-cells";
+import { DispatchPromiseResponse } from "./dispatch-table";
 
 interface Props {
     item: DispatchPromiseResponse["Item"];

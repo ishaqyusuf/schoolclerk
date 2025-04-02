@@ -1,7 +1,8 @@
 "use client";
+
+import Link from "next/link";
 import { Icons } from "@/components/_v1/icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -13,7 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User2 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
+
+import { Button } from "@gnd/ui/button";
 
 export default function AcccountHeader() {
     const { data: session } = useSession();
@@ -83,7 +85,7 @@ export default function AcccountHeader() {
             </>
         );
     return (
-        <Link href={"/login"} className="flex space-x-2 items-center">
+        <Link href={"/login"} className="flex items-center space-x-2">
             <User2 className="size-4" />
             <span>My Account</span>
         </Link>

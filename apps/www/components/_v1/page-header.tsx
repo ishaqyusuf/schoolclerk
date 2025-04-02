@@ -1,13 +1,15 @@
 "use client";
 
-import { Button } from "../ui/button";
 import { openModal } from "@/lib/modal";
 import { ModalName } from "@/store/slicers";
-import LinkableNode from "./link-node";
-import { Icons } from "./icons";
+
+import { Button } from "@gnd/ui/button";
+
 import AuthGuard, {
     AuthPermissions,
 } from "../../app/(v2)/(loggedIn)/_components/auth-guard";
+import { Icons } from "./icons";
+import LinkableNode from "./link-node";
 
 interface Props {
     title;
@@ -38,7 +40,7 @@ export default function PageHeader({
         <div className="flex items-center justify-between space-y-2">
             <div className="space-y-0.5">
                 <h2
-                    className="text-xl sm:text-2xl font-bold tracking-tight capitalize
+                    className="text-xl font-bold capitalize tracking-tight sm:text-2xl
                 "
                 >
                     {title}
@@ -62,7 +64,7 @@ export default function PageHeader({
                                 className="inline-flex items-center"
                                 href={newLink}
                             >
-                                <BtnIcon className="h-4 w-4 mr-2" />
+                                <BtnIcon className="mr-2 h-4 w-4" />
                                 <span>{buttonText} </span>
                             </LinkableNode>
                         </Button>

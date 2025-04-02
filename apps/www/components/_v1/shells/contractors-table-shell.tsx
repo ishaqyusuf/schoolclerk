@@ -1,57 +1,57 @@
 "use client";
 
-import { TableShellProps } from "@/types/data-table";
-import { ColumnDef } from "@tanstack/react-table";
 import { useEffect, useMemo, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { useEmployeeProfiles } from "@/_v2/hooks/use-static-data";
 import {
-    CheckColumn,
-    ColumnHeader,
-    Cell,
-    PrimaryCellContent,
-    DateCellContent,
-    SecondaryCellContent,
-    _FilterColumn,
-} from "../columns/base-columns";
-
-import {
-    OrderRowAction,
-    PrintOrderMenuAction,
-} from "../actions/sales-menu-actions";
-import { DataTable2 } from "../data-table/data-table-2";
-
-import { BuilderFilter } from "../filters/builder-filter";
-import { HomeProductionStatus } from "../columns/community-columns";
-import { IBuilder, IProject } from "@/types/community";
-import {
-    DeleteRowAction,
-    RowActionCell,
-    RowActionMenuItem,
-    RowActionMoreMenu,
-} from "../data-table/data-table-row-actions";
-import { Icons } from "../icons";
-import { openModal } from "@/lib/modal";
-import { IUser } from "@/types/hrm";
-import { Key } from "lucide-react";
-import { resetEmployeePassword } from "@/app/(v1)/_actions/hrm/save-employee";
-import { toast } from "sonner";
-import { loadStaticList } from "@/store/slicers";
-import { useAppSelector } from "@/store";
-import {
-    setEmployeeProfileAction,
     getStaticEmployeeProfiles,
+    setEmployeeProfileAction,
 } from "@/app/(v1)/_actions/hrm/employee-profiles";
+import { _deleteEmployee } from "@/app/(v1)/_actions/hrm/employees.crud";
+import { resetEmployeePassword } from "@/app/(v1)/_actions/hrm/save-employee";
+import { openModal } from "@/lib/modal";
+import { useAppSelector } from "@/store";
+import { loadStaticList } from "@/store/slicers";
+import { IBuilder, IProject } from "@/types/community";
+import { TableShellProps } from "@/types/data-table";
+import { IUser } from "@/types/hrm";
+import { ColumnDef } from "@tanstack/react-table";
+import { Key } from "lucide-react";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { Button } from "../../ui/button";
-import { useRouter } from "next/navigation";
-import { RolesFilter } from "../filters/roles-filter";
-import { _deleteEmployee } from "@/app/(v1)/_actions/hrm/employees.crud";
+import {
+    OrderRowAction,
+    PrintOrderMenuAction,
+} from "../actions/sales-menu-actions";
+import {
+    _FilterColumn,
+    Cell,
+    CheckColumn,
+    ColumnHeader,
+    DateCellContent,
+    PrimaryCellContent,
+    SecondaryCellContent,
+} from "../columns/base-columns";
+import { HomeProductionStatus } from "../columns/community-columns";
+import { DataTable2 } from "../data-table/data-table-2";
+import {
+    DeleteRowAction,
+    RowActionCell,
+    RowActionMenuItem,
+    RowActionMoreMenu,
+} from "../data-table/data-table-row-actions";
 import { SmartTable } from "../data-table/smart-table";
-import { useEmployeeProfiles } from "@/_v2/hooks/use-static-data";
+import { BuilderFilter } from "../filters/builder-filter";
+import { RolesFilter } from "../filters/roles-filter";
+import { Icons } from "../icons";
 
 export default function ContractorsTableShell({
     data,
@@ -64,7 +64,7 @@ export default function ContractorsTableShell({
         loadStaticList(
             "staticEmployeeProfiles",
             profiles,
-            getStaticEmployeeProfiles
+            getStaticEmployeeProfiles,
         );
     }, []);
     const route = useRouter();
@@ -148,10 +148,10 @@ export default function ContractorsTableShell({
                             <RowActionMenuItem
                                 onClick={async () => {
                                     await resetEmployeePassword(
-                                        row.original?.id
+                                        row.original?.id,
                                     );
                                     toast.success(
-                                        "Password reset successfully!"
+                                        "Password reset successfully!",
                                     );
                                 }}
                                 Icon={Key}
@@ -168,7 +168,7 @@ export default function ContractorsTableShell({
                 ),
             },
         ], //.filter(Boolean) as any,
-        [data, isPending]
+        [data, isPending],
     );
     return (
         <DataTable2

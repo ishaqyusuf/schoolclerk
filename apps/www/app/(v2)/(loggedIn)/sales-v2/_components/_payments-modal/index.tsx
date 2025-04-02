@@ -1,10 +1,22 @@
 "use client";
 
+import { useTransition } from "react";
+import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
+import {
+    applyPaymentAction,
+    deleteSalesPayment,
+} from "@/app/(v1)/(loggedIn)/sales/_actions/sales-payment";
+import Btn from "@/components/_v1/btn";
+import ConfirmBtn from "@/components/_v1/confirm-btn";
+import { Icons } from "@/components/_v1/icons";
+import { Info } from "@/components/_v1/info";
+import Money from "@/components/_v1/money";
+import FormInput from "@/components/common/controls/form-input";
+import FormSelect from "@/components/common/controls/form-select";
+import { TableCol } from "@/components/common/data-table/table-cells";
 import Modal from "@/components/common/modal";
 import { useModal } from "@/components/common/modal/provider";
-import useStaticDataLoader from "@/lib/static-data-loader";
-import useEffectLoader from "@/lib/use-effect-loader";
-import { getSalesPayments } from "./_actions/get-payments";
+import { Form } from "@/components/ui/form";
 import {
     Table,
     TableBody,
@@ -13,27 +25,17 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Icons } from "@/components/_v1/icons";
-import { useForm } from "react-hook-form";
-import { Info } from "@/components/_v1/info";
-import Money from "@/components/_v1/money";
-import { TableCol } from "@/components/common/data-table/table-cells";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import FormSelect from "@/components/common/controls/form-select";
-import salesData from "../../../sales/sales-data";
-import FormInput from "@/components/common/controls/form-input";
-import Btn from "@/components/_v1/btn";
-import { useTransition } from "react";
+import useStaticDataLoader from "@/lib/static-data-loader";
+import useEffectLoader from "@/lib/use-effect-loader";
 import { cn } from "@/lib/utils";
-import {
-    applyPaymentAction,
-    deleteSalesPayment,
-} from "@/app/(v1)/(loggedIn)/sales/_actions/sales-payment";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import ConfirmBtn from "@/components/_v1/confirm-btn";
-import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
+
+import { Button } from "@gnd/ui/button";
+
 import SquarePaymentModal from "../_square-payment-modal";
+import salesData from "../../../sales/sales-data";
+import { getSalesPayments } from "./_actions/get-payments";
 
 interface Props {
     id;
@@ -116,7 +118,7 @@ export default function PaymentModal({
     return (
         <Modal.Content>
             <Modal.Header title="Payments" subtitle={orderId} />
-            <div className="overflow-auto h-[90vh] -px-8">
+            <div className="-px-8 h-[90vh] overflow-auto">
                 <div className="flex gap-4 py-4">
                     <Info
                         label="Invoice"
@@ -180,7 +182,7 @@ export default function PaymentModal({
                         </TableBody>
                     </Table>
                 ) : (
-                    <div className="flex justify-center items-center h-[20vh] flex-col gap-4 text-muted-foreground">
+                    <div className="flex h-[20vh] flex-col items-center justify-center gap-4 text-muted-foreground">
                         <Icons.dollar />
                         <p className="">No Payment Applied yet</p>
                     </div>
@@ -191,7 +193,7 @@ export default function PaymentModal({
                         size="sm"
                         onClick={() => {
                             modal.openModal(
-                                <SquarePaymentModal id={ctx.data.id} />
+                                <SquarePaymentModal id={ctx.data.id} />,
                             );
                         }}
                     >
@@ -212,7 +214,7 @@ export default function PaymentModal({
                 </div>
                 {showForm && (
                     <Form {...form}>
-                        <div className="grid grid-cols-2 gap-4 border rounded p-2 mb-10">
+                        <div className="mb-10 grid grid-cols-2 gap-4 rounded border p-2">
                             <FormSelect
                                 className="col-span-2"
                                 size="sm"
@@ -236,7 +238,7 @@ export default function PaymentModal({
                                 type="number"
                                 name="data.amount"
                             />
-                            <div className="col-span-2 space-x-4 flex justify-end">
+                            <div className="col-span-2 flex justify-end space-x-4">
                                 <Button
                                     variant={"destructive"}
                                     size={"sm"}

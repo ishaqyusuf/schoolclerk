@@ -1,16 +1,18 @@
+import { useEffect, useState } from "react";
+import AutoComplete from "@/components/_v1/common/auto-complete";
 import { DatePicker } from "@/components/_v1/date-range-picker";
 import { Icons } from "@/components/_v1/icons";
 import FormSelect from "@/components/common/controls/form-select";
-import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useEnterSubmit } from "@/hooks/use-enter-submit";
-import { useEffect, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
-import { getNoteSuggestionsAction } from "./actions/get-note-suggestions";
-import AutoComplete from "@/components/_v1/common/auto-complete";
-import { useNote } from "./context";
+
+import { Button } from "@gnd/ui/button";
+
 import { createNoteAction } from "./actions/create-note-action";
+import { getNoteSuggestionsAction } from "./actions/get-note-suggestions";
+import { useNote } from "./context";
 
 export function NoteForm({}) {
     const { props, setNotes } = useNote();
@@ -21,7 +23,7 @@ export function NoteForm({}) {
         const { note, eventDate, status, type } = data;
         if (!note) throw new Error("Note cannot be empty");
         const tags = props.tagFilters.filter(
-            (a) => !["status", "type"].includes(a.tagName)
+            (a) => !["status", "type"].includes(a.tagName),
         );
         tags.push({
             tagName: "status",
@@ -78,7 +80,7 @@ export function NoteForm({}) {
             {formMode ? (
                 <Form {...form}>
                     <div className="w-full">
-                        <div className="flex gap-2 w-full">
+                        <div className="flex w-full gap-2">
                             {/* <FormInput
                                 className="flex-1"
                                 size="sm"
@@ -86,7 +88,7 @@ export function NoteForm({}) {
                                 control={form.control}
                                 name="note"
                             /> */}
-                            <div className="flex-1 relative">
+                            <div className="relative flex-1">
                                 <NotePad tagFilterKeys={tagFilterKeys} />
                             </div>
                             <Button

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -31,6 +30,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CreditCard, DollarSign, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+import { Button } from "@gnd/ui/button";
 
 const formSchema = z.object({
     name: z.string().min(2, { message: "Name must be at least 2 characters." }),

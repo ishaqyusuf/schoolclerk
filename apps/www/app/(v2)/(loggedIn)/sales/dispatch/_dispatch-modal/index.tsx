@@ -1,8 +1,9 @@
+import { useState } from "react";
 import Modal from "@/components/common/modal";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import { DeliveryOption } from "@/types/sales";
-import { useState } from "react";
+
+import { Button } from "@gnd/ui/button";
 
 interface Props {
     type?: DeliveryOption;

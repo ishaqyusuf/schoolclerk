@@ -1,28 +1,28 @@
 "use client";
 
-import { TableShellProps } from "@/types/data-table";
-import { ColumnDef } from "@tanstack/react-table";
 import { useMemo, useState, useTransition } from "react";
-import {
-    CheckColumn,
-    ColumnHeader,
-    Cell,
-    PrimaryCellContent,
-    DateCellContent,
-    SecondaryCellContent,
-    _FilterColumn,
-} from "../columns/base-columns";
+import { openModal } from "@/lib/modal";
+import { TableShellProps } from "@/types/data-table";
+import { ISalesOrderItem } from "@/types/sales";
+import { ColumnDef } from "@tanstack/react-table";
+
+import { Button } from "@gnd/ui/button";
 
 import {
     OrderRowAction,
     PrintOrderMenuAction,
 } from "../actions/sales-menu-actions";
+import {
+    _FilterColumn,
+    Cell,
+    CheckColumn,
+    ColumnHeader,
+    DateCellContent,
+    PrimaryCellContent,
+    SecondaryCellContent,
+} from "../columns/base-columns";
 import { DataTable2 } from "../data-table/data-table-2";
-
-import { openModal } from "@/lib/modal";
-import { ISalesOrderItem } from "@/types/sales";
 import { InboundColumns } from "../forms/sales-inbound-order-form/inbound-columns";
-import { Button } from "../../ui/button";
 
 export default function InboundFormTableShell<T>({
     data,

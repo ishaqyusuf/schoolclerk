@@ -1,12 +1,12 @@
+import { useLegacyDykeFormStep } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
 import ConfirmBtn from "@/components/_v1/confirm-btn";
 import { Icons } from "@/components/_v1/icons";
+import { useModal } from "@/components/common/modal/provider";
 import { Label } from "@/components/ui/label";
 
-import { useModal } from "@/components/common/modal/provider";
+import { Button } from "@gnd/ui/button";
 
-import { Button } from "@/components/ui/button";
 import { useStepItemCtx } from "./use-step-items";
-import { useLegacyDykeFormStep } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
 
 export function BatchSelectionAction() {
     const _ctx = useLegacyDykeFormStep();
@@ -23,10 +23,10 @@ export function BatchSelectionAction() {
     }
     if (_ctx.selectCount)
         return (
-            <div className="fixed bottom-0 left-0  right-0 md:grid smd:grid-cols-[220px_minmax(0,1fr)]  lg:grid-cols-[240px_minmax(0,1fr)] mb-24 z-10">
+            <div className="smd:grid-cols-[220px_minmax(0,1fr)] fixed bottom-0  left-0 right-0 z-10  mb-24 md:grid lg:grid-cols-[240px_minmax(0,1fr)]">
                 <div className="hidden md:block"></div>
                 <div className="flex justify-center">
-                    <div className="flex items-center rounded-xl bg-white shadow-lg space-x-4 p-1 px-3 border shadow-muted-foreground justify-center">
+                    <div className="flex items-center justify-center space-x-4 rounded-xl border bg-white p-1 px-3 shadow-lg shadow-muted-foreground">
                         <Label>
                             {_ctx.selectCount} {" Selected"}
                         </Label>

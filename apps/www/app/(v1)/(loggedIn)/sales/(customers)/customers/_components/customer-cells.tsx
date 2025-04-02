@@ -1,23 +1,25 @@
+import { useSearchParams } from "next/navigation";
+import AuthGuard from "@/app/(v2)/(loggedIn)/_components/auth-guard";
+import {
+    EditRowAction,
+    RowActionCell,
+} from "@/components/_v1/data-table/data-table-row-actions";
+import { Icons } from "@/components/_v1/icons";
+import LinkableNode from "@/components/_v1/link-node";
 import { TableCol } from "@/components/common/data-table/table-cells";
-import { GetCustomers } from "../../../type";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import {
-    EditRowAction,
-    RowActionCell,
-} from "@/components/_v1/data-table/data-table-row-actions";
-import AuthGuard from "@/app/(v2)/(loggedIn)/_components/auth-guard";
 import { openModal } from "@/lib/modal";
-import { Icons } from "@/components/_v1/icons";
 import { openLink } from "@/lib/open-link";
-import { useSearchParams } from "next/navigation";
-import LinkableNode from "@/components/_v1/link-node";
 import { cn } from "@/lib/utils";
+
+import { Button } from "@gnd/ui/button";
+
+import { GetCustomers } from "../../../type";
 
 interface Props {
     item: GetCustomers["data"][0];
@@ -76,7 +78,7 @@ export let Cells = {
                                         _having,
                                         _due,
                                     },
-                                    true
+                                    true,
                                 );
                             }}
                             size="sm"

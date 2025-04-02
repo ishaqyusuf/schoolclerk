@@ -1,10 +1,11 @@
 // import { formatAccountName } from "@/utils/format";
-import { Button } from "@/components/ui/button";
 import { Icons } from "@/(midday)/components/icons";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import { formatDateRange } from "little-date";
+
+import { Button } from "@gnd/ui/button";
 
 const listVariant = {
     hidden: { y: 10, opacity: 0 },
@@ -61,7 +62,7 @@ export function FilterList({
                         new Date(filters.end as any),
                         {
                             includeTime: false,
-                        }
+                        },
                     );
                 }
 
@@ -86,8 +87,8 @@ export function FilterList({
                     ?.map(
                         (slug) =>
                             recurringFilters?.find(
-                                (filter) => filter.id === slug
-                            )?.name
+                                (filter) => filter.id === slug,
+                            )?.name,
                     )
                     .join(", ");
             }
@@ -97,7 +98,7 @@ export function FilterList({
                     .map(
                         (status) =>
                             statusFilters.find((filter) => filter.id === status)
-                                ?.name
+                                ?.name,
                     )
                     .join(", ");
             }
@@ -107,8 +108,8 @@ export function FilterList({
                     .map(
                         (slug) =>
                             categories?.find(
-                                (category) => category.slug === slug
-                            )?.name
+                                (category) => category.slug === slug,
+                            )?.name,
                     )
                     .join(", ");
             }
@@ -118,8 +119,8 @@ export function FilterList({
                     .map(
                         (id) =>
                             tags?.find(
-                                (tag) => tag?.id === id || tag?.slug === id
-                            )?.name
+                                (tag) => tag?.id === id || tag?.slug === id,
+                            )?.name,
                     )
                     .join(", ");
             }
@@ -128,7 +129,7 @@ export function FilterList({
                 return value
                     .map((id) => {
                         const account = accounts?.find(
-                            (account) => account.id === id
+                            (account) => account.id === id,
                         );
                         // return formatAccountName({
                         //     name: account?.name,
@@ -143,7 +144,7 @@ export function FilterList({
                     .map(
                         (id) =>
                             customers?.find((customer) => customer.id === id)
-                                ?.name
+                                ?.name,
                     )
                     .join(", ");
             }
@@ -153,7 +154,7 @@ export function FilterList({
                 return value
                     .map((id) => {
                         const member = members?.find(
-                            (member) => member.id === id
+                            (member) => member.id === id,
                         );
                         return member?.name;
                     })
@@ -187,10 +188,10 @@ export function FilterList({
             {loading && (
                 <div className="flex space-x-2">
                     <motion.li key="1" variants={itemVariant}>
-                        <Skeleton className="rounded-full h-8 w-[100px]" />
+                        <Skeleton className="h-8 w-[100px] rounded-full" />
                     </motion.li>
                     <motion.li key="2" variants={itemVariant}>
-                        <Skeleton className="rounded-full h-8 w-[100px]" />
+                        <Skeleton className="h-8 w-[100px] rounded-full" />
                     </motion.li>
                 </div>
             )}
@@ -202,10 +203,10 @@ export function FilterList({
                         return (
                             <motion.li key={key} variants={itemVariant}>
                                 <Button
-                                    className="rounded-full h-8 px-3 bg-secondary hover:bg-secondary font-normal text-[#878787] flex space-x-1 items-center group"
+                                    className="group flex h-8 items-center space-x-1 rounded-full bg-secondary px-3 font-normal text-[#878787] hover:bg-secondary"
                                     onClick={() => handleOnRemove(key)}
                                 >
-                                    <Icons.Clear className="scale-0 group-hover:scale-100 transition-all w-0 group-hover:w-4" />
+                                    <Icons.Clear className="w-0 scale-0 transition-all group-hover:w-4 group-hover:scale-100" />
                                     <span>
                                         {renderFilter({
                                             key,

@@ -1,18 +1,32 @@
 "use client";
 
 import React, { useEffect, useState, useTransition } from "react";
-
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-
+import { searchImport } from "@/app/(v1)/_actions/community/_template-import";
+import { useDebounce } from "@/hooks/use-debounce";
+import { transformCommunityTemplate } from "@/lib/community/community-template";
+import { closeModal, openModal } from "@/lib/modal";
+import { cn, labelValue } from "@/lib/utils";
+import { IJobPayment } from "@/types/hrm";
+import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
+import { Import } from "lucide-react";
 import { toast } from "sonner";
 
-import BaseSheet from "./base-sheet";
-import { IJobPayment } from "@/types/hrm";
+import { Button } from "@gnd/ui/button";
+
+import { ModelFormProps } from "../../../app/(v1)/(loggedIn)/settings/community/_components/model-form/model-form";
+import { Checkbox } from "../../ui/checkbox";
+import { Command, CommandInput, CommandList } from "../../ui/command";
 import {
-    DateCellContent,
-    PrimaryCellContent,
-    SecondaryCellContent,
-} from "../columns/base-columns";
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "../../ui/dropdown-menu";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
+import { ScrollArea } from "../../ui/scroll-area";
 import {
     Table,
     TableBody,
@@ -21,27 +35,13 @@ import {
     TableHeader,
     TableRow,
 } from "../../ui/table";
-import { useDebounce } from "@/hooks/use-debounce";
-import { Input } from "../../ui/input";
-import { ScrollArea } from "../../ui/scroll-area";
-import { Button } from "../../ui/button";
-import { Import } from "lucide-react";
-import { cn, labelValue } from "@/lib/utils";
-import { ModelFormProps } from "../../../app/(v1)/(loggedIn)/settings/community/_components/model-form/model-form";
-import { closeModal, openModal } from "@/lib/modal";
-import { searchImport } from "@/app/(v1)/_actions/community/_template-import";
-import { Command, CommandInput, CommandList } from "../../ui/command";
-import Link from "next/link";
-import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "../../ui/dropdown-menu";
-import { Checkbox } from "../../ui/checkbox";
-import { Label } from "../../ui/label";
-import { transformCommunityTemplate } from "@/lib/community/community-template";
+    DateCellContent,
+    PrimaryCellContent,
+    SecondaryCellContent,
+} from "../columns/base-columns";
+import BaseSheet from "./base-sheet";
+
 export default function ImportModelTemplateSheet({
     form,
     data,
@@ -62,7 +62,7 @@ export default function ImportModelTemplateSheet({
             query,
             data?.id,
             // (data as any)?.projectId
-            searchType != "Master"
+            searchType != "Master",
         );
         console.log(_res);
         // console.log(data?.modelName);
@@ -148,7 +148,7 @@ export default function ImportModelTemplateSheet({
                                 </DropdownMenu>
                             </div>
                             <CommandList className=" ">
-                                <ScrollArea className="max-h-none h-[80vh]">
+                                <ScrollArea className="h-[80vh] max-h-none">
                                     <Table>
                                         <TableBody>
                                             {result?.map((t) => (
@@ -157,9 +157,9 @@ export default function ImportModelTemplateSheet({
                                                         <Link
                                                             target="_blank"
                                                             href={``}
-                                                            className="hover:underline cursor-pointer group"
+                                                            className="group cursor-pointer hover:underline"
                                                         >
-                                                            <span className="inline-flex space-x-2 items-center group-hover:underline">
+                                                            <span className="inline-flex items-center space-x-2 group-hover:underline">
                                                                 <PrimaryCellContent>
                                                                     {
                                                                         t.modelName
@@ -181,7 +181,7 @@ export default function ImportModelTemplateSheet({
                                                             data={t}
                                                             _import={(md) => {
                                                                 importSections(
-                                                                    md
+                                                                    md,
                                                                 );
                                                             }}
                                                         />
@@ -267,7 +267,7 @@ function ImportButton({ data, _import }) {
                     variant="outline"
                     className="flex h-8  data-[state=open]:bg-muted"
                 >
-                    <Import className="h-4 w-4 mr-2" />
+                    <Import className="mr-2 h-4 w-4" />
                     <span className="">Import</span>
                 </Button>
             </DropdownMenuTrigger>

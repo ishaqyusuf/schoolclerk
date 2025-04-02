@@ -1,7 +1,9 @@
 import { useTransition } from "react";
-import { IconKeys, Icons } from "../_v1/icons";
-import { ButtonProps, Button as BaseButton } from "../ui/button";
 import { cn } from "@/lib/utils";
+
+import { Button as BaseButton, ButtonProps } from "@gnd/ui/button";
+
+import { IconKeys, Icons } from "../_v1/icons";
 
 interface BtnProps extends ButtonProps {
     action?;
@@ -39,14 +41,14 @@ export default function Button({
                     "inline-flex items-center",
 
                     // props.className,
-                    loading && "opacity-0"
+                    loading && "opacity-0",
                 )}
             >
                 {BtnIcon && (
                     <BtnIcon
                         className={cn(
                             "h-4 w-4",
-                            (text || props.children) && "mr-2"
+                            (text || props.children) && "mr-2",
                         )}
                     />
                 )}

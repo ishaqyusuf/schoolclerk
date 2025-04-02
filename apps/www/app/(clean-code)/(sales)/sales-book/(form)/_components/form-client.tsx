@@ -4,9 +4,10 @@ import { useEffect } from "react";
 import { Icons } from "@/components/_v1/icons";
 import { SalesFormClient } from "@/components/forms/sales-form/sales-form";
 import CustomerProfileUpdateModal from "@/components/modals/customer-profile-update-modal";
-import { Button } from "@/components/ui/button";
 import { useSalesFormFeatureParams } from "@/hooks/use-sales-form-feature-params";
 import { cn } from "@/lib/utils";
+
+import { Button } from "@gnd/ui/button";
 
 import { useFormDataStore } from "../_common/_stores/form-data-store";
 import { useSticky } from "../_hooks/use-sticky";

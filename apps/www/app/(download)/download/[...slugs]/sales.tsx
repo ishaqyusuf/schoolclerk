@@ -1,11 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import useSalesPdf from "@/app/(v2)/printer/sales/use-sales-pdf";
-import { Button } from "@/components/ui/button";
+import { generateRandomString } from "@/lib/utils";
 // import { useDebounce } from "@/hooks/use-debounce";
 import { useDebounce } from "use-debounce";
-import { generateRandomString } from "@/lib/utils";
-import { useEffect, useState } from "react";
+
+import { Button } from "@gnd/ui/button";
 
 export default function SalesDownload({ id, mode }) {
     const pdf = useSalesPdf();

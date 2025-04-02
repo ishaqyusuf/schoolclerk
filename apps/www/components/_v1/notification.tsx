@@ -1,34 +1,36 @@
 "use client";
 
-import { AlertTriangle, Archive, Bell, Dot } from "lucide-react";
-import { Button } from "../ui/button";
-import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import React, { useEffect, useState, useTransition } from "react";
-import { Badge } from "../ui/badge";
-import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { cn } from "@/lib/utils";
+import Link from "next/link";
 import {
-    INotification,
     archiveAction,
     getNotificationCountAction,
+    INotification,
     loadNotificationsAction,
     markAsReadAction,
 } from "@/app/(v1)/_actions/notifications";
-import { ToolTip } from "./tool-tip";
-import Link from "next/link";
 import dayjs from "@/lib/dayjs";
-import Btn from "./btn";
+import { deepCopy } from "@/lib/deep-copy";
+import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 import { dispatchSlice } from "@/store/slicers";
-import { deepCopy } from "@/lib/deep-copy";
+import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
+import { AlertTriangle, Archive, Bell, Dot } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
+
+import { Badge } from "../ui/badge";
+import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { ScrollArea } from "../ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import Btn from "./btn";
 import LinkableNode from "./link-node";
+import { ToolTip } from "./tool-tip";
 
 export default function NotificationComponent({}) {
     const [notificationCount, setNotificationCount] = useState(0);
     const notifications = useAppSelector(
-        (state) => state.slicers?.notifications
+        (state) => state.slicers?.notifications,
     );
 
     useEffect(() => {
@@ -80,15 +82,15 @@ export default function NotificationComponent({}) {
                         variant="outline"
                         size="sm"
                         className={cn(
-                            "rounded-full relative h-auto  space-x-2",
-                            notificationCount > 0 ? "p-1" : "p-1"
+                            "relative h-auto space-x-2  rounded-full",
+                            notificationCount > 0 ? "p-1" : "p-1",
                         )}
                     >
                         <Bell className="size-4 text-muted-foreground" />
                         {notificationCount > 0 && (
                             <Badge
                                 variant="default"
-                                className="p-0.5 leading-none px-1"
+                                className="p-0.5 px-1 leading-none"
                             >
                                 {notificationCount}
                             </Badge>
@@ -97,7 +99,7 @@ export default function NotificationComponent({}) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                     align="end"
-                    className="w-[400px] bg-white relative shadow-xl rounded-lg z-[999]"
+                    className="relative z-[999] w-[400px] rounded-lg bg-white shadow-xl"
                 >
                     <Tabs defaultValue="inbox" className="">
                         <TabsList className="grid w-full grid-cols-2">
@@ -106,7 +108,7 @@ export default function NotificationComponent({}) {
                         </TabsList>
                         <TabsContent value="inbox">
                             <NotificationList type="inbox" setOpen={setOpen} />
-                            <div className="flex border-t justify-center items-center p-2">
+                            <div className="flex items-center justify-center border-t p-2">
                                 <Button variant="ghost">Archive All</Button>
                             </div>
                         </TabsContent>
@@ -130,29 +132,27 @@ function NotificationList({
     setOpen;
 }) {
     const notifications = useAppSelector(
-        (state) => state.slicers.notifications
+        (state) => state.slicers.notifications,
     );
 
     return (
-        <ScrollArea className="  -mt-2 min-h-[400px] h-[350px] ">
+        <ScrollArea className="  -mt-2 h-[350px] min-h-[400px] ">
             <div className="divide-y">
-                {
-                    // Array(30)
-                    //   .fill(null)
-                    //   .map((a) => notifications?.[0] as any)
-                    //   .filter(Boolean)
-                    notifications?.map((item, index) => (
-                        <NotificationItem
-                            type={type}
-                            onClick={() => {
-                                setOpen(false);
-                            }}
-                            key={index}
-                            index={index}
-                            item={item}
-                        />
-                    ))
-                }
+                {// Array(30)
+                //   .fill(null)
+                //   .map((a) => notifications?.[0] as any)
+                //   .filter(Boolean)
+                notifications?.map((item, index) => (
+                    <NotificationItem
+                        type={type}
+                        onClick={() => {
+                            setOpen(false);
+                        }}
+                        key={index}
+                        index={index}
+                        item={item}
+                    />
+                ))}
             </div>
         </ScrollArea>
     );
@@ -170,7 +170,7 @@ function NotificationItem({
 }) {
     const visible = type == "inbox" ? !item.archived : item.archived;
     const notifications = useAppSelector(
-        (state) => state.slicers.notifications
+        (state) => state.slicers.notifications,
     );
     const [archiving, startTransition] = useTransition();
     if (!visible) return null;
@@ -190,8 +190,8 @@ function NotificationItem({
         });
     }
     return (
-        <div className="relative group" key={item.id}>
-            <Button variant="ghost" className="border-b w-full h-full p-4 py-3">
+        <div className="group relative" key={item.id}>
+            <Button variant="ghost" className="h-full w-full border-b p-4 py-3">
                 <LinkableNode
                     href={item.link
                         ?.replace("/hrm/jobs", "/contractor/jobs")
@@ -203,15 +203,15 @@ function NotificationItem({
                     className="mr-10 flex w-full items-center justify-start text-start"
                 >
                     <div className="">
-                        <div className=" rounded-full border p-1.5 bg-amber-50">
-                            <AlertTriangle className="text-amber-500 h-5 w-5" />
+                        <div className=" rounded-full border bg-amber-50 p-1.5">
+                            <AlertTriangle className="h-5 w-5 text-amber-500" />
                         </div>
                     </div>
                     <div className="ml-4 space-y-1 ">
                         <p
                             className={cn(
                                 "text-sm  leading-snug",
-                                !item.seenAt ? "font-medium" : "font-normal"
+                                !item.seenAt ? "font-medium" : "font-normal",
                             )}
                         >
                             {item.message}
@@ -223,8 +223,8 @@ function NotificationItem({
                 </LinkableNode>
             </Button>
             {type == "inbox" && (
-                <div className="ml-auto absolute right-0 top-0 m-4 font-medium flex flex-col items-end">
-                    <div className="group-hover:block hidden">
+                <div className="absolute right-0 top-0 m-4 ml-auto flex flex-col items-end font-medium">
+                    <div className="hidden group-hover:block">
                         <ToolTip info="Archive">
                             <Btn
                                 isLoading={archiving}
@@ -237,7 +237,7 @@ function NotificationItem({
                         </ToolTip>
                     </div>
                     {!item.seenAt && (
-                        <Dot className="w-10 h-10 text-blue-700" />
+                        <Dot className="h-10 w-10 text-blue-700" />
                     )}
                 </div>
             )}

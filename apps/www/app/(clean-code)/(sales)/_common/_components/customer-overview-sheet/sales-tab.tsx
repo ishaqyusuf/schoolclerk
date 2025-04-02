@@ -1,3 +1,6 @@
+import { Icons } from "@/components/_v1/icons";
+import { TCell } from "@/components/(clean-code)/data-table/table-cells";
+import { _modal } from "@/components/common/modal/provider";
 import {
     Table,
     TableBody,
@@ -6,19 +9,18 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { TabsContent } from "@/components/ui/tabs";
-import { customerStore } from "./store";
-import { TCell } from "@/components/(clean-code)/data-table/table-cells";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/_v1/icons";
-import { _modal } from "@/components/common/modal/provider";
+
+import { Button } from "@gnd/ui/button";
+
 import { openTxForm } from "../tx-form";
+import { customerStore } from "./store";
 
 export default function SalesTab() {
     const ctx = customerStore();
     return (
         <TabsContent value="sales">
             <div className="">
-                <div className="flex gap-4 justify-end">
+                <div className="flex justify-end gap-4">
                     <Button
                         onClick={() => {
                             // _modal.close();
@@ -54,12 +56,12 @@ export default function SalesTab() {
                                     <TCell.Date>{order.createdAt}</TCell.Date>
                                 </TCell>
                                 <TCell>
-                                    <TCell.Secondary className="uppercase font-mono">
+                                    <TCell.Secondary className="font-mono uppercase">
                                         {order.orderId}
                                     </TCell.Secondary>
                                 </TCell>
                                 <TCell>
-                                    <TCell.Secondary className="uppercase font-mono">
+                                    <TCell.Secondary className="font-mono uppercase">
                                         {order.po}
                                     </TCell.Secondary>
                                 </TCell>

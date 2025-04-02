@@ -1,12 +1,8 @@
 "use client";
+
 import { useContext, useEffect, useState } from "react";
-import {
-    DykeItemFormContext,
-    useDykeForm,
-} from "../../../../_hooks/form-context";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import useMultiDykeForm from "../../../../_hooks/use-multi-generator";
-import { cn } from "@/lib/utils";
+import { Icons } from "@/components/_v1/icons";
+import Money from "@/components/_v1/money";
 import {
     Table,
     TableBody,
@@ -15,9 +11,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/_v1/icons";
-import Money from "@/components/_v1/money";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
+
+import { Button } from "@gnd/ui/button";
+
+import {
+    DykeItemFormContext,
+    useDykeForm,
+} from "../../../../_hooks/form-context";
+import useMultiDykeForm from "../../../../_hooks/use-multi-generator";
 
 export default function MultiComponentRender({ Render, line = false }) {
     const form = useDykeForm();
@@ -29,10 +32,10 @@ export default function MultiComponentRender({ Render, line = false }) {
     const total = form.watch(`itemArray.${item.rowIndex}.sectionPrice`);
     if (mdf.ready)
         return (
-            <div className="overflow-auto max-w-[100vw]">
-                <div className="flex flex-col sw-[200vw]  md:w-auto">
+            <div className="max-w-[100vw] overflow-auto">
+                <div className="sw-[200vw] flex flex-col  md:w-auto">
                     {line ? (
-                        <div className="max-h-[300px] px-8 -mx-8 overflow-auto">
+                        <div className="-mx-8 max-h-[300px] overflow-auto px-8">
                             <Table id="housePackageTable">
                                 <TableHeader>
                                     <TableHead className="">Sn.</TableHead>
@@ -79,7 +82,7 @@ export default function MultiComponentRender({ Render, line = false }) {
                                         <TableRow
                                             className={cn(
                                                 tab.deleted && "hidden",
-                                                "border-none"
+                                                "border-none",
                                             )}
                                             key={index}
                                         >
@@ -126,7 +129,7 @@ export default function MultiComponentRender({ Render, line = false }) {
                                         }}
                                         size={"sm"}
                                     >
-                                        <Icons.add className="size-4 mr-2" />
+                                        <Icons.add className="mr-2 size-4" />
                                         <span>Add</span>
                                     </Button>
                                 </div>
@@ -141,8 +144,8 @@ export default function MultiComponentRender({ Render, line = false }) {
                             <TabsList
                                 defaultValue={mdf.tabs?.[0]?.title}
                                 className={cn(
-                                    line && "flex flex-col w-1/3",
-                                    "h-auto"
+                                    line && "flex w-1/3 flex-col",
+                                    "h-auto",
                                 )}
                             >
                                 {mdf.tabs?.map((tab, index) => (
@@ -157,7 +160,7 @@ export default function MultiComponentRender({ Render, line = false }) {
                             </TabsList>
                             {mdf.tabs?.map((tab, index) => (
                                 <TabsContent value={tab.title} key={index}>
-                                    <div className="h-[300px] px-8 -mx-8 overflow-auto">
+                                    <div className="-mx-8 h-[300px] overflow-auto px-8">
                                         <Render componentTitle={tab.title} />
                                     </div>
                                 </TabsContent>

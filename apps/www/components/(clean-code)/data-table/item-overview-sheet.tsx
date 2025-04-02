@@ -1,5 +1,6 @@
 import React from "react";
-import { useInfiniteDataTable } from "./use-data-table";
+import { Icons } from "@/components/_v1/icons";
+import { Separator } from "@/components/ui/separator";
 import {
     Sheet,
     SheetClose,
@@ -8,21 +9,24 @@ import {
     SheetHeader,
     SheetTitle,
 } from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, X } from "lucide-react";
-import { Kbd } from "../kbd";
-import { Separator } from "@/components/ui/separator";
-import { Icons } from "@/components/_v1/icons";
-import { cva, VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 import { PrimitiveDivProps } from "@/types/type";
+import { cva, VariantProps } from "class-variance-authority";
+import { ChevronDown, ChevronUp, X } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
+
+import { Kbd } from "../kbd";
+import { useInfiniteDataTable } from "./use-data-table";
+
 import "./overview-sheet-style.css";
+
 // import { SheetHeader } from "@/components/ui/sheet";
 interface Props {
     // title?: string;
@@ -77,12 +81,12 @@ export function SecondaryTabSheet({
                 <SheetTitle
                     className={cn(
                         titleClassName,
-                        "text-left flex-1 truncate uppercase"
+                        "flex-1 truncate text-left uppercase",
                     )}
                 >
                     {title}
                 </SheetTitle>
-                <div className="flex items-center gap-1 h-7">
+                <div className="flex h-7 items-center gap-1">
                     {children}
                     <Separator orientation="vertical" className="mx-1" />
 
@@ -115,12 +119,12 @@ export function TableSheetHeader({
 
     const nextId = React.useMemo(
         () => table.getCoreRowModel().flatRows[index + 1]?.id,
-        [index, table]
+        [index, table],
     );
 
     const prevId = React.useMemo(
         () => table.getCoreRowModel().flatRows[index - 1]?.id,
-        [index, table]
+        [index, table],
     );
     const onPrev = React.useCallback(() => {
         if (prevId) {
@@ -154,17 +158,17 @@ export function TableSheetHeader({
         return () => document.removeEventListener("keydown", down);
     }, [selectedRowKey, onNext, onPrev]);
     return (
-        <SheetHeader className="sticky top-0 bg-background   overview-sheet-header">
+        <SheetHeader className="overview-sheet-header sticky top-0   bg-background">
             <div className="flex items-center justify-between gap-2">
                 <SheetTitle
                     className={cn(
                         titleClassName,
-                        "text-left truncate uppercase"
+                        "truncate text-left uppercase",
                     )}
                 >
                     {title}
                 </SheetTitle>
-                <div className="flex items-center gap-1 h-7">
+                <div className="flex h-7 items-center gap-1">
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>

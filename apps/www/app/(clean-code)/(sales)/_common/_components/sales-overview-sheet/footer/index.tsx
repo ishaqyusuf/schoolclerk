@@ -6,9 +6,10 @@ import { revalidateTable } from "@/components/(clean-code)/data-table/use-infini
 import { Menu } from "@/components/(clean-code)/menu";
 import { useSalesPreviewModal } from "@/components/modals/sales-preview-modal";
 import { SalesEmailMenuItem } from "@/components/sales-email-menu-item";
-import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
 import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
 
 import { resetSalesStatAction } from "../../../data-actions/sales-stat-control.action";
 import {

@@ -1,8 +1,17 @@
 "use client";
 
+import { useCallback, useContext, useEffect, useState } from "react";
+import AutoComplete from "@/components/_v1/common/auto-complete";
+import {
+    Menu,
+    MenuItem,
+} from "@/components/_v1/data-table/data-table-row-actions";
+import { Icons } from "@/components/_v1/icons";
+import Money from "@/components/_v1/money";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
     Table,
     TableBody,
@@ -16,27 +25,20 @@ import { cn } from "@/lib/utils";
 import { ISalesOrder } from "@/types/sales";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { Layers } from "lucide-react";
-import { useCallback, useContext, useEffect, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
+
+import { Button } from "@gnd/ui/button";
+
 import { SalesFormContext, SalesRowContext } from "../ctx";
-import AutoComplete from "@/components/_v1/common/auto-complete";
-import { Label } from "@/components/ui/label";
-import Money from "@/components/_v1/money";
 import {
     useInvoiceItem,
     useInvoiceTotalEstimate,
 } from "../hooks/use-invoice-estimate";
-import {
-    Menu,
-    MenuItem,
-} from "@/components/_v1/data-table/data-table-row-actions";
-import { Icons } from "@/components/_v1/icons";
+import useSalesInvoiceRowActions from "../hooks/use-row-actions";
+import salesFormUtils from "../sales-form-utils";
 import { ISalesForm } from "../type";
 import EstimateFooter from "./estimate-footer";
-import { Button } from "@/components/ui/button";
-import salesFormUtils from "../sales-form-utils";
-import useSalesInvoiceRowActions from "../hooks/use-row-actions";
 import SupplierCell from "./supplier-cell";
 
 export function InvoiceTable() {
@@ -214,7 +216,7 @@ function InvoiceTableRowActions({ index, cid, field, length }) {
                                 .map((_, pos) => (
                                     <MenuItem
                                         key={pos}
-                                        className="w-10 inline-flex justify-center"
+                                        className="inline-flex w-10 justify-center"
                                         disabled={pos == index}
                                         onClick={() => actions.move(pos)}
                                     >
@@ -344,19 +346,17 @@ function InputHelper({
                 }
             }
         },
-        [wValue, valueKey, index, form, props, setExpression]
+        [wValue, valueKey, index, form, props, setExpression],
     );
     // ctx.
     return (
         <div className="relative">
             {expression && (
-                <div className="absolute -top-[60px] z-10 bg-white w-full shadow-xl border rounded-xl p-2">
+                <div className="absolute -top-[60px] z-10 w-full rounded-xl border bg-white p-2 shadow-xl">
                     {expression
                         ?.split(" ")
                         .filter(Boolean)
-                        .map((e, i) => (
-                            <p key={i}>{e}</p>
-                        ))}
+                        .map((e, i) => <p key={i}>{e}</p>)}
                 </div>
             )}
             <FormField<ISalesOrder>
@@ -381,7 +381,7 @@ function InputHelper({
                         />
                     ) : (
                         <Input
-                            className="h-8 p-1 uppercase font-medium"
+                            className="h-8 p-1 font-medium uppercase"
                             {...field}
                             {...props}
                             // onKeyDown={keyDown}

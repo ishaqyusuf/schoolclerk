@@ -1,34 +1,35 @@
 "use client";
 
+import { useMemo, useState, useTransition } from "react";
+import { deleteHomeTemplateAction } from "@/app/(v1)/(loggedIn)/settings/community/_components/home-template";
+import { openModal } from "@/lib/modal";
+import { cn } from "@/lib/utils";
+import { ICostChart, IHomeTemplate } from "@/types/community";
 import { TableShellProps } from "@/types/data-table";
 import { ColumnDef } from "@tanstack/react-table";
-import { useMemo, useState, useTransition } from "react";
+
+import { Button } from "@gnd/ui/button";
+
+import { Badge } from "../../ui/badge";
 import {
+    Cell,
     CheckColumn,
     ColumnHeader,
-    Cell,
-    PrimaryCellContent,
     DateCellContent,
+    PrimaryCellContent,
     SecondaryCellContent,
 } from "../columns/base-columns";
+import InstallCostCell from "../community/install-cost-cell";
+import ModelCostCell from "../community/model-cost-cell";
 import { DataTable2 } from "../data-table/data-table-2";
-import { BuilderFilter } from "../filters/builder-filter";
-import { ICostChart, IHomeTemplate } from "@/types/community";
-import { openModal } from "@/lib/modal";
-import { Badge } from "../../ui/badge";
-import { Button } from "../../ui/button";
-import Money from "../money";
-import { cn } from "@/lib/utils";
 import {
     DeleteRowAction,
     RowActionCell,
     RowActionMenuItem,
     RowActionMoreMenu,
 } from "../data-table/data-table-row-actions";
-
-import ModelCostCell from "../community/model-cost-cell";
-import InstallCostCell from "../community/install-cost-cell";
-import { deleteHomeTemplateAction } from "@/app/(v1)/(loggedIn)/settings/community/_components/home-template";
+import { BuilderFilter } from "../filters/builder-filter";
+import Money from "../money";
 
 export default function ModelCostTableShell<T>({
     data,
@@ -146,7 +147,7 @@ export default function ModelCostTableShell<T>({
                 ),
             },
         ], //.filter(Boolean) as any,
-        [data, isPending]
+        [data, isPending],
     );
     return (
         <DataTable2

@@ -1,9 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { copyDykeSales } from "../../_actions/copy-dyke-sale";
-import { toast } from "sonner";
 import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import { copyDykeSales } from "../../_actions/copy-dyke-sale";
 
 export default function CopyFn() {
     return <></>;

@@ -1,18 +1,20 @@
 "use client";
 
 import * as React from "react";
-import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { Icons } from "@/components/_v1/icons";
-import { useForm } from "react-hook-form";
+import FormInput from "@/components/common/controls/form-input";
+import { Form } from "@/components/ui/form";
+import { _useAsync } from "@/lib/use-async";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
-import { _useAsync } from "@/lib/use-async";
-import { useRouter } from "next/navigation";
-import FormInput from "@/components/common/controls/form-input";
-import { RegisterSchema, registerSchema } from "./validation";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
 import { signupDealerAction } from "./action";
+import { RegisterSchema, registerSchema } from "./validation";
 
 interface SignInFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 

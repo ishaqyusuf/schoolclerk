@@ -1,8 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import FContentShell from "./f-content-shell";
-import { cn } from "@/lib/utils";
 import {
     createContext,
     use,
@@ -13,11 +10,17 @@ import {
     useState,
 } from "react";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
 import { usePathname, useSearchParams } from "next/navigation";
 import Portal from "@/components/_v1/portal";
-import { typedMemo } from "@/lib/hocs/typed-memo";
 import { Badge } from "@/components/ui/badge";
+import { typedMemo } from "@/lib/hocs/typed-memo";
+import { cn } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+
+import { Button } from "@gnd/ui/button";
+
+import FContentShell from "./f-content-shell";
+
 // import Link from "next/link";
 
 interface Props {
@@ -111,7 +114,7 @@ const useCtx = () => {
                     `tabs.${props.tabName || props.children}` as any,
                     {
                         ...props,
-                    }
+                    },
                 );
         },
         tabs,
@@ -135,7 +138,7 @@ function _FPageTabs({ children, promise, tabs, port }: Props) {
                         tabName: t.title,
                         // count: t.count
                         href: t.url,
-                    })
+                    }),
             );
             _values.form.reset({
                 tabs,
@@ -145,7 +148,7 @@ function _FPageTabs({ children, promise, tabs, port }: Props) {
     function Render() {
         return (
             <ctx.Provider value={_values}>
-                <FContentShell className="border-b flex-1 h-10 w-full">
+                <FContentShell className="h-10 w-full flex-1 border-b">
                     {children}
                     {_tabList &&
                         _tabList?.map((tab) => (
@@ -207,9 +210,9 @@ function Tab(props: TabProps) {
             size="sm"
             className={cn(
                 ct.tabData?.[props.tabName || props.children]?.current
-                    ? "border-b-2 border-blue-600 rounded-none"
+                    ? "rounded-none border-b-2 border-blue-600"
                     : "text-muted-foreground",
-                "h-10"
+                "h-10",
             )}
             asChild
             disabled={ct.tabData?.[props.tabName || props.children]?.current}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 import {
     Tooltip,
     TooltipContent,
@@ -8,10 +8,12 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { LoaderCircle, PanelLeftClose, PanelLeftOpen, X } from "lucide-react";
-import { DataTableViewOptions } from "./data-table-view-options";
-import { useEffect } from "react";
+
+import { Button } from "@gnd/ui/button";
+
 import { Kbd } from "../../kbd";
 import { useInfiniteDataTable } from "../use-data-table";
+import { DataTableViewOptions } from "./data-table-view-options";
 
 interface DataTableToolbarProps<TData> {
     // table: Table<TData>;
@@ -49,7 +51,7 @@ DataTableToolbarProps<TData>) {
 
     return (
         <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="sflex flex-wrap items-center gap-2 hidden">
+            <div className="sflex hidden flex-wrap items-center gap-2">
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger asChild>

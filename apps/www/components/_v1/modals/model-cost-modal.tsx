@@ -1,29 +1,29 @@
 "use client";
+
 import React, { memo, useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import Btn from "../btn";
-import BaseModal from "./base-modal";
-import { toast } from "sonner";
-import { UseFormReturn, useFieldArray, useForm } from "react-hook-form";
-import { Label } from "../../ui/label";
-import { Input } from "../../ui/input";
+import { _getModelCostStat } from "@/app/(v1)/_actions/community/_model-cost-stat";
+import {
+    _deleteCommunityModelCost,
+    _saveCommunitModelCostData,
+} from "@/app/(v1)/_actions/community/community-model-cost";
+import { saveModelCost } from "@/app/(v1)/_actions/community/model-costs";
+import { calculateCommunitModelCost } from "@/lib/community/community-utils";
+import { deepCopy } from "@/lib/deep-copy";
+import { cn, sum } from "@/lib/utils";
 import {
     ICommunityTemplate,
     ICostChart,
     IHomeTemplate,
 } from "@/types/community";
-import { ScrollArea } from "../../ui/scroll-area";
-import { DatePicker } from "../date-range-picker";
-import { Button } from "../../ui/button";
 import { Plus } from "lucide-react";
-import { saveModelCost } from "@/app/(v1)/_actions/community/model-costs";
-import { deepCopy } from "@/lib/deep-copy";
-import { cn, sum } from "@/lib/utils";
-import { calculateCommunitModelCost } from "@/lib/community/community-utils";
-import {
-    _deleteCommunityModelCost,
-    _saveCommunitModelCostData,
-} from "@/app/(v1)/_actions/community/community-model-cost";
+import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import { Badge } from "../../ui/badge";
+import { Checkbox } from "../../ui/checkbox";
 import {
     Form,
     FormControl,
@@ -31,10 +31,13 @@ import {
     FormItem,
     FormLabel,
 } from "../../ui/form";
-import { Checkbox } from "../../ui/checkbox";
-import { _getModelCostStat } from "@/app/(v1)/_actions/community/_model-cost-stat";
-import { Badge } from "../../ui/badge";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
+import { ScrollArea } from "../../ui/scroll-area";
+import Btn from "../btn";
 import ConfirmBtn from "../confirm-btn";
+import { DatePicker } from "../date-range-picker";
+import BaseModal from "./base-modal";
 
 export default function ModelCostModal({ community }: { community?: Boolean }) {
     const form = useForm<FormProps>({
@@ -52,7 +55,7 @@ export default function ModelCostModal({ community }: { community?: Boolean }) {
 
     async function init(data: IHomeTemplate) {
         let costs = deepCopy<ICostChart[]>(
-            (data as any)?.pivot?.modelCosts || data.costs || []
+            (data as any)?.pivot?.modelCosts || data.costs || [],
         )?.map((c) => {
             if (c.startDate) c.startDate = new Date(c.startDate);
             if (c.endDate) c.endDate = new Date(c.endDate);
@@ -97,7 +100,7 @@ export default function ModelCostModal({ community }: { community?: Boolean }) {
             Subtitle={({ data }) => <>{data?.project?.title}</>}
             Content={({ data }) => (
                 <Form {...form}>
-                    <div className="flex w-full divide-x -mb-10">
+                    <div className="-mb-10 flex w-full divide-x">
                         <CostHistory
                             form={form}
                             data={data}
@@ -105,7 +108,7 @@ export default function ModelCostModal({ community }: { community?: Boolean }) {
                             changeIndex={changeIndex}
                             index={index}
                         />
-                        <div className="grid flex-1 grid-cols-4  pl-2 gap-2">
+                        <div className="grid flex-1 grid-cols-4  gap-2 pl-2">
                             {fields.map(
                                 (field, fIndex) =>
                                     fIndex == index && (
@@ -118,7 +121,7 @@ export default function ModelCostModal({ community }: { community?: Boolean }) {
                                             changeIndex={changeIndex}
                                             index={index}
                                         />
-                                    )
+                                    ),
                             )}
                         </div>
                     </div>
@@ -170,7 +173,7 @@ export function CostForm({ form, data, fIndex, community, index }: Props) {
                 if (community) {
                     cost.meta = calculateCommunitModelCost(
                         cost.meta,
-                        data.project?.builder?.meta?.tasks
+                        data.project?.builder?.meta?.tasks,
                     ) as any;
 
                     cost.model = data.modelName;
@@ -183,7 +186,7 @@ export function CostForm({ form, data, fIndex, community, index }: Props) {
                         _cost as any,
                         data.id,
                         data.pivotId,
-                        form.getValues("includeCompleted")
+                        form.getValues("includeCompleted"),
                     );
                     form.setValue(`costs.${index}` as any, {
                         ...c,
@@ -211,7 +214,7 @@ export function CostForm({ form, data, fIndex, community, index }: Props) {
             <div className="col-span-2 grid gap-2">
                 <Label>From</Label>
                 <DatePicker
-                    className="w-auto h-8"
+                    className="h-8 w-auto"
                     setValue={(e) =>
                         form.setValue(`costs.${fIndex}.startDate`, e)
                     }
@@ -222,14 +225,14 @@ export function CostForm({ form, data, fIndex, community, index }: Props) {
             <div className="col-span-2 grid gap-2">
                 <Label>To</Label>
                 <DatePicker
-                    className="w-auto h-8"
+                    className="h-8 w-auto"
                     setValue={(e) =>
                         form.setValue(`costs.${fIndex}.endDate`, e)
                     }
                     value={form.getValues(`costs.${fIndex}.endDate`)}
                 />
             </div>
-            <div className="col-span-5 grid-cols-7 grid bg-slate-100 py-2">
+            <div className="col-span-5 grid grid-cols-7 bg-slate-100 py-2">
                 <Label className="col-span-3 mx-2">Tasks</Label>
                 <Label className="col-span-2">Cost ($)</Label>
                 <Label className="col-span-2">Tax ($)</Label>
@@ -238,7 +241,7 @@ export function CostForm({ form, data, fIndex, community, index }: Props) {
                 ? data?.project?.builder
                 : data?.builder
             )?.meta?.tasks?.map((t, _i) => (
-                <div key={_i} className="col-span-4 gap-2 grid-cols-7 grid">
+                <div key={_i} className="col-span-4 grid grid-cols-7 gap-2">
                     <div className="col-span-3">
                         <Label>{t.name}</Label>
                     </div>
@@ -248,7 +251,7 @@ export function CostForm({ form, data, fIndex, community, index }: Props) {
                             key="cost"
                             className="h-8"
                             {...form.register(
-                                `costs.${fIndex}.meta.costs.${t.uid}`
+                                `costs.${fIndex}.meta.costs.${t.uid}`,
                             )}
                         />
                     </div>
@@ -257,18 +260,18 @@ export function CostForm({ form, data, fIndex, community, index }: Props) {
                             type="number"
                             className="h-8"
                             {...form.register(
-                                `costs.${fIndex}.meta.tax.${t.uid}`
+                                `costs.${fIndex}.meta.tax.${t.uid}`,
                             )}
                         />
                     </div>
                 </div>
             ))}
-            <div className="col-span-4 border-t pt-2 my-3 flex space-x-4">
+            <div className="col-span-4 my-3 flex space-x-4 border-t pt-2">
                 <FormField
                     control={form.control}
                     name={"includeCompleted"}
                     render={({ field }) => (
-                        <FormItem className="space-x-2 space-y-0 flex items-center">
+                        <FormItem className="flex items-center space-x-2 space-y-0">
                             <FormControl>
                                 <Checkbox
                                     disabled={!community}
@@ -320,7 +323,7 @@ export function CostHistory({
         changeIndex(0);
     }
     return (
-        <div className="sm:w-2/5 space-y-2 pr-2">
+        <div className="space-y-2 pr-2 sm:w-2/5">
             <div className="">
                 <Label>Cost History</Label>
             </div>
@@ -329,35 +332,35 @@ export function CostHistory({
                     disabled={fields.some((f) => !f.createdAt) || !community}
                     onClick={createCost}
                     variant="outline"
-                    className="w-full h-7 mt-1"
+                    className="mt-1 h-7 w-full"
                 >
                     <Plus className="mr-2 size-4" />
                     <span>New Cost</span>
                 </Button>
             </div>
-            <ScrollArea className="max-h-[350px] h-[350px] w-full">
+            <ScrollArea className="h-[350px] max-h-[350px] w-full">
                 <div className="divide-y">
                     {/* {changing ? "CHANGING" : "CHANGE COMPLETE"} */}
                     {fields.map((f, i) => (
                         <div
-                            className="flex items-center space-x-2 group mr-2"
+                            className="group mr-2 flex items-center space-x-2"
                             key={i}
                         >
                             <Button
                                 variant={i == index ? "secondary" : "ghost"}
-                                className="text-sm cursor-pointer hover:bg-slate-200 h-8 w-full flex  p-0.5 px-2  "
+                                className="flex h-8 w-full cursor-pointer p-0.5 px-2  text-sm hover:bg-slate-200  "
                                 onClick={() => {
                                     changeIndex(i);
                                 }}
                             >
-                                <div className="flex justify-between flex-1 space-x-4">
+                                <div className="flex flex-1 justify-between space-x-4">
                                     <div className="text-start">
                                         {f.title || "New Cost"}
                                     </div>
                                     <div>
                                         <Badge className="" variant={"outline"}>
                                             {form.getValues(
-                                                `costStats.${f._id}`
+                                                `costStats.${f._id}`,
                                             ) || 0}
                                         </Badge>
                                     </div>
@@ -383,7 +386,7 @@ export function CostHistory({
                                 size="icon"
                                 className={cn(
                                     community &&
-                                        "group-hover:opacity-100 opacity-20"
+                                        "opacity-20 group-hover:opacity-100",
                                 )}
                                 trash
                             ></ConfirmBtn>

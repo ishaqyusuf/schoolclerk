@@ -1,25 +1,26 @@
 "use client";
 
-import FormInput from "@/components/common/controls/form-input";
-import { FileUploader } from "@/components/common/file-uploader";
-
-import { IStepProducts } from "../../../../../../../(v2)/(loggedIn)/sales-v2/form/components/step-items-list/item-section/step-products";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import FormSelect from "@/components/common/controls/form-select";
+import RenderForm from "@/_v2/components/common/render-form";
+import { LegacyDykeFormStepType } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
 import { Icons } from "@/components/_v1/icons";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { ProductImage } from "../../../../../../../(v2)/(loggedIn)/sales-v2/form/components/step-items-list/item-section/step-products/product";
+import { Search } from "@/components/(clean-code)/search";
+import FormCheckbox from "@/components/common/controls/form-checkbox";
+import FormInput from "@/components/common/controls/form-input";
+import FormSelect from "@/components/common/controls/form-select";
+import { FileUploader } from "@/components/common/file-uploader";
 import Modal from "@/components/common/modal";
 import { useModal } from "@/components/common/modal/provider";
-import ComponentDepsModal from "./component-deps-modal";
-import { cn, generateRandomString } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
-import { Search } from "@/components/(clean-code)/search";
-import { LegacyDykeFormStepType } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn, generateRandomString } from "@/lib/utils";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
+import { IStepProducts } from "../../../../../../../(v2)/(loggedIn)/sales-v2/form/components/step-items-list/item-section/step-products";
+import { ProductImage } from "../../../../../../../(v2)/(loggedIn)/sales-v2/form/components/step-items-list/item-section/step-products/product";
+import ComponentDepsModal from "./component-deps-modal";
 import { useStepComponentModal } from "./use-step-component-modal";
-import RenderForm from "@/_v2/components/common/render-form";
-import FormCheckbox from "@/components/common/controls/form-checkbox";
 
 interface Props {
     item: IStepProducts[number];
@@ -164,7 +165,7 @@ export default function StepComponentModal({ item, ctx }: Props) {
                                                                     label={size}
                                                                     type="number"
                                                                 />
-                                                            )
+                                                            ),
                                                         )}
                                                     </div>
                                                 </TabsContent>
@@ -184,10 +185,10 @@ export default function StepComponentModal({ item, ctx }: Props) {
                             </div>
                         </TabsContent>
                         <TabsContent value="step">
-                            <div className="flex gap-2 flex-col">
+                            <div className="flex flex-col gap-2">
                                 {stepS.fields.map((f, fieldIndex) => (
                                     <div
-                                        className="flex flex-col relative items-center group"
+                                        className="group relative flex flex-col items-center"
                                         key={f._id}
                                     >
                                         {fieldIndex != 0 && (
@@ -207,7 +208,7 @@ export default function StepComponentModal({ item, ctx }: Props) {
                                                     stepS.fields.filter(
                                                         (f, fi) =>
                                                             !f.id &&
-                                                            fi != fieldIndex
+                                                            fi != fieldIndex,
                                                     );
                                                 const emptyLength =
                                                     empties.length <= 0;
@@ -216,12 +217,12 @@ export default function StepComponentModal({ item, ctx }: Props) {
                                             }}
                                             options={door.stepTitles}
                                         />
-                                        <div className="absolute right-0  -mt-4 -mr-2 hidden group-hover:block">
+                                        <div className="absolute right-0  -mr-2 -mt-4 hidden group-hover:block">
                                             <Button
                                                 onClick={() => {
                                                     stepS.remove(fieldIndex);
                                                 }}
-                                                className="p-1 w-6 h-6"
+                                                className="h-6 w-6 p-1"
                                                 size="sm"
                                                 variant="destructive"
                                             >

@@ -1,11 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { useDykeCtx, useDykeForm } from "../_hooks/form-context";
 import {
     Menu,
     MenuItem,
 } from "@/components/_v1/data-table/data-table-row-actions";
-import useDykeFormSaver from "../_hooks/useDykeFormSaver";
 import { ISalesType, SalesStatus } from "@/types/sales";
+
+import { Button } from "@gnd/ui/button";
+
+import { useDykeCtx, useDykeForm } from "../_hooks/form-context";
+import useDykeFormSaver from "../_hooks/useDykeFormSaver";
 import { sendDealerApprovalEmail } from "../../dealers/action";
 import { _dispatchSalesEmailEvent } from "../../dealers/email-actions";
 
@@ -22,7 +24,7 @@ export default function Evaluator({}) {
                         data.order.id,
                         data.order.type == ("order" as ISalesType)
                             ? "SALES_EVALUATED"
-                            : "QUOTE_EVALUATED"
+                            : "QUOTE_EVALUATED",
                     );
                 });
             })();

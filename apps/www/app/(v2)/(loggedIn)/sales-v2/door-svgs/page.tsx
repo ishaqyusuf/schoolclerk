@@ -1,7 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Icons } from "@/components/_v1/icons";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
     _dykeDoorsSvg,
@@ -10,9 +10,10 @@ import {
 } from "@/lib/data/dyke-doors-svg";
 import { uploadFile } from "@/lib/upload-file";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
 import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
 
 export default function DoorSvgsPage() {
     const [doors, setDoors] = useState<typeof dykeDoorsSvg>([]);
@@ -46,7 +47,7 @@ export default function DoorSvgsPage() {
     }
     return (
         <div>
-            <div className="fixed bg-white top-0 w-1/2 shadow-xl p-4">
+            <div className="fixed top-0 w-1/2 bg-white p-4 shadow-xl">
                 <div className="flex space-x-2">
                     <Input
                         value={link}
@@ -83,17 +84,17 @@ function Door({ title, url: _url, id, index, setDoors }: any) {
         // });
     }
     return (
-        <div className={cn("border rounded-lg p-1")} id={`door-${index}`}>
+        <div className={cn("rounded-lg border p-1")} id={`door-${index}`}>
             <div className="">{id}</div>
             {!svg || load ? (
                 <>
                     {load ? (
                         <div className="relative">
-                            <div className="absolute top-0 right-0 -m-4">
+                            <div className="absolute right-0 top-0 -m-4">
                                 {load && (
                                     <Button
                                         onClick={save}
-                                        className="w-8 h-8"
+                                        className="h-8 w-8"
                                         size={"icon"}
                                     >
                                         <Icons.copy className="size-4" />
@@ -126,7 +127,7 @@ function Door({ title, url: _url, id, index, setDoors }: any) {
                                     setUrl(nurl);
                                     const upload = await uploadFile(
                                         nurl,
-                                        "dyke"
+                                        "dyke",
                                     );
                                     console.log(upload);
                                 }

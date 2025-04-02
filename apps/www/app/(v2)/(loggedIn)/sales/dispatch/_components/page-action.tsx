@@ -1,9 +1,11 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import { Icons } from "@/components/_v1/icons";
 import { useModal } from "@/components/common/modal/provider";
-import { Button } from "@/components/ui/button";
-import { useParams } from "next/navigation";
+
+import { Button } from "@gnd/ui/button";
+
 import DispatchModal from "../_dispatch-modal";
 
 export default function PageAction() {

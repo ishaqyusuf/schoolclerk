@@ -1,15 +1,17 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { Label } from "../ui/label";
-import { UploadFolders, uploadFile } from "@/lib/upload-file";
-import { Cloud, Upload, UploadIcon } from "lucide-react";
-import { toast } from "sonner";
 import Image from "next/image";
 import { env } from "@/env.mjs";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { uploadFile, UploadFolders } from "@/lib/upload-file";
+import { Cloud, Upload, UploadIcon } from "lucide-react";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
+
 import { Icons } from "../_v1/icons";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 interface Props {
     src?: string | null;
@@ -74,7 +76,7 @@ export function FileUploader({
             {label && <Label>{label}</Label>}
             <div className="flex flex-col items-center justify-center space-y-4">
                 {!assetId && onUpload ? (
-                    <div className="w-full max-w-md p-6 border-2 border-gray-400 border-dashed rounded-lg flex flex-col items-center justify-center space-y-2">
+                    <div className="flex w-full max-w-md flex-col items-center justify-center space-y-2 rounded-lg border-2 border-dashed border-gray-400 p-6">
                         <Cloud className="h-8 w-8 text-gray-500 dark:text-gray-400" />
                         <p className="text-gray-500 dark:text-gray-400">
                             Drag and drop your files here
@@ -101,9 +103,9 @@ export function FileUploader({
                 )}
                 {onUpload && (
                     <>
-                        <div className="w-full max-w-md flex items-center justify-center">
+                        <div className="flex w-full max-w-md items-center justify-center">
                             <label
-                                className="flex items-center gap-2 px-4 py-1 bg-gray-900 text-white rounded-lg cursor-pointer hover:bg-gray-800 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-100"
+                                className="flex cursor-pointer items-center gap-2 rounded-lg bg-gray-900 px-4 py-1 text-white hover:bg-gray-800 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-100"
                                 htmlFor="file-upload"
                             >
                                 <UploadIcon className="h-5 w-5" />
@@ -144,7 +146,7 @@ export function FileUploader({
                                         handleFileUpload("url");
                                     }}
                                     size="icon"
-                                    className="w-8 h-8"
+                                    className="h-8 w-8"
                                 >
                                     <Upload className="size-4" />
                                 </Button>
