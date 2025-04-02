@@ -1,8 +1,9 @@
 "use client";
 
-import * as SheetPrimitive from "@radix-ui/react-dialog";
-import { type VariantProps, cva } from "class-variance-authority";
 import * as React from "react";
+import * as SheetPrimitive from "@radix-ui/react-dialog";
+import { cva, type VariantProps } from "class-variance-authority";
+
 import { cn } from "../utils";
 
 const Sheet = SheetPrimitive.Root;
@@ -19,7 +20,7 @@ const SheetOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
-      "fixed inset-0 z-50 bg-[#f6f6f3]/60 dark:bg-black/60 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-50 bg-[#f6f6f3]/60 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 dark:bg-black/60",
       className,
     )}
     {...props}
@@ -51,6 +52,7 @@ interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     VariantProps<typeof sheetVariants> {
   stack?: boolean;
+  hideClose?: boolean;
 }
 
 const SheetContent = React.forwardRef<
@@ -72,7 +74,7 @@ const SheetContent = React.forwardRef<
       >
         <div
           className={cn(
-            "border w-full h-full bg-[#FAFAF9] dark:bg-[#121212] p-6 relative overflow-hidden",
+            "relative h-full w-full overflow-hidden border bg-[#FAFAF9] p-6 dark:bg-[#121212]",
             className,
           )}
         >
