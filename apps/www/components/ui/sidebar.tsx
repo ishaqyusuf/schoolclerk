@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Separator } from "@/components/ui/separator";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
     Tooltip,
@@ -18,6 +17,7 @@ import { PanelLeft } from "lucide-react";
 
 import { Button } from "@gnd/ui/button";
 import { Input } from "@gnd/ui/input";
+import { Sheet, SheetContent } from "@gnd/ui/sheet";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;

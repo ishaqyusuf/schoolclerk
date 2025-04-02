@@ -4,8 +4,9 @@ import { getCustomerFormAction } from "@/actions/get-customer-form";
 import { useCreateCustomerParams } from "@/hooks/use-create-customer-params";
 import useEffectLoader from "@/lib/use-effect-loader";
 
+import { SheetHeader, SheetTitle } from "@gnd/ui/sheet";
+
 import { CustomerForm } from "../forms/customer-form/customer-form";
-import { SheetHeader, SheetTitle } from "../ui/sheet";
 import { CustomSheet, CustomSheetContent } from "./custom-sheet-content";
 
 export function CustomerCreateSheet() {

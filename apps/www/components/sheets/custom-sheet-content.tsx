@@ -1,10 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Sheet, SheetContent, SheetContentProps } from "../ui/sheet";
 import { cva, VariantProps } from "class-variance-authority";
-import { ScrollArea } from "../ui/scroll-area";
+
+import { Sheet, SheetContent, SheetContentProps } from "@gnd/ui/sheet";
+
 import Portal from "../_v1/portal";
+import { ScrollArea } from "../ui/scroll-area";
 
 const sheetContentVariant = cva("flex flex-col h-screen w-full ", {
     variants: {
@@ -38,7 +40,7 @@ export function CustomSheet({ children, open, onOpenChange, ...props }: Props) {
                     "p-2 px-4",
                     sheetContentVariant({
                         ...(props as any),
-                    })
+                    }),
                 )}
             >
                 {children}
@@ -55,7 +57,7 @@ export function CustomSheetContentPortal({ children }) {
 }
 export function CustomSheetContent({ children = null, className = "" }) {
     return (
-        <ScrollArea className={cn("flex-1 -mx-4 px-4", className)}>
+        <ScrollArea className={cn("-mx-4 flex-1 px-4", className)}>
             {children}
         </ScrollArea>
     );

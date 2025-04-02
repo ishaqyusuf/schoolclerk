@@ -13,7 +13,7 @@ import {
     SheetFooter,
     SheetHeader,
     SheetTitle,
-} from "../../ui/sheet";
+} from "@gnd/ui/sheet";
 
 export interface BaseModalProps<T> {
     onOpen?(data: T);

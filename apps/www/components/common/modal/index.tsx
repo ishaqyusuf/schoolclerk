@@ -4,15 +4,6 @@ import { Dispatch, SetStateAction, useCallback, useEffect } from "react";
 import Btn from "@/components/_v1/btn";
 import { Icons } from "@/components/_v1/icons";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-    Sheet,
-    SheetContent,
-    SheetContentProps,
-    SheetDescription,
-    SheetFooter,
-    SheetHeader,
-    SheetTitle,
-} from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { PrimitiveDivProps } from "@/types/type";
 import { cva, VariantProps } from "class-variance-authority";
@@ -27,6 +18,15 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@gnd/ui/dialog";
+import {
+    Sheet,
+    SheetContent,
+    SheetContentProps,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+} from "@gnd/ui/sheet";
 
 import { _modal, ModalContextProps, ModalType, useModal } from "./provider";
 

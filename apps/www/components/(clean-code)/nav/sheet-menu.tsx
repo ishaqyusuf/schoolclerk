@@ -1,16 +1,16 @@
 import Link from "next/link";
 import { Icons } from "@/components/_v1/icons";
+import { cn } from "@/lib/utils";
+import { MenuIcon } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
 import {
     Sheet,
     SheetContent,
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
-import { MenuIcon } from "lucide-react";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/sheet";
 
 import { siteNavStore } from "../site-nav/store";
 import Menu from "./menu";
