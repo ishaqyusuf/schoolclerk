@@ -7,10 +7,10 @@ import {
     MenuItem,
 } from "@/components/_v1/data-table/data-table-row-actions";
 import StatusBadge from "@/components/_v1/status-badge";
-import { Badge } from "@/components/ui/badge";
 import { getBadgeColor } from "@/lib/status-badge";
 import { toast } from "sonner";
 
+import { Badge } from "@gnd/ui/badge";
 import {
     DropdownMenuLabel,
     DropdownMenuSeparator,

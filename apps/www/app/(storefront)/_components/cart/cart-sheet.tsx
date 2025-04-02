@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { Icons } from "@/components/_v1/icons";
 import Money from "@/components/_v1/money";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
+import { Badge } from "@gnd/ui/badge";
 import { buttonVariants } from "@gnd/ui/button";
+import { Separator } from "@gnd/ui/separator";
 import {
     Sheet,
     SheetContent,

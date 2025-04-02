@@ -1,13 +1,6 @@
 import * as React from "react";
 import usePersistDirtyForm from "@/_v2/hooks/use-persist-dirty-form";
 import { SalesFormResponse } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-form";
-import {
-    Table,
-    TableBody,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
 import { screens } from "@/lib/responsive";
 import SalesComponentModal from "@/lib/sales/sales-component-modal";
 import { useLoader } from "@/lib/use-loader";
@@ -18,6 +11,13 @@ import { useFieldArray } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
 
 import { Button } from "@gnd/ui/button";
+import {
+    Table,
+    TableBody,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@gnd/ui/table";
 
 import salesUtils from "../sales-utils";
 import InvoiceTableFooter from "./invoice-table-footer";

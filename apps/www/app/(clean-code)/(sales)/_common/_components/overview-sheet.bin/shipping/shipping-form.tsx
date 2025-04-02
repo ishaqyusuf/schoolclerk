@@ -1,23 +1,25 @@
-import { SecondaryTabSheet } from "@/components/(clean-code)/data-table/item-overview-sheet";
-import { useItemProdViewContext } from "../production/use-hooks";
-import { Badge } from "@/components/ui/badge";
-import { GetSalesOverview } from "../../../use-case/sales-item-use-case";
-import { useForm } from "react-hook-form";
 import { createContext, useContext, useEffect } from "react";
-import { Form } from "@/components/ui/form";
 import NumberPicker from "@/components/(clean-code)/custom/controlled/number-picker";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { SecondaryTabSheet } from "@/components/(clean-code)/data-table/item-overview-sheet";
+import Button from "@/components/common/button";
+import FormSelect from "@/components/common/controls/form-select";
+import { cn } from "@/lib/utils";
+import { CheckCircle2Icon } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Badge } from "@gnd/ui/badge";
+import { Form } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+
 import {
     createSalesDispatchUseCase,
     SalesDispatchForm,
     salesDispatchFormUseCase,
 } from "../../../use-case/sales-dispatch-use-case";
-import { cn } from "@/lib/utils";
-import Button from "@/components/common/button";
-import { toast } from "sonner";
-import FormSelect from "@/components/common/controls/form-select";
-import { Label } from "@/components/ui/label";
-import { CheckCircle2Icon } from "lucide-react";
+import { GetSalesOverview } from "../../../use-case/sales-item-use-case";
+import { useItemProdViewContext } from "../production/use-hooks";
 
 const useShippingFormCtx = () => {
     const ctx = useItemProdViewContext();
@@ -39,7 +41,7 @@ const useShippingFormCtx = () => {
     };
 };
 const ShippingFormCtx = createContext<ReturnType<typeof useShippingFormCtx>>(
-    null as any
+    null as any,
 );
 
 export function ShippingForm({}) {
@@ -82,7 +84,7 @@ export function ShippingForm({}) {
     }
     return (
         <ShippingFormCtx.Provider value={ctx}>
-            <div className="flex flex-col secondary-tab">
+            <div className="secondary-tab flex flex-col">
                 <SecondaryTabSheet
                     title="Create Shipping"
                     onBack={() => mainCtx.closeSecondaryTab()}
@@ -90,7 +92,7 @@ export function ShippingForm({}) {
                 {/* <ScrollArea className="w-[600px] h-[80vh] flex flex-col"> */}
                 <ScrollArea className="o-scrollable-content-area ">
                     <Form {...form}>
-                        <div className="border-b flex p-4 gap-4">
+                        <div className="flex gap-4 border-b p-4">
                             <div className="flex items-center gap-2">
                                 <Label>Dispatch Mode</Label>
                                 <FormSelect
@@ -121,7 +123,7 @@ export function ShippingForm({}) {
                                 Create
                             </Button>
                         </div>
-                        <ScrollArea className="w-[600px] h-[65vh] flex flex-col">
+                        <ScrollArea className="flex h-[65vh] w-[600px] flex-col">
                             <div className="p-4">
                                 {dispatchables?.map((item, index) => (
                                     <ShippingItemLine item={item} key={index} />
@@ -150,10 +152,10 @@ function ShippingItemLine({
         <div className="flex flex-col border-b bg-white">
             <div
                 className={cn(
-                    "flex-1 h-auto w-full justify-start cursor-pointer p-2",
+                    "h-auto w-full flex-1 cursor-pointer justify-start p-2",
                     itemForm?.selected
                         ? "bg-muted-foreground/5"
-                        : "hover:bg-muted-foreground/10"
+                        : "hover:bg-muted-foreground/10",
                 )}
                 onClick={() => {
                     if (!deliverableQty.total) {
@@ -166,14 +168,14 @@ function ShippingItemLine({
                     if (val && !itemForm?.deliveryQty) {
                         form.setValue(
                             `selection.${item.uid}.deliveryQty`,
-                            deliverableQty
+                            deliverableQty,
                         );
                     }
                 }}
             >
                 <div className="flex w-full justify-start text-start">
                     <div className="flex-col space-y-2">
-                        <span className="text-sm uppercase font-mono">
+                        <span className="font-mono text-sm uppercase">
                             {item.title}
                         </span>
                         <div>
@@ -193,7 +195,7 @@ function ShippingItemLine({
                         <CheckCircle2Icon
                             className={cn(
                                 "size-4",
-                                itemForm?.selected && "text-green-500"
+                                itemForm?.selected && "text-green-500",
                             )}
                         />
                     ) : (

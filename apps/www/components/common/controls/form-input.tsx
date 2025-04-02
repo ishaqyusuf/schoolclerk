@@ -1,19 +1,14 @@
 import { InputHTMLAttributes } from "react";
-import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-} from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Textarea } from "@/components/ui/textarea";
 import { useDataSkeleton } from "@/hooks/use-data-skeleton";
 import { cn } from "@/lib/utils";
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
 
 import { Button } from "@gnd/ui/button";
+import { FormControl, FormField, FormItem, FormLabel } from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
+import { Skeleton } from "@gnd/ui/skeleton";
+import { Textarea } from "@gnd/ui/textarea";
 
 interface Props<T> {
     label?: string;

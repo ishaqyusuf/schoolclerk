@@ -1,25 +1,27 @@
-import { LegacyDykeFormStepType } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
-import { IStepProducts } from "../../../../../../../(v2)/(loggedIn)/sales-v2/form/components/step-items-list/item-section/step-products";
-import { useFieldArray, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import stepHelpers from "@/app/(clean-code)/(sales)/sales-book/(form)/_utils/helpers/step-helper";
 import {
     getDoorSizesUseCase,
     getDykeStepTitlesOptionUseCase,
     getMouldingSpeciesUseCase,
 } from "@/app/(clean-code)/(sales)/_common/use-case/step-component-use-case";
+import { LegacyDykeFormStepType } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
+import stepHelpers from "@/app/(clean-code)/(sales)/sales-book/(form)/_utils/helpers/step-helper";
 import { LabelValue } from "@/app/(clean-code)/type";
-import { cn } from "@/lib/utils";
-import { ProductImage } from "../../../../../../../(v2)/(loggedIn)/sales-v2/form/components/step-items-list/item-section/step-products/product";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Search } from "@/components/(clean-code)/search";
-import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/_v1/icons";
+import { Search } from "@/components/(clean-code)/search";
+import { cn } from "@/lib/utils";
+import { useFieldArray, useForm } from "react-hook-form";
+
+import { Label } from "@gnd/ui/label";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+
+import { IStepProducts } from "../../../../../../../(v2)/(loggedIn)/sales-v2/form/components/step-items-list/item-section/step-products";
+import { ProductImage } from "../../../../../../../(v2)/(loggedIn)/sales-v2/form/components/step-items-list/item-section/step-products/product";
 
 type TabType = "general" | "price" | "deleted" | "restore" | "step";
 export function useStepComponentModal(
     ctx: LegacyDykeFormStepType,
-    item: IStepProducts[number]
+    item: IStepProducts[number],
 ) {
     const mainForm = ctx.mainCtx.form;
     const { ...defaultValues } = item;
@@ -66,13 +68,13 @@ export function useStepComponentModal(
     };
     function PriceInfo({ prod }: { prod: IStepProducts[number] }) {
         let priceLen = Object.values(prod.door?.meta?.doorPrice || {}).filter(
-            Boolean
+            Boolean,
         ).length;
         if (priceLen)
             return (
                 <div id="" className="absolute right-0 top-0 flex ">
                     <Label>{priceLen}</Label>
-                    <Icons.dollar className="text-muted-foreground size-4" />
+                    <Icons.dollar className="size-4 text-muted-foreground" />
                 </div>
             );
         return null;
@@ -96,8 +98,8 @@ export function useStepComponentModal(
                     }}
                     key={item.id}
                     className={cn(
-                        "flex relative flex-col items-center hover:shadow-sm hover:border",
-                        selected && isRestore && "border  border-purple-600"
+                        "relative flex flex-col items-center hover:border hover:shadow-sm",
+                        selected && isRestore && "border  border-purple-600",
                     )}
                 >
                     {/* {restores[item.uid] && tab == "restore" && (
@@ -106,7 +108,7 @@ export function useStepComponentModal(
                             </div>
                         )} */}
                     <PriceInfo prod={item} />
-                    <div className="w-2/3 h-16s overflow-hidden">
+                    <div className="h-16s w-2/3 overflow-hidden">
                         <ProductImage aspectRatio={1 / 1} item={item} />
                     </div>
                     <div className="">
@@ -123,7 +125,7 @@ export function useStepComponentModal(
                 Item={ItemRender}
             >
                 <Search.SearchInput label="Search" />
-                <ScrollArea className="h-[450px] mt-4">
+                <ScrollArea className="mt-4 h-[450px]">
                     <div className="grid grid-cols-3 gap-2">
                         <Search.RenderItem />
                     </div>
@@ -174,10 +176,10 @@ export function useDoor(isDoor = true) {
                         const result = await getDoorSizesUseCase(height); //.then((result) => {
                         // console.log(result);
                         d[height] = Array.from(
-                            new Set(result.map((s) => s.dimFt))
+                            new Set(result.map((s) => s.dimFt)),
                         );
                         // });/
-                    })
+                    }),
                 );
                 // console.log(d);
                 setHeight(d);

@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { DataLine } from "@/components/(clean-code)/data-table/Dl";
 import { TCell } from "@/components/(clean-code)/data-table/table-cells";
-import { Label } from "@/components/ui/label";
 import { ExternalLink } from "lucide-react";
 
 import { Button } from "@gnd/ui/button";
+import { Label } from "@gnd/ui/label";
 
 import { composeSalesUrl } from "../../../utils/sales-utils";
 import { useSalesOverview } from "../overview-provider";

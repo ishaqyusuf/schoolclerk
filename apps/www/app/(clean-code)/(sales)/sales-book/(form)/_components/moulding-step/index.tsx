@@ -4,7 +4,9 @@ import { DataLine } from "@/components/(clean-code)/data-table/Dl";
 import { Menu } from "@/components/(clean-code)/menu";
 import { MoneyBadge } from "@/components/(clean-code)/money-badge";
 import { AnimatedNumber } from "@/components/animated-number";
-import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+
+import { Label } from "@gnd/ui/label";
 import {
     Table,
     TableBody,
@@ -12,8 +14,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { cn } from "@/lib/utils";
+} from "@gnd/ui/table";
 
 import { MouldingClass } from "../../_utils/helpers/zus/moulding-class";
 import { LineInput } from "../line-input";

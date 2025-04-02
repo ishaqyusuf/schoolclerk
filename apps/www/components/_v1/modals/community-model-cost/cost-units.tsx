@@ -1,11 +1,16 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
     DateCellContent,
     PrimaryCellContent,
 } from "@/components/_v1/columns/base-columns";
 import { HomeInvoiceColumn } from "@/components/_v1/columns/community-columns";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ExtendedHome, ICommunityTemplate } from "@/types/community";
+import dayjs from "dayjs";
+import { useForm } from "react-hook-form";
+
+import { ScrollArea } from "@gnd/ui/scroll-area";
 import {
     Table,
     TableBody,
@@ -13,11 +18,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { ExtendedHome, ICommunityTemplate } from "@/types/community";
-import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+} from "@gnd/ui/table";
 
 interface Props {
     model: ICommunityTemplate;
@@ -41,13 +42,13 @@ export default function CostUnits({ model, cost }: Props) {
                 return dayjs(home.createdAt).isBetween(
                     dayjs(cost.startDate),
                     dayjs(cost.endDate),
-                    "D"
+                    "D",
                 );
-            })
+            }),
         );
     }, [model, cost]);
     return (
-        <ScrollArea className="max-h-[350px] h-[350px] w-full">
+        <ScrollArea className="h-[350px] max-h-[350px] w-full">
             <Table>
                 <TableHeader>
                     <TableRow>

@@ -1,20 +1,21 @@
 "use client";
 
-import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
-
-import FormInput from "@/components/common/controls/form-input";
-import Modal from "@/components/common/modal";
-import { Form } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { ICustomerProfile } from "../type";
-import { saveCustomerProfile } from "../actions";
-import { useModal } from "@/components/common/modal/provider";
-import FormSelect from "@/components/common/controls/form-select";
-import salesData from "@/app/(v2)/(loggedIn)/sales/sales-data";
-import useEffectLoader from "@/lib/use-effect-loader";
 import { getTaxesDta } from "@/app/(clean-code)/(sales)/_common/data-access/tax.dta";
 import { getTaxListOptionUseCase } from "@/app/(clean-code)/(sales)/_common/use-case/sales-tax-use-case";
+import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
+import salesData from "@/app/(v2)/(loggedIn)/sales/sales-data";
+import FormInput from "@/components/common/controls/form-input";
+import FormSelect from "@/components/common/controls/form-select";
+import Modal from "@/components/common/modal";
+import { useModal } from "@/components/common/modal/provider";
+import useEffectLoader from "@/lib/use-effect-loader";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
+
+import { saveCustomerProfile } from "../actions";
+import { ICustomerProfile } from "../type";
 
 export default function CustomerProfileModal({
     defaultValues,
@@ -53,7 +54,7 @@ export default function CustomerProfileModal({
         <Form {...form}>
             <Modal.Content>
                 <Modal.Header title={`${id ? "Update" : "Create"} Profile`} />
-                <div className="grid gap-4 grid-cols-2">
+                <div className="grid grid-cols-2 gap-4">
                     <FormInput
                         control={form.control}
                         name={"title"}

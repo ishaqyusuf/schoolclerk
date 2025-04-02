@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { SquarePaymentStatus, validateSquarePayment } from "@/_v2/lib/square";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 
 import { Button } from "@gnd/ui/button";
+import { Card, CardContent, CardFooter } from "@gnd/ui/card";
 
 export default function SquarePaymentResponse({ params }) {
     const [paymentState, setPaymentState] =

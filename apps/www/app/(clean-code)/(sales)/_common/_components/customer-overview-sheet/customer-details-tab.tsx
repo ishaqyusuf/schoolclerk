@@ -1,18 +1,19 @@
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { TabsContent } from "@/components/ui/tabs";
-import { customerStore } from "./store";
-import { _modal } from "@/components/common/modal/provider";
 import { useEffect, useState } from "react";
 import { getCustomerGeneralInfoAction } from "@/actions/get-customer-general-info";
-import { AsyncFnType } from "@/types";
-import { Label } from "@/components/ui/label";
-import { Form } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-
-import Button from "@/components/common/button";
 import { updateCustomerEmailAction } from "@/actions/update-customer-email-action";
-import { toast } from "sonner";
+import Button from "@/components/common/button";
 import FormInput from "@/components/common/controls/form-input";
+import { _modal } from "@/components/common/modal/provider";
+import { AsyncFnType } from "@/types";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
+import { Table, TableBody, TableCell, TableRow } from "@gnd/ui/table";
+import { TabsContent } from "@gnd/ui/tabs";
+
+import { customerStore } from "./store";
 
 export default function CustomerDetailsTab() {
     const ctx = customerStore();

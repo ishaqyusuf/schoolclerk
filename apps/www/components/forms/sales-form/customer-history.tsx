@@ -1,4 +1,4 @@
-import { Label } from "@/components/ui/label";
+import { Label } from "@gnd/ui/label";
 
 export function CustomerHistory({ customerId }) {
     return (

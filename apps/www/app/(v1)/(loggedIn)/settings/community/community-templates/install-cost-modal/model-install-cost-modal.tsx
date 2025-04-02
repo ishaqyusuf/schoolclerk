@@ -6,7 +6,6 @@ import { updateCommunityModelInstallCost } from "@/app/(v1)/_actions/community/c
 import { updateModelInstallCost } from "@/app/(v1)/_actions/community/install-costs";
 import { getInstallCostsAction } from "@/app/(v1)/_actions/community/install-costs/get-install-costs.action";
 import { getSettingAction } from "@/app/(v1)/_actions/settings";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { deepCopy } from "@/lib/deep-copy";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/store";
@@ -26,7 +25,22 @@ import { Plus } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
+import { Badge } from "@gnd/ui/badge";
+import { Button } from "@gnd/ui/button";
+import { FormField } from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+import { Switch } from "@gnd/ui/switch";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@gnd/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
 
 import Btn from "../../../../../../../components/_v1/btn";
 import {
@@ -35,20 +49,6 @@ import {
 } from "../../../../../../../components/_v1/columns/base-columns";
 import BaseModal from "../../../../../../../components/_v1/modals/base-modal";
 import Money from "../../../../../../../components/_v1/money";
-import { Badge } from "../../../../../../../components/ui/badge";
-import { Button } from "../../../../../../../components/ui/button";
-import { FormField } from "../../../../../../../components/ui/form";
-import { Label } from "../../../../../../../components/ui/label";
-import { ScrollArea } from "../../../../../../../components/ui/scroll-area";
-import { Switch } from "../../../../../../../components/ui/switch";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "../../../../../../../components/ui/table";
 
 export default function ModelInstallCostModal({ community = false }) {
     const route = useRouter();

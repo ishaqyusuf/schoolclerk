@@ -1,17 +1,6 @@
 import * as React from "react";
 import { findAddressAction } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-address";
 import { saveSalesAddressAction } from "@/app/(v2)/(loggedIn)/sales/_actions/save-sales-address";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { deepCopy } from "@/lib/deep-copy";
 import { useLoader } from "@/lib/use-loader";
 import { cn } from "@/lib/utils";
@@ -22,6 +11,7 @@ import { toast } from "sonner";
 import { OkImpl } from "ts-results";
 
 import { Button } from "@gnd/ui/button";
+import { Checkbox } from "@gnd/ui/checkbox";
 import {
     Dialog,
     DialogContent,
@@ -31,6 +21,16 @@ import {
     DialogTrigger,
 } from "@gnd/ui/dialog";
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@gnd/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
 
 import { ScrollArea } from "../../ui/scroll-area";
 import AutoComplete2 from "../auto-complete-tw";

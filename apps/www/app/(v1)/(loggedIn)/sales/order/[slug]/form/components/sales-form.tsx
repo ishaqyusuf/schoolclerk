@@ -16,8 +16,6 @@ import { Icons } from "@/components/_v1/icons";
 import { SalesCustomerModal } from "@/components/_v1/modals/sales-address-modal";
 import OrderPrinter from "@/components/_v1/print/order/order-printer";
 import UpdateSalesDate from "@/components/_v1/sales/update-sales-date";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { useDataPage } from "@/lib/data-page-context";
 import { isProdClient } from "@/lib/is-prod";
 import { openModal } from "@/lib/modal";
@@ -33,6 +31,8 @@ import { toast } from "sonner";
 import useDeepCompareEffect from "use-deep-compare-effect";
 
 import { Button } from "@gnd/ui/button";
+import { Label } from "@gnd/ui/label";
+import { Switch } from "@gnd/ui/switch";
 
 import salesUtils from "../sales-utils";
 import InfoCard from "./sales-info-address-form";

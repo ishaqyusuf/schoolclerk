@@ -1,5 +1,9 @@
-import { Shell } from "@/components/_v1/shells/shell";
 import { Metadata } from "next";
+import Link from "next/link";
+import QuickLogin from "@/components/_v1/quick-login";
+import { Shell } from "@/components/_v1/shells/shell";
+import { __isProd } from "@/lib/is-prod-server";
+
 import {
     Card,
     CardContent,
@@ -7,11 +11,10 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
-import Link from "next/link";
-import QuickLogin from "@/components/_v1/quick-login";
+} from "@gnd/ui/card";
+
 import { SignInForm } from "./signin-form";
-import { __isProd } from "@/lib/is-prod-server";
+
 export const metadata: Metadata = {
     title: "Sign In - GND Prodesk",
     description: "",
@@ -31,7 +34,7 @@ export default async function SigninPage() {
                 <CardContent className="grid gap-4">
                     <SignInForm />
                 </CardContent>
-                <CardFooter className="flex flex-wrap items-center space-x-4 justify-between gap-2">
+                <CardFooter className="flex flex-wrap items-center justify-between gap-2 space-x-4">
                     <Link
                         aria-label="Reset password"
                         href="/dealer/signup"

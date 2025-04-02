@@ -7,17 +7,16 @@ import {
     saveEmployeeAction,
 } from "@/app/(v1)/_actions/hrm/save-employee";
 import { staticRolesAction } from "@/app/(v1)/_actions/hrm/static-roles";
-
 import FormAutoCompleteInput from "@/components/common/controls/form-auto-complete-input";
 import FormInput from "@/components/common/controls/form-input";
-
 import Modal from "@/components/common/modal";
 import { useModal } from "@/components/common/modal/provider";
-import { Form } from "@/components/ui/form";
 import { employeeSchema } from "@/lib/validations/hrm";
 import { IUser } from "@/types/hrm";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
 
 interface Props {
     defaultData?;

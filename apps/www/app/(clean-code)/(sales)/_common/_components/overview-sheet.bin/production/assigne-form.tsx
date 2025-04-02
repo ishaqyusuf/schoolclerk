@@ -1,21 +1,23 @@
-import { useItemProdView } from "./use-hooks";
-import { Icons } from "@/components/_v1/icons";
 import { createContext, useContext, useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
-import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/form";
-import FormSelect from "@/components/common/controls/form-select";
-import { getSalesProdWorkersAsSelectOption } from "../../../use-case/sales-prod-workers-use-case";
-import useEffectLoader from "@/lib/use-effect-loader";
-import Button from "@/components/common/button";
+import { Icons } from "@/components/_v1/icons";
 import { DatePicker } from "@/components/(clean-code)/custom/controlled/date-picker";
 import NumberPicker from "@/components/(clean-code)/custom/controlled/number-picker";
+import Button from "@/components/common/button";
+import FormSelect from "@/components/common/controls/form-select";
+import useEffectLoader from "@/lib/use-effect-loader";
+import { cn } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
+
+import { getSalesProdWorkersAsSelectOption } from "../../../use-case/sales-prod-workers-use-case";
 import {
     createItemAssignmentUseCase,
     getItemAssignmentFormUseCase,
     ItemAssignmentForm,
 } from "../../../use-case/sales-prod.use-case";
-import { toast } from "sonner";
+import { useItemProdView } from "./use-hooks";
 
 function useAssignmentCtx() {
     const ctx = useItemProdView();
@@ -38,7 +40,7 @@ function useAssignmentCtx() {
         // console.log(formData);
         await createItemAssignmentUseCase(
             formData,
-            item.analytics.control.produceable
+            item.analytics.control.produceable,
         );
 
         toast.success("Created!");
@@ -68,10 +70,10 @@ export function AssignForm({}) {
                 variant="default"
                 className={cn(
                     "w-full",
-                    assignMode || (!pending.total && "hidden")
+                    assignMode || (!pending.total && "hidden"),
                 )}
             >
-                <Icons.add className="w-5 h-5 mr-2" />
+                <Icons.add className="mr-2 h-5 w-5" />
                 <span>Assign</span>
                 <span>({pending?.total})</span>
             </Button>
@@ -85,8 +87,8 @@ function AssignmentForm({}) {
     const workers = useEffectLoader(getSalesProdWorkersAsSelectOption);
     return (
         <Form {...ctx.form}>
-            <div className="border rounded-lg bg-white mt-4">
-                <div className="grid p-4 sm:grid-cols-2 gap-4 items-end">
+            <div className="mt-4 rounded-lg border bg-white">
+                <div className="grid items-end gap-4 p-4 sm:grid-cols-2">
                     <FormSelect
                         size="sm"
                         options={workers?.data || []}
@@ -128,7 +130,7 @@ function AssignmentForm({}) {
                         />
                     ) : null}
                 </div>
-                <div className="justify-end  flex gap-4 border-t p-4">
+                <div className="flex  justify-end gap-4 border-t p-4">
                     <Button
                         onClick={() => {
                             ctx.setAssignMode(false);

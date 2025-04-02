@@ -1,17 +1,17 @@
 import Button from "@/components/common/button";
 import FormInput from "@/components/common/controls/form-input";
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { Form, FormField } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
 import { cn, sum } from "@/lib/utils";
 import { ChevronsUpDown } from "lucide-react";
 import { toast } from "sonner";
 
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from "@gnd/ui/collapsible";
+import { Form, FormField } from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
 
 import { LineItemOverview } from "../../data-access/dto/sales-item-dto";
 import { submitAssignmentUseCase } from "../../use-case/sales-prod.use-case";

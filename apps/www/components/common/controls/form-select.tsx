@@ -1,37 +1,28 @@
 import { useEffect, useState } from "react";
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-} from "@/components/ui/command";
-import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-} from "@/components/ui/form";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useDataSkeleton } from "@/hooks/use-data-skeleton";
 import { cn } from "@/lib/utils";
 import { CheckIcon, ChevronsUpDown } from "lucide-react";
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
 
 import { Button } from "@gnd/ui/button";
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+} from "@gnd/ui/command";
+import { FormControl, FormField, FormItem, FormLabel } from "@gnd/ui/form";
+import { Popover, PopoverContent, PopoverTrigger } from "@gnd/ui/popover";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@gnd/ui/select";
+import { Skeleton } from "@gnd/ui/skeleton";
 
 export interface FormSelectProps<T> {
     label?;

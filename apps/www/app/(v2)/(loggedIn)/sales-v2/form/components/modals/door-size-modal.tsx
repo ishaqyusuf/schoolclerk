@@ -1,9 +1,19 @@
-import { useModal } from "@/components/common/modal/provider";
-import { useForm, UseFormReturn } from "react-hook-form";
-import { DykeDoorForm, DykeForm } from "../../../type";
-import { Form } from "@/components/ui/form";
-import Modal from "@/components/common/modal";
 import { useEffect } from "react";
+import salesFormUtils from "@/app/(clean-code)/(sales)/_common/utils/sales-form-utils";
+import Money from "@/components/_v1/money";
+import Button from "@/components/common/button";
+import FormInput from "@/components/common/controls/form-input";
+import FormSelect from "@/components/common/controls/form-select";
+import { TableCol } from "@/components/common/data-table/table-cells";
+import Modal from "@/components/common/modal";
+import { useModal } from "@/components/common/modal/provider";
+import { cn, sum } from "@/lib/utils";
+import { HousePackageToolMeta } from "@/types/sales";
+import { useForm, UseFormReturn } from "react-hook-form";
+
+import { Badge } from "@gnd/ui/badge";
+import { Form } from "@gnd/ui/form";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 import {
     Table,
     TableBody,
@@ -11,20 +21,11 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
+} from "@gnd/ui/table";
 
-import { useDoorSizes } from "../../_hooks/use-door-size";
-import Money from "@/components/_v1/money";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import FormInput from "@/components/common/controls/form-input";
-import { TableCol } from "@/components/common/data-table/table-cells";
-import { HousePackageToolMeta } from "@/types/sales";
-import FormSelect from "@/components/common/controls/form-select";
-import { cn, sum } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
-import Button from "@/components/common/button";
 import { useDykeCtx } from "../../_hooks/form-context";
-import salesFormUtils from "@/app/(clean-code)/(sales)/_common/utils/sales-form-utils";
+import { useDoorSizes } from "../../_hooks/use-door-size";
+import { DykeDoorForm, DykeForm } from "../../../type";
 
 interface Props {
     rowIndex;
@@ -45,7 +46,7 @@ export function useDoorSizeModal(form, rowIndex) {
                     rowIndex={rowIndex}
                     superAdmin={ctx.superAdmin}
                     {...args}
-                />
+                />,
             );
         },
     };
@@ -77,7 +78,7 @@ export default function DoorSizeModal({
     useEffect(() => {
         const _values = {};
         const doors = form.getValues(
-            `${basePath}._doorForm` as any
+            `${basePath}._doorForm` as any,
         ) as DykeDoorForm;
         Object.entries(doors || {}).map(([size, doorForm]) => {
             const { swing, jambSizePrice, lhQty, rhQty } = doorForm as any;
@@ -127,10 +128,10 @@ export default function DoorSizeModal({
                         form,
                         existingData.priceData,
                         _size.basePrice,
-                        _qty
+                        _qty,
                     ),
                 };
-            }
+            },
         );
         // console.log({ newDoorForm });
         // return;
@@ -157,7 +158,7 @@ export default function DoorSizeModal({
                     subtitle={productTitle}
                 />
                 <div className="">
-                    <Table className="table-fixed size-sm">
+                    <Table className="size-sm table-fixed">
                         <TableHeader>
                             <TableRow>
                                 <TableHead colSpan={4}>Size</TableHead>
@@ -174,7 +175,7 @@ export default function DoorSizeModal({
                         </TableHeader>
                     </Table>
                     <ScrollArea className="max-h-[45vh] overflow-auto">
-                        <Table className="table-fixed size-sm">
+                        <Table className="size-sm table-fixed">
                             <TableBody>
                                 {sizes.map((size) => (
                                     <TableRow

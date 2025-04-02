@@ -1,20 +1,19 @@
-import { _modal } from "@/components/common/modal/provider";
-import FormSettingsModal from "./modals/form-settings-modal";
-import { useFormDataStore } from "../_common/_stores/form-data-store";
-import { Sticky } from "../_hooks/use-sticky";
-import { cn } from "@/lib/utils";
-import Button from "@/components/common/button";
-import { Menu } from "@/components/(clean-code)/menu";
-
-import { openSalesOverview } from "../../../_common/_components/sales-overview-sheet";
-import { MenuIcon } from "lucide-react";
-import { Label } from "@/components/ui/label";
-
 import { DatePicker } from "@/components/_v1/date-range-picker";
-
-import { SalesFormSave } from "@/components/forms/sales-form/sales-form-save";
+import { Menu } from "@/components/(clean-code)/menu";
+import Button from "@/components/common/button";
+import { _modal } from "@/components/common/modal/provider";
 import { SalesFormEmailMenu } from "@/components/forms/sales-form/sales-form-email-menu";
 import { SalesFormPrintMenu } from "@/components/forms/sales-form/sales-form-print-menu";
+import { SalesFormSave } from "@/components/forms/sales-form/sales-form-save";
+import { cn } from "@/lib/utils";
+import { MenuIcon } from "lucide-react";
+
+import { Label } from "@gnd/ui/label";
+
+import { useFormDataStore } from "../_common/_stores/form-data-store";
+import { Sticky } from "../_hooks/use-sticky";
+import { openSalesOverview } from "../../../_common/_components/sales-overview-sheet";
+import FormSettingsModal from "./modals/form-settings-modal";
 
 export function FormHeader({ sticky }: { sticky: Sticky }) {
     const zus = useFormDataStore();
@@ -51,9 +50,9 @@ export function FormHeader({ sticky }: { sticky: Sticky }) {
                     : {}
             }
             className={cn(
-                "flex border-b items-center mb-4",
+                "mb-4 flex items-center border-b",
                 isFixed &&
-                    "fixed border-2s border sborder-muted-foreground/50 shadow-xl  overflow-hidden rounded-fulls  top-[55px] bg-background z-10"
+                    "border-2s sborder-muted-foreground/50 rounded-fulls fixed top-[55px]  z-10 overflow-hidden  border bg-background shadow-xl",
             )}
         >
             <div className="">
@@ -65,11 +64,11 @@ export function FormHeader({ sticky }: { sticky: Sticky }) {
                             zus.dotUpdate("currentTab", tab.name as any);
                         }}
                         className={cn(
-                            "border-b-2  border-transparent rounded-none text-muted-foreground",
+                            "rounded-none  border-b-2 border-transparent text-muted-foreground",
                             isActive(tab)
-                                ? "border-primary text-primary bg-muted"
+                                ? "border-primary bg-muted text-primary"
                                 : "",
-                            tab.name == "address" && "lg:hidden"
+                            tab.name == "address" && "lg:hidden",
                         )}
                         variant="ghost"
                     >
@@ -78,7 +77,7 @@ export function FormHeader({ sticky }: { sticky: Sticky }) {
                 ))}
             </div>
             <div className="flex-1" />
-            <div className="flex gap-4 px-4 py-2 items-center">
+            <div className="flex items-center gap-4 px-4 py-2">
                 <CreatedDate />
                 <Button
                     size="xs"
@@ -139,7 +138,7 @@ function CreatedDate() {
                     // form.setValue("order.createdAt", e)
                     zus.dotUpdate("metaData.createdAt", e);
                 }}
-                className="w-auto h-8"
+                className="h-8 w-auto"
                 value={zus.metaData?.createdAt}
             />
         </div>

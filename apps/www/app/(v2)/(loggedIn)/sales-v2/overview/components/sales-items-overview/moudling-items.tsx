@@ -1,6 +1,7 @@
+import Money from "@/components/_v1/money";
 import { useDataPage } from "@/lib/data-page-context";
-import { SalesOverviewType } from "../overview-shell";
-import { Label } from "@/components/ui/label";
+
+import { Label } from "@gnd/ui/label";
 import {
     Table,
     TableBody,
@@ -8,15 +9,16 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import Money from "@/components/_v1/money";
+} from "@gnd/ui/table";
+
+import { SalesOverviewType } from "../overview-shell";
 
 export default function MouldingItems() {
     const { data } = useDataPage<SalesOverviewType>();
     if (!data.groupings.mouldings?.length) return <></>;
     return data.groupings.mouldings.map((moulding, index) => (
         <div key={index}>
-            <div className="border-b uppercase p-2 bg-blue-50">
+            <div className="border-b bg-blue-50 p-2 uppercase">
                 <Label>Mouldings</Label>
             </div>
             <Table>

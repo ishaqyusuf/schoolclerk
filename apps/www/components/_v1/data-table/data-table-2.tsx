@@ -5,6 +5,13 @@ import {
     useRouter,
     useSearchParams,
 } from "next/navigation";
+import { DataTablePagination } from "@/components/_v1/data-table/data-table-pagination";
+import { DataTableToolbar } from "@/components/_v1/data-table/data-table-toolbar";
+import { DataTablePagination as DTPagination } from "@/components/common/data-table/data-table-pagination";
+import { useDebounce } from "@/hooks/use-debounce";
+import { formatDate } from "@/lib/use-day";
+import useQueryParams from "@/lib/use-query-params";
+import { cn } from "@/lib/utils";
 import type {
     DataTableDateFilterColumn,
     DataTableFilterableColumn,
@@ -26,9 +33,8 @@ import {
     type SortingState,
     type VisibilityState,
 } from "@tanstack/react-table";
+import * as qs from "qs";
 
-import { DataTablePagination as DTPagination } from "@/components/common/data-table/data-table-pagination";
-import { useDebounce } from "@/hooks/use-debounce";
 import {
     Table,
     TableBody,
@@ -36,13 +42,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { DataTablePagination } from "@/components/_v1/data-table/data-table-pagination";
-import { DataTableToolbar } from "@/components/_v1/data-table/data-table-toolbar";
-import { formatDate } from "@/lib/use-day";
-import useQueryParams from "@/lib/use-query-params";
-import * as qs from "qs";
-import { cn } from "@/lib/utils";
+} from "@gnd/ui/table";
 
 interface DataTableProps<TData, TValue> {
     searchParams?;
@@ -239,7 +239,7 @@ export function DataTable2<TData, TValue>({
                     }
                     _q[k as any] = value;
                 }
-            })
+            }),
         );
         // const _filtered = filters.
         if (sort.id) {
@@ -282,7 +282,7 @@ export function DataTable2<TData, TValue>({
             {children && !noChild ? (
                 children
             ) : (
-                <div className={cn("sm:border sm:rounded-lg")}>
+                <div className={cn("sm:rounded-lg sm:border")}>
                     {children}
                     <Table>
                         <TableHeader className={cn(mobile && "max-sm:hidden")}>
@@ -301,7 +301,7 @@ export function DataTable2<TData, TValue>({
                                                               header.column
                                                                   .columnDef
                                                                   .header,
-                                                              header.getContext()
+                                                              header.getContext(),
                                                           )}
                                                 </TableHead>
                                             );
@@ -314,7 +314,7 @@ export function DataTable2<TData, TValue>({
                                 table.getRowModel().rows.map((row) => (
                                     <TableRow
                                         className={cn(
-                                            mobile && "max-sm:border-0"
+                                            mobile && "max-sm:border-0",
                                         )}
                                         key={row.id}
                                         data-state={
@@ -325,23 +325,23 @@ export function DataTable2<TData, TValue>({
                                             .getVisibleCells()
                                             .map((cell) =>
                                                 cell.id.includes(
-                                                    "__"
+                                                    "__",
                                                 ) ? null : (
                                                     <TableCell
                                                         className={cn(
                                                             mobile &&
                                                                 "max-sm:p-0",
-                                                            "p-2 px-4"
+                                                            "p-2 px-4",
                                                         )}
                                                         key={cell.id}
                                                     >
                                                         {flexRender(
                                                             cell.column
                                                                 .columnDef.cell,
-                                                            cell.getContext()
+                                                            cell.getContext(),
                                                         )}
                                                     </TableCell>
-                                                )
+                                                ),
                                             )
                                             .filter(Boolean)}
                                     </TableRow>

@@ -1,19 +1,16 @@
 "use client";
 
 import React, { useRef, useTransition } from "react";
-
-import { _useAsync } from "@/lib/use-async";
+import { _createPickup } from "@/app/(v1)/(loggedIn)/sales/_actions/_sales-pickup";
+import Modal from "@/components/common/modal";
 import { closeModal } from "@/lib/modal";
+import refresh from "@/lib/refresh";
+import { _useAsync } from "@/lib/use-async";
+import { ISalesOrder, ISalesPickup } from "@/types/sales";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { useForm } from "react-hook-form";
-
-import refresh from "@/lib/refresh";
-import { ISalesOrder, ISalesPickup } from "@/types/sales";
-import { _createPickup } from "@/app/(v1)/(loggedIn)/sales/_actions/_sales-pickup";
-
-import Modal from "@/components/common/modal";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@gnd/ui/tabs";
 
 interface Props {
     order: ISalesOrder;

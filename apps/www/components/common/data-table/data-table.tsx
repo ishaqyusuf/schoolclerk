@@ -1,5 +1,8 @@
 import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { DataTablePagination } from "@/components/common/data-table/data-table-pagination";
+import { DataTableToolbar } from "@/components/common/data-table/data-table-toolbar";
+import { useDebounce } from "@/hooks/use-debounce";
 import type {
     DataTableFilterableColumn,
     DataTableSearchableColumn,
@@ -20,7 +23,6 @@ import {
     type VisibilityState,
 } from "@tanstack/react-table";
 
-import { useDebounce } from "@/hooks/use-debounce";
 import {
     Table,
     TableBody,
@@ -28,9 +30,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { DataTablePagination } from "@/components/common/data-table/data-table-pagination";
-import { DataTableToolbar } from "@/components/common/data-table/data-table-toolbar";
+} from "@gnd/ui/table";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -76,7 +76,7 @@ export function DataTable<TData, TValue>({
     const createQueryString = React.useCallback(
         (params: Record<string, string | number | null>) => {
             const newSearchParams = new URLSearchParams(
-                searchParams?.toString()
+                searchParams?.toString(),
             );
 
             for (const [key, value] of Object.entries(params)) {
@@ -89,7 +89,7 @@ export function DataTable<TData, TValue>({
 
             return newSearchParams.toString();
         },
-        [searchParams]
+        [searchParams],
     );
 
     // Table states
@@ -111,7 +111,7 @@ export function DataTable<TData, TValue>({
             pageIndex,
             pageSize,
         }),
-        [pageIndex, pageSize]
+        [pageIndex, pageSize],
     );
 
     React.useEffect(() => {
@@ -129,7 +129,7 @@ export function DataTable<TData, TValue>({
             })}`,
             {
                 scroll: false,
-            }
+            },
         );
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -153,7 +153,7 @@ export function DataTable<TData, TValue>({
             })}`,
             {
                 scroll: false,
-            }
+            },
         );
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -165,12 +165,12 @@ export function DataTable<TData, TValue>({
             JSON.stringify(
                 columnFilters.filter((filter) => {
                     return searchableColumns.find(
-                        (column) => column.id === filter.id
+                        (column) => column.id === filter.id,
                     );
-                })
+                }),
             ),
-            500
-        )
+            500,
+        ),
     ) as ColumnFiltersState;
 
     const filterableColumnFilters = columnFilters.filter((filter) => {
@@ -190,7 +190,7 @@ export function DataTable<TData, TValue>({
                     })}`,
                     {
                         scroll: false,
-                    }
+                    },
                 );
             }
         }
@@ -199,7 +199,7 @@ export function DataTable<TData, TValue>({
             if (
                 searchableColumns.find((column) => column.id === key) &&
                 !debouncedSearchableColumnFilters.find(
-                    (column) => column.id === key
+                    (column) => column.id === key,
                 )
             ) {
                 router.push(
@@ -209,7 +209,7 @@ export function DataTable<TData, TValue>({
                     })}`,
                     {
                         scroll: false,
-                    }
+                    },
                 );
             }
         }
@@ -229,7 +229,7 @@ export function DataTable<TData, TValue>({
                     })}`,
                     {
                         scroll: false,
-                    }
+                    },
                 );
             }
         }
@@ -246,7 +246,7 @@ export function DataTable<TData, TValue>({
                     })}`,
                     {
                         scroll: false,
-                    }
+                    },
                 );
             }
         }
@@ -310,7 +310,7 @@ export function DataTable<TData, TValue>({
                                                     : flexRender(
                                                           header.column
                                                               .columnDef.header,
-                                                          header.getContext()
+                                                          header.getContext(),
                                                       )}
                                             </TableHead>
                                         );
@@ -335,10 +335,10 @@ export function DataTable<TData, TValue>({
                                                     {flexRender(
                                                         cell.column.columnDef
                                                             .cell,
-                                                        cell.getContext()
+                                                        cell.getContext(),
                                                     )}
                                                 </TableCell>
-                                            )
+                                            ),
                                         )}
                                 </TableRow>
                             ))

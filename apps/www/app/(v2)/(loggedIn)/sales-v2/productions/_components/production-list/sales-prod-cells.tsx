@@ -6,10 +6,10 @@ import {
     RowActionMoreMenu,
 } from "@/components/_v1/data-table/data-table-row-actions";
 import { TableCol } from "@/components/common/data-table/table-cells";
-import { Badge } from "@/components/ui/badge";
 import { cn, sum } from "@/lib/utils";
 import { Dot } from "lucide-react";
 
+import { Badge } from "@gnd/ui/badge";
 import { Button } from "@gnd/ui/button";
 
 import { ProductionListItemType } from ".";

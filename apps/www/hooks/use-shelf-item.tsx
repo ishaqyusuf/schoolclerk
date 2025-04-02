@@ -1,17 +1,19 @@
-import { useFormDataStore } from "@/app/(clean-code)/(sales)/sales-book/(form)/_common/_stores/form-data-store";
-import { useShelf } from "./use-shelf";
 import React, {
     createContext,
     useContext,
     useDeferredValue,
     useMemo,
 } from "react";
-import { StepHelperClass } from "@/app/(clean-code)/(sales)/sales-book/(form)/_utils/helpers/zus/step-component-class";
-import { ComboboxContent } from "@/components/ui/combobox";
-import { useAsyncMemo } from "use-async-memo";
 import { getShelfProductsAction } from "@/actions/cache/get-shelf-products";
-import { FieldPath } from "react-hook-form";
+import { useFormDataStore } from "@/app/(clean-code)/(sales)/sales-book/(form)/_common/_stores/form-data-store";
+import { StepHelperClass } from "@/app/(clean-code)/(sales)/sales-book/(form)/_utils/helpers/zus/step-component-class";
 import { generateRandomString } from "@/lib/utils";
+import { FieldPath } from "react-hook-form";
+import { useAsyncMemo } from "use-async-memo";
+
+import { ComboboxContent } from "@gnd/ui/combobox";
+
+import { useShelf } from "./use-shelf";
 
 export const ShelfItemContext = createContext<
     ReturnType<typeof useShelfItemContext>
@@ -46,7 +48,7 @@ export function useShelfItemContext({ shelfUid }) {
         if (!deferredInputValue) return options;
         const normalized = deferredInputValue.toLowerCase();
         return options.filter((item) =>
-            item.name.toLowerCase().includes(normalized)
+            item.name.toLowerCase().includes(normalized),
         );
     }, [deferredInputValue, options]);
 
@@ -61,12 +63,12 @@ export function useShelfItemContext({ shelfUid }) {
                 //  virtualizer.measure();
             }
         },
-        [content]
+        [content],
     );
     const [prodRefreshToken, setProductRefreshToken] = React.useState(null);
     const products = useAsyncMemo(async () => {
         const category = categories?.find(
-            (c) => c.id == Number([...shelf.categoryIds].pop())
+            (c) => c.id == Number([...shelf.categoryIds].pop()),
         );
         let subCats = categories?.filter((c) => c.categoryId == category?.id);
         let cid = !subCats?.length && category ? [category.id] : null;
@@ -95,12 +97,12 @@ export function useShelfItemContext({ shelfUid }) {
     function dotUpdateProduct(
         prodId,
         key: keyof (typeof shelf.products)[""],
-        value
+        value,
     ) {
         if (value === undefined) value = null;
         zus.dotUpdate(
             `kvFormItem.${shelfCtx.itemUid}.shelfItems.lines.${shelfUid}.products.${prodId}.${key}`,
-            value
+            value,
         );
     }
     // shelf.products
@@ -126,7 +128,7 @@ export function useShelfItemContext({ shelfUid }) {
         setCategoryIds(ids) {
             cls.dotUpdateItemForm(
                 `shelfItems.lines.${shelfUid}.categoryIds`,
-                ids
+                ids,
             );
         },
         productsList: products,
@@ -139,20 +141,20 @@ export function useShelfItemContext({ shelfUid }) {
             ]);
             cls.dotUpdateItemForm(
                 `shelfItems.lines.${shelfUid}.products.${puid}`,
-                {} as any
+                {} as any,
             );
         },
         clearProduct(prodUid) {
             cls.dotUpdateItemForm(
                 `shelfItems.lines.${shelfUid}.products.${prodUid}`,
-                {} as any
+                {} as any,
             );
         },
         productChanged(prodUid, value) {
             if (!value) return;
             const productId = +value;
             const product = products.products.find(
-                (prod) => prod.id == productId
+                (prod) => prod.id == productId,
             );
             dotUpdateProduct(prodUid, "qty", 1);
             dotUpdateProduct(prodUid, "productId", product.id);
@@ -162,7 +164,7 @@ export function useShelfItemContext({ shelfUid }) {
             dotUpdateProduct(
                 prodUid,
                 "salesPrice",
-                shelfCtx.costCls.calculateSales(product.unitPrice)
+                shelfCtx.costCls.calculateSales(product.unitPrice),
             );
             dotUpdateProduct(prodUid, "customPrice", null);
             if (!shelf.categoryIds?.length) {
@@ -184,15 +186,15 @@ export function useShelfItemContext({ shelfUid }) {
         deleteProductLine(puid) {
             cls.dotUpdateItemForm(
                 `shelfItems.lines.${shelfUid}.productUids`,
-                [...shelf.productUids].filter((a) => a != puid)
+                [...shelf.productUids].filter((a) => a != puid),
             );
             const data = cls.dotGet(
-                `kvFormItem.${shelfCtx.itemUid}.shelfItems.lines.${shelfUid}.products`
+                `kvFormItem.${shelfCtx.itemUid}.shelfItems.lines.${shelfUid}.products`,
             );
             if (data) delete data[puid];
             zus.dotUpdate(
                 `kvFormItem.${shelfCtx.itemUid}.shelfItems.lines.${shelfUid}.products`,
-                data
+                data,
             );
         },
     };

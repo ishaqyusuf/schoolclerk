@@ -10,12 +10,12 @@ import FormSelect from "@/components/common/controls/form-select";
 import { FileUploader } from "@/components/common/file-uploader";
 import Modal from "@/components/common/modal";
 import { useModal } from "@/components/common/modal/provider";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn, generateRandomString } from "@/lib/utils";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Label } from "@gnd/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
 
 import { IStepProducts } from "../../../../../../../(v2)/(loggedIn)/sales-v2/form/components/step-items-list/item-section/step-products";
 import { ProductImage } from "../../../../../../../(v2)/(loggedIn)/sales-v2/form/components/step-items-list/item-section/step-products/product";

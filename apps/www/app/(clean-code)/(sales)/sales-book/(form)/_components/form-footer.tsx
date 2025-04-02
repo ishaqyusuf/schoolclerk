@@ -1,9 +1,11 @@
+import { AnimatedNumber } from "@/components/animated-number";
 import { _modal } from "@/components/common/modal/provider";
+import { cn } from "@/lib/utils";
+
+import { Label } from "@gnd/ui/label";
+
 import { useFormDataStore } from "../_common/_stores/form-data-store";
 import { Sticky, useSticky } from "../_hooks/use-sticky";
-import { cn } from "@/lib/utils";
-import { Label } from "@/components/ui/label";
-import { AnimatedNumber } from "@/components/animated-number";
 
 export function FormFooter() {
     const zus = useFormDataStore();
@@ -18,7 +20,7 @@ export function FormFooter() {
     return (
         <>
             <div
-                className="pb-16 flex flex-col gap-4"
+                className="flex flex-col gap-4 pb-16"
                 ref={sticky.containerRef}
             >
                 <div
@@ -41,20 +43,20 @@ export function FormFooter() {
                             : {}
                     }
                     className={cn(
-                        "flex border-b items-center",
+                        "flex items-center border-b",
                         isFixed
-                            ? "fixed sborder-2 border-muted-foreground/50 shadow-xl border-t  overflow-hidden srounded-full  bottom-0 bg-backgrounds z-10 h-12 px-4"
-                            : "justify-end border-t"
+                            ? "sborder-2 srounded-full bg-backgrounds fixed bottom-0  z-10 h-12  overflow-hidden border-t border-muted-foreground/50 px-4 shadow-xl"
+                            : "justify-end border-t",
                     )}
                 >
-                    <div className="flex-1 bg-background flex h-full">
+                    <div className="flex h-full flex-1 bg-background">
                         <div className=""></div>
                         <div className="flex-1" />
                         <div
                             className={cn(
                                 isFixed
                                     ? "inline-flex gap-4 sm:gap-6"
-                                    : "flex flex-col gap-4 sm:gap-6 min-w-[250px] p-4"
+                                    : "flex min-w-[250px] flex-col gap-4 p-4 sm:gap-6",
                             )}
                         >
                             <FixedDisplay
@@ -90,10 +92,10 @@ export function FormFooter() {
 function FixedDisplay({ label, value }) {
     return (
         <div className="inline-flex items-center justify-between gap-1">
-            <Label className="uppercase text-muted-foreground font-semibold">
+            <Label className="font-semibold uppercase text-muted-foreground">
                 {label}:
             </Label>
-            <div className="text-sm font-semibold font-mono">
+            <div className="font-mono text-sm font-semibold">
                 <AnimatedNumber value={value || 0} />
                 {/* <Money value={value} /> */}
             </div>

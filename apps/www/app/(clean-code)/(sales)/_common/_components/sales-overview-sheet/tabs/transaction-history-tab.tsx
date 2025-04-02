@@ -1,7 +1,12 @@
 "use client";
 
+import { getSalesPaymentsAction } from "@/actions/get-sales-payment";
+import ConfirmBtn from "@/components/_v1/confirm-btn";
+import Money from "@/components/_v1/money";
+import { TCell } from "@/components/(clean-code)/data-table/table-cells";
 import useEffectLoader from "@/lib/use-effect-loader";
-import { salesOverviewStore } from "../store";
+
+import { Badge } from "@gnd/ui/badge";
 import {
     Table,
     TableBody,
@@ -9,13 +14,11 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { TCell } from "@/components/(clean-code)/data-table/table-cells";
-import { getSalesPaymentsAction } from "@/actions/get-sales-payment";
+} from "@gnd/ui/table";
+
+import { salesOverviewStore } from "../store";
 import NoResults from "./empty-tx-history";
-import ConfirmBtn from "@/components/_v1/confirm-btn";
-import { Badge } from "@/components/ui/badge";
-import Money from "@/components/_v1/money";
+
 export function TransactionHistoryTab() {
     const store = salesOverviewStore();
     const ctx = useEffectLoader(
@@ -24,7 +27,7 @@ export function TransactionHistoryTab() {
             onSuccess(data) {
                 console.log(data);
             },
-        }
+        },
     );
     async function deleteTransaction(id) {
         //

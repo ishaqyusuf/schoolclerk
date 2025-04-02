@@ -6,11 +6,12 @@ import { ComponentHelperClass } from "@/app/(clean-code)/(sales)/sales-book/(for
 import Button from "@/components/common/button";
 import { NumberInput } from "@/components/currency-input";
 import { LabelInput } from "@/components/label-input";
-import { Label } from "@/components/ui/label";
 import { generateRandomString } from "@/lib/utils";
 import { CUSTOM_IMG_ID } from "@/utils/constants";
 import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
+
+import { Label } from "@gnd/ui/label";
 
 export function CustomComponentForm({ itemStepUid }) {
     const ctx = useStepContext(itemStepUid);

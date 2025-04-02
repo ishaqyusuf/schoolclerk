@@ -5,30 +5,26 @@ import { Menu } from "@/components/(clean-code)/menu";
 import FormCheckbox from "@/components/common/controls/form-checkbox";
 import FormSelect from "@/components/common/controls/form-select";
 import Modal from "@/components/common/modal";
+import { DragHandleDots2Icon } from "@radix-ui/react-icons";
+import { useFieldArray } from "react-hook-form";
+
+import { Button } from "@gnd/ui/button";
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-    Sortable,
-    SortableDragHandle,
-    SortableItem,
-} from "@/components/ui/sortable";
-import { DragHandleDots2Icon } from "@radix-ui/react-icons";
-import { useFieldArray } from "react-hook-form";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/card";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@gnd/ui/dropdown-menu";
+import { Form, FormControl, FormField, FormItem } from "@gnd/ui/form";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+import { Sortable, SortableDragHandle, SortableItem } from "@gnd/ui/sortable";
 
 import { Context, useSettings, useSettingsContext } from "./ctx";
 

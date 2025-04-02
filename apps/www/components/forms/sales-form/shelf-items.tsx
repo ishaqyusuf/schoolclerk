@@ -1,5 +1,20 @@
 "use client";
 
+import React, { useDeferredValue, useEffect, useState } from "react";
+import { useFormDataStore } from "@/app/(clean-code)/(sales)/sales-book/(form)/_common/_stores/form-data-store";
+import ConfirmBtn from "@/components/_v1/confirm-btn";
+import { Icons } from "@/components/_v1/icons";
+import { AnimatedNumber } from "@/components/animated-number";
+import Button from "@/components/common/button";
+import { ShelfContext, useShelf, useShelfContext } from "@/hooks/use-shelf";
+import {
+    ShelfItemContext,
+    useShelfItem,
+    useShelfItemContext,
+} from "@/hooks/use-shelf-item";
+import { _useAsync } from "@/lib/use-async";
+import { ChevronDown } from "lucide-react";
+
 import {
     Combobox,
     ComboboxAnchor,
@@ -10,7 +25,7 @@ import {
     ComboboxInput,
     ComboboxItem,
     ComboboxTrigger,
-} from "@/components/ui/combobox";
+} from "@gnd/ui/combobox";
 import {
     Table,
     TableBody,
@@ -18,24 +33,11 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { _useAsync } from "@/lib/use-async";
-import { ChevronDown } from "lucide-react";
-import React, { useDeferredValue, useEffect, useState } from "react";
-import { useFormDataStore } from "@/app/(clean-code)/(sales)/sales-book/(form)/_common/_stores/form-data-store";
-import Button from "@/components/common/button";
-import { Icons } from "@/components/_v1/icons";
-import { ShelfContext, useShelfContext, useShelf } from "@/hooks/use-shelf";
-import {
-    ShelfItemContext,
-    useShelfItemContext,
-    useShelfItem,
-} from "@/hooks/use-shelf-item";
-import ConfirmBtn from "@/components/_v1/confirm-btn";
-import { ShelfQtyInput } from "./shelf-qty-input";
-import { AnimatedNumber } from "@/components/animated-number";
-import { ShelfPriceCell } from "./shelf-price-cell";
+} from "@gnd/ui/table";
+
 import { ClearCategoryModal } from "./clear-category";
+import { ShelfPriceCell } from "./shelf-price-cell";
+import { ShelfQtyInput } from "./shelf-qty-input";
 
 export function ShelfItems({ itemStepUid }) {
     const ctx = useShelfContext(itemStepUid);
@@ -54,7 +56,7 @@ export function ShelfItems({ itemStepUid }) {
                         ))}
                     </TableBody>
                 </Table>
-                <div className="border-t p-4  w-full">
+                <div className="w-full border-t  p-4">
                     <Button
                         onClick={() => {
                             ctx.newSection();
@@ -82,7 +84,7 @@ export function ShelfItemLine({ shelfUid, index, isLast }) {
     function clearCategory(e) {
         e.preventDefault();
         const selection = Object.values(ctx.products)?.filter(
-            (a) => a?.productId
+            (a) => a?.productId,
         )?.length;
         if (selection > 0) {
             setOpenClearCat(true);
@@ -114,7 +116,7 @@ export function ShelfItemLine({ shelfUid, index, isLast }) {
                                         open={open}
                                         onOpenChange={onOpenChange}
                                         value={categoryIds.map((id) =>
-                                            String(id)
+                                            String(id),
                                         )}
                                         onValueChange={setCategoryIds}
                                         multiple
@@ -134,7 +136,9 @@ export function ShelfItemLine({ shelfUid, index, isLast }) {
                                                             categories?.find(
                                                                 (trick) =>
                                                                     trick.id ===
-                                                                    Number(item)
+                                                                    Number(
+                                                                        item,
+                                                                    ),
                                                             );
                                                         if (!option)
                                                             return null;
@@ -149,20 +153,20 @@ export function ShelfItemLine({ shelfUid, index, isLast }) {
                                                                     )
                                                                 }
                                                                 onDelete={(
-                                                                    e
+                                                                    e,
                                                                 ) => {
                                                                     // e.preventDefault();
                                                                     // console.log(e);
                                                                 }}
                                                                 key={item}
                                                                 value={String(
-                                                                    item
+                                                                    item,
                                                                 )}
                                                             >
                                                                 {option.name}
                                                             </ComboboxBadgeItem>
                                                         );
-                                                    }
+                                                    },
                                                 )}
                                                 {categoryIds?.length < 1 || (
                                                     <ComboboxBadgeItem
@@ -183,7 +187,7 @@ export function ShelfItemLine({ shelfUid, index, isLast }) {
                                                         }}
                                                         placeholder="Select category..."
                                                     />
-                                                    <ComboboxTrigger className="absolute top-3 right-2">
+                                                    <ComboboxTrigger className="absolute right-2 top-3">
                                                         <ChevronDown className="h-4 w-4" />
                                                     </ComboboxTrigger>
                                                 </>
@@ -204,16 +208,16 @@ export function ShelfItemLine({ shelfUid, index, isLast }) {
                                                     (trick) => (
                                                         <ComboboxItem
                                                             key={String(
-                                                                trick.id
+                                                                trick.id,
                                                             )}
                                                             value={String(
-                                                                trick.id
+                                                                trick.id,
                                                             )}
                                                             outset
                                                         >
                                                             {trick.name}
                                                         </ComboboxItem>
-                                                    )
+                                                    ),
                                                 )}
                                             </ComboboxContent>
                                         )}
@@ -296,7 +300,7 @@ function ShelfItemProduct({ prodUid, isLast }) {
         if (!deferredInputValue || !isTyping) return products?.products;
         const normalized = deferredInputValue.toLowerCase();
         const __products = products?.products?.filter((item) =>
-            item.title.toLowerCase().includes(normalized)
+            item.title.toLowerCase().includes(normalized),
         );
         return __products;
     }, [deferredInputValue, products, isTyping]);
@@ -311,7 +315,7 @@ function ShelfItemProduct({ prodUid, isLast }) {
                 //  virtualizer.measure();
             }
         },
-        [content]
+        [content],
     );
 
     return (
@@ -333,7 +337,7 @@ function ShelfItemProduct({ prodUid, isLast }) {
                     className="w-full"
                     autoHighlight
                 >
-                    <ComboboxAnchor className="h-full min-h-10 flex-wrap px-3 py-2 relative">
+                    <ComboboxAnchor className="relative h-full min-h-10 flex-wrap px-3 py-2">
                         <ComboboxInput
                             className="h-auto min-w-20 flex-1 "
                             onFocus={(e) => {
@@ -355,7 +359,7 @@ function ShelfItemProduct({ prodUid, isLast }) {
                                     setInputValue("");
                                     itemCtx.clearProduct(prodUid);
                                 }}
-                                className="absolute top-3 right-2"
+                                className="absolute right-2 top-3"
                             >
                                 <Icons.X className="h-4 w-4" />
                             </ComboboxTrigger>
@@ -385,7 +389,7 @@ function ShelfItemProduct({ prodUid, isLast }) {
             <TableCell className="w-16">
                 <ShelfQtyInput prodUid={prodUid} value={product?.qty} />
             </TableCell>
-            <TableCell className="w-24 relative">
+            <TableCell className="relative w-24">
                 <AnimatedNumber value={product?.totalPrice || 0} />
                 {/* {!isLast || <Footer />} */}
             </TableCell>

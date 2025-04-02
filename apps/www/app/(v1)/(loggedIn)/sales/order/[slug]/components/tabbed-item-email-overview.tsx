@@ -1,10 +1,12 @@
 "use client";
 
-import { ISalesOrder } from "@/types/sales";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ItemDetailsSection from "./item-details";
 import { useDataPage } from "@/lib/data-page-context";
+import { ISalesOrder } from "@/types/sales";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
+
 import DeliveryTabIndex from "./delivery-tab";
+import ItemDetailsSection from "./item-details";
 
 export default function TabbedItemEmailOverview() {
     const { data: order } = useDataPage<ISalesOrder>();

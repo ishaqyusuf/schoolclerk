@@ -1,10 +1,8 @@
+import { Fragment } from "react";
+import { DataTablePagination } from "@/components/common/data-table/data-table-pagination";
+import { cn } from "@/lib/utils";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
-import {
-    dataTableContext,
-    TableRowModel,
-    useDataTable,
-    useDataTableContext,
-} from "./use-data-table";
+
 import {
     Table,
     TableBody,
@@ -12,11 +10,15 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { cn } from "@/lib/utils";
-import { Fragment } from "react";
-import { DataTablePagination } from "@/components/common/data-table/data-table-pagination";
+} from "@gnd/ui/table";
+
 import { TableCellProps } from "./table-cells";
+import {
+    dataTableContext,
+    TableRowModel,
+    useDataTable,
+    useDataTableContext,
+} from "./use-data-table";
 
 interface BaseProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -39,7 +41,7 @@ function BaseDataTable<TData, TValue>({
         columns,
         pageCount,
         cellVariants,
-        addFilterCol
+        addFilterCol,
     );
 
     return (
@@ -51,7 +53,7 @@ function BaseDataTable<TData, TValue>({
 function _Table({}) {
     const { table, columns } = useDataTableContext();
     return (
-        <div className="sm:border sm:rounded-lg">
+        <div className="sm:rounded-lg sm:border">
             <Table>
                 <TableHeader className={cn("")}>
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -68,7 +70,7 @@ function _Table({}) {
                                                 : flexRender(
                                                       header.column.columnDef
                                                           .header,
-                                                      header.getContext()
+                                                      header.getContext(),
                                                   )}
                                         </TableHead>
                                     );
@@ -113,10 +115,10 @@ function Tr({ row }: TrProps) {
                         <Fragment key={cell.id}>
                             {flexRender(
                                 cell.column.columnDef.cell,
-                                cell.getContext()
+                                cell.getContext(),
                             )}
                         </Fragment>
-                    )
+                    ),
                 )
                 .filter(Boolean)}
         </TableRow>

@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { LegacyDykeFormStepType } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
 import FormCheckbox from "@/components/common/controls/form-checkbox";
 import Modal from "@/components/common/modal";
-import { Form } from "@/components/ui/form";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Form } from "@gnd/ui/form";
+import { Table, TableBody, TableCell, TableRow } from "@gnd/ui/table";
 
 import stepHelpers, { StepProduct } from "../../../_utils/helpers/step-helper";
 import { _deleteStepItem } from "../../../../../../../(v2)/(loggedIn)/sales-v2/form/components/step-items-list/item-section/step-products/_actions";

@@ -4,14 +4,6 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { resetPasswordRequest } from "@/app/(v1)/_actions/auth";
 import { Icons } from "@/components/_v1/icons";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
 import { _useAsync } from "@/lib/use-async";
 import { cn } from "@/lib/utils";
 import { checkEmailSchema, ILogin, loginSchema } from "@/lib/validations/auth";
@@ -22,6 +14,14 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { Button } from "@gnd/ui/button";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
 
 export type ResetPasswordRequestInputs = z.infer<typeof checkEmailSchema>;

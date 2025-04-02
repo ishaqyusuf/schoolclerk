@@ -3,12 +3,12 @@
 import Image from "next/image";
 import { _deleteContractorDoc } from "@/app/(v2)/(loggedIn)/contractors/overview/_actions/delete-contractor-doc";
 import ConfirmBtn from "@/components/_v1/confirm-btn";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { openModal } from "@/lib/modal";
 import { IUserDoc } from "@/types/hrm";
 
 import { Button } from "@gnd/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@gnd/ui/card";
+import { Table, TableBody, TableCell, TableRow } from "@gnd/ui/table";
 
 import { ContractorOverview } from "./type";
 

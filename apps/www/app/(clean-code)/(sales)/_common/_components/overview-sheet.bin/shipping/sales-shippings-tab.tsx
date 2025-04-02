@@ -6,13 +6,13 @@ import { Icons } from "@/components/_v1/icons";
 import Money from "@/components/_v1/money";
 import StatusBadge from "@/components/_v1/status-badge";
 import { DataLine } from "@/components/(clean-code)/data-table/Dl";
-import { Badge } from "@/components/ui/badge";
-import { Label } from "@/components/ui/label";
-import { Table, TableBody, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
+import { Badge } from "@gnd/ui/badge";
 import { Button } from "@gnd/ui/button";
+import { Label } from "@gnd/ui/label";
+import { Table, TableBody, TableRow } from "@gnd/ui/table";
 
 import { SalesShippingDto } from "../../../data-access/dto/sales-shipping-dto";
 import { deleteSalesDispatchUseCase } from "../../../use-case/sales-dispatch-use-case";

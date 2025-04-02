@@ -3,7 +3,13 @@ import { usePathname } from "next/navigation";
 import DevOnly from "@/_v2/components/common/dev-only";
 import { __revalidatePath } from "@/app/(v1)/_actions/_revalidate";
 import { DataTablePagination } from "@/components/common/data-table/data-table-pagination";
-import { Checkbox } from "@/components/ui/checkbox";
+import { formatCompactNumber } from "@/lib/format";
+import { cn } from "@/lib/utils";
+import { ColumnDef, flexRender } from "@tanstack/react-table";
+import { LoaderCircle } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
+import { Checkbox } from "@gnd/ui/checkbox";
 import {
     Table,
     TableBody,
@@ -11,13 +17,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { formatCompactNumber } from "@/lib/format";
-import { cn } from "@/lib/utils";
-import { ColumnDef, flexRender } from "@tanstack/react-table";
-import { LoaderCircle } from "lucide-react";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/table";
 
 import { BatchAction } from "./infinity/batch-action";
 import { cellVariants, TableCellProps, TCell } from "./table-cells";

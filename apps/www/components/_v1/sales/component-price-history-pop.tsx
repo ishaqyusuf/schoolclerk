@@ -2,19 +2,6 @@ import React from "react";
 import { getComponentCostHistoryAction } from "@/app/(v1)/(loggedIn)/sales/_actions/inventory";
 import { Icons } from "@/components/_v1/icons";
 import { ToolTip } from "@/components/_v1/tool-tip";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
 import { useBool } from "@/lib/use-loader";
 import { IOrderInventory } from "@/types/inventory";
 import { ISalesWizardForm } from "@/types/post";
@@ -22,6 +9,15 @@ import { History } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 
 import { Button } from "@gnd/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@gnd/ui/popover";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@gnd/ui/table";
 
 import { IComponentForm } from "../../../lib/sales/sales-component-modal";
 

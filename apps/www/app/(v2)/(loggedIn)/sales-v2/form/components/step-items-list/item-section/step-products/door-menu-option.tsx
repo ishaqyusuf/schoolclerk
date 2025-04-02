@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { MenuItem } from "@/components/_v1/data-table/data-table-row-actions";
 import { Icons } from "@/components/_v1/icons";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 import { DropdownMenuGroup, DropdownMenuLabel } from "@gnd/ui/dropdown-menu";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 
 import { IStepProducts } from ".";
 import { updateDoorMetaAction } from "../../../../_action/save-step-product";

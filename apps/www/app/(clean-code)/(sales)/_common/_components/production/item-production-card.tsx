@@ -1,17 +1,19 @@
-import { Label } from "@/components/ui/label";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { Menu } from "@/components/(clean-code)/menu";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+
+import { Label } from "@gnd/ui/label";
+
+import { Admin } from "../overview-sheet.bin/common/admin";
 import { ItemProps } from "../overview-sheet.bin/common/sales-item-card";
 import Badge from "../overview-sheet.bin/components/badge";
 import { zSalesOverview } from "../overview-sheet.bin/utils/store";
-import { Admin } from "../overview-sheet.bin/common/admin";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { toast } from "sonner";
-import { Menu } from "@/components/(clean-code)/menu";
 import { ItemAssignProd } from "./item-assign-prod";
 import { ItemAssignments } from "./item-assignments";
-import { cn } from "@/lib/utils";
 
 const SalesItemContext = createContext<ReturnType<typeof useSalesItemContext>>(
-    null as any
+    null as any,
 );
 export const useSalesItem = () => useContext(SalesItemContext);
 const useSalesItemContext = (props: ItemProps) => {
@@ -33,7 +35,7 @@ const useSalesItemContext = (props: ItemProps) => {
     }
     const expanded = useMemo(
         () => z.expandProdItemUID == props.itemUid,
-        [z.expandProdItemUID, props.itemUid]
+        [z.expandProdItemUID, props.itemUid],
     );
     const pendingQty = props.item?.analytics?.pending?.assignment?.total;
     return {
@@ -51,9 +53,9 @@ export function ItemProductionCard(props: ItemProps) {
         <SalesItemContext.Provider value={ctx}>
             <div
                 className={cn(
-                    "group sm:rounded-lg my-3 border",
+                    "group my-3 border sm:rounded-lg",
                     ctx.expanded &&
-                        "bg-muted/40 shadow-lg border-muted-foreground/40"
+                        "border-muted-foreground/40 bg-muted/40 shadow-lg",
                 )}
             >
                 <div className="flex">
@@ -61,9 +63,9 @@ export function ItemProductionCard(props: ItemProps) {
                         onClick={() => {
                             ctx.toggleItem();
                         }}
-                        className="flex flex-1 gap-4 items-center p-2 px-4 hover:group-[]:bg-muted/40 cursor-pointer"
+                        className="flex flex-1 cursor-pointer items-center gap-4 p-2 px-4 hover:group-[]:bg-muted/40"
                     >
-                        <Label className="uppercase text-base">
+                        <Label className="text-base uppercase">
                             {item.title}
                         </Label>
                         <Badge value={item.size} />
@@ -80,7 +82,7 @@ export function ItemProductionCard(props: ItemProps) {
                     </div>
                 </div>
                 {(ctx.expanded || !z.adminMode) && (
-                    <div className="p-4 border-t">
+                    <div className="border-t p-4">
                         <ItemAssignProd />
                         <ItemAssignments />
                     </div>

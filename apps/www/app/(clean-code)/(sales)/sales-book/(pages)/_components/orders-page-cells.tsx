@@ -4,10 +4,10 @@ import { TCell } from "@/components/(clean-code)/data-table/table-cells";
 import { useTRContext } from "@/components/(clean-code)/data-table/use-data-table";
 import { Menu } from "@/components/(clean-code)/menu";
 import { Progress } from "@/components/(clean-code)/progress";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 
+import { Badge } from "@gnd/ui/badge";
 import { Button } from "@gnd/ui/button";
 
 import { GetSalesOrdersDta } from "../../../_common/data-access/sales-dta";

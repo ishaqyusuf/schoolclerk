@@ -1,13 +1,15 @@
+import { TCell } from "@/components/(clean-code)/data-table/table-cells";
+
 import {
     Table,
     TableBody,
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { TabsContent } from "@/components/ui/tabs";
+} from "@gnd/ui/table";
+import { TabsContent } from "@gnd/ui/tabs";
+
 import { customerStore } from "./store";
-import { TCell } from "@/components/(clean-code)/data-table/table-cells";
 
 export default function Quotes() {
     const ctx = customerStore();
@@ -27,7 +29,7 @@ export default function Quotes() {
                                     <TCell.Date>{order.createdAt}</TCell.Date>
                                 </TCell>
                                 <TCell>
-                                    <TCell.Secondary className="uppercase font-mono">
+                                    <TCell.Secondary className="font-mono uppercase">
                                         {order.orderId}
                                     </TCell.Secondary>
                                 </TCell>

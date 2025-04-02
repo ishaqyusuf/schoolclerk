@@ -4,20 +4,20 @@ import { SalesFormZusData } from "@/app/(clean-code)/(sales)/types";
 import { FormSelectProps } from "@/components/common/controls/form-select";
 import { NumberInput } from "@/components/currency-input";
 import { LabelInput } from "@/components/label-input";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+import { FieldPath, FieldPathValue } from "react-hook-form";
+
+import { Input as BaseInput, InputProps } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 import {
     Select as BaseSelect,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { cn } from "@/lib/utils";
-import { FieldPath, FieldPathValue } from "react-hook-form";
-
-import { Input as BaseInput, InputProps } from "@gnd/ui/input";
+} from "@gnd/ui/select";
+import { Switch } from "@gnd/ui/switch";
 
 import { useFormDataStore } from "../../_common/_stores/form-data-store";
 

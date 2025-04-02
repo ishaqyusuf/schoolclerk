@@ -1,16 +1,16 @@
 import { Icons } from "@/components/_v1/icons";
 import { TCell } from "@/components/(clean-code)/data-table/table-cells";
 import { _modal } from "@/components/common/modal/provider";
+
+import { Button } from "@gnd/ui/button";
 import {
     Table,
     TableBody,
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { TabsContent } from "@/components/ui/tabs";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/table";
+import { TabsContent } from "@gnd/ui/tabs";
 
 import { openTxForm } from "../tx-form";
 import { customerStore } from "./store";

@@ -1,6 +1,6 @@
-import { Progress } from "@/components/ui/progress";
+import { Label } from "@gnd/ui/label";
+import { Progress } from "@gnd/ui/progress";
 
-import { Label } from "@/components/ui/label";
 import { GetSalesOrderListItem } from "../../use-case/sales-list-use-case";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 export function SalesItemStatus({ status, title }: Props) {
     return (
-        <div className="p-2 px-4  border rounded-lg my-2">
+        <div className="my-2 rounded-lg  border p-2 px-4">
             <div className="mb-2">
                 <Label className="">{title}</Label>
             </div>
@@ -18,7 +18,7 @@ export function SalesItemStatus({ status, title }: Props) {
                 value={status?.percentage || 0}
                 color={"green"}
             />
-            <div className="flex text-muted-foreground gap-2 text-xs mt-1">
+            <div className="mt-1 flex gap-2 text-xs text-muted-foreground">
                 <div className="font-mono">
                     {`${status?.score || "-"}/${status?.total || "-"}`}
                 </div>

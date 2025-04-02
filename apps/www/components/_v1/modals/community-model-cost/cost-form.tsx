@@ -11,16 +11,6 @@ import Btn from "@/components/_v1/btn";
 import { DatePicker } from "@/components/_v1/date-range-picker";
 import Money from "@/components/_v1/money";
 import ReRender from "@/components/_v1/re-render";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-} from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { calculateCommunitModelCost } from "@/lib/community/community-utils";
 import { deepCopy } from "@/lib/deep-copy";
 import { ICommunityCosts } from "@/types/community";
@@ -28,7 +18,17 @@ import dayjs from "dayjs";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
+import { Checkbox } from "@gnd/ui/checkbox";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+} from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
 
 import CostUnits from "./cost-units";
 import { ModelCostProps } from "./modal";

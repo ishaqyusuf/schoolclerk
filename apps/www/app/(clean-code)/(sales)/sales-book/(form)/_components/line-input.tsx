@@ -1,9 +1,9 @@
 import { NumberInput } from "@/components/currency-input";
-import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { FieldPath } from "react-hook-form";
 
 import { Input, InputProps } from "@gnd/ui/input";
+import { Switch } from "@gnd/ui/switch";
 
 import {
     useFormDataStore,

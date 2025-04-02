@@ -1,22 +1,24 @@
 import Modal from "@/components/common/modal";
 import { _modal } from "@/components/common/modal/provider";
-import { HptContext } from "../../hpt-step/ctx";
+import { toast } from "sonner";
+
+import { ScrollArea } from "@gnd/ui/scroll-area";
+
+import { getFormState } from "../../../_common/_stores/form-data-store";
 import { Component } from "../../components-section";
 import { useStepContext } from "../../components-section/ctx";
-import { getFormState } from "../../../_common/_stores/form-data-store";
-import { toast } from "sonner";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import SearchBar from "../../components-section/search-bar";
+import { HptContext } from "../../hpt-step/ctx";
 
 export type Door = HptContext["doors"][number];
 export const openDoorSwapModal = (door: Door, itemUid) => {
     const zus = getFormState();
     const itemStepUid = Object.entries(zus.kvStepForm)?.find(
-        ([k, v]) => v.title == "Door" && k?.startsWith(itemUid)
+        ([k, v]) => v.title == "Door" && k?.startsWith(itemUid),
     )?.[0];
     if (itemStepUid)
         _modal.openModal(
-            <DoorSwapModal itemStepUid={itemStepUid} door={door} />
+            <DoorSwapModal itemStepUid={itemStepUid} door={door} />,
         );
     else toast.error("Door step not found");
 };
@@ -29,7 +31,7 @@ export function DoorSwapModal({ door, itemStepUid }) {
             <div className="">
                 {/* <ComponentsSection itemStepUid={itemStepUid} /> */}
                 <ScrollArea className="h-[75vh]">
-                    <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-3">
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3">
                         {items?.map((component) => (
                             <Component
                                 ctx={ctx}
@@ -42,7 +44,7 @@ export function DoorSwapModal({ door, itemStepUid }) {
                 </ScrollArea>
             </div>
             <Modal.Footer>
-                <div className="flex justify-center w-full">
+                <div className="flex w-full justify-center">
                     <SearchBar ctx={ctx} />
                 </div>
             </Modal.Footer>

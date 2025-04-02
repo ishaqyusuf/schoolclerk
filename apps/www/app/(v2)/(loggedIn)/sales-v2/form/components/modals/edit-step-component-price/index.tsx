@@ -1,7 +1,10 @@
-import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
-import { IStepProducts } from "../../step-items-list/item-section/step-products";
+import FormInput from "@/components/common/controls/form-input";
 import Modal from "@/components/common/modal";
-import { Form } from "@/components/ui/form";
+import { useModal } from "@/components/common/modal/provider";
+import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
+
+import { Form } from "@gnd/ui/form";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 import {
     Table,
     TableBody,
@@ -9,13 +12,12 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import FormInput from "@/components/common/controls/form-input";
+} from "@gnd/ui/table";
+
 import { DykeForm } from "../../../../type";
-import { useModal } from "@/components/common/modal/provider";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { saveAction } from "./action";
 import { triggerRefresh } from "../../../dyke-refresher";
+import { IStepProducts } from "../../step-items-list/item-section/step-products";
+import { saveAction } from "./action";
 
 interface Props {
     stepProducts: IStepProducts;
@@ -46,7 +48,7 @@ export default function EditStepComponentPrice(props: Props) {
                     (p) =>
                         p.product.price !=
                         props.stepProducts.find((sp) => sp.id == p.id)?.product
-                            ?.price
+                            ?.price,
                 )
                 .map((sp) => {
                     sp.product.meta.priced = true;
@@ -55,7 +57,7 @@ export default function EditStepComponentPrice(props: Props) {
                         meta: sp.product.meta,
                         price: sp.product.price,
                     };
-                })
+                }),
         );
         triggerRefresh(props.baseForm, props.rowIndex, "components");
         modal.close();

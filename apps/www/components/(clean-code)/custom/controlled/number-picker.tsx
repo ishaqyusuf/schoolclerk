@@ -1,14 +1,9 @@
 import FormInput from "@/components/common/controls/form-input";
-import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-} from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
 
 import { Button } from "@gnd/ui/button";
+import { FormControl, FormField, FormItem, FormLabel } from "@gnd/ui/form";
 
 interface Props<T> {
     label?: string;

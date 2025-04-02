@@ -8,14 +8,14 @@ import {
 } from "@/components/_v1/data-table/data-table-row-actions";
 import { Icons } from "@/components/_v1/icons";
 import FormInput from "@/components/common/controls/form-input";
+import { cn, generateRandomString } from "@/lib/utils";
+
+import { Button } from "@gnd/ui/button";
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { cn, generateRandomString } from "@/lib/utils";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/collapsible";
 
 import { _deleteDykeItem } from "../../_action/delete-item";
 import {

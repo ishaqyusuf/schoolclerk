@@ -1,17 +1,20 @@
 "use client";
-import * as React from "react";
 
-import { Card, CardContent } from "@/components/ui/card";
+import * as React from "react";
+import Image from "next/image";
+import Autoplay from "embla-carousel-autoplay";
+
+import { Card, CardContent } from "@gnd/ui/card";
 import {
     Carousel,
     CarouselContent,
     CarouselItem,
     CarouselNext,
     CarouselPrevious,
-} from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
-import Image from "next/image";
+} from "@gnd/ui/carousel";
+
 import TotalityWork from "./totality-work";
+
 export function CarouselSection() {
     const carousels = [
         {
@@ -62,7 +65,7 @@ export function CarouselSection() {
                 <CarouselContent className="">
                     {carousels.map((_, index) => (
                         <CarouselItem className="" key={index}>
-                            <div className="h-[650px] relative">
+                            <div className="relative h-[650px]">
                                 <div className="absolute inset-0">
                                     <Image
                                         className="abolute inset-0"
@@ -75,8 +78,8 @@ export function CarouselSection() {
                                         priority
                                     />
                                 </div>
-                                <div className="relative flex h-full w-full items-end z-10 mb-6 p-10 pb-16">
-                                    <div className="w-[45%] bg-black/20 p-4 space-y-4 text-white">
+                                <div className="relative z-10 mb-6 flex h-full w-full items-end p-10 pb-16">
+                                    <div className="w-[45%] space-y-4 bg-black/20 p-4 text-white">
                                         <div className="text-6xl  font-extrabold tracking-widest">
                                             {_.title}
                                         </div>

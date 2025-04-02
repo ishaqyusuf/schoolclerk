@@ -8,17 +8,6 @@ import {
 } from "@/components/_v1/data-table/data-table-row-actions";
 import { Icons } from "@/components/_v1/icons";
 import Money from "@/components/_v1/money";
-import { Checkbox } from "@/components/ui/checkbox";
-import { FormField } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
 import { screens } from "@/lib/responsive";
 import { cn } from "@/lib/utils";
 import { ISalesOrder } from "@/types/sales";
@@ -28,7 +17,18 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
 
 import { Button } from "@gnd/ui/button";
+import { Checkbox } from "@gnd/ui/checkbox";
+import { FormField } from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@gnd/ui/table";
 
 import { SalesFormContext, SalesRowContext } from "../ctx";
 import {

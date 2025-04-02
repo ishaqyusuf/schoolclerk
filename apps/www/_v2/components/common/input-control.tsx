@@ -1,16 +1,16 @@
-import { Checkbox } from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
+import { FieldPath, useFormContext } from "react-hook-form";
+
+import { Checkbox } from "@gnd/ui/checkbox";
 import {
     FormControl,
     FormDescription,
     FormField,
     FormItem,
     FormLabel,
-} from "@/components/ui/form";
-import { Switch } from "@/components/ui/switch";
-import { cn } from "@/lib/utils";
-import { FieldPath, useFormContext } from "react-hook-form";
-
+} from "@gnd/ui/form";
 import { Input, InputProps } from "@gnd/ui/input";
+import { Switch } from "@gnd/ui/switch";
 
 interface Props<T> extends InputProps {
     // @ts-ignore

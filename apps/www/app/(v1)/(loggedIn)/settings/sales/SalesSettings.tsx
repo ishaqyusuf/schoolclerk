@@ -1,17 +1,18 @@
 "use client";
 
-import { saveSettingAction } from "@/app/(v1)/_actions/settings";
-import { ISalesSetting } from "@/types/post";
 import { useTransition } from "react";
+import { saveSettingAction } from "@/app/(v1)/_actions/settings";
+import Btn from "@/components/_v1/btn";
+import { ISalesSetting } from "@/types/post";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import GeneralSettings from "./GeneralSettings";
-import DoorWizardSettings from "./DoorWizard";
-import Btn from "@/components/_v1/btn";
 
-import SalesCommisionSettingSection from "./sales-commision";
-import { Form } from "@/components/ui/form";
+import { Form } from "@gnd/ui/form";
+
 import { setDefaultCustomerProfile } from "../../sales/(customers)/_actions/sales-customer-profiles";
+import DoorWizardSettings from "./DoorWizard";
+import GeneralSettings from "./GeneralSettings";
+import SalesCommisionSettingSection from "./sales-commision";
 
 export default function SalesSettings({ data }) {
     const defaultValues: ISalesSetting = {

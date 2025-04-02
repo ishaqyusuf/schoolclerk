@@ -11,8 +11,8 @@ import { DataTableFilterCommand } from "@/components/(clean-code)/data-table/fil
 import { DataTableInfinityToolbar } from "@/components/(clean-code)/data-table/infinity/data-table-toolbar";
 import { TCell } from "@/components/(clean-code)/data-table/table-cells";
 import { useTableCompose } from "@/components/(clean-code)/data-table/use-table-compose";
-import { Badge } from "@/components/ui/badge";
 
+import { Badge } from "@gnd/ui/badge";
 import { Button } from "@gnd/ui/button";
 
 import { GetCustomersDta } from "../../../_common/data-access/customer.dta";

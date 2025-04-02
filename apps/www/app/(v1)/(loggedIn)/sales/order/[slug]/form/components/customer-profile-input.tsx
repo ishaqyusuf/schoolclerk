@@ -1,5 +1,8 @@
 "use client";
 
+import { CustomerTypes } from "@/db";
+import { ISalesOrderForm } from "@/types/sales";
+
 import {
     Select,
     SelectContent,
@@ -7,9 +10,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
-import { CustomerTypes } from "@/db";
-import { ISalesOrderForm } from "@/types/sales";
+} from "@gnd/ui/select";
 
 export function SalesCustomerProfileInput({
     form,

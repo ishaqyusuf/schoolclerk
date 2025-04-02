@@ -10,15 +10,15 @@ import FormCheckbox from "@/components/common/controls/form-checkbox";
 import FormSelect from "@/components/common/controls/form-select";
 import Modal from "@/components/common/modal";
 import { _modal } from "@/components/common/modal/provider";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Form } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { AlertCircle } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
+import { Alert, AlertDescription, AlertTitle } from "@gnd/ui/alert";
+import { Badge } from "@gnd/ui/badge";
 import { Button } from "@gnd/ui/button";
+import { Form } from "@gnd/ui/form";
 
 import { useFormDataStore } from "../../../_common/_stores/form-data-store";
 import { ComponentHelperClass } from "../../../_utils/helpers/zus/step-component-class";

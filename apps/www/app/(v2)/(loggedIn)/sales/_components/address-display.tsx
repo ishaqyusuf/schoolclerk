@@ -1,7 +1,8 @@
 import { Icons } from "@/components/_v1/icons";
-import { Label } from "@/components/ui/label";
 import { ICustomer } from "@/types/customers";
 import { IAddressBook } from "@/types/sales";
+
+import { Label } from "@gnd/ui/label";
 
 interface Props {
     type: "shipping" | "billing";

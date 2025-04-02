@@ -2,10 +2,10 @@
 
 import React, { useEffect } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
 
 export default function Search() {
     const form = useForm({

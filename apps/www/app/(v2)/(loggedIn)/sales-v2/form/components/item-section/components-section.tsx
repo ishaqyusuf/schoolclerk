@@ -1,27 +1,26 @@
+import DevOnly from "@/_v2/components/common/dev-only";
+import Money from "@/components/_v1/money";
+import { _modal } from "@/components/common/modal/provider";
+import { cn } from "@/lib/utils";
+
+import { Badge } from "@gnd/ui/badge";
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { cn } from "@/lib/utils";
+} from "@gnd/ui/collapsible";
+
 import {
     useDykeCtx,
     useDykeForm,
     useDykeItemCtx,
 } from "../../_hooks/form-context";
 import { DykeStep } from "../../../type";
-import ShelfItemIndex from "../step-items-list/item-section/shelf-item";
-
-import LineItemSection from "../step-items-list/item-section/multi-item-tab/line-item-section/line-item-section";
-import { StepProducts } from "../step-items-list/item-section/step-products";
-import MultiComponentRender from "../step-items-list/item-section/multi-item-tab/multi-component-render";
 import HousePackageTool from "../step-items-list/item-section/multi-item-tab/house-package-tools";
-
-import { _modal } from "@/components/common/modal/provider";
-
-import DevOnly from "@/_v2/components/common/dev-only";
-import { Badge } from "@/components/ui/badge";
-import Money from "@/components/_v1/money";
+import LineItemSection from "../step-items-list/item-section/multi-item-tab/line-item-section/line-item-section";
+import MultiComponentRender from "../step-items-list/item-section/multi-item-tab/multi-component-render";
+import ShelfItemIndex from "../step-items-list/item-section/shelf-item";
+import { StepProducts } from "../step-items-list/item-section/step-products";
 
 export interface DykeItemStepSectionProps {
     stepForm: DykeStep;
@@ -53,7 +52,7 @@ export function DykeInvoiceItemStepSection({
                         "Line Item",
                         "Shelf Items",
                     ].includes(stepForm.step?.title as any) &&
-                    "hidden"
+                    "hidden",
             )}
             open={stepIndex == item.openedStepIndex}
             // onOpenChange={() => item.openBlock(stepIndex)}
@@ -61,7 +60,7 @@ export function DykeInvoiceItemStepSection({
             <CollapsibleTrigger asChild>
                 <div className="flex bg-accent">
                     <button
-                        className="flex  w-full p-1 px-4 border space-x-2"
+                        className="flex  w-full space-x-2 border p-1 px-4"
                         onClick={(e) => {
                             e.preventDefault();
                             if (stepForm?.item?.meta?.hidden) return;
@@ -86,7 +85,7 @@ export function DykeInvoiceItemStepSection({
                     <div className="" id={stepActionNodeId}></div>
                 </div>
             </CollapsibleTrigger>
-            <CollapsibleContent className="p-8 border ">
+            <CollapsibleContent className="border p-8 ">
                 {stepForm?.step?.title == "House Package Tool" ? (
                     // <HousePackageTool />
                     <>

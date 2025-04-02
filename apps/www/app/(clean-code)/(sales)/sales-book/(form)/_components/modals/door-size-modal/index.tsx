@@ -7,16 +7,16 @@ import { ComboxBox } from "@/components/(clean-code)/custom/controlled/combo-box
 import FormSelect from "@/components/common/controls/form-select";
 import Modal from "@/components/common/modal";
 import { _modal } from "@/components/common/modal/provider";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Form } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { AlertCircle } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
+import { Alert, AlertDescription, AlertTitle } from "@gnd/ui/alert";
+import { Badge } from "@gnd/ui/badge";
 import { Button } from "@gnd/ui/button";
+import { Form } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 
 import { useFormDataStore } from "../../../_common/_stores/form-data-store";
 import { StepHelperClass } from "../../../_utils/helpers/zus/step-component-class";

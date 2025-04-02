@@ -2,14 +2,14 @@ import { useState } from "react";
 import ConfirmBtn from "@/components/_v1/confirm-btn";
 import { Icons } from "@/components/_v1/icons";
 import { SecondaryTabSheet } from "@/components/(clean-code)/data-table/item-overview-sheet";
-import { Badge } from "@/components/ui/badge";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatDate } from "@/lib/use-day";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
+import { Badge } from "@gnd/ui/badge";
 import { Button } from "@gnd/ui/button";
+import { Label } from "@gnd/ui/label";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 
 import {
     deleteAssignmentSubmissionUseCase,

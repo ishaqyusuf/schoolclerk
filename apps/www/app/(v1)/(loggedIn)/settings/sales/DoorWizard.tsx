@@ -1,15 +1,6 @@
 "use client";
 
 import * as React from "react";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-} from "@/components/ui/form";
-import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
 import { deepCopy } from "@/lib/deep-copy";
 import { ISalesSetting, ISalesWizardForm } from "@/types/post";
 import { Edit2, Trash } from "lucide-react";
@@ -18,6 +9,15 @@ import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 import { v4 as randomUUID } from "uuid";
 
 import { Button } from "@gnd/ui/button";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+} from "@gnd/ui/form";
+import { Separator } from "@gnd/ui/separator";
+import { Textarea } from "@gnd/ui/textarea";
 
 import WizardForm from "./components/wizard-form";
 

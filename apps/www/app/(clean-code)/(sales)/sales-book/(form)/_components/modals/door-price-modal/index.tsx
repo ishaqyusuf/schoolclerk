@@ -1,17 +1,17 @@
-import Modal from "@/components/common/modal";
-import { useFormDataStore } from "../../../_common/_stores/form-data-store";
 import { createContext, useContext, useMemo } from "react";
-import { useForm } from "react-hook-form";
-
-import { Form } from "@/components/ui/form";
-
-import { _modal } from "@/components/common/modal/provider";
-import { toast } from "sonner";
-import { ComponentHelperClass } from "../../../_utils/helpers/zus/step-component-class";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import FormInput from "@/components/common/controls/form-input";
 import { saveComponentPricingUseCase } from "@/app/(clean-code)/(sales)/_common/use-case/sales-book-pricing-use-case";
+import FormInput from "@/components/common/controls/form-input";
+import Modal from "@/components/common/modal";
+import { _modal } from "@/components/common/modal/provider";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Badge } from "@gnd/ui/badge";
+import { Form } from "@gnd/ui/form";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+
+import { useFormDataStore } from "../../../_common/_stores/form-data-store";
+import { ComponentHelperClass } from "../../../_utils/helpers/zus/step-component-class";
 import { zhHarvestDoorSizes } from "../../../_utils/helpers/zus/zus-form-helper";
 
 interface Props {
@@ -48,7 +48,7 @@ export function useInitContext(cls: ComponentHelperClass) {
                     dependenciesUid,
                     dykeStepId: data.dykeStepId,
                     stepProductUid: data.stepProductUid,
-                }))
+                })),
         );
         await cls.fetchUpdatedPrice();
         _modal.close();
@@ -76,12 +76,12 @@ export default function DoorPriceModal({ cls }: Props) {
                 <Form {...ctx.form}>
                     <ScrollArea
                         tabIndex={-1}
-                        className="max-h-[50vh] px-4 -mx-4"
+                        className="-mx-4 max-h-[50vh] px-4"
                     >
                         {ctx.sizeList?.map((variant, index) => (
                             <div
                                 key={index}
-                                className="flex gap-4 items-center border-b py-2"
+                                className="flex items-center gap-4 border-b py-2"
                             >
                                 <div className="flex-1">
                                     <Badge className="" variant="outline">

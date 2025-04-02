@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Users } from "@/db";
 import { closeModal } from "@/lib/modal";
 import { ArrowLeft } from "lucide-react";
 
 import { Button } from "@gnd/ui/button";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 
 import { changeJobWorkerAction } from "../_actions/change-job-worker";
 import { useJobSubmitCtx } from "./use-submit-job";

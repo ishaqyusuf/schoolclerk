@@ -1,15 +1,17 @@
-import Modal from "@/components/common/modal";
 import { useEffect } from "react";
-import { customerStore } from "./store";
-import { getCustomerOverviewUseCase } from "../../use-case/customer-use-case";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import SalesTab from "./sales-tab";
-import QuotesTab from "./quotes-tab";
-import PaymentsTab from "./payments-tab";
+import Modal from "@/components/common/modal";
 import { _modal } from "@/components/common/modal/provider";
+
+import { Badge } from "@gnd/ui/badge";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+import { Tabs, TabsList, TabsTrigger } from "@gnd/ui/tabs";
+
+import { getCustomerOverviewUseCase } from "../../use-case/customer-use-case";
 import CustomerDetailsTab from "./customer-details-tab";
+import PaymentsTab from "./payments-tab";
+import QuotesTab from "./quotes-tab";
+import SalesTab from "./sales-tab";
+import { customerStore } from "./store";
 
 export const openCustomerOverviewSheet = (phoneNo) =>
     _modal.openSheet(<CustomerOverviewSheet phoneNo={phoneNo} />);

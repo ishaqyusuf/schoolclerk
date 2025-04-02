@@ -8,15 +8,15 @@ import {
 import { _getCommunityModelCostUnits } from "@/app/(v1)/_actions/community/community-model-cost-units";
 import ConfirmBtn from "@/components/_v1/confirm-btn";
 import Money from "@/components/_v1/money";
-import { Badge } from "@/components/ui/badge";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import { useFieldArray } from "react-hook-form";
 import { toast } from "sonner";
 
+import { Badge } from "@gnd/ui/badge";
 import { Button } from "@gnd/ui/button";
+import { Label } from "@gnd/ui/label";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 
 import { ModelCostProps } from "./modal";
 

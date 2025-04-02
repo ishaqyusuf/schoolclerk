@@ -9,7 +9,6 @@ import { LaborCostInline } from "@/components/sheets/sales-overview-sheet/labor-
 import { PoInline } from "@/components/sheets/sales-overview-sheet/po-inline";
 import { SalesDateInline } from "@/components/sheets/sales-overview-sheet/sales-date-inline";
 import { SalesDeliveryCostInline } from "@/components/sheets/sales-overview-sheet/sales-delivery-cost-inline";
-import { Label } from "@/components/ui/label";
 import { useCustomerOverviewQuery } from "@/hooks/use-customer-overview-query";
 import { useSalesOverviewQuery } from "@/hooks/use-sales-overview-query";
 import { cn } from "@/lib/utils";
@@ -18,6 +17,7 @@ import { noteTagFilter } from "@/modules/notes/utils";
 import { ExternalLink } from "lucide-react";
 
 import { buttonVariants } from "@gnd/ui/button";
+import { Label } from "@gnd/ui/label";
 
 import { composeSalesUrl } from "../../../../utils/sales-utils";
 import { openCustomerOverviewSheet } from "../../../customer-overview-sheet";

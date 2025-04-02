@@ -1,8 +1,13 @@
 "use client";
 
+import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
+import FormInput from "@/components/common/controls/form-input";
 import Modal from "@/components/common/modal";
-import { SalesOverview } from "../../type";
+import { useModal } from "@/components/common/modal/provider";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
 import {
     Table,
     TableBody,
@@ -10,13 +15,10 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { Form } from "@/components/ui/form";
-import FormInput from "@/components/common/controls/form-input";
+} from "@gnd/ui/table";
+
+import { SalesOverview } from "../../type";
 import { _submitDelivery } from "./submit-delivery";
-import { toast } from "sonner";
-import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
-import { useModal } from "@/components/common/modal/provider";
 
 interface Props {
     order: SalesOverview;
@@ -38,7 +40,7 @@ export default function CreateDeliveryModal({ order }: Props) {
     };
     const items = order.items.map((item) => {
         const delivered = order.itemDeliveries.filter(
-            (i) => i.orderItemId == item.id
+            (i) => i.orderItemId == item.id,
         );
         const deliveredQty = delivered
             .map((d) => d.qty)
@@ -67,7 +69,7 @@ export default function CreateDeliveryModal({ order }: Props) {
                     console.log(v);
 
                     toast.error(
-                        "Invalid!. Delivery Qty cannot be more than deliverable!"
+                        "Invalid!. Delivery Qty cannot be more than deliverable!",
                     );
                     throw new Error();
                 }

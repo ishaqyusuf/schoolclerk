@@ -1,6 +1,8 @@
-import { Progress } from "@/components/ui/progress";
+import { useEffect, useState } from "react";
 import { typedMemo } from "@/lib/hocs/typed-memo";
-import { useState, useEffect } from "react";
+
+import { Progress } from "@gnd/ui/progress";
+
 interface Props {
     completed;
     total;
@@ -26,3 +28,4 @@ function XProgress({ completed, total }: Props) {
     return <Progress value={percentage} color={color} className="h-2" />;
 }
 export default typedMemo(XProgress);
+

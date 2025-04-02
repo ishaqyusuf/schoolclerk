@@ -4,7 +4,10 @@ import React, { useContext, useEffect, useState } from "react";
 import Money from "@/components/_v1/money";
 import FormInput from "@/components/common/controls/form-input";
 import FormSelect from "@/components/common/controls/form-select";
-import { Label } from "@/components/ui/label";
+import { formatMoney } from "@/lib/use-number";
+import { cn, generateRandomString } from "@/lib/utils";
+
+import { Label } from "@gnd/ui/label";
 import {
     Table,
     TableBody,
@@ -12,9 +15,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { formatMoney } from "@/lib/use-number";
-import { cn, generateRandomString } from "@/lib/utils";
+} from "@gnd/ui/table";
 
 import { useDykeForm } from "../_hooks/form-context";
 import salesData from "../../../sales/sales-data";
@@ -27,19 +28,19 @@ import { Icons } from "@/components/_v1/icons";
 import { TableCol } from "@/components/common/data-table/table-cells";
 import { useModal } from "@/components/common/modal/provider";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import {
     FieldArray,
     useFieldArray,
     UseFieldArrayReturn,
 } from "react-hook-form";
 
 import { Button } from "@gnd/ui/button";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@gnd/ui/select";
 
 import { DykeForm } from "../../type";
 import { calculateFooterEstimate } from "../footer-estimate";

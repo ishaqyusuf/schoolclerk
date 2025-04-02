@@ -9,10 +9,11 @@ import Button from "@/components/common/button";
 import FormInput from "@/components/common/controls/form-input";
 import { NumberInput } from "@/components/currency-input";
 import { LabelInput } from "@/components/label-input";
-import { Form } from "@/components/ui/form";
 import { generateRandomString } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
 
 import { useFormDataStore } from "../../_common/_stores/form-data-store";
 import { ComponentHelperClass } from "../../_utils/helpers/zus/step-component-class";

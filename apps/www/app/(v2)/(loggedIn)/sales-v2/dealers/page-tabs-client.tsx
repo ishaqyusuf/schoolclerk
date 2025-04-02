@@ -1,9 +1,11 @@
 "use client";
 
 import { use } from "react";
-import { GetDealersPageTabAction } from "./action";
 import { FPageTabs } from "@/components/(clean-code)/fikr-ui/f-page-tabs";
-import { Badge } from "@/components/ui/badge";
+
+import { Badge } from "@gnd/ui/badge";
+
+import { GetDealersPageTabAction } from "./action";
 
 export default function PageTabsClient({ response }) {
     const tabs: GetDealersPageTabAction = use(response);

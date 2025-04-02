@@ -1,20 +1,22 @@
-import { Label } from "@/components/ui/label";
 import { useContext } from "react";
-import { SalesFormContext } from "../ctx";
+import DateControl from "@/_v2/components/common/date-control";
+import InputControl from "@/_v2/components/common/input-control";
 import SelectControl from "@/_v2/components/common/select-control";
 import transformOptions from "@/_v2/lib/transform-option";
-import { ISalesForm } from "../type";
 import { FieldPath, FieldValues, useFormContext } from "react-hook-form";
-import InputControl from "@/_v2/components/common/input-control";
+
+import { Label } from "@gnd/ui/label";
+
 import salesData from "../../sales-data";
-import DateControl from "@/_v2/components/common/date-control";
+import { SalesFormContext } from "../ctx";
+import { ISalesForm } from "../type";
 
 export default function SalesDetailsSection() {
     const ctx = useContext(SalesFormContext);
     const form = useFormContext<ISalesForm>();
 
     return (
-        <div className="xl:col-span-3 grid gap-2 xl:grid-cols-2 xl:gap-x-4">
+        <div className="grid gap-2 xl:col-span-3 xl:grid-cols-2 xl:gap-x-4">
             <InfoLine label="Sales Rep:">
                 <span>{ctx?.data?.form?.salesRep?.name}</span>
             </InfoLine>
@@ -70,7 +72,7 @@ export default function SalesDetailsSection() {
                 <>
                     <InfoLine label="Payment Term">
                         <SelectControl<ISalesForm>
-                            className="min-w-[150px] h-8"
+                            className="h-8 min-w-[150px]"
                             name="paymentTerm"
                             options={salesData.paymentTerms}
                         />
@@ -91,11 +93,11 @@ export default function SalesDetailsSection() {
 }
 export function InfoLine({ label, children }: { label?; children? }) {
     return (
-        <div className="md:grid md:grid-cols-2 items-center xl:grid-cols-3">
-            <Label className="text-muted-foreground whitespace-nowrap">
+        <div className="items-center md:grid md:grid-cols-2 xl:grid-cols-3">
+            <Label className="whitespace-nowrap text-muted-foreground">
                 {label}
             </Label>
-            <div className="text-end flex justify-end text-sm xl:col-span-2">
+            <div className="flex justify-end text-end text-sm xl:col-span-2">
                 {children}
             </div>
         </div>

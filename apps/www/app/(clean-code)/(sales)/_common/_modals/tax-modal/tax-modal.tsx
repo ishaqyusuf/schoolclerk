@@ -1,9 +1,10 @@
 import FormInput from "@/components/common/controls/form-input";
 import Modal from "@/components/common/modal";
 import { useModal } from "@/components/common/modal/provider";
-import { Form } from "@/components/ui/form";
 import { Taxes } from "@/db";
 import { useForm } from "react-hook-form";
+
+import { Form } from "@gnd/ui/form";
 
 import { createTax } from "./action";
 

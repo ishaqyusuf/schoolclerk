@@ -9,12 +9,12 @@ import {
 } from "@/components/_v1/data-table/data-table-row-actions";
 import StatusBadge from "@/components/_v1/status-badge";
 import FStatusBadge from "@/components/(clean-code)/fikr-ui/f-status-badge";
-import { Badge } from "@/components/ui/badge";
 import { GetSales } from "@/data-access/sales";
 import { getBadgeColor } from "@/lib/status-badge";
 import { cn, sum } from "@/lib/utils";
 import { toast } from "sonner";
 
+import { Badge } from "@gnd/ui/badge";
 import { Button } from "@gnd/ui/button";
 import {
     DropdownMenuLabel,

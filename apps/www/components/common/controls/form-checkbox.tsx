@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import {
     ControllerProps,
     FieldPath,
@@ -5,16 +6,15 @@ import {
     useFormContext,
 } from "react-hook-form";
 
-import { cn } from "@/lib/utils";
+import { Checkbox } from "@gnd/ui/checkbox";
 import {
     FormControl,
     FormDescription,
     FormField,
     FormItem,
     FormLabel,
-} from "@/components/ui/form";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Switch } from "@/components/ui/switch";
+} from "@gnd/ui/form";
+import { Switch } from "@gnd/ui/switch";
 
 interface Props<T> {
     label?: string | any;
@@ -27,7 +27,7 @@ interface Props<T> {
 export default function FormCheckbox<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-    TOptionType = any
+    TOptionType = any,
 >({
     label,
     description,
@@ -47,8 +47,8 @@ export default function FormCheckbox<
                 return (
                     <FormItem
                         className={cn(
-                            "flex flex-row items-starts items-center space-x-3 space-y-0 rounded-md",
-                            className
+                            "items-starts flex flex-row items-center space-x-3 space-y-0 rounded-md",
+                            className,
                         )}
                     >
                         <FormControl className="mt-0.5">

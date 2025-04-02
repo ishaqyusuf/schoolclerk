@@ -1,19 +1,19 @@
-import Button from "@/components/common/button";
-import Money from "@/components/_v1/money";
-import { Form } from "@/components/ui/form";
-import FormSelect from "@/components/common/controls/form-select";
-import { paymentMethods } from "../../utils/contants";
-import FormInput from "@/components/common/controls/form-input";
-import { SelectItem } from "@/components/ui/select";
-import { env } from "@/env.mjs";
-import { Dot, FileWarning } from "lucide-react";
-import { cn } from "@/lib/utils";
-import FormCheckbox from "@/components/common/controls/form-checkbox";
-
-import { _modal } from "@/components/common/modal/provider";
-
 import { Icons } from "@/components/_v1/icons";
-import { Label } from "@/components/ui/label";
+import Money from "@/components/_v1/money";
+import Button from "@/components/common/button";
+import FormCheckbox from "@/components/common/controls/form-checkbox";
+import FormInput from "@/components/common/controls/form-input";
+import FormSelect from "@/components/common/controls/form-select";
+import { _modal } from "@/components/common/modal/provider";
+import { env } from "@/env.mjs";
+import { cn } from "@/lib/utils";
+import { Dot, FileWarning } from "lucide-react";
+
+import { Form } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
+import { SelectItem } from "@gnd/ui/select";
+
+import { paymentMethods } from "../../utils/contants";
 import { UsePayForm, usePayForm } from "./pay-form-ctx";
 
 export default function PayForm({}) {
@@ -23,7 +23,7 @@ export default function PayForm({}) {
     if (!tx.phoneNo) return null;
     return (
         <Form {...form}>
-            <div className="border-t p-4 -m-4 sm:-m-6 grid gap-2 rounded-b-lg shadow-lg bg-white">
+            <div className="-m-4 grid gap-2 rounded-b-lg border-t bg-white p-4 shadow-lg sm:-m-6">
                 {terminal ? (
                     <>
                         <ReceivingPayment ctx={ctx} />
@@ -105,7 +105,7 @@ export default function PayForm({}) {
                             </Form>
                         )}
 
-                        <div className="flex justify-end gap-4 items-center">
+                        <div className="flex items-center justify-end gap-4">
                             {pm != "terminal" || (
                                 <>
                                     <FormCheckbox
@@ -139,7 +139,7 @@ function ReceivingPayment({ ctx }: { ctx: UsePayForm }) {
     const paymentStatus = ctx.terminal?.status;
     return (
         <div className="">
-            <div className={cn("hidden", "block border shadow-sm rounded p-2")}>
+            <div className={cn("hidden", "block rounded border p-2 shadow-sm")}>
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
                         {paymentStatus == "COMPLETED" ? (
@@ -165,7 +165,7 @@ function ReceivingPayment({ ctx }: { ctx: UsePayForm }) {
                             <Button
                                 onClick={ctx.paymentReceived}
                                 size="xs"
-                                className="h-6 p-2 text-xs bg-lime-600"
+                                className="h-6 bg-lime-600 p-2 text-xs"
                             >
                                 Payment Received
                             </Button>

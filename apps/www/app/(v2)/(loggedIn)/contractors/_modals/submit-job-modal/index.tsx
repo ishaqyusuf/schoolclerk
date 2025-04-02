@@ -4,7 +4,6 @@ import {
     useStaticProjects,
 } from "@/_v2/hooks/use-static-data";
 import { useModal } from "@/components/common/modal/provider";
-import { Form } from "@/components/ui/form";
 import { IJobs } from "@/types/hrm";
 import { useForm } from "react-hook-form";
 
@@ -15,6 +14,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@gnd/ui/dialog";
+import { Form } from "@gnd/ui/form";
 
 import {
     SubmitJobForm,

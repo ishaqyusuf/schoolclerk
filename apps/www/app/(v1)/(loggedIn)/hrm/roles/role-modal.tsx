@@ -1,21 +1,23 @@
 "use client";
 
+import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
+import FormInput from "@/components/common/controls/form-input";
 import Modal from "@/components/common/modal";
 import { useModal } from "@/components/common/modal/provider";
+import { permissions } from "@/lib/data/role";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Checkbox } from "@gnd/ui/checkbox";
+import { Form } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+
 import {
     GetRoleFormAction,
     getRoleFormAction,
     saveRoleAction,
 } from "./roles.actions";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import FormInput from "@/components/common/controls/form-input";
-import { Form } from "@/components/ui/form";
-import { permissions } from "@/lib/data/role";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
 
 export function useRoleModal() {
     const modal = useModal();
@@ -73,9 +75,9 @@ export default function RoleModal({
                                 {permissions.map((permission) => (
                                     <div
                                         key={permission}
-                                        className="grid grid-cols-7 p-1 gap-2 items-center"
+                                        className="grid grid-cols-7 items-center gap-2 p-1"
                                     >
-                                        <Label className="capitalize col-span-5">
+                                        <Label className="col-span-5 capitalize">
                                             {permission}
                                         </Label>
                                         {["view", "edit"].map((k) => {

@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { Icons } from "@/components/_v1/icons";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@gnd/ui/avatar";
 import { Button } from "@gnd/ui/button";
 import {
     DropdownMenu,

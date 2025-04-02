@@ -6,6 +6,9 @@ import {
 } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
 import Money from "@/components/_v1/money";
 import { _modal, useModal } from "@/components/common/modal/provider";
+import { cn } from "@/lib/utils";
+
+import { Button } from "@gnd/ui/button";
 import {
     Table,
     TableBody,
@@ -13,10 +16,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { cn } from "@/lib/utils";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/table";
 
 import { getDykeStepDoorByProductId } from "../../../../../_action/get-dyke-step-doors";
 import { useDykeCtx } from "../../../../../_hooks/form-context";

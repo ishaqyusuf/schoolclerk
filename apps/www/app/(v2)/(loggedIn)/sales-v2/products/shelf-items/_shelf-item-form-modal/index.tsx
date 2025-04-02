@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import FormInput from "@/components/common/controls/form-input";
 import FormSelect from "@/components/common/controls/form-select";
 import Modal from "@/components/common/modal";
-import { Form } from "@/components/ui/form";
 import { DykeShelfCategories } from "@/db";
 import { useFieldArray, useForm, useFormContext } from "react-hook-form";
+
+import { Form } from "@gnd/ui/form";
 
 import { _getShelfCategories } from "../../../form/_action/get-shelf-categories";
 import { IDykeShelfProducts, IDykeShelfProductsForm } from "../../../type";

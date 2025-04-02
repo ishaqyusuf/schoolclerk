@@ -1,12 +1,13 @@
 "use client";
 
+import * as React from "react";
 import {
   CheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@radix-ui/react-icons";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import * as React from "react";
+
 import { cn } from "../utils";
 import { Icons } from "./icons";
 
@@ -20,8 +21,9 @@ const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
     hideIcon?: boolean;
+    noIcon?: boolean;
   }
->(({ className, children, hideIcon = false, ...props }, ref) => (
+>(({ className, children, noIcon, hideIcon = false, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
@@ -31,13 +33,14 @@ const SelectTrigger = React.forwardRef<
     {...props}
   >
     <span className="line-clamp-1">{children}</span>
-    {!hideIcon && (
-      <div className="h-4 w-4">
-        <SelectPrimitive.Icon asChild>
-          <Icons.ChevronDown className="h-4 w-4" />
-        </SelectPrimitive.Icon>
-      </div>
-    )}
+    {!hideIcon ||
+      (!noIcon && (
+        <div className="h-4 w-4">
+          <SelectPrimitive.Icon asChild>
+            <Icons.ChevronDown className="h-4 w-4" />
+          </SelectPrimitive.Icon>
+        </div>
+      ))}
   </SelectPrimitive.Trigger>
 ));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;

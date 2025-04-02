@@ -1,5 +1,10 @@
-import { Shell } from "@/components/_v1/shells/shell";
 import { Metadata } from "next";
+import Link from "next/link";
+import { ResetPasswordForm } from "@/components/_v1/forms/reset-password-form";
+import { Shell } from "@/components/_v1/shells/shell";
+import { env } from "@/env.mjs";
+import { ArrowLeft } from "lucide-react";
+
 import {
     Card,
     CardContent,
@@ -7,11 +12,8 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
-import Link from "next/link";
-import { env } from "@/env.mjs";
-import { ResetPasswordForm } from "@/components/_v1/forms/reset-password-form";
-import { ArrowLeft } from "lucide-react";
+} from "@gnd/ui/card";
+
 export const metadata: Metadata = {
     metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
     title: "Reset Password",
@@ -27,9 +29,9 @@ export default function ResetPasswordPage() {
                         <Link
                             aria-label="Reset password"
                             href="/login"
-                            className="text-sm text-primary underline-offset-4 transition-colors hover:underline inline-flex items-center"
+                            className="inline-flex items-center text-sm text-primary underline-offset-4 transition-colors hover:underline"
                         >
-                            <ArrowLeft className="inline-flex w-4 mr-2" /> Sign
+                            <ArrowLeft className="mr-2 inline-flex w-4" /> Sign
                             In
                         </Link>
                     </div>

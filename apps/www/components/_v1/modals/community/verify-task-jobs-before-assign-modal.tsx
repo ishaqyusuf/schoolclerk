@@ -15,29 +15,6 @@ import {
 } from "@/components/_v1/columns/base-columns";
 import Money from "@/components/_v1/money";
 import StatusBadge from "@/components/_v1/status-badge";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-} from "@/components/ui/form";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
 import { closeModal } from "@/lib/modal";
 import { _useAsync } from "@/lib/use-async";
 import { ExtendedHomeTasks } from "@/types/community";
@@ -46,6 +23,29 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+} from "@gnd/ui/form";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@gnd/ui/select";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@gnd/ui/table";
 
 import { ScrollArea } from "../../../ui/scroll-area";
 import BaseModal from "../base-modal";

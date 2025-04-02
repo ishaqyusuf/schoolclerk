@@ -3,13 +3,14 @@ import { saveComponentPricingUseCase } from "@/app/(clean-code)/(sales)/_common/
 import FormInput from "@/components/common/controls/form-input";
 import Modal from "@/components/common/modal";
 import { _modal } from "@/components/common/modal/provider";
-import { Badge } from "@/components/ui/badge";
-import { Form } from "@/components/ui/form";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { Badge } from "@gnd/ui/badge";
+import { Form } from "@gnd/ui/form";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
 
 import { useFormDataStore } from "../../../_common/_stores/form-data-store";
 import { ComponentHelperClass } from "../../../_utils/helpers/zus/step-component-class";

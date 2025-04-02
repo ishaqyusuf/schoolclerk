@@ -1,11 +1,12 @@
 import { useFormContext } from "react-hook-form";
+
 import {
     FormControl,
     FormDescription,
-    FormField as ShadFormField,
     FormItem,
     FormLabel,
-} from "@/components/ui/form";
+    FormField as ShadFormField,
+} from "@gnd/ui/form";
 
 interface Props {
     name;

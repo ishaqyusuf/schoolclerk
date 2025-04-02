@@ -1,11 +1,12 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@gnd/ui/avatar";
+import { Label } from "@gnd/ui/label";
+
 import { useMailbox } from "./context";
-import { Label } from "@/components/ui/label";
 
 export default function MailboxHeader({}) {
     const ctx = useMailbox();
     return (
-        <div className="abolute top-0 p-2 sm:px-8 flex-col w-full border-b">
+        <div className="abolute top-0 w-full flex-col border-b p-2 sm:px-8">
             <div className="flex gap-4">
                 <Avatar>
                     <AvatarFallback>

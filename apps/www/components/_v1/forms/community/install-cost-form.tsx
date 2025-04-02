@@ -5,9 +5,6 @@ import { useRouter } from "next/navigation";
 import { saveSettingAction } from "@/app/(v1)/_actions/settings";
 import Btn from "@/components/_v1/btn";
 import PageHeader from "@/components/_v1/page-header";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
 import { generateRandomString } from "@/lib/utils";
 import { resetPasswordSchema } from "@/lib/validations/auth";
 import { InstallCostMeta, InstallCostSettings } from "@/types/settings";
@@ -18,7 +15,10 @@ import { toast } from "sonner";
 import type { z } from "zod";
 
 import { Button } from "@gnd/ui/button";
+import { Checkbox } from "@gnd/ui/checkbox";
+import { Form, FormControl, FormField, FormItem } from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
 
 export type ResetPasswordFormInputs = z.infer<typeof resetPasswordSchema>;
 

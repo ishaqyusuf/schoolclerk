@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import Money from "@/components/_v1/money";
 import { DataLine } from "@/components/(clean-code)/data-table/Dl";
-import { cn } from "@/lib/utils";
-import { GetSalesOverview } from "../../../use-case/sales-item-use-case";
-import { useSalesOverview } from "../overview-provider";
 import { Menu } from "@/components/(clean-code)/menu";
+import Button from "@/components/common/button";
+import FormCheckbox from "@/components/common/controls/form-checkbox";
+import { cn } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Badge } from "@gnd/ui/badge";
 import {
     Card,
     CardContent,
@@ -14,13 +16,13 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
-import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/form";
-import FormCheckbox from "@/components/common/controls/form-checkbox";
-import Button from "@/components/common/button";
+} from "@gnd/ui/card";
+import { Form } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
+
 import { updateSalesItemControlUseCase } from "../../../use-case/sales-item-control-use-case";
-import { toast } from "sonner";
+import { GetSalesOverview } from "../../../use-case/sales-item-use-case";
+import { useSalesOverview } from "../overview-provider";
 
 export type ItemGroupType = GetSalesOverview["itemGroup"][number];
 export type ItemType = ItemGroupType["items"][number];
@@ -47,7 +49,7 @@ export function SalesItemsOverview({}) {
             {/* <Button onClick={() => ctx.load()}>Refresh</Button> */}
             {ctx.overview?.itemGroup?.map((grp, id) => (
                 <div
-                    className="text-sm sborder my-1.5 srounded-lg sshadow-sm group mx-4 sm:mx-8"
+                    className="sborder srounded-lg sshadow-sm group mx-4 my-1.5 text-sm sm:mx-8"
                     key={id}
                 >
                     <Details show={showDetails[id]} group={grp} />
@@ -61,8 +63,8 @@ export function SalesItemsOverview({}) {
                                     ctx.tabData?.payloadSlug == itemId
                                     ? "bg-muted-foreground/10"
                                     : item.analytics.control.produceable
-                                    ? "hover:bg-muted-foreground/10 cursor-pointer"
-                                    : null
+                                      ? "cursor-pointer hover:bg-muted-foreground/10"
+                                      : null,
                             )}
                             onClick={() => {
                                 if (item.analytics.control.produceable)
@@ -90,8 +92,8 @@ export function LineItem({ className = null, item, onClick }: LineItemProps) {
         },
     });
     return (
-        <div className={cn("bg-white sm:rounded-lg my-3 border", className)}>
-            <div onClick={onClick} className="py-2 px-4">
+        <div className={cn("my-3 border bg-white sm:rounded-lg", className)}>
+            <div onClick={onClick} className="px-4 py-2">
                 <div className="flex items-center">
                     <div className="flex-1 uppercase">{item.title}</div>
                     <div className="text-sm font-medium">
@@ -104,11 +106,11 @@ export function LineItem({ className = null, item, onClick }: LineItemProps) {
                 </div>
             </div>
             {item.analytics?.info && (
-                <div className="mt-1 flex justify-between border-t text-xs uppercase font-semibold text-muted-foreground">
+                <div className="mt-1 flex justify-between border-t text-xs font-semibold uppercase text-muted-foreground">
                     {/* <div className="flex1"></div> */}
-                    <div onClick={onClick} className="flex-1 flex justify-end">
+                    <div onClick={onClick} className="flex flex-1 justify-end">
                         {item.analytics?.info?.map((info, k) => (
-                            <div className="w-1/3  p-2 font-mono px-4" key={k}>
+                            <div className="w-1/3  p-2 px-4 font-mono" key={k}>
                                 {info.text}
                             </div>
                         ))}
@@ -146,14 +148,14 @@ export function LineItem({ className = null, item, onClick }: LineItemProps) {
                                             <Button
                                                 onClick={async () => {
                                                     await updateSalesItemControlUseCase(
-                                                        controlForm.getValues()
+                                                        controlForm.getValues(),
                                                     );
                                                     ctx.refresh();
                                                     toast.success(
-                                                        "Item Control Updated"
+                                                        "Item Control Updated",
                                                     );
                                                     menuRef?.current?._onOpenChanged(
-                                                        false
+                                                        false,
                                                     );
                                                 }}
                                             >
@@ -175,7 +177,7 @@ export function LineItem({ className = null, item, onClick }: LineItemProps) {
 export function Details({ group, show }: { show; group: ItemGroupType }) {
     if (!show) return null;
     return (
-        <div className="grid ssm:grid-cols-2 sm:gap-2 sm:-mx-8">
+        <div className="ssm:grid-cols-2 grid sm:-mx-8 sm:gap-2">
             {group.style.map((style, id) => (
                 <DataLine key={id} {...style} />
             ))}
@@ -185,7 +187,7 @@ export function Details({ group, show }: { show; group: ItemGroupType }) {
 function SectionTitle({ title, children }) {
     if (!title && !children) return null;
     return (
-        <div className="p-2  -mx-4 sm:-ml-8 flex justify-between items-center">
+        <div className="-mx-4  flex items-center justify-between p-2 sm:-ml-8">
             <Label className="uppercase">{title}</Label>
             <div className="inline-flex space-x-2">{children}</div>
         </div>
@@ -194,13 +196,13 @@ function SectionTitle({ title, children }) {
 function Pills({ item }: { item: ItemType }) {
     if (!item.pills.filter((p) => p.value).length) return null;
     return (
-        <div className="flex space-x-4 my-1">
+        <div className="my-1 flex space-x-4">
             {item.pills
                 ?.filter((p) => p.value)
                 .map((pill, id) => (
                     <div key={id}>
                         <Badge
-                            className="text-xs font-mono uppercase"
+                            className="font-mono text-xs uppercase"
                             variant="secondary"
                         >
                             {pill.text}

@@ -1,12 +1,12 @@
+import { Skeleton } from "@gnd/ui/skeleton";
 import {
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableHeader,
-    TableRow
-} from "@/components/ui/table";
-import { Skeleton } from "@/components/ui/skeleton";
+    TableRow,
+} from "@gnd/ui/table";
 
 interface DataTableLoadingProps {
     columnCount: number;
@@ -19,7 +19,7 @@ export function DataTableLoading({
     columnCount,
     rowCount = 10,
     isNewRowCreatable = false,
-    isRowsDeletable = false
+    isRowsDeletable = false,
 }: DataTableLoadingProps) {
     return (
         <div className="w-full space-y-3 overflow-auto px-8 py-4">
@@ -47,7 +47,7 @@ export function DataTableLoading({
                                         <TableHead key={i}>
                                             <Skeleton className="h-6 w-full" />
                                         </TableHead>
-                                    )
+                                    ),
                                 )}
                             </TableRow>
                         ))}
@@ -60,7 +60,7 @@ export function DataTableLoading({
                                         <TableCell key={i}>
                                             <Skeleton className="h-6 w-full" />
                                         </TableCell>
-                                    )
+                                    ),
                                 )}
                             </TableRow>
                         ))}
@@ -90,3 +90,4 @@ export function DataTableLoading({
         </div>
     );
 }
+

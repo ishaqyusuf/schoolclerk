@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useSliderWithInput } from "@/(midday)/hooks/use-slider-with-input";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import { parseAsArrayOf, parseAsInteger, useQueryState } from "nuqs";
 
 // import { useUserContext } from "@/store/user/hook";
 // import { createClient } from "@/components/supabase/client";
 import { Button } from "@gnd/ui/button";
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
+import { Slider } from "@gnd/ui/slider";
 
 type Item = {
     id: string;

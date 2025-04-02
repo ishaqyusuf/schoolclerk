@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Label } from "@/components/ui/label";
 import { _useId } from "@/hooks/use-id";
 import { addSpacesToCamelCase, cn, dotArray } from "@/lib/utils";
 import { HomeTemplateDesign } from "@/types/community";
 
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
 
 import { ModelFormProps } from "./model-form";
 

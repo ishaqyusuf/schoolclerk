@@ -1,10 +1,15 @@
+import { useAppSelector } from "@/store";
+import { ISalesSetting } from "@/types/post";
+import { UseFormReturn } from "react-hook-form";
+
 import {
     Form,
     FormControl,
     FormField,
     FormItem,
     FormLabel,
-} from "@/components/ui/form";
+} from "@gnd/ui/form";
+import { Input } from "@gnd/ui/input";
 import {
     Select,
     SelectContent,
@@ -12,13 +17,8 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
-import { useAppSelector } from "@/store";
-import { ISalesSetting } from "@/types/post";
-import { UseFormReturn } from "react-hook-form";
-
-import { Input } from "@gnd/ui/input";
+} from "@gnd/ui/select";
+import { Separator } from "@gnd/ui/separator";
 
 // export const orderDeleteCommissionAction = [
 //     { action: "delete", title: "Delete Commission" },
@@ -61,4 +61,3 @@ export default function SalesCommisionSettingSection({
         </div>
     );
 }
-

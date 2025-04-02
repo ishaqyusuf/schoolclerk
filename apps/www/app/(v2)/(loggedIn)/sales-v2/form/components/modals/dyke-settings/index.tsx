@@ -1,22 +1,25 @@
-import Modal from "@/components/common/modal";
-import { DykeForm } from "../../../../type";
-import { UseFormReturn, useFieldArray } from "react-hook-form";
-import { Form } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import FormSelect from "@/components/common/controls/form-select";
-import Btn from "@/components/_v1/btn";
 import { useTransition } from "react";
 import { updateSettingsMeta } from "@/app/(v1)/_actions/settings";
+import Btn from "@/components/_v1/btn";
+import FormSelect from "@/components/common/controls/form-select";
+import Modal from "@/components/common/modal";
+import { useModal } from "@/components/common/modal/provider";
 import useFn from "@/hooks/use-fn";
-import { getDykeSections } from "../../../../_actions/dyke-settings/get-dyke-sections";
+import { useFieldArray, UseFormReturn } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { toast } from "sonner";
-import { useModal } from "@/components/common/modal/provider";
+} from "@gnd/ui/tooltip";
+
+import { getDykeSections } from "../../../../_actions/dyke-settings/get-dyke-sections";
+import { DykeForm } from "../../../../type";
+
 interface Props {
     // data?: DykeForm["data"]["settings"];
     form: UseFormReturn<DykeForm>;
@@ -55,7 +58,7 @@ export default function DykeSettingsModal({ form }: Props) {
                                                 remove(index);
                                             }}
                                         >
-                                            <span className=" hover:bg-slate-200 p-1 rounded-lg text-muted-foreground hover:text-destructive">
+                                            <span className=" rounded-lg p-1 text-muted-foreground hover:bg-slate-200 hover:text-destructive">
                                                 <span className="">
                                                     {f.name}
                                                 </span>
@@ -79,7 +82,7 @@ export default function DykeSettingsModal({ form }: Props) {
                                 onSelect={(e) => {
                                     console.log(e);
                                     const index = fields.findIndex(
-                                        (f) => f.name == (e as any)
+                                        (f) => f.name == (e as any),
                                     );
 
                                     if (index >= 0) remove(index);
@@ -89,7 +92,7 @@ export default function DykeSettingsModal({ form }: Props) {
                                         });
                                     form.setValue(
                                         "data.settings.dyke.customInputSection._sectionSelect",
-                                        null
+                                        null,
                                     );
                                 }}
                                 options={

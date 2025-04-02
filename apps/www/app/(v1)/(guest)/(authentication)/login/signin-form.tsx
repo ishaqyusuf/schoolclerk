@@ -3,15 +3,6 @@
 import * as React from "react";
 import { redirect, useRouter } from "next/navigation";
 import { Icons } from "@/components/_v1/icons";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
 import { _useAsync } from "@/lib/use-async";
 import { cn } from "@/lib/utils";
 import { ILogin, loginSchema } from "@/lib/validations/auth";
@@ -20,7 +11,16 @@ import { signIn, useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@gnd/ui/button";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
 
 import { PasswordInput } from "../../../../../components/_v1/password-input";
 

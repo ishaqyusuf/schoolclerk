@@ -1,20 +1,16 @@
-import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-} from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+import { FieldPath, useFormContext } from "react-hook-form";
+
+import { FormControl, FormField, FormItem, FormLabel } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
-import { cn } from "@/lib/utils";
-import { FieldPath, useFormContext } from "react-hook-form";
+} from "@gnd/ui/select";
 
 interface Props<T> {
     // @ts-ignore

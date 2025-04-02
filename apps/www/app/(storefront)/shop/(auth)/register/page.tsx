@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Label } from "@/components/ui/label";
 
 import { Button } from "@gnd/ui/button";
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
 
 export default function RegisterPage() {
     return (

@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Icons } from "@/components/_v1/icons";
 import { Info } from "@/components/_v1/info";
 import { TableCol } from "@/components/common/data-table/table-cells";
+import { cn } from "@/lib/utils";
+
+import { Button } from "@gnd/ui/button";
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { cn } from "@/lib/utils";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/collapsible";
 
 import { useAssignmentData } from ".";
 import DoorAssignments from "./door-assignments";

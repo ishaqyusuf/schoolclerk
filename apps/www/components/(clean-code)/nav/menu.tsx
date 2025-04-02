@@ -1,18 +1,18 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { Ellipsis, LogOut } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 import { Button } from "@gnd/ui/button";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@gnd/ui/tooltip";
 
 import { getMenuList } from "../../../app/(clean-code)/_common/utils/get-menu-list";
 import { CollapseMenuButton } from "./collapse-menu-button";

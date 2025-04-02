@@ -1,22 +1,23 @@
 "use client";
 
-import { TableCol } from "@/components/common/data-table/table-cells";
-import { ICustomerProfile } from "./type";
+import { useTransition } from "react";
+import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
+import Btn from "@/components/_v1/btn";
+import { SecondaryCellContent } from "@/components/_v1/columns/base-columns";
 import {
     DeleteRowAction,
     EditRowAction,
     RowActionCell,
 } from "@/components/_v1/data-table/data-table-row-actions";
-import { SecondaryCellContent } from "@/components/_v1/columns/base-columns";
-import { Badge } from "@/components/ui/badge";
-import Btn from "@/components/_v1/btn";
-import { useTransition } from "react";
-
-import { toast } from "sonner";
-import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
-import { deleteCustomerProfile, makeDefaultCustomerProfile } from "./actions";
+import { TableCol } from "@/components/common/data-table/table-cells";
 import { useModal } from "@/components/common/modal/provider";
+import { toast } from "sonner";
+
+import { Badge } from "@gnd/ui/badge";
+
+import { deleteCustomerProfile, makeDefaultCustomerProfile } from "./actions";
 import CustomerProfileModal from "./employee-profile-modal";
+import { ICustomerProfile } from "./type";
 
 interface Props {
     item: ICustomerProfile;
@@ -62,7 +63,7 @@ function Options({ item }: Props) {
             <EditRowAction
                 onClick={() => {
                     modal.openModal(
-                        <CustomerProfileModal defaultValues={{ ...item }} />
+                        <CustomerProfileModal defaultValues={{ ...item }} />,
                     );
                 }}
             />

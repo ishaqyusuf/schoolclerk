@@ -16,6 +16,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, Printer, View } from "lucide-react";
 import { toast } from "sonner";
 
+import { Button } from "@gnd/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -49,7 +50,6 @@ import {
 import { ProjectsFilter } from "../../../../../components/_v1/filters/projects-filter";
 import { Icons } from "../../../../../components/_v1/icons";
 import HomePrinter from "../../../../../components/_v1/print/home/home-printer";
-import { Button } from "../../../../../components/ui/button";
 import { useHomeModal } from "./home-modal";
 
 export default function HomesTableShell<T>({

@@ -1,17 +1,18 @@
-import { TableCell, TableRow } from "@/components/ui/table";
-import FormInput from "@/components/common/controls/form-input";
-import { cn } from "@/lib/utils";
 import Money from "@/components/_v1/money";
+import FormInput from "@/components/common/controls/form-input";
 import FormSelect from "@/components/common/controls/form-select";
-import ItemPriceFinder from "../../item-price-finder";
+import { cn } from "@/lib/utils";
+
+import { TableCell, TableRow } from "@gnd/ui/table";
+
+import { useDykeCtx } from "../../../../../_hooks/form-context";
 import {
     useMultiComponentItem,
     useMultiComponentSizeRow,
 } from "../../../../../_hooks/use-multi-component-item";
 import { SizeForm } from "../../../../modals/select-door-heights";
-
+import ItemPriceFinder from "../../item-price-finder";
 import PriceBreakDownCell from "../price-breakdown-cell";
-import { useDykeCtx } from "../../../../../_hooks/form-context";
 
 interface Props {
     size: SizeForm[string];
@@ -76,8 +77,8 @@ export default function HousePackageSizeLineItem({
                 <></>
             )}
             <TableCell className={cn(ctx.dealerMode && "hidden")}>
-                <div className="flex max-w-[300px] flex-col justify-center items-stretch divide-y">
-                    <div className="flex pt-1 justify-between">
+                <div className="flex max-w-[300px] flex-col items-stretch justify-center divide-y">
+                    <div className="flex justify-between pt-1">
                         {prices.map((p) => (
                             <div className="flex-1" key={p.title}>
                                 <div className="mx-1">
@@ -85,7 +86,7 @@ export default function HousePackageSizeLineItem({
                                         size="sm"
                                         type="number"
                                         className={cn(
-                                            prices.length == 1 && "w-[80px]"
+                                            prices.length == 1 && "w-[80px]",
                                         )}
                                         control={form.control}
                                         name={

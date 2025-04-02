@@ -1,17 +1,13 @@
 import React, { useEffect } from "react";
 import { findAddressAction } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-address";
-import { Command, CommandInput, CommandList } from "@/components/ui/command";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
 import { useDebounce } from "@/hooks/use-debounce";
 import { AddressType, IAddressBook, ISalesAddressForm } from "@/types/sales";
 import { Search } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 
 import { Button } from "@gnd/ui/button";
+import { Command, CommandInput, CommandList } from "@gnd/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@gnd/ui/popover";
 
 export default function AddressSearchPop({
     type,

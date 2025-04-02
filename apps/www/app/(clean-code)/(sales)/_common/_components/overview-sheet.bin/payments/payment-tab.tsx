@@ -1,25 +1,22 @@
-import { Table, TableBody, TableRow } from "@/components/ui/table";
 import { TableCell } from "@/app/_components/data-table/table-cells";
 import { Icons } from "@/components/_v1/icons";
 import { TCell } from "@/components/(clean-code)/data-table/table-cells";
-import { Progress } from "@/components/(clean-code)/progress";
 import { Menu } from "@/components/(clean-code)/menu";
-import { Form } from "@/components/ui/form";
-import FormInput from "@/components/common/controls/form-input";
-import FormCheckbox from "@/components/common/controls/form-checkbox";
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-} from "@/components/ui/card";
-import FormSelect from "@/components/common/controls/form-select";
-import { SelectItem } from "@/components/ui/select";
-import { env } from "@/env.mjs";
-import { Dot } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Progress } from "@/components/(clean-code)/progress";
 import Button from "@/components/common/button";
-import { Label } from "@/components/ui/label";
+import FormCheckbox from "@/components/common/controls/form-checkbox";
+import FormInput from "@/components/common/controls/form-input";
+import FormSelect from "@/components/common/controls/form-select";
+import { env } from "@/env.mjs";
+import { cn } from "@/lib/utils";
+import { Dot } from "lucide-react";
+
+import { Card, CardContent, CardFooter, CardHeader } from "@gnd/ui/card";
+import { Form } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
+import { SelectItem } from "@gnd/ui/select";
+import { Table, TableBody, TableRow } from "@gnd/ui/table";
+
 import { paymentMethods } from "../../../utils/contants";
 import { useSalesOverview } from "../overview-provider";
 
@@ -52,12 +49,12 @@ export function PaymentTab({}) {
                 </div>
             </div>
             {ctx.data.payments?.length == 0 ? (
-                <div className="min-h-[70vh] gap-4 flex flex-col items-center justify-center">
+                <div className="flex min-h-[70vh] flex-col items-center justify-center gap-4">
                     <p className="text-muted-foreground">No payment applied</p>
                     <PaymentBtn />
                 </div>
             ) : (
-                <div className="flex p-2 sm:px-4 gap-4 border-b">
+                <div className="flex gap-4 border-b p-2 sm:px-4">
                     <div className="flex-1"></div>
                     <PaymentBtn />
                 </div>
@@ -89,11 +86,11 @@ export function TerminalPay() {
     return (
         <div>
             <Form {...ctx.form}>
-                <div className="flex sm:justify-end right-0 m-4 sm:m-8 sm:mb-16  absolute bottom-0 mb-16">
+                <div className="absolute bottom-0 right-0 m-4 mb-16 flex  sm:m-8 sm:mb-16 sm:justify-end">
                     <Card
                         className={cn(
-                            "shadow-xl w-96",
-                            ctx.waitingForPayment && "hidden"
+                            "w-96 shadow-xl",
+                            ctx.waitingForPayment && "hidden",
                         )}
                     >
                         <CardHeader className="bg-muted p-4">
@@ -153,7 +150,7 @@ export function TerminalPay() {
                                                             option.status ==
                                                                 "PAIRED"
                                                                 ? "text-green-500"
-                                                                : "text-red-600"
+                                                                : "text-red-600",
                                                         )}
                                                     />
                                                     <span>{option.label}</span>
@@ -202,7 +199,7 @@ export function TerminalPay() {
                         className={cn(
                             "hidden",
                             ctx.waitingForPayment &&
-                                "block border shadow-sm rounded p-2"
+                                "block rounded border p-2 shadow-sm",
                         )}
                     >
                         <div className="flex items-center gap-4">

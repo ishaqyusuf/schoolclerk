@@ -1,16 +1,18 @@
-import Button from "@/components/common/button";
-import { salesOverviewStore } from "../../store";
+import Link from "next/link";
 import { Icons } from "@/components/_v1/icons";
+import { TCell } from "@/components/(clean-code)/data-table/table-cells";
+import { Menu } from "@/components/(clean-code)/menu";
+import Button from "@/components/common/button";
+
 import {
     Table,
     TableBody,
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { TCell } from "@/components/(clean-code)/data-table/table-cells";
-import { Menu } from "@/components/(clean-code)/menu";
-import Link from "next/link";
+} from "@gnd/ui/table";
+
+import { salesOverviewStore } from "../../store";
 
 export function SalesShippingOverview({}) {
     const store = salesOverviewStore();
@@ -18,11 +20,11 @@ export function SalesShippingOverview({}) {
     if (!shipping) return null;
     return (
         <div className="flex-col gap-4">
-            <div className="border-b gap-4 py-2 flex">
+            <div className="flex gap-4 border-b py-2">
                 <div className="flex-1"></div>
                 <Button asChild size="xs" variant="secondary">
                     <Link href={``}>
-                        <Icons.print className="size-4 mr-2" />
+                        <Icons.print className="mr-2 size-4" />
                         <span>Print Alls</span>
                     </Link>
                 </Button>
@@ -32,13 +34,13 @@ export function SalesShippingOverview({}) {
                     }}
                     size="xs"
                 >
-                    <Icons.add className="size-4 mr-2" />
+                    <Icons.add className="mr-2 size-4" />
                     <span>Create</span>
                 </Button>
             </div>
             <div className="">
                 <Table className="styled table-sm">
-                    <TableHeader className="uppercase font-mono">
+                    <TableHeader className="font-mono uppercase">
                         <TableHead>Date</TableHead>
                         <TableHead>Dispatch #</TableHead>
                         <TableHead>Type</TableHead>

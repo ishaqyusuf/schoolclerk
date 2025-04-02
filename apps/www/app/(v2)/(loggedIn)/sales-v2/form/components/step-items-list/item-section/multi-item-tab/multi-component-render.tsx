@@ -3,6 +3,9 @@
 import { useContext, useEffect, useState } from "react";
 import { Icons } from "@/components/_v1/icons";
 import Money from "@/components/_v1/money";
+import { cn } from "@/lib/utils";
+
+import { Button } from "@gnd/ui/button";
 import {
     Table,
     TableBody,
@@ -10,11 +13,8 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
 
 import {
     DykeItemFormContext,

@@ -1,11 +1,11 @@
 // import { formatAccountName } from "@/utils/format";
 import { Icons } from "@/(midday)/components/icons";
-import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import { formatDateRange } from "little-date";
 
 import { Button } from "@gnd/ui/button";
+import { Skeleton } from "@gnd/ui/skeleton";
 
 const listVariant = {
     hidden: { y: 10, opacity: 0 },

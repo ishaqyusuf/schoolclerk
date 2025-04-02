@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCustomerOverviewQuery } from "@/hooks/use-customer-overview-query";
 import { usePageTitle } from "@/hooks/use-page-title";
 
 import { Button } from "@gnd/ui/button";
 import { SheetDescription, SheetHeader, SheetTitle } from "@gnd/ui/sheet";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
 
 import { CustomSheet, CustomSheetContent } from "../custom-sheet-content";
 import { GeneralTab } from "./general-tab";

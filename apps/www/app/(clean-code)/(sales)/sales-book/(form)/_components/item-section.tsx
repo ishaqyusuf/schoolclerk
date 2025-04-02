@@ -2,15 +2,15 @@ import { useMemo } from "react";
 import { restoreMissingComponentData } from "@/actions/restore-missing-component-data";
 import ConfirmBtn from "@/components/_v1/confirm-btn";
 import { Menu } from "@/components/(clean-code)/menu";
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import { swap } from "@/lib/utils";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from "@gnd/ui/collapsible";
 import { Input } from "@gnd/ui/input";
 
 import { useFormDataStore } from "../_common/_stores/form-data-store";

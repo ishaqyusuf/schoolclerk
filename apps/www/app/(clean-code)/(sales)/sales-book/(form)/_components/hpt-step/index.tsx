@@ -6,8 +6,13 @@ import { DataLine } from "@/components/(clean-code)/data-table/Dl";
 import { Menu } from "@/components/(clean-code)/menu";
 import { MoneyBadge } from "@/components/(clean-code)/money-badge";
 import { AnimatedNumber } from "@/components/animated-number";
-import { Badge } from "@/components/ui/badge";
-import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+import { Repeat } from "lucide-react";
+
+import { Badge } from "@gnd/ui/badge";
+import { Button } from "@gnd/ui/button";
+import { DropdownMenuShortcut } from "@gnd/ui/dropdown-menu";
+import { Label } from "@gnd/ui/label";
 import {
     Table,
     TableBody,
@@ -16,13 +21,8 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
-import { Repeat } from "lucide-react";
-
-import { Button } from "@gnd/ui/button";
-import { DropdownMenuShortcut } from "@gnd/ui/dropdown-menu";
+} from "@gnd/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
 
 import { LineInput } from "../line-input";
 import { Context, HptContext, useCreateContext, useCtx } from "./ctx";

@@ -4,11 +4,11 @@ import { Icons } from "@/components/_v1/icons";
 import { SecondaryTabSheet } from "@/components/(clean-code)/data-table/item-overview-sheet";
 import { Menu } from "@/components/(clean-code)/menu";
 import { Progress } from "@/components/(clean-code)/progress";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Label } from "@gnd/ui/label";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 
 import { qtyDiff } from "../../../data-access/dto/sales-item-dto";
 import { updateDispatchStatusUseCase } from "../../../use-case/sales-dispatch-use-case";

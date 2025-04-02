@@ -1,16 +1,18 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import Document from "@tiptap/extension-document";
 import Mention from "@tiptap/extension-mention";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
-import Document from "@tiptap/extension-document";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+
 import suggestion from "./suggestion";
+
 import "./style.scss";
-import { cn } from "@/lib/utils";
+
 import { useEffect } from "react";
-import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import {
     Controller,
     ControllerProps,
@@ -18,6 +20,9 @@ import {
     FieldValues,
     useFormContext,
 } from "react-hook-form";
+
+import { Label } from "@gnd/ui/label";
+
 interface Props {
     mentions?: any;
     value?;
@@ -29,7 +34,7 @@ interface Props {
 function Tiptap<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-    TOptionType = any
+    TOptionType = any,
 >({
     mentions,
     value: _value,
@@ -82,11 +87,11 @@ function Tiptap<
                 {label && <Label>{label}</Label>}
                 <EditorContent
                     className={cn(
-                        "px-3 py-2 mx-1 rounded-lg border",
-                        "h-[30vh] overflow-auto  flex flex-col",
+                        "mx-1 rounded-lg border px-3 py-2",
+                        "flex h-[30vh]  flex-col overflow-auto",
                         className,
                         editor?.isFocused &&
-                            "ring-ring ring-2 ring-offset-background ring-offset-2"
+                            "ring-2 ring-ring ring-offset-2 ring-offset-background",
                     )}
                     editor={editor}
                 />

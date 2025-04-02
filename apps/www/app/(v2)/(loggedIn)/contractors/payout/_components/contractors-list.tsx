@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import useEffectLoader from "@/lib/use-effect-loader";
 
 import { Button } from "@gnd/ui/button";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 
 import { getContractorsPayroll } from "../action";
 
