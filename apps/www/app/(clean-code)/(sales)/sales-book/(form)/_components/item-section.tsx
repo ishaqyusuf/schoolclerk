@@ -25,9 +25,7 @@ export default function ItemSection({ uid }: Props) {
     const zus = useFormDataStore();
     const zItem = zus?.kvFormItem?.[uid];
 
-    const sequence = useMemo(() => {
-        return zus.sequence?.stepComponent?.[uid];
-    }, [zus.sequence?.stepComponent?.[uid]]);
+    const sequence = zus.sequence?.stepComponent?.[uid];
 
     return (
         <div className="mb-2 rounded-lg bg-background sm:mb-4">
