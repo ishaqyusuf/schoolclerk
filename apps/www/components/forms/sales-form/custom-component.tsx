@@ -122,9 +122,11 @@ export function CustomComponentForm({ itemStepUid }) {
             img: CUSTOM_IMG_ID,
             meta: {},
             name: formData.title,
-            stepId: ctx.cls.getStepForm().stepId,
+            stepId: stepForm.stepId,
         });
     }
+    const stepForm = ctx.cls.getStepForm();
+    if (!stepForm?.meta?.custom) return null;
     return (
         <div className="min-h-[56px] rounded-lg border  font-mono">
             <div className="border-b p-4 py-2">
