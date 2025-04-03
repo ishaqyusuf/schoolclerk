@@ -1,16 +1,11 @@
 import SelectControl from "@/_v2/components/common/select-control";
 import { useStaticContractors } from "@/_v2/hooks/use-static-data";
-import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-} from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
+import { FormControl, FormField, FormItem, FormLabel } from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
+import { Textarea } from "@gnd/ui/textarea";
 
 import useSubmitJob, { useJobSubmitCtx } from "./use-submit-job";
 

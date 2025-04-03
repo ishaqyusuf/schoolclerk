@@ -1,12 +1,14 @@
-import { Form } from "@/components/ui/form";
-import { useMailbox } from "./context";
-import { useForm } from "react-hook-form";
-import FormInput from "@/components/common/controls/form-input";
 import Button from "@/components/common/button";
-import { setSalesCustomerEmailUseCase } from "../../use-case/sales-email-use-case";
+import FormInput from "@/components/common/controls/form-input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
+
+import { Form } from "@gnd/ui/form";
+
+import { setSalesCustomerEmailUseCase } from "../../use-case/sales-email-use-case";
+import { useMailbox } from "./context";
 
 export default function EmailForm({}) {
     const ctx = useMailbox();
@@ -14,7 +16,7 @@ export default function EmailForm({}) {
         resolver: zodResolver(
             z.object({
                 email: z.string().email(),
-            })
+            }),
         ),
         defaultValues: {
             email: "",
@@ -37,7 +39,7 @@ export default function EmailForm({}) {
     return (
         <Form {...form}>
             <div className="flex justify-center py-10">
-                <div className="w-1/2 grid gap-4">
+                <div className="grid w-1/2 gap-4">
                     <FormInput
                         control={form.control}
                         name="email"

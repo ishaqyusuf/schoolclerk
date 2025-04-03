@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import {
     Command,
     CommandEmpty,
@@ -13,12 +13,8 @@ import {
     CommandList,
     CommandSeparator,
     CommandShortcut,
-} from "@/components/ui/command";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@gnd/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@gnd/ui/popover";
 
 const FacetedFilter = Popover;
 
@@ -77,7 +73,7 @@ const FacetedFilterItem = React.forwardRef<
                     "mr-2 flex size-4 items-center justify-center rounded-sm border border-primary",
                     selected
                         ? "bg-primary text-primary-foreground"
-                        : "opacity-50 [&_svg]:invisible"
+                        : "opacity-50 [&_svg]:invisible",
                 )}
             >
                 <Check className="size-4" />
@@ -104,4 +100,3 @@ export {
     FacetedFilterSeparator,
     FacetedFilterShortcut,
 };
-

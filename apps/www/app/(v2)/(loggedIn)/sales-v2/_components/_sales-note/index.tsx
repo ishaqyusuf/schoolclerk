@@ -7,17 +7,17 @@ import StatusBadge from "@/components/_v1/status-badge";
 import FormInput from "@/components/common/controls/form-input";
 import FormSelect from "@/components/common/controls/form-select";
 import { TableCol } from "@/components/common/data-table/table-cells";
-import { Badge } from "@/components/ui/badge";
-import { Form } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import useFn from "@/hooks/use-fn";
 import { formatDate } from "@/lib/use-day";
 import { cn, labelValue, toLabelValue } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
+import { Badge } from "@gnd/ui/badge";
 import { Button } from "@gnd/ui/button";
+import { Form } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
+import { Textarea } from "@gnd/ui/textarea";
 
 import { getSalesNote } from "./_actions/get-sales-notes";
 import { saveNote } from "./_actions/save-notes";

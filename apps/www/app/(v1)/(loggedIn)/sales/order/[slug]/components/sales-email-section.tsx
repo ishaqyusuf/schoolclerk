@@ -1,10 +1,11 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AddressBooks } from "@/db";
 import { useDataPage } from "@/lib/data-page-context";
 import { convertToNumber } from "@/lib/use-number";
 import { IAddressBook, ISalesOrder } from "@/types/sales";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@gnd/ui/card";
 
 import OrderOverviewActions from "../../../../../../../components/_v1/actions/order-overview-actions";
 import { Info } from "../../../../../../../components/_v1/info";

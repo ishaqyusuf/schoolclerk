@@ -1,4 +1,8 @@
 import { useContext } from "react";
+import { generateRandomString } from "@/lib/utils";
+import { useFieldArray } from "react-hook-form";
+
+import { Button } from "@gnd/ui/button";
 import {
     Table,
     TableBody,
@@ -6,11 +10,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { generateRandomString } from "@/lib/utils";
-import { useFieldArray } from "react-hook-form";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/table";
 
 import {
     DykeItemFormContext,

@@ -1,17 +1,18 @@
-import { AdminOnly } from "../../helper";
-
-import { salesOverviewStore } from "../../store";
-import { cn, percent, sum } from "@/lib/utils";
 import Money from "@/components/_v1/money";
-import { Badge } from "@/components/ui/badge";
-import { ItemOverview } from "./item-overview";
-import { ProductionHeader } from "./header";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
     ItemsTabProvider,
     useItemsTabContext,
 } from "@/components/sheets/sales-overview-sheet/items-tab-context";
+import { cn, percent, sum } from "@/lib/utils";
+
+import { Badge } from "@gnd/ui/badge";
+import { Label } from "@gnd/ui/label";
+import { Tabs, TabsList, TabsTrigger } from "@gnd/ui/tabs";
+
+import { AdminOnly } from "../../helper";
+import { salesOverviewStore } from "../../store";
+import { ProductionHeader } from "./header";
+import { ItemOverview } from "./item-overview";
 
 export function SalesItemsTab({ productionMode = false }) {
     const store = salesOverviewStore();
@@ -27,7 +28,7 @@ export function SalesItemsTab({ productionMode = false }) {
                     <ProductionHeader />
                 </AdminOnly>
                 {noItem ? (
-                    <div className="flex flex-col items-center justify-center h-[50vh]">
+                    <div className="flex h-[50vh] flex-col items-center justify-center">
                         <Label>No item</Label>
                     </div>
                 ) : (
@@ -37,7 +38,7 @@ export function SalesItemsTab({ productionMode = false }) {
                             key={item.itemControlUid}
                         >
                             {item.primary && item.sectionTitle && (
-                                <div className="uppercase py-2 bg-muted text-center font-mono font-semibold">
+                                <div className="bg-muted py-2 text-center font-mono font-semibold uppercase">
                                     {item.sectionTitle}
                                 </div>
                             )}
@@ -45,39 +46,39 @@ export function SalesItemsTab({ productionMode = false }) {
                                 <div
                                     className={cn(
                                         item.sectionTitle && "",
-                                        "border border-transparent border-b-muted-foreground/20 rounded-b-none rounded-lg",
+                                        "rounded-lg rounded-b-none border border-transparent border-b-muted-foreground/20",
                                         item.itemControlUid != store.itemViewId
-                                            ? "cursor-pointer hover:bg-muted/80 hover:shadow-lg hover:border-muted-foreground/30"
-                                            : "border border-muted-foreground/60 shadow-sm bg-muted/30",
-                                        ctx.selectMode && "cursor-pointer"
+                                            ? "cursor-pointer hover:border-muted-foreground/30 hover:bg-muted/80 hover:shadow-lg"
+                                            : "border border-muted-foreground/60 bg-muted/30 shadow-sm",
+                                        ctx.selectMode && "cursor-pointer",
                                     )}
                                 >
                                     <div
                                         className={cn(
                                             "p-2 pt-4 text-sm",
-                                            "space-y-2"
+                                            "space-y-2",
                                         )}
                                         onClick={() => {
                                             if (ctx.selectMode) {
                                                 ctx.toggeItemSelection(
-                                                    item.itemControlUid
+                                                    item.itemControlUid,
                                                 );
                                                 return;
                                             }
                                             store.update(
                                                 "itemViewId",
-                                                item.itemControlUid
+                                                item.itemControlUid,
                                             );
                                             store.update("itemView", item);
                                         }}
                                     >
                                         <div className="">
-                                            <div className="flex gap-6 justify-between">
-                                                <div className="flex-1 font-semibold font-mono uppercase">
+                                            <div className="flex justify-between gap-6">
+                                                <div className="flex-1 font-mono font-semibold uppercase">
                                                     {item.title}
                                                     <span>
                                                         {ctx.isSelected(
-                                                            item.itemControlUid
+                                                            item.itemControlUid,
                                                         ) && (
                                                             <Badge>
                                                                 Selected
@@ -95,14 +96,14 @@ export function SalesItemsTab({ productionMode = false }) {
                                                     </AdminOnly>
                                                 </div>
                                             </div>
-                                            <div className="uppercase font-mono text-muted-foreground font-semibold">
+                                            <div className="font-mono font-semibold uppercase text-muted-foreground">
                                                 <span>
                                                     {item.inlineSubtitle}
                                                 </span>
                                             </div>
                                         </div>
                                         {item.lineConfigs?.length && (
-                                            <div className="flex gap-4 justify-end">
+                                            <div className="flex justify-end gap-4">
                                                 {item.lineConfigs?.map((c) => (
                                                     <Badge
                                                         key={c}
@@ -115,8 +116,8 @@ export function SalesItemsTab({ productionMode = false }) {
                                             </div>
                                         )}
 
-                                        <div className="flex pt-2 gap-6">
-                                            <div className="flex-1 flex justify-end">
+                                        <div className="flex gap-6 pt-2">
+                                            <div className="flex flex-1 justify-end">
                                                 {item.produceable && (
                                                     <>
                                                         <div className="flex-1">
@@ -179,17 +180,17 @@ function Pill({ label, value }) {
     return (
         <div
             className={cn(
-                "flex whitespace-nowrap uppercase font-semibold font-mono text-xs text-muted-foreground"
+                "flex whitespace-nowrap font-mono text-xs font-semibold uppercase text-muted-foreground",
             )}
         >
             <span
                 className={cn(
-                    "px-1 rounded-full shadow border",
+                    "rounded-full border px-1 shadow",
                     _percent < 100 &&
-                        "text-cyan-600 bg-cyan-100 border-cyan-200",
-                    !_percent && "text-red-600 bg-red-100 border-red-200",
+                        "border-cyan-200 bg-cyan-100 text-cyan-600",
+                    !_percent && "border-red-200 bg-red-100 text-red-600",
                     _percent >= 100 &&
-                        "text-emerald-600 bg-emerald-100 border-emerald-200"
+                        "border-emerald-200 bg-emerald-100 text-emerald-600",
                 )}
             >
                 {label}: {value}

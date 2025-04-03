@@ -1,8 +1,10 @@
 "use client";
 
+import React from "react";
+import Money from "@/components/_v1/money";
 import { useDataPage } from "@/lib/data-page-context";
-import { SalesOverviewType } from "../overview-shell";
-import { TabsContent } from "@/components/ui/tabs";
+
+import { Badge } from "@gnd/ui/badge";
 import {
     Table,
     TableBody,
@@ -10,10 +12,10 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import React from "react";
-import { Badge } from "@/components/ui/badge";
-import Money from "@/components/_v1/money";
+} from "@gnd/ui/table";
+import { TabsContent } from "@gnd/ui/tabs";
+
+import { SalesOverviewType } from "../overview-shell";
 
 export function ShelfItemsSalesOverviewTab() {
     const { data } = useDataPage<SalesOverviewType>();

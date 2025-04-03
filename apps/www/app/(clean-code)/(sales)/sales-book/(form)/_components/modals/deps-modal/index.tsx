@@ -1,20 +1,20 @@
 "use  client";
 
+import { LegacyDykeFormStepType } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
+import FormCheckbox from "@/components/common/controls/form-checkbox";
 import Modal from "@/components/common/modal";
+import { _modal } from "@/components/common/modal/provider";
 import { useForm, UseFormReturn } from "react-hook-form";
+
+import { Form } from "@gnd/ui/form";
+import { Table, TableBody, TableCell, TableRow } from "@gnd/ui/table";
+
 import {
     DykeForm,
     DykeStep,
     DykeStepMeta,
 } from "../../../../../../../(v2)/(loggedIn)/sales-v2/type";
-import { Form } from "@/components/ui/form";
-
-import { _modal } from "@/components/common/modal/provider";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import FormCheckbox from "@/components/common/controls/form-checkbox";
 import { saveDykeMeta } from "./action";
-
-import { LegacyDykeFormStepType } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
 
 interface Props {
     settingKey: keyof DykeStepMeta;
@@ -32,7 +32,7 @@ export default function DependenciesModal({ settingKey, stepCtx }: Props) {
             (_, i) =>
                 i < stepIndex &&
                 !_.item.meta.hidden &&
-                ["Door", "Moulding"].every((s) => s != _.step.title)
+                ["Door", "Moulding"].every((s) => s != _.step.title),
         )
         .map((s) => {
             const checked = stepForm.step.meta[settingKey][s.step.uid];

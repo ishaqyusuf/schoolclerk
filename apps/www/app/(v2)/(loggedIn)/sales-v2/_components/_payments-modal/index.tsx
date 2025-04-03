@@ -16,15 +16,6 @@ import FormSelect from "@/components/common/controls/form-select";
 import { TableCol } from "@/components/common/data-table/table-cells";
 import Modal from "@/components/common/modal";
 import { useModal } from "@/components/common/modal/provider";
-import { Form } from "@/components/ui/form";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
 import useStaticDataLoader from "@/lib/static-data-loader";
 import useEffectLoader from "@/lib/use-effect-loader";
 import { cn } from "@/lib/utils";
@@ -32,6 +23,15 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Form } from "@gnd/ui/form";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@gnd/ui/table";
 
 import SquarePaymentModal from "../_square-payment-modal";
 import salesData from "../../../sales/sales-data";

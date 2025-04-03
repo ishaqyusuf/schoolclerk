@@ -5,36 +5,6 @@ import { Icons } from "@/components/_v1/icons";
 import Money from "@/components/_v1/money";
 import FormSelect from "@/components/common/controls/form-select";
 import { useModal } from "@/components/common/modal/provider";
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/components/ui/command";
-import { Form, FormField } from "@/components/ui/form";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
 import { DykeShelfCategories } from "@/db";
 import { cn } from "@/lib/utils";
 // import { ArrowDown } from "lucide-react";
@@ -42,7 +12,33 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from "@gnd/ui/command";
+import { Form, FormField } from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@gnd/ui/popover";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@gnd/ui/select";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@gnd/ui/table";
 
 import { _getShelfCategories } from "../../../../_action/get-shelf-categories";
 import { getShelfProducts } from "../../../../_action/get-shelf-products.actions";

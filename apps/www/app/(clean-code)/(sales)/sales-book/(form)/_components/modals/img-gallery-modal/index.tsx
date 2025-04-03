@@ -2,10 +2,10 @@ import { useState } from "react";
 import { browseComponentImgUseCase } from "@/app/(clean-code)/(sales)/_common/use-case/step-component-use-case";
 import Modal from "@/components/common/modal";
 import { _modal } from "@/components/common/modal/provider";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDebounceInput } from "@/hooks/use-debounce";
 
 import { Input } from "@gnd/ui/input";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 
 import { ComponentImg } from "../../component-img";
 

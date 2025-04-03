@@ -3,8 +3,13 @@
 import { useEffect, useTransition } from "react";
 import { SalesFormResponse } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-form";
 import { DatePicker } from "@/components/_v1/date-range-picker";
-import { FormField } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
+import { formatDate } from "@/lib/use-day";
+import { useAppSelector } from "@/store";
+import { ISalesOrderForm } from "@/types/sales";
+
+import { FormField } from "@gnd/ui/form";
+import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
 import {
     Select,
     SelectContent,
@@ -12,13 +17,8 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { formatDate } from "@/lib/use-day";
-import { useAppSelector } from "@/store";
-import { ISalesOrderForm } from "@/types/sales";
-
-import { Input } from "@gnd/ui/input";
+} from "@gnd/ui/select";
+import { Switch } from "@gnd/ui/switch";
 
 import salesUtils from "../sales-utils";
 import { SalesCustomerProfileInput } from "./customer-profile-input";

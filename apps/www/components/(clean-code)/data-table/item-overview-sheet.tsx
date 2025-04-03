@@ -1,18 +1,12 @@
 import React from "react";
 import { Icons } from "@/components/_v1/icons";
-import { Separator } from "@/components/ui/separator";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { PrimitiveDivProps } from "@/types/type";
 import { cva, VariantProps } from "class-variance-authority";
 import { ChevronDown, ChevronUp, X } from "lucide-react";
 
 import { Button } from "@gnd/ui/button";
+import { Separator } from "@gnd/ui/separator";
 import {
     Sheet,
     SheetClose,
@@ -21,6 +15,12 @@ import {
     SheetHeader,
     SheetTitle,
 } from "@gnd/ui/sheet";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@gnd/ui/tooltip";
 
 import { Kbd } from "../kbd";
 import { useInfiniteDataTable } from "./use-data-table";

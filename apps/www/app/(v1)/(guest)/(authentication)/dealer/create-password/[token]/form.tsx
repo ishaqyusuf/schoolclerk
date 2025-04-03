@@ -4,7 +4,6 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { Icons } from "@/components/_v1/icons";
 import FormInput from "@/components/common/controls/form-input";
-import { Form } from "@/components/ui/form";
 import { _useAsync } from "@/lib/use-async";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
@@ -12,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Form } from "@gnd/ui/form";
 
 import { createDealerPassword, VerifyToken } from "./action";
 import {

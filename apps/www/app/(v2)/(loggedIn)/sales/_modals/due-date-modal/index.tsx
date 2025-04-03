@@ -1,14 +1,16 @@
 "use client";
 
+import { useState } from "react";
+import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
 import { DatePicker } from "@/components/_v1/date-range-picker";
 import Modal from "@/components/common/modal";
-import { Calendar } from "@/components/ui/calendar";
-import { useState } from "react";
+import { useModal } from "@/components/common/modal/provider";
+import { toast } from "sonner";
+
+import { Calendar } from "@gnd/ui/calendar";
+
 import { PayableProm } from "../../accounting/payables/payable-tables";
 import { updateDueDateAction } from "./update-due-date";
-import { toast } from "sonner";
-import { useModal } from "@/components/common/modal/provider";
-import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
 
 interface Props {
     item: PayableProm["Item"];

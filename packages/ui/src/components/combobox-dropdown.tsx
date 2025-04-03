@@ -1,9 +1,9 @@
 "use client";
 
-import { Check, ChevronsUpDown } from "lucide-react";
 import * as React from "react";
-
 import { CommandList } from "cmdk";
+import { Check, ChevronsUpDown } from "lucide-react";
+
 import { cn } from "../utils";
 import { Button } from "./button";
 import {
@@ -15,13 +15,13 @@ import {
 } from "./command";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
-export type ComboboxItem = {
+export interface ComboboxItem {
   id: string;
   label: string;
   disabled?: boolean;
-};
+}
 
-type Props<T> = {
+interface Props<T> {
   placeholder?: React.ReactNode;
   searchPlaceholder?: string;
   items: T[];
@@ -39,7 +39,7 @@ type Props<T> = {
   onCreate?: (value: string) => void;
   headless?: boolean;
   className?: string;
-};
+}
 
 export function ComboboxDropdown<T extends ComboboxItem>({
   headless,
@@ -155,18 +155,22 @@ export function ComboboxDropdown<T extends ComboboxItem>({
         <Button
           variant="outline"
           aria-expanded={open}
-          className="w-full justify-between relative"
+          className="relative w-full justify-between"
         >
           <span className="truncate text-ellipsis pr-3">
-            {selectedItem
-              ? ((
-                  <span className="flex items-center overflow-hidden whitespace-nowrap text-ellipsis block">
-                    {renderSelectedItem?.(selectedItem)}
-                  </span>
-                ) ?? selectedItem.label)
-              : (placeholder ?? "Select item...")}
+            {selectedItem ? (
+              renderSelectedItem ? (
+                <span className="block flex items-center overflow-hidden text-ellipsis whitespace-nowrap">
+                  {renderSelectedItem?.(selectedItem)}
+                </span>
+              ) : (
+                selectedItem.label
+              )
+            ) : (
+              placeholder ?? "Select item..."
+            )}
           </span>
-          <ChevronsUpDown className="size-4 opacity-50 absolute right-2" />
+          <ChevronsUpDown className="absolute right-2 size-4 opacity-50" />
         </Button>
       </PopoverTrigger>
 

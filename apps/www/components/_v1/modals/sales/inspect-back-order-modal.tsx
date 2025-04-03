@@ -1,17 +1,21 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-
 import { useRouter } from "next/navigation";
-import { IBackOrderForm, ISalesOrder } from "@/types/sales";
-import { _useAsync } from "@/lib/use-async";
-import BaseModal from "../base-modal";
-import { closeModal } from "@/lib/modal";
-import { toast } from "sonner";
-import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/form";
+import { _readyForDelivery } from "@/app/(v1)/(loggedIn)/sales/_actions/delivery/ready-for-delivery";
+import { _startSalesDelivery } from "@/app/(v1)/(loggedIn)/sales/_actions/delivery/start-sales-delivery";
+import { _createBackorder } from "@/app/(v2)/(loggedIn)/sales/_actions/create-back-order";
+import Btn from "@/components/_v1/btn";
 import { TruckLoaderForm } from "@/components/_v1/sales/load-delivery/load-delivery";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { closeModal } from "@/lib/modal";
+import { _useAsync } from "@/lib/use-async";
+import { cn } from "@/lib/utils";
+import { IBackOrderForm, ISalesOrder } from "@/types/sales";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 import {
     Table,
     TableBody,
@@ -19,13 +23,10 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { cn } from "@/lib/utils";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import Btn from "@/components/_v1/btn";
-import { _startSalesDelivery } from "@/app/(v1)/(loggedIn)/sales/_actions/delivery/start-sales-delivery";
-import { _readyForDelivery } from "@/app/(v1)/(loggedIn)/sales/_actions/delivery/ready-for-delivery";
-import { _createBackorder } from "@/app/(v2)/(loggedIn)/sales/_actions/create-back-order";
+} from "@gnd/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
+
+import BaseModal from "../base-modal";
 
 export default function InspectBackOrderModal() {
     const [pending, startTransition] = useTransition();
@@ -103,7 +104,7 @@ export default function InspectBackOrderModal() {
                                                         <p>{slug}</p>
                                                     </div>
                                                 </TabsTrigger>
-                                            )
+                                            ),
                                     )}
                                 </TabsList>
                                 <ScrollArea className="h-[50vh]">
@@ -145,12 +146,12 @@ export default function InspectBackOrderModal() {
                                                                             item
                                                                         }
                                                                     />
-                                                                )
+                                                                ),
                                                             )}
                                                         </TableBody>
                                                     </Table>
                                                 </TabsContent>
-                                            )
+                                            ),
                                     )}
                                 </ScrollArea>
                             </Tabs>
@@ -173,7 +174,7 @@ function BackOrderLine({ form, slug, item }) {
                 !backQty && item.qty > 0 && "grayscale-0",
                 checked && "bg-orange-100 hover:bg-orange-100",
                 backQty &&
-                    "bg-orange-200 hover:bg-orange-200 cursor-not-allowed"
+                    "cursor-not-allowed bg-orange-200 hover:bg-orange-200",
             )}
             key={item.id}
         >
@@ -181,7 +182,7 @@ function BackOrderLine({ form, slug, item }) {
                 onClick={(e) => {
                     form.setValue(`${baseKey}.checked`, !checked);
                 }}
-                className={cn("p-2 uppercase cursor-pointer")}
+                className={cn("cursor-pointer p-2 uppercase")}
             >
                 <p className="text-primary">{item.description}</p>
             </TableCell>

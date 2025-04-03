@@ -2,9 +2,9 @@ import { useLegacyDykeFormStep } from "@/app/(clean-code)/(sales)/sales-book/(fo
 import ConfirmBtn from "@/components/_v1/confirm-btn";
 import { Icons } from "@/components/_v1/icons";
 import { useModal } from "@/components/common/modal/provider";
-import { Label } from "@/components/ui/label";
 
 import { Button } from "@gnd/ui/button";
+import { Label } from "@gnd/ui/label";
 
 import { useStepItemCtx } from "./use-step-items";
 

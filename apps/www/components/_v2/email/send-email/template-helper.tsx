@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import FormInput from "@/components/common/controls/form-input";
 import FormSelect from "@/components/common/controls/form-select";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { htmlIsEmpty } from "@/lib/utils";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Tabs, TabsContent } from "@gnd/ui/tabs";
 
 import { getEmailTemplates } from "../_actions/get-template";
 import { saveEmailTemplate } from "../_actions/save-template";

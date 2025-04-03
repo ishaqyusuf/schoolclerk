@@ -1,14 +1,16 @@
-import { TableCell } from "@/components/ui/table";
+import { useContext } from "react";
+import ConfirmBtn from "@/components/_v1/confirm-btn";
+import Money from "@/components/_v1/money";
+import FormCheckbox from "@/components/common/controls/form-checkbox";
+import FormInput from "@/components/common/controls/form-input";
+
+import { TableCell } from "@gnd/ui/table";
+
 import {
     DykeItemFormContext,
     useDykeForm,
 } from "../../../../../_hooks/form-context";
-import { useContext } from "react";
-import FormInput from "@/components/common/controls/form-input";
-import Money from "@/components/_v1/money";
 import { useMultiComponentItem } from "../../../../../_hooks/use-multi-component-item";
-import ConfirmBtn from "@/components/_v1/confirm-btn";
-import FormCheckbox from "@/components/common/controls/form-checkbox";
 import PriceBreakDownCell from "../price-breakdown-cell";
 
 interface Props {
@@ -99,7 +101,7 @@ export default function LineItemSection({ componentTitle, mdf }: Props) {
             <TableCell className="w-[150px]">
                 <Money value={componentItem.totalPrice} />
             </TableCell>
-            <TableCell className="w-[50px] flex">
+            <TableCell className="flex w-[50px]">
                 <ConfirmBtn
                     onClick={() => componentItem.removeLine(mdf.removeTab)}
                     size="icon"

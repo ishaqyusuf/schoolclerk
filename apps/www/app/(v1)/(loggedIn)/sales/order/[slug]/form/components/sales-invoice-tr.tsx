@@ -5,9 +5,15 @@ import { SalesFormCtx } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-form";
 import AutoComplete2 from "@/components/_v1/auto-complete-tw";
 import Combobox from "@/components/_v1/combo-box";
 import Money from "@/components/_v1/money";
-import { Checkbox } from "@/components/ui/checkbox";
-import { FormField } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
+import { store } from "@/store";
+import { updateFooterInfo } from "@/store/invoice-item-component-slice";
+import { ISalesOrder, ISalesOrderForm } from "@/types/sales";
+import { CheckedState } from "@radix-ui/react-checkbox";
+
+import { Checkbox } from "@gnd/ui/checkbox";
+import { FormField } from "@gnd/ui/form";
+import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
 import {
     Table,
     TableBody,
@@ -16,13 +22,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { store } from "@/store";
-import { updateFooterInfo } from "@/store/invoice-item-component-slice";
-import { ISalesOrder, ISalesOrderForm } from "@/types/sales";
-import { CheckedState } from "@radix-ui/react-checkbox";
-
-import { Input } from "@gnd/ui/input";
+} from "@gnd/ui/table";
 
 import { InvoiceItemRowContext } from "../invoice-item-row-context";
 import InvoiceTableRowAction from "./invoice-table-row-action";

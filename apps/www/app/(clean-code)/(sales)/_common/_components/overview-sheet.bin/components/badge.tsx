@@ -1,4 +1,4 @@
-import { BadgeProps, Badge as BaseBadge } from "@/components/ui/badge";
+import { BadgeProps, Badge as BaseBadge } from "@gnd/ui/badge";
 
 interface Props {
     value?;

@@ -12,7 +12,17 @@ import { IJobs } from "@/types/hrm";
 import { InstallCostLine, InstallCostSettings } from "@/types/settings";
 import { toast } from "sonner";
 
+import { Button } from "@gnd/ui/button";
 import { Input } from "@gnd/ui/input";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@gnd/ui/table";
 
 import {
     DateCellContent,
@@ -22,16 +32,6 @@ import {
 import { Info } from "../../../../../../components/_v1/info";
 import Money from "../../../../../../components/_v1/money";
 import BaseSheet from "../../../../../../components/_v1/sheets/base-sheet";
-import { Button } from "../../../../../../components/ui/button";
-import { ScrollArea } from "../../../../../../components/ui/scroll-area";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "../../../../../../components/ui/table";
 
 interface Props {
     admin?: boolean;

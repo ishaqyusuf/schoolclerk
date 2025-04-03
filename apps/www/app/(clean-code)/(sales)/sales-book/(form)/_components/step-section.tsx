@@ -1,22 +1,24 @@
+import { useEffect, useMemo, useRef } from "react";
+import DevOnly from "@/_v2/components/common/dev-only";
+import { ShelfItems } from "@/components/forms/sales-form/shelf-items";
+import { useIsVisible } from "@/hooks/use-is-visible";
+import { formatMoney } from "@/lib/use-number";
+import { motion } from "framer-motion";
+
+import { Badge } from "@gnd/ui/badge";
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+} from "@gnd/ui/collapsible";
+import { Label } from "@gnd/ui/label";
+
 import { useFormDataStore } from "../_common/_stores/form-data-store";
-import HousePackageTool from "./hpt-step";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { formatMoney } from "@/lib/use-number";
-import { useEffect, useMemo, useRef } from "react";
-import { useIsVisible } from "@/hooks/use-is-visible";
-import { motion } from "framer-motion";
-import DevOnly from "@/_v2/components/common/dev-only";
 import { StepHelperClass } from "../_utils/helpers/zus/step-component-class";
+import { ComponentsSection } from "./components-section";
+import HousePackageTool from "./hpt-step";
 import MouldingLineItem from "./moulding-step";
 import ServiceLineItem from "./service-step";
-import { ComponentsSection } from "./components-section";
-import { ShelfItems } from "@/components/forms/sales-form/shelf-items";
 
 interface Props {
     stepUid?;
@@ -115,7 +117,7 @@ function StepSectionHeader({ cls }: { cls: StepHelperClass }) {
         <CollapsibleTrigger asChild>
             <div className="border border-muted-foreground/20">
                 <button
-                    className="flex h-8 w-full p-1 gap-4 px-4  space-x-2 items-center text-sm uppercase bg-muted-foreground/5 hover:bg-muted-foreground/20"
+                    className="flex h-8 w-full items-center gap-4 space-x-2  bg-muted-foreground/5 p-1 px-4 text-sm uppercase hover:bg-muted-foreground/20"
                     onClick={(e) => {
                         e.preventDefault();
                         cls.toggleStep();

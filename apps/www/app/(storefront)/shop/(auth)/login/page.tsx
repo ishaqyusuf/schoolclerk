@@ -3,20 +3,15 @@
 import Link from "next/link";
 import { Icons } from "@/components/_v1/icons";
 import FormInput from "@/components/common/controls/form-input";
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-} from "@/components/ui/card";
-import { Form } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@gnd/ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "@gnd/ui/card";
+import { Form } from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
 
 export default function CustomerLoginPage() {
     const form = useForm({

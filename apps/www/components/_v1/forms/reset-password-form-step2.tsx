@@ -5,14 +5,6 @@ import { useRouter } from "next/navigation";
 import { resetPassword } from "@/app/(v1)/_actions/auth";
 import { Icons } from "@/components/_v1/icons";
 import { PasswordInput } from "@/components/_v1/password-input";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
 import { resetPasswordSchema } from "@/lib/validations/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,6 +12,14 @@ import { toast } from "sonner";
 import type { z } from "zod";
 
 import { Button } from "@gnd/ui/button";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
 
 export type ResetPasswordFormInputs = z.infer<typeof resetPasswordSchema>;

@@ -9,22 +9,24 @@ import FormInput from "@/components/common/controls/form-input";
 import FormSelect from "@/components/common/controls/form-select";
 import Modal from "@/components/common/modal";
 import { _modal } from "@/components/common/modal/provider";
-import { Badge } from "@/components/ui/badge";
+import { cn, toNumber } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Badge } from "@gnd/ui/badge";
+import { Button } from "@gnd/ui/button";
 import {
     CardContent,
     CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
-import { Form } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import { ScrollArea } from "@/components/ui/scroll-area";
+} from "@gnd/ui/card";
+import { Form } from "@gnd/ui/form";
+import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@gnd/ui/popover";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 import {
     Table,
     TableBody,
@@ -32,19 +34,13 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
+} from "@gnd/ui/table";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cn, toNumber } from "@/lib/utils";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-
-import { Button } from "@gnd/ui/button";
-import { Input } from "@gnd/ui/input";
+} from "@gnd/ui/tooltip";
 
 import { ComponentHelperClass } from "../../../_utils/helpers/zus/step-component-class";
 import AdminControl from "../../admin-control";

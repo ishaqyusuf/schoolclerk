@@ -6,18 +6,6 @@ import {
     useEffect,
     useState,
 } from "react";
-import { getSalesPaymentData, GetSalesPaymentData } from "./action";
-import { toast } from "sonner";
-import {
-    ModalContextProps,
-    useModal,
-} from "@/components/common/modal/provider";
-import Modal from "@/components/common/modal";
-import { Info } from "@/components/_v1/info";
-import Money from "@/components/_v1/money";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TabsContent } from "@radix-ui/react-tabs";
-import { useForm, UseFormReturn } from "react-hook-form";
 import {
     cancelTerminalPayment,
     createSalesPayment,
@@ -26,17 +14,31 @@ import {
     getSquareTerminalPaymentStatus,
     squarePaymentSuccessful,
 } from "@/_v2/lib/square";
-import { Form } from "@/components/ui/form";
-import FormInput from "@/components/common/controls/form-input";
-import FormCheckbox from "@/components/common/controls/form-checkbox";
-import FormSelect from "@/components/common/controls/form-select";
-import { SelectItem } from "@/components/ui/select";
-import { CheckCircle2Icon, Dot, Loader2Icon, XCircleIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { env } from "@/env.mjs";
+import { Info } from "@/components/_v1/info";
+import Money from "@/components/_v1/money";
 import Button from "@/components/common/button";
+import FormCheckbox from "@/components/common/controls/form-checkbox";
+import FormInput from "@/components/common/controls/form-input";
+import FormSelect from "@/components/common/controls/form-select";
+import Modal from "@/components/common/modal";
+import {
+    ModalContextProps,
+    useModal,
+} from "@/components/common/modal/provider";
+import { env } from "@/env.mjs";
 import { openLink } from "@/lib/open-link";
+import { cn } from "@/lib/utils";
+import { TabsContent } from "@radix-ui/react-tabs";
+import { CheckCircle2Icon, Dot, Loader2Icon, XCircleIcon } from "lucide-react";
+import { useForm, UseFormReturn } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
+import { SelectItem } from "@gnd/ui/select";
+import { Tabs, TabsList, TabsTrigger } from "@gnd/ui/tabs";
+
 import { notify } from "../../../mail-grid/lib/use-mail-event";
+import { getSalesPaymentData, GetSalesPaymentData } from "./action";
 
 type FormProps = CreateSalesPaymentProps & {
     modalTitle;
@@ -124,7 +126,7 @@ export default function SquarePaymentModal({ id }: { id: number }) {
                 if (env.NEXT_PUBLIC_NODE_ENV == "production") {
                     const devices = await getSquareDevices();
                     const selectedDevice = devices.find(
-                        (d) => d.value == data.deviceId
+                        (d) => d.value == data.deviceId,
                     );
                     if (!selectedDevice || selectedDevice?.status != "PAIRED") {
                         console.log({ selectedDevice, devices });
@@ -158,7 +160,7 @@ export default function SquarePaymentModal({ id }: { id: number }) {
                     form.setValue("modalTitle", "Processing Payment");
                     form.setValue(
                         "modalSubtitle",
-                        "Swipe your card to finalize payment"
+                        "Swipe your card to finalize payment",
                     );
                     setTab("processingPayment");
                 } else {
@@ -177,7 +179,7 @@ export default function SquarePaymentModal({ id }: { id: number }) {
                     if (resp.paymentUrl) openLink(resp.paymentUrl, {}, true);
                     else {
                         toast.message(
-                            "Check email for payment link or try again"
+                            "Check email for payment link or try again",
                         );
                     }
                 }
@@ -261,7 +263,7 @@ export default function SquarePaymentModal({ id }: { id: number }) {
                                     name="amount"
                                     label="Amount"
                                 />
-                                <div className="flex items-end mb-2">
+                                <div className="mb-2 flex items-end">
                                     <FormCheckbox
                                         control={form.control}
                                         name="allowTip"
@@ -299,7 +301,7 @@ export default function SquarePaymentModal({ id }: { id: number }) {
                                                         option.status ==
                                                             "PAIRED"
                                                             ? "text-green-500"
-                                                            : "text-red-600"
+                                                            : "text-red-600",
                                                     )}
                                                 />
                                                 <span>{option.label}</span>
@@ -356,7 +358,7 @@ function TerminalComponents({}) {
                 //
                 const status = await getSquareTerminalPaymentStatus(
                     paymentId,
-                    salesCheckoutId
+                    salesCheckoutId,
                 );
 
                 switch (status) {
@@ -365,7 +367,7 @@ function TerminalComponents({}) {
                         form.setValue("modalTitle", "Payment Successful");
                         form.setValue(
                             "modalSubtitle",
-                            "Swipe your card to finalize payment"
+                            "Swipe your card to finalize payment",
                         );
                         form.setValue("terminalStatus", "processed");
                         await squarePaymentSuccessful(salesCheckoutId);
@@ -382,7 +384,7 @@ function TerminalComponents({}) {
                         form.setValue("modalTitle", "Payment Failed");
                         form.setValue(
                             "modalSubtitle",
-                            "There was an error processing your payment."
+                            "There was an error processing your payment.",
                         );
                         ctx.setTab("paymentProcessFailed");
                 }
@@ -397,7 +399,7 @@ function TerminalComponents({}) {
         <>
             <TabsContent value="processingPayment">
                 <div className="flex items-center justify-center py-10">
-                    <Loader2Icon className="h-16 w-16 text-blue-500 animate-spin" />
+                    <Loader2Icon className="h-16 w-16 animate-spin text-blue-500" />
                 </div>
                 <div className="flex gap-4">
                     <Button

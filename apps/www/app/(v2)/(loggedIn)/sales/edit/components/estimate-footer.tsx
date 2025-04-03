@@ -1,5 +1,10 @@
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import Money from "@/components/_v1/money";
+import { useLoader } from "@/lib/use-loader";
+import { cn } from "@/lib/utils";
+import { useFormContext } from "react-hook-form";
+
+import { Input } from "@gnd/ui/input";
 import {
     Select,
     SelectContent,
@@ -7,19 +12,14 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
+} from "@gnd/ui/select";
 import {
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableRow,
-} from "@/components/ui/table";
-import { useLoader } from "@/lib/use-loader";
-import { cn } from "@/lib/utils";
-import { useFormContext } from "react-hook-form";
-
-import { Input } from "@gnd/ui/input";
+} from "@gnd/ui/table";
 
 import salesData from "../../sales-data";
 import { SalesFormContext } from "../ctx";

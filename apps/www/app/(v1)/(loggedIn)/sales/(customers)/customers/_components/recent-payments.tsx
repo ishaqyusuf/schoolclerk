@@ -1,22 +1,23 @@
 "use client";
 
 import {
+    OrderIdCell,
+    OrderInvoiceCell,
+} from "@/app/(v1)/(loggedIn)/sales/orders/components/cells/sales-columns";
+import {
     Cell,
     PrimaryCellContent,
     SecondaryCellContent,
 } from "@/components/_v1/columns/base-columns";
-import {
-    OrderIdCell,
-    OrderInvoiceCell,
-} from "@/app/(v1)/(loggedIn)/sales/orders/components/cells/sales-columns";
 import Money from "@/components/_v1/money";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useDataPage } from "@/lib/data-page-context";
 import { formatDate } from "@/lib/use-day";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 import { ICustomer } from "@/types/customers";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@gnd/ui/card";
+import { Table, TableBody, TableCell, TableRow } from "@gnd/ui/table";
 
 interface Props {
     className?;

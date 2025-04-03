@@ -1,7 +1,22 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { staticCustomerProfilesAction } from "@/app/(v1)/(loggedIn)/sales/(customers)/_actions/sales-customer-profiles";
+import { Info } from "@/components/_v1/info";
+import StatusBadge from "@/components/_v1/status-badge";
+import FormSelect from "@/components/common/controls/form-select";
+import { TableCol } from "@/components/common/data-table/table-cells";
 import Modal from "@/components/common/modal";
 import { useModal } from "@/components/common/modal/provider";
+import useEffectLoader from "@/lib/use-effect-loader";
+import { cn } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
+import { Textarea } from "@gnd/ui/textarea";
+
 import {
     dealershipApprovalAction,
     DealerStatus,
@@ -10,19 +25,6 @@ import {
     sendDealerApprovalEmail,
     updateDealerProfileAction,
 } from "./action";
-import { Info } from "@/components/_v1/info";
-import StatusBadge from "@/components/_v1/status-badge";
-import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
-import { TableCol } from "@/components/common/data-table/table-cells";
-import useEffectLoader from "@/lib/use-effect-loader";
-import { useForm } from "react-hook-form";
-import { staticCustomerProfilesAction } from "@/app/(v1)/(loggedIn)/sales/(customers)/_actions/sales-customer-profiles";
-import { Form } from "@/components/ui/form";
-import FormSelect from "@/components/common/controls/form-select";
 
 export function useDealerSheet() {
     const modal = useModal();
@@ -49,7 +51,7 @@ export default function DealerOverviewSheet({ dealer }: Props) {
         if (status == "Approved") {
             await updateDealerProfileAction(
                 dealer.id,
-                +form.getValues("profileId")
+                +form.getValues("profileId"),
             );
             await sendDealerApprovalEmail(dealer.id);
         }
@@ -78,7 +80,7 @@ export default function DealerOverviewSheet({ dealer }: Props) {
     return (
         <Modal.Content>
             <Modal.Header title={"Dealer Overview"} />
-            <div className="grid grid-cols-1 gap-4 mt-4">
+            <div className="mt-4 grid grid-cols-1 gap-4">
                 <Info label="Name" value={dealer.dealer.name} />
                 <Info label="Company Name" value={dealer.dealer.businessName} />
                 <Info label="Email" value={dealer.dealer.email} />
@@ -130,8 +132,8 @@ export default function DealerOverviewSheet({ dealer }: Props) {
             </div>
             <div
                 className={cn(
-                    "grid gap-4 mt-4",
-                    dealer.status == "Approved" && "hidden"
+                    "mt-4 grid gap-4",
+                    dealer.status == "Approved" && "hidden",
                 )}
             >
                 {reject ? (

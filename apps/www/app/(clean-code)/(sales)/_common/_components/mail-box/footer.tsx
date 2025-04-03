@@ -1,14 +1,16 @@
-import { Form } from "@/components/ui/form";
-import { useMailbox } from "./context";
+import Button from "@/components/common/button";
 import FormInput from "@/components/common/controls/form-input";
 import FormSelect from "@/components/common/controls/form-select";
-import Button from "@/components/common/button";
+
+import { Form } from "@gnd/ui/form";
+
+import { useMailbox } from "./context";
 
 export function MailboxFooter({}) {
     const { form, data, __sendEmail } = useMailbox();
     return (
         <Form {...form}>
-            <div className="absolute w-full bottom-0 z-10 border-t bg-white p-2 flex-col flex gap-4 sm:p-4">
+            <div className="absolute bottom-0 z-10 flex w-full flex-col gap-4 border-t bg-white p-2 sm:p-4">
                 <FormInput
                     placeholder="Subject"
                     control={form.control}

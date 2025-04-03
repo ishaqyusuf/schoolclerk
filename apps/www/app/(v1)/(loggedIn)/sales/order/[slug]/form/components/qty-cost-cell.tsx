@@ -1,15 +1,15 @@
 import React, { memo, useContext } from "react";
 import Money from "@/components/_v1/money";
-import { FormField } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import { TableCell } from "@/components/ui/table";
 import { convertToNumber, toFixed } from "@/lib/use-number";
 import { addPercentage } from "@/lib/utils";
 import { store, useAppSelector } from "@/store";
 import { updateFooterInfo } from "@/store/invoice-item-component-slice";
 import { ISalesOrder } from "@/types/sales";
 
+import { FormField } from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
+import { TableCell } from "@gnd/ui/table";
 
 import { InvoiceItemRowContext } from "../invoice-item-row-context";
 import { SalesInvoiceCellProps } from "./sales-invoice-tr";

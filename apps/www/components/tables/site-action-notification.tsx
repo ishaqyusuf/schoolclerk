@@ -1,20 +1,15 @@
 "use client";
 
+import React, { use, useState } from "react";
+import { addUserToSiteActionNotification } from "@/actions/add-user-to-site-action-notification";
 import { getActionNotifications } from "@/actions/cache/get-action-notifications";
+import { removeUserFromSiteActionNotification } from "@/actions/remove-user-from-site-action-notification";
+import { toggleSiteActionNotification } from "@/actions/toggle-site-action-notification";
 import { getUsersListAction } from "@/data-actions/users/get-users";
 import { AsyncFnType } from "@/types";
-import React, { use, useState } from "react";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
 import { Events } from "@/utils/constants";
-import { Checkbox } from "../ui/checkbox";
-import { toggleSiteActionNotification } from "@/actions/toggle-site-action-notification";
+import { ChevronDown } from "lucide-react";
+
 import {
     Combobox,
     ComboboxAnchor,
@@ -25,10 +20,18 @@ import {
     ComboboxInput,
     ComboboxItem,
     ComboboxTrigger,
-} from "@/components/ui/combobox";
-import { ChevronDown } from "lucide-react";
-import { addUserToSiteActionNotification } from "@/actions/add-user-to-site-action-notification";
-import { removeUserFromSiteActionNotification } from "@/actions/remove-user-from-site-action-notification";
+} from "@gnd/ui/combobox";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@gnd/ui/table";
+
+import { Checkbox } from "../ui/checkbox";
+
 interface UseData {
     data: AsyncFnType<typeof getActionNotifications>;
     users: AsyncFnType<typeof getUsersListAction>;
@@ -88,7 +91,7 @@ function UsersCell({ action, users }: UserCellProps) {
         await Promise.all(
             newIds?.map(async (id) => {
                 await addUserToSiteActionNotification(action.id, id);
-            })
+            }),
         );
         // console.log(newIds);
     }
@@ -104,7 +107,7 @@ function UsersCell({ action, users }: UserCellProps) {
                 //  virtualizer.measure();
             }
         },
-        [content]
+        [content],
     );
     return (
         <div>
@@ -130,7 +133,7 @@ function UsersCell({ action, users }: UserCellProps) {
                                         e.preventDefault();
                                         removeUserFromSiteActionNotification(
                                             action.id,
-                                            item.id
+                                            item.id,
                                         ).then((e) => {});
                                     }}
                                     key={index}
@@ -150,7 +153,7 @@ function UsersCell({ action, users }: UserCellProps) {
                             }}
                             placeholder="Select users..."
                         />
-                        <ComboboxTrigger className="absolute top-3 right-2">
+                        <ComboboxTrigger className="absolute right-2 top-3">
                             <ChevronDown className="h-4 w-4" />
                         </ComboboxTrigger>
                     </>

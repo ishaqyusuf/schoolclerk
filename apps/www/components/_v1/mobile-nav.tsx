@@ -4,11 +4,11 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icons } from "@/components/_v1/icons";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { ISidebar } from "@/lib/navs";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@gnd/ui/button";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@gnd/ui/sheet";
 
 import SiteNav from "./layouts/site-nav";

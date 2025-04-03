@@ -12,11 +12,11 @@ import {
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import Portal from "@/components/_v1/portal";
-import { Badge } from "@/components/ui/badge";
 import { typedMemo } from "@/lib/hocs/typed-memo";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 
+import { Badge } from "@gnd/ui/badge";
 import { Button } from "@gnd/ui/button";
 
 import FContentShell from "./f-content-shell";

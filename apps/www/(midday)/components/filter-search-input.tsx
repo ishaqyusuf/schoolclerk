@@ -4,7 +4,6 @@
 // import { formatAccountName } from "@/utils/format";
 import { useRef, useState } from "react";
 import { Icons } from "@/(midday)/components/icons";
-import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 // import { readStreamableValue } from "ai/rsc";
 import { formatISO } from "date-fns";
@@ -17,6 +16,7 @@ import {
 } from "nuqs";
 import { useHotkeys } from "react-hotkeys-hook";
 
+import { Calendar } from "@gnd/ui/calendar";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,

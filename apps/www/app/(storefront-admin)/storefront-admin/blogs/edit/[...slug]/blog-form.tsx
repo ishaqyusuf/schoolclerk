@@ -1,23 +1,25 @@
 "use client";
 
-import { ServerPromiseType } from "@/types";
-import getBlogAction from "../../_actions/get-blog-action";
 import React, { useEffect, useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { redirect } from "next/navigation";
 import Btn from "@/components/_v1/btn";
-import { saveBlogAction } from "../../_actions/save-blog";
-import { Textarea } from "@/components/ui/textarea";
-import { Form } from "@/components/ui/form";
 import MDX from "@/components/common/mdx";
+import MDXEdit from "@/components/common/mdx-editor";
 import { useDebounce } from "@/hooks/use-debounce";
+import { generateRandomString } from "@/lib/utils";
+import { ServerPromiseType } from "@/types";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
+import { Textarea } from "@gnd/ui/textarea";
+
+import getBlogAction from "../../_actions/get-blog-action";
 import {
     deleteRealtimeMdx,
     saveRealtimeMdx,
 } from "../../_actions/real-time-mdx";
-import { toast } from "sonner";
-import { generateRandomString } from "@/lib/utils";
-import { redirect } from "next/navigation";
-import MDXEdit from "@/components/common/mdx-editor";
+import { saveBlogAction } from "../../_actions/save-blog";
 
 type Prom = ServerPromiseType<typeof getBlogAction>;
 interface Props {

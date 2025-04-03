@@ -1,45 +1,45 @@
 "use client";
 
-import { TableShellProps } from "@/types/data-table";
-import { ColumnDef } from "@tanstack/react-table";
 import { useMemo, useState, useTransition } from "react";
+import { deleteJobAction } from "@/app/(v1)/_actions/hrm-jobs/delete-job";
 import {
+    approveJob,
+    rejectJob,
+} from "@/app/(v1)/_actions/hrm-jobs/job-actions";
+import SubmitJobModal from "@/app/(v2)/(loggedIn)/contractors/_modals/submit-job-modal";
+import { useModal } from "@/components/common/modal/provider";
+import { openModal } from "@/lib/modal";
+import { labelValue, truthy } from "@/lib/utils";
+import { TableShellProps } from "@/types/data-table";
+import { IJobs } from "@/types/hrm";
+import { ColumnDef } from "@tanstack/react-table";
+import { Briefcase, CheckCheck, X } from "lucide-react";
+import { toast } from "sonner";
+
+import { Badge } from "@gnd/ui/badge";
+import { Button } from "@gnd/ui/button";
+
+import {
+    _FilterColumn,
+    Cell,
     CheckColumn,
     ColumnHeader,
-    Cell,
-    PrimaryCellContent,
     DateCellContent,
+    PrimaryCellContent,
     SecondaryCellContent,
-    _FilterColumn,
 } from "../../../../../components/_v1/columns/base-columns";
-
 import { DataTable2 } from "../../../../../components/_v1/data-table/data-table-2";
-
 import {
     DeleteRowAction,
     RowActionCell,
     RowActionMenuItem,
     RowActionMoreMenu,
 } from "../../../../../components/_v1/data-table/data-table-row-actions";
-import { Icons } from "../../../../../components/_v1/icons";
-import { openModal } from "@/lib/modal";
-import { IJobs } from "@/types/hrm";
-import { Briefcase, CheckCheck, X } from "lucide-react";
-import { toast } from "sonner";
-import Money from "../../../../../components/_v1/money";
-import {
-    approveJob,
-    rejectJob,
-} from "@/app/(v1)/_actions/hrm-jobs/job-actions";
-import { labelValue, truthy } from "@/lib/utils";
-import { ProjectsFilter } from "../../../../../components/_v1/filters/projects-filter";
 import { PayableEmployees } from "../../../../../components/_v1/filters/employee-filter";
-import { deleteJobAction } from "@/app/(v1)/_actions/hrm-jobs/delete-job";
-import { Badge } from "../../../../../components/ui/badge";
+import { ProjectsFilter } from "../../../../../components/_v1/filters/projects-filter";
 import JobType from "../../../../../components/_v1/hrm/job-type";
-import { Button } from "../../../../../components/ui/button";
-import { useModal } from "@/components/common/modal/provider";
-import SubmitJobModal from "@/app/(v2)/(loggedIn)/contractors/_modals/submit-job-modal";
+import { Icons } from "../../../../../components/_v1/icons";
+import Money from "../../../../../components/_v1/money";
 import JobOverviewSheet from "./job-overview/job-overview-sheet";
 
 export default function JobTableShell<T>({
@@ -70,7 +70,7 @@ export default function JobTableShell<T>({
                                 <JobOverviewSheet
                                     job={row.original}
                                     admin={payment}
-                                />
+                                />,
                             );
                         }}
                     >
@@ -98,7 +98,7 @@ export default function JobTableShell<T>({
                                       {row.original.user?.name}{" "}
                                       {row.original.coWorkerId && (
                                           <>
-                                              <Badge className="leading-none bg-accent text-accent-foreground hover:bg-accent">
+                                              <Badge className="bg-accent leading-none text-accent-foreground hover:bg-accent">
                                                   joint task
                                               </Badge>
                                           </>
@@ -170,7 +170,7 @@ export default function JobTableShell<T>({
                                                     data: row.original,
                                                 });
                                             }}
-                                            className="bg-green-600 h-8"
+                                            className="h-8 bg-green-600"
                                         >
                                             Submit
                                         </Button>
@@ -196,7 +196,7 @@ export default function JobTableShell<T>({
                                             modal.openModal(
                                                 <SubmitJobModal
                                                     job={row.original}
-                                                />
+                                                />,
                                             );
                                         }}
                                         Icon={Icons.edit}
@@ -252,7 +252,7 @@ export default function JobTableShell<T>({
                             </RowActionCell>
                         ),
                     },
-                ]
+                ],
             ),
             ..._FilterColumn(
                 "_projectId",
@@ -260,10 +260,10 @@ export default function JobTableShell<T>({
                 "_userId",
                 "_show",
                 "_builderId",
-                "_date"
+                "_date",
             ),
         ], //.filter(Boolean) as any,
-        [data, isPending]
+        [data, isPending],
     );
     return (
         <DataTable2

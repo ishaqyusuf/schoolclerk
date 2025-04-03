@@ -5,12 +5,11 @@ import { getCustomerFormAction } from "@/actions/get-customer-form";
 import { updateCustomerProfile } from "@/actions/update-customer-profile";
 import { updateCustomerTax } from "@/actions/update-customer-tax";
 import { useFormDataStore } from "@/app/(clean-code)/(sales)/sales-book/(form)/_common/_stores/form-data-store";
-import { AlertTitle } from "@/components/ui/alert";
-import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog";
-import { Label } from "@/components/ui/label";
 import { generateRandomString } from "@/lib/utils";
 import { useAsyncMemo } from "use-async-memo";
 
+import { AlertTitle } from "@gnd/ui/alert";
+import { AlertDialog, AlertDialogContent } from "@gnd/ui/alert-dialog";
 import { Button } from "@gnd/ui/button";
 import {
     Dialog,
@@ -18,6 +17,7 @@ import {
     DialogDescription,
     DialogTitle,
 } from "@gnd/ui/dialog";
+import { Label } from "@gnd/ui/label";
 
 export function CustomerProfileTaxUpdatePrompt({}) {
     const zus = useFormDataStore();

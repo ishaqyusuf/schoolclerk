@@ -1,20 +1,22 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { DownloadProps, sendMessage } from "@/app/(v1)/_actions/email";
 import FormInput from "@/components/common/controls/form-input";
 import Modal from "@/components/common/modal";
-import Tiptap from "@/components/common/tip-tap";
-import { Form } from "@/components/ui/form";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Controller, useForm } from "react-hook-form";
-import { SendEmailTemplateSection } from "./template-helper";
-import { useEffect, useState } from "react";
-import { getEmailData } from "../_actions/get-email-data";
-import { ServerPromiseType } from "@/types";
 import { useModal } from "@/components/common/modal/provider";
-import { toast } from "sonner";
-import { DownloadProps, sendMessage } from "@/app/(v1)/_actions/email";
-import { EmailTypes } from "../types";
+import Tiptap from "@/components/common/tip-tap";
 import { isProdClient } from "@/lib/is-prod";
+import { ServerPromiseType } from "@/types";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+
+import { getEmailData } from "../_actions/get-email-data";
+import { EmailTypes } from "../types";
+import { SendEmailTemplateSection } from "./template-helper";
 
 interface Props {
     // subject?: string;
@@ -99,7 +101,7 @@ export default function SendEmailSheet({ subtitle, data, download }: Props) {
                     meta: {},
                     attachOrder: true,
                 } as any,
-                download
+                download,
             );
             console.log(to);
             toast.success("sent", {});
@@ -123,7 +125,7 @@ export default function SendEmailSheet({ subtitle, data, download }: Props) {
         <Form {...form}>
             <Modal.Content
                 side={"bottomRight"}
-                className="sm:max-w-none sm:w-1/2 xl:w-1/3 h-[80vh] rounded-lg m-4 flex flex-col"
+                className="m-4 flex h-[80vh] flex-col rounded-lg sm:w-1/2 sm:max-w-none xl:w-1/3"
             >
                 <Modal.Header title="Compose Email" subtitle={subtitle} />
                 <ScrollArea className="flex-1">

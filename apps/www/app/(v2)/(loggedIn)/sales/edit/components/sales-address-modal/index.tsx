@@ -5,10 +5,6 @@ import Btn from "@/components/_v1/btn";
 import AutoComplete from "@/components/_v1/common/auto-complete";
 import FormInput from "@/components/common/controls/form-input";
 import { useModal } from "@/components/common/modal/provider";
-import { Form } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { deepCopy } from "@/lib/deep-copy";
 import { ICustomer } from "@/types/customers";
 import { ISalesAddressForm } from "@/types/sales";
@@ -16,6 +12,10 @@ import { useForm, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 
 import { DialogContent, DialogFooter } from "@gnd/ui/dialog";
+import { Form } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
 
 import { saveSalesAddressAction } from "../../../_actions/save-sales-address";
 import { updateSalesAddress } from "../../../_actions/update-sales-address";

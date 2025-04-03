@@ -2,18 +2,14 @@
 
 import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Calendar } from "@/components/ui/calendar";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { addDays, format } from "date-fns";
 import type { DateRange } from "react-day-picker";
 
 import { Button } from "@gnd/ui/button";
+import { Calendar } from "@gnd/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@gnd/ui/popover";
 
 interface DateRangePickerProps
     extends React.ComponentPropsWithoutRef<typeof PopoverContent> {

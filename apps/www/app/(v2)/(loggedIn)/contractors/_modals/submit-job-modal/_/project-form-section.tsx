@@ -1,12 +1,8 @@
 import { useEffect } from "react";
 import AutoComplete from "@/components/_v1/common/auto-complete";
-import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-} from "@/components/ui/form";
 import { Projects } from "@/db";
+
+import { FormControl, FormField, FormItem, FormLabel } from "@gnd/ui/form";
 
 import { useJobSubmitCtx } from "./use-submit-job";
 

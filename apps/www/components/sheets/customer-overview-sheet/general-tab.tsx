@@ -5,22 +5,6 @@ import { getCustomerGeneralInfoAction } from "@/actions/get-customer-general-inf
 import Money from "@/components/_v1/money";
 import ProgressStatus from "@/components/_v1/progress-status";
 import { DataSkeleton } from "@/components/data-skeleton";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
 import { useCustomerOverviewQuery } from "@/hooks/use-customer-overview-query";
 import {
     DataSkeletonProvider,
@@ -31,7 +15,23 @@ import { formatMoney } from "@/lib/use-number";
 import { getInitials } from "@/utils/format";
 import { Wallet } from "lucide-react";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@gnd/ui/avatar";
 import { Button } from "@gnd/ui/button";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@gnd/ui/card";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@gnd/ui/table";
 
 import { Footer } from "./footer";
 import { SalesList } from "./sales-list";

@@ -1,6 +1,9 @@
+import Money from "@/components/_v1/money";
+import { TableCol } from "@/components/common/data-table/table-cells";
 import { useDataPage } from "@/lib/data-page-context";
-import { SalesOverviewType } from "../overview-shell";
-import { Label } from "@/components/ui/label";
+import { inToFt } from "@/lib/utils";
+
+import { Label } from "@gnd/ui/label";
 import {
     Table,
     TableBody,
@@ -8,10 +11,9 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import Money from "@/components/_v1/money";
-import { inToFt } from "@/lib/utils";
-import { TableCol } from "@/components/common/data-table/table-cells";
+} from "@gnd/ui/table";
+
+import { SalesOverviewType } from "../overview-shell";
 
 export default function DykeDoorItems() {
     const { data } = useDataPage<SalesOverviewType>();
@@ -19,7 +21,7 @@ export default function DykeDoorItems() {
     if (!data.groupings.doors?.length) return <></>;
     return data.groupings.doors.map((moulding, index) => (
         <div key={index}>
-            <div className="border-b uppercase p-2 bg-blue-50">
+            <div className="border-b bg-blue-50 p-2 uppercase">
                 <Label>
                     {moulding.meta.doorType} Door: Section {index + 1}
                 </Label>

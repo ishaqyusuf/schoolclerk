@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { ModeToggle } from "@/components/(clean-code)/layouts/mode-toggle";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ISidebar } from "@/lib/navs";
 import { cn } from "@/lib/utils";
 import { LogOut } from "lucide-react";
 import { useSession } from "next-auth/react";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@gnd/ui/avatar";
 import { Button } from "@gnd/ui/button";
 import {
     DropdownMenu,

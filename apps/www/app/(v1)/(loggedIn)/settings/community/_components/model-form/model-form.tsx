@@ -7,7 +7,6 @@ import Btn from "@/components/_v1/btn";
 import PageHeader from "@/components/_v1/page-header";
 import ImportModelTemplateSheet from "@/components/_v1/sheets/import-model-template-sheet";
 import { useModal } from "@/components/common/modal/provider";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDataPage } from "@/lib/data-page-context";
 import { removeEmptyValues } from "@/lib/utils";
 import { useAppSelector } from "@/store";
@@ -17,6 +16,7 @@ import { useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
 
 import {
     GetCommunityTemplate,

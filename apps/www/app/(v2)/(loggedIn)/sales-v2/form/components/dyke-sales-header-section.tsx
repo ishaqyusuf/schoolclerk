@@ -1,30 +1,33 @@
 "use client";
-import { useDykeCtx, useDykeForm } from "../_hooks/form-context";
-import Btn from "@/components/_v1/btn";
+
 import { _revalidate } from "@/app/(v1)/_actions/_revalidate";
-import useDykeFormSaver from "../_hooks/useDykeFormSaver";
 import {
     CopyOrderMenuAction,
     MoveSalesMenuItem,
     PrintOrderMenuAction,
     SendEmailMenuAction,
 } from "@/components/_v1/actions/sales-menu-actions";
-import { Icons } from "@/components/_v1/icons";
+import Btn from "@/components/_v1/btn";
 import {
     Menu,
     MenuItem,
 } from "@/components/_v1/data-table/data-table-row-actions";
-import { cn } from "@/lib/utils";
-import useScroll from "@/hooks/use-scroll";
-import { useModal } from "@/components/common/modal/provider";
-import SalesNoteModal from "../../_components/_sales-note/_modal";
-import { Label } from "@/components/ui/label";
 import { DatePicker } from "@/components/_v1/date-range-picker";
+import { Icons } from "@/components/_v1/icons";
+import { useModal } from "@/components/common/modal/provider";
+import useScroll from "@/hooks/use-scroll";
+import { cn } from "@/lib/utils";
 import { ArchiveRestore } from "lucide-react";
+
+import { Label } from "@gnd/ui/label";
+
+import { useDykeCtx, useDykeForm } from "../_hooks/form-context";
+import useDykeFormSaver from "../_hooks/useDykeFormSaver";
 import PaymentModal from "../../_components/_payments-modal";
-import DykeSettingsModal from "./modals/dyke-settings";
+import SalesNoteModal from "../../_components/_sales-note/_modal";
 import { SaveMode } from "../../type";
 import Evaluator from "./evaluator";
+import DykeSettingsModal from "./modals/dyke-settings";
 import SaveErrorsModal from "./modals/save-errors-modal";
 
 export default function HeaderSection({}) {
@@ -77,15 +80,15 @@ export default function HeaderSection({}) {
                 className={cn(
                     "flex h-12 items-center",
                     scroll.isScrolled &&
-                        "fixed  top-0  right-0 left-0 grid  lg:grid-cols-[240px_minmax(0,1fr)] z-10 "
+                        "fixed  left-0  right-0 top-0 z-10  grid lg:grid-cols-[240px_minmax(0,1fr)] ",
                 )}
             >
                 {scroll.isScrolled && <div></div>}
                 <div
                     className={cn(
-                        "flex justify-between flex-1  sm:items-center flex-col sm:flex-row",
+                        "flex flex-1 flex-col  justify-between sm:flex-row sm:items-center",
                         scroll.isScrolled &&
-                            "bg-accent py-2   shadow-sm border-b px-8"
+                            "border-b bg-accent   px-8 py-2 shadow-sm",
                     )}
                 >
                     <div className="">
@@ -100,7 +103,7 @@ export default function HeaderSection({}) {
                         className={cn(
                             dealerMode
                                 ? "hidden"
-                                : "flex items-center space-x-2"
+                                : "flex items-center space-x-2",
                         )}
                     >
                         <div className="inline-flex items-center space-x-2">
@@ -110,7 +113,7 @@ export default function HeaderSection({}) {
                                 setValue={(e) =>
                                     form.setValue("order.createdAt", e)
                                 }
-                                className="w-auto h-8"
+                                className="h-8 w-auto"
                                 value={date}
                             />
                         </div>
@@ -124,7 +127,7 @@ export default function HeaderSection({}) {
                                             id={id}
                                             orderId={orderId}
                                             form={form}
-                                        />
+                                        />,
                                     );
                                 }}
                             >
@@ -136,7 +139,10 @@ export default function HeaderSection({}) {
                             variant={"outline"}
                             onClick={() => {
                                 modal.openSheet(
-                                    <SalesNoteModal id={id} orderId={orderId} />
+                                    <SalesNoteModal
+                                        id={id}
+                                        orderId={orderId}
+                                    />,
                                 );
                             }}
                         >
@@ -155,7 +161,7 @@ export default function HeaderSection({}) {
                                             {
                                                 type,
                                                 slug: form.getValues(
-                                                    "order.slug"
+                                                    "order.slug",
                                                 ),
                                             } as any
                                         }
@@ -169,7 +175,7 @@ export default function HeaderSection({}) {
                                             {
                                                 type,
                                                 slug: form.getValues(
-                                                    "order.slug"
+                                                    "order.slug",
                                                 ),
                                             } as any
                                         }
@@ -180,7 +186,7 @@ export default function HeaderSection({}) {
                                         row={
                                             {
                                                 slug: form.getValues(
-                                                    "order.slug"
+                                                    "order.slug",
                                                 ),
                                                 type: type,
                                             } as any
@@ -191,7 +197,7 @@ export default function HeaderSection({}) {
                                         row={
                                             {
                                                 slug: form.getValues(
-                                                    "order.slug"
+                                                    "order.slug",
                                                 ),
                                                 type,
                                             } as any
@@ -211,7 +217,7 @@ export default function HeaderSection({}) {
                             <MenuItem
                                 onClick={() => {
                                     modal.openSheet(
-                                        <DykeSettingsModal form={form} />
+                                        <DykeSettingsModal form={form} />,
                                     );
                                 }}
                                 Icon={Icons.settings}

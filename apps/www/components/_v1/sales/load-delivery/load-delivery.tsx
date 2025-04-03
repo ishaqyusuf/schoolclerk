@@ -6,8 +6,6 @@ import { _readyForDelivery } from "@/app/(v1)/(loggedIn)/sales/_actions/delivery
 import { _startSalesDelivery } from "@/app/(v1)/(loggedIn)/sales/_actions/delivery/start-sales-delivery";
 import Btn from "@/components/_v1/btn";
 import PageHeader from "@/components/_v1/page-header";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDataPage } from "@/lib/data-page-context";
 import { openModal } from "@/lib/modal";
 import { truckBackOrder } from "@/lib/sales/truck-backorder";
@@ -19,6 +17,8 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
 
 import OrderInspection from "./order-inspection";
 

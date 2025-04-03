@@ -1,32 +1,34 @@
-import Modal from "@/components/common/modal";
-import { salesOverviewStore } from "../../store";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import Button from "@/components/common/button";
-import { Icons } from "@/components/_v1/icons";
-import { Menu } from "@/components/(clean-code)/menu";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/form";
+import { Icons } from "@/components/_v1/icons";
+import { DatePicker } from "@/components/(clean-code)/custom/controlled/date-picker";
+import { Menu } from "@/components/(clean-code)/menu";
+import Button from "@/components/common/button";
 import FormCheckbox from "@/components/common/controls/form-checkbox";
+import FormSelect from "@/components/common/controls/form-select";
+import Modal from "@/components/common/modal";
+import useEffectLoader from "@/lib/use-effect-loader";
+import { cn } from "@/lib/utils";
+import Note from "@/modules/notes";
+import { noteTagFilter } from "@/modules/notes/utils";
+import { Minimize } from "lucide-react";
+import { useForm } from "react-hook-form";
 // import { updateItemControlAction } from "../../../../data-actions/item-control.action";
 import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+
+import { createItemAssignmentAction } from "../../../../data-actions/production-actions/item-assign-action";
+import { getSalesProdWorkersAsSelectOption } from "../../../../use-case/sales-prod-workers-use-case";
+import { ItemControlMenu } from "../../components/item-control-menu";
 import {
     AdminOnly,
     getOpenItem,
     getPendingAssignments,
     loadPageData,
 } from "../../helper";
-import { getSalesProdWorkersAsSelectOption } from "../../../../use-case/sales-prod-workers-use-case";
-import useEffectLoader from "@/lib/use-effect-loader";
-import FormSelect from "@/components/common/controls/form-select";
-import { DatePicker } from "@/components/(clean-code)/custom/controlled/date-picker";
-import { Minimize } from "lucide-react";
+import { salesOverviewStore } from "../../store";
 import { ItemAssignments } from "./assignments";
-import { createItemAssignmentAction } from "../../../../data-actions/production-actions/item-assign-action";
-import { cn } from "@/lib/utils";
-import { ItemControlMenu } from "../../components/item-control-menu";
-import Note from "@/modules/notes";
-import { noteTagFilter } from "@/modules/notes/utils";
 
 export function ItemOverview({}) {
     const store = salesOverviewStore();
@@ -48,8 +50,8 @@ export function ItemOverview({}) {
                             <div className="uppercase">{config?.label}: </div>
                             <div
                                 className={cn(
-                                    "font-mono uppercase font-bold",
-                                    config.color == "red" && "text-red-700"
+                                    "font-mono font-bold uppercase",
+                                    config.color == "red" && "text-red-700",
                                 )}
                             >
                                 {config?.value}
@@ -65,7 +67,7 @@ export function ItemOverview({}) {
                             className="w-full"
                             size="xs"
                         >
-                            <Icons.add className="size-4 mr-2" />
+                            <Icons.add className="mr-2 size-4" />
                             <span>ASSIGN</span>
                             <span className="px-2">({pendingAssignment})</span>
                         </Button>
@@ -109,7 +111,7 @@ export function ItemOverview({}) {
                             tagFilters={[
                                 noteTagFilter(
                                     "itemControlUID",
-                                    itemView?.itemControlUid
+                                    itemView?.itemControlUid,
                                 ),
                                 noteTagFilter("salesItemId", itemView?.itemId),
                                 noteTagFilter("salesId", store?.salesId),
@@ -155,7 +157,7 @@ function ConfigForm({ onClose }) {
     }
     return (
         <Form {...form}>
-            <div className="flex justify-end py-4 items-center gap-4 border-y">
+            <div className="flex items-center justify-end gap-4 border-y py-4">
                 <FormCheckbox
                     control={form.control}
                     name="produceable"
@@ -223,9 +225,9 @@ function AssignForm({ onClose, totalQty }: AssignFormProps) {
     }
     return (
         <Form {...form}>
-            <div className="flex justify-end my-4">
+            <div className="my-4 flex justify-end">
                 <div className="space-y-4 sm:w-4/5">
-                    <div className="grid grid-cols-2 gap-2 items-end">
+                    <div className="grid grid-cols-2 items-end gap-2">
                         <FormSelect
                             size="sm"
                             options={workers?.data || []}
@@ -251,7 +253,7 @@ function AssignForm({ onClose, totalQty }: AssignFormProps) {
                             />
                         ))}
                     </div>
-                    <div className="flex  gap-2 justify-end">
+                    <div className="flex  justify-end gap-2">
                         <Button
                             onClick={onClose}
                             variant="destructive"

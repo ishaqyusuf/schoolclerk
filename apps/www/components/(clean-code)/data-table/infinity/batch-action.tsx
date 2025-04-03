@@ -1,12 +1,12 @@
 import { useRef, useState } from "react";
 import ConfirmBtn from "@/components/_v1/confirm-btn";
 import { IconKeys, Icons } from "@/components/_v1/icons";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Label } from "@gnd/ui/label";
 
 import { Menu } from "../../menu";
 import { useInfiniteDataTable } from "../use-data-table";

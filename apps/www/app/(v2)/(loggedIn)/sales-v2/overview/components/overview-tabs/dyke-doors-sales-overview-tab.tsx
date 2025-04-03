@@ -1,8 +1,10 @@
 "use client";
 
+import React from "react";
+import Money from "@/components/_v1/money";
 import { useDataPage } from "@/lib/data-page-context";
-import { SalesOverviewType } from "../overview-shell";
-import { TabsContent } from "@/components/ui/tabs";
+
+import { Badge } from "@gnd/ui/badge";
 import {
     Table,
     TableBody,
@@ -10,10 +12,10 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import React from "react";
-import { Badge } from "@/components/ui/badge";
-import Money from "@/components/_v1/money";
+} from "@gnd/ui/table";
+import { TabsContent } from "@gnd/ui/tabs";
+
+import { SalesOverviewType } from "../overview-shell";
 
 export function SalesOverviewDykeInvoiceTab() {
     const { data } = useDataPage<SalesOverviewType>();
@@ -44,9 +46,9 @@ export function SalesOverviewDykeInvoiceTab() {
                                                 .map((detail) => (
                                                     <div
                                                         key={detail.title}
-                                                        className="grid grid-cols-5 border-b border-r  gap-2"
+                                                        className="grid grid-cols-5 gap-2 border-b  border-r"
                                                     >
-                                                        <div className="font-bold col-span-2  border-r px-2 py-1">
+                                                        <div className="col-span-2 border-r  px-2 py-1 font-bold">
                                                             {detail.title}
                                                         </div>
                                                         <div className=" col-span-3 px-2 py-1">

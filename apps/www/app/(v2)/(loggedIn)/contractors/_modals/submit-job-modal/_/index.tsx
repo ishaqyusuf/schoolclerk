@@ -1,17 +1,17 @@
 "use client";
 
+import Btn from "@/components/_v1/btn";
 import { HomeJobList, IJobs } from "@/types/hrm";
+import { InstallCostLine } from "@/types/settings";
 import { useFormContext } from "react-hook-form";
 
-import { useJobSubmitCtx } from "./use-submit-job";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Form } from "@gnd/ui/form";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
+
+import GeneralInfoTab from "./general-info-tab";
 import SelectUserField from "./select-user-field";
 import TaskDetailsTab from "./task-details-tab";
-import { InstallCostLine } from "@/types/settings";
-import Btn from "@/components/_v1/btn";
-import GeneralInfoTab from "./general-info-tab";
-
-import { Form } from "@/components/ui/form";
+import { useJobSubmitCtx } from "./use-submit-job";
 
 export type SubmitJobTabs = "project" | "user" | "unit" | "tasks" | "general";
 export type JobFormAction = "edit" | "change-worker";
@@ -70,7 +70,7 @@ export const SubmitJobModalContent = ModalContent;
 function ModalFooter({ data }: SubmitJobModalProps) {
     const ctx = useJobSubmitCtx();
     return (
-        <div className="space-x-4 items-center flex">
+        <div className="flex items-center space-x-4">
             <Btn isLoading={ctx.isLoading} onClick={ctx.nextTab}>
                 Submit
             </Btn>

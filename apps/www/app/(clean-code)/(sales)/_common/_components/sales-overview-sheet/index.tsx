@@ -1,24 +1,26 @@
-import { _modal } from "@/components/common/modal/provider";
-import { salesOverviewStore, SalesTabs, salesTabs } from "./store";
 import Modal from "@/components/common/modal";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { _modal } from "@/components/common/modal/provider";
 import { cn } from "@/lib/utils";
-import { SalesInfoTab } from "./tabs/sales-info-tab";
-import { useSalesOverview } from "./hook";
-import { Footer } from "./footer";
-import { SalesItemsTab } from "./tabs/sales-items-tab";
-import { SalesShippingForm } from "./tabs/sales-shipping-form";
-import { SalesShippingTab } from "./tabs/sales-shipping-tab";
-import { SalesShippingOverview } from "./tabs/sales-shipping-overview";
-import { ProductionNoteTab } from "./tabs/prod-note-tab";
-import { SalesNoteTab } from "./tabs/sales-note-tab";
-import { TransactionHistoryTab } from "./tabs/transaction-history-tab";
+
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
-} from "@/components/ui/select";
+} from "@gnd/ui/select";
+import { Tabs, TabsList, TabsTrigger } from "@gnd/ui/tabs";
+
+import { Footer } from "./footer";
+import { useSalesOverview } from "./hook";
+import { salesOverviewStore, SalesTabs, salesTabs } from "./store";
+import { ProductionNoteTab } from "./tabs/prod-note-tab";
+import { SalesInfoTab } from "./tabs/sales-info-tab";
+import { SalesItemsTab } from "./tabs/sales-items-tab";
+import { SalesNoteTab } from "./tabs/sales-note-tab";
+import { SalesShippingForm } from "./tabs/sales-shipping-form";
+import { SalesShippingOverview } from "./tabs/sales-shipping-overview";
+import { SalesShippingTab } from "./tabs/sales-shipping-tab";
+import { TransactionHistoryTab } from "./tabs/transaction-history-tab";
 
 interface OpenSalesOverviewProps {
     salesId;
@@ -125,7 +127,7 @@ function PrimaryTab({}) {
                 }}
                 className=""
             >
-                <div className="flex md:hidden justify-end">
+                <div className="flex justify-end md:hidden">
                     <Select
                         value={store.currentTab}
                         onValueChange={(e) => {
@@ -136,7 +138,7 @@ function PrimaryTab({}) {
                             <span className="uppercase">
                                 {
                                     store.tabs?.find(
-                                        (s) => s.name == store.currentTab
+                                        (s) => s.name == store.currentTab,
                                     )?.label
                                 }
                             </span>
@@ -146,7 +148,7 @@ function PrimaryTab({}) {
                                 <SelectItem
                                     className={cn(
                                         "uppercase",
-                                        !tab.show && "hidden"
+                                        !tab.show && "hidden",
                                     )}
                                     key={tab.name}
                                     value={tab.name}
@@ -159,8 +161,8 @@ function PrimaryTab({}) {
                 </div>
                 <TabsList
                     className={cn(
-                        "w-full hidden md:block",
-                        !store.showTabs && "hidden md:hidden"
+                        "hidden w-full md:block",
+                        !store.showTabs && "hidden md:hidden",
                     )}
                 >
                     {store.tabs?.map((tab) => (
@@ -219,13 +221,13 @@ function TabContent({ children, tabName }: { children?; tabName: SalesTabs }) {
 }
 function SecondaryTab({}) {
     return (
-        <div className="sm:w-[600px] flex flex-col side-modal-rounded-h-content">
+        <div className="side-modal-rounded-h-content flex flex-col sm:w-[600px]">
             <Modal.Header title="Title" subtitle={"LOREM IPSUM"} />
             <Modal.ScrollArea>
                 <div className="min-h-screen">abc</div>
             </Modal.ScrollArea>
             <Modal.Footer>
-                <div className="abc p-4 border-t flex-1">a</div>
+                <div className="abc flex-1 border-t p-4">a</div>
             </Modal.Footer>
         </div>
     );

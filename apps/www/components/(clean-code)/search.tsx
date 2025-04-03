@@ -1,9 +1,9 @@
 import React, { createContext, ReactNode, useContext, useState } from "react";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useCombobox } from "downshift";
 
 import { Input, InputProps } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
 
 // Type alias for Item component
 type Item<T> = ({ item }: { item: T }) => React.ReactNode;

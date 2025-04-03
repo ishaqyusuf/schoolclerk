@@ -1,22 +1,24 @@
-import Modal from "@/components/common/modal";
-import { IStepProducts } from "../step-items-list/item-section/step-products";
 import { useEffect, useState } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
-import { ProductImage } from "../step-items-list/item-section/step-products/product";
-import { Label } from "@/components/ui/label";
+import { LegacyDykeFormStepType } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
 import { Icons } from "@/components/_v1/icons";
+import FormCheckbox from "@/components/common/controls/form-checkbox";
+import Modal from "@/components/common/modal";
+import { cn } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Badge } from "@gnd/ui/badge";
+import { Form } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+
+import { saveStepProduct } from "../../_action/save-step-product";
+import { IStepProducts } from "../step-items-list/item-section/step-products";
 import {
     getDykeStepState,
     getFormSteps,
 } from "../step-items-list/item-section/step-products/init-step-components";
-import { useForm } from "react-hook-form";
-import FormCheckbox from "@/components/common/controls/form-checkbox";
-import { Form } from "@/components/ui/form";
-import { saveStepProduct } from "../../_action/save-step-product";
-import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
-import { LegacyDykeFormStepType } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
+import { ProductImage } from "../step-items-list/item-section/step-products/product";
 
 interface Props {
     // products: IStepProducts;
@@ -38,8 +40,8 @@ export default function RestoreComponentsModal({
     const { step: stepForm, stepIndex, deletedComponents } = stepCtx;
     const [sortedProds, setSortedProds] = useState(
         deletedComponents.sort((a, b) =>
-            a.product.title?.localeCompare(b.product.title)
-        )
+            a.product.title?.localeCompare(b.product.title),
+        ),
     );
     const form = useForm({
         defaultValues: {
@@ -96,7 +98,7 @@ export default function RestoreComponentsModal({
                 subtitle={"select component dependencies to start restore."}
             />
             <Form {...form}>
-                <div className="flex gap-4 flex-wrap">
+                <div className="flex flex-wrap gap-4">
                     {components?.map((d, i) => (
                         <div key={i}>
                             <FormCheckbox
@@ -117,10 +119,10 @@ export default function RestoreComponentsModal({
                             }}
                             key={item.id}
                             className={cn(
-                                "flex relative flex-col items-center hover:shadow-sm border justify-center min-h-[200px]"
+                                "relative flex min-h-[200px] flex-col items-center justify-center border hover:shadow-sm",
                             )}
                         >
-                            <div className="absolute top-0 left-0 -m-4">
+                            <div className="absolute left-0 top-0 -m-4">
                                 {item.productCode && (
                                     <Badge variant="outline">
                                         #{item.productCode}
@@ -129,7 +131,7 @@ export default function RestoreComponentsModal({
                             </div>
 
                             <PriceInfo prod={item} />
-                            <div className="w-2/3 h-16s overflow-hidden">
+                            <div className="h-16s w-2/3 overflow-hidden">
                                 <ProductImage aspectRatio={1 / 1} item={item} />
                             </div>
                             <div className="">
@@ -147,13 +149,13 @@ export default function RestoreComponentsModal({
 }
 function PriceInfo({ prod }: { prod: IStepProducts[number] }) {
     let priceLen = Object.values(prod.door?.meta?.doorPrice || {}).filter(
-        Boolean
+        Boolean,
     ).length;
     if (priceLen)
         return (
             <div id="" className="absolute right-0 top-0 flex ">
                 <Label>{priceLen}</Label>
-                <Icons.dollar className="text-muted-foreground size-4" />
+                <Icons.dollar className="size-4 text-muted-foreground" />
             </div>
         );
     return null;

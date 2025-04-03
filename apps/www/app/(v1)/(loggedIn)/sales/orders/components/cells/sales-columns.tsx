@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import { FlagIcon } from "lucide-react";
 import { toast } from "sonner";
 
+import { Badge } from "@gnd/ui/badge";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -33,7 +34,6 @@ import { Icons } from "../../../../../../../components/_v1/icons";
 import LinkableNode from "../../../../../../../components/_v1/link-node";
 import ProgressStatus from "../../../../../../../components/_v1/progress-status";
 import StatusBadge from "../../../../../../../components/_v1/status-badge";
-import { Badge } from "../../../../../../../components/ui/badge";
 
 export const OrderPriorityFlagCell = (
     order: ISalesOrder,

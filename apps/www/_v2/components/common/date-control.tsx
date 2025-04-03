@@ -1,16 +1,12 @@
 import { useState } from "react";
-import { Calendar } from "@/components/ui/calendar";
-import { FormControl, FormField, FormItem } from "@/components/ui/form";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
 import { formatDate } from "@/lib/use-day";
 import { cn } from "@/lib/utils";
 import { FieldPath, useFormContext } from "react-hook-form";
 
 import { Button } from "@gnd/ui/button";
+import { Calendar } from "@gnd/ui/calendar";
+import { FormControl, FormField, FormItem } from "@gnd/ui/form";
+import { Popover, PopoverContent, PopoverTrigger } from "@gnd/ui/popover";
 
 interface Props<T> {
     // @ts-ignore

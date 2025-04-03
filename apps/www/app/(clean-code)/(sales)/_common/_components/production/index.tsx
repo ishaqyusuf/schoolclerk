@@ -1,7 +1,8 @@
 import Modal from "@/components/common/modal";
 import { _modal } from "@/components/common/modal/provider";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+
 import {
     loadSalesOverviewer,
     zSalesOverview,

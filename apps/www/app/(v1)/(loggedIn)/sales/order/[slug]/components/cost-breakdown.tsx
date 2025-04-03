@@ -1,17 +1,18 @@
 "use client";
 
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { fixPaymentAction } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-payment";
 import Btn from "@/components/_v1/btn";
 import Money from "@/components/_v1/money";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useDataPage } from "@/lib/data-page-context";
 import { keyValue } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 import { ISalesOrder } from "@/types/sales";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
 import { toast } from "sonner";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@gnd/ui/card";
+import { Table, TableBody, TableCell, TableRow } from "@gnd/ui/table";
 
 export default function CostBreakdown() {
     const { data: order } = useDataPage<ISalesOrder>();
@@ -25,11 +26,11 @@ export default function CostBreakdown() {
         keyValue("Sub Total", <Money value={order?.subTotal} />),
         keyValue(
             `Tax (${order?.taxPercentage || 0}%)`,
-            <Money value={order?.tax} />
+            <Money value={order?.tax} />,
         ),
         keyValue(
             `C.C.C (${order?.meta?.ccc_percentage || 0}%)`,
-            <Money value={order?.meta?.ccc || 0} />
+            <Money value={order?.meta?.ccc || 0} />,
         ),
         keyValue(`Total`, <Money value={order?.grandTotal} />),
     ];
@@ -40,10 +41,10 @@ export default function CostBreakdown() {
                     `Paid`,
                     <Money
                         value={(order.grandTotal || 0) - (order.amountDue || 0)}
-                    />
+                    />,
                 ),
                 keyValue(`Pending`, <Money value={order.amountDue || 0} />),
-            ]
+            ],
         );
     }
     const [isPending, startTransaction] = useTransition();
@@ -69,7 +70,7 @@ export default function CostBreakdown() {
                         <TableBody>
                             {data.map((line, index) => (
                                 <TableRow key={index}>
-                                    <TableCell className="text-muted-foreground font-bold p-1">
+                                    <TableCell className="p-1 font-bold text-muted-foreground">
                                         {line.key}
                                     </TableCell>
                                     <TableCell className="p-1.5 text-right">
@@ -81,14 +82,14 @@ export default function CostBreakdown() {
                     </Table>
                     {offsetPayment != 0 && order.type == "order" && (
                         <div className="mt-4 space-y-2">
-                            <p className="text-red-500 text-sm font-semibold">
+                            <p className="text-sm font-semibold text-red-500">
                                 Due amount does not correspond with the payment
                                 history
                             </p>
                             <Btn
                                 onClick={fixPayment}
                                 isLoading={isPending}
-                                className="w-full h-8"
+                                className="h-8 w-full"
                             >
                                 Fix
                             </Btn>

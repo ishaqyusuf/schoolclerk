@@ -3,7 +3,10 @@
 import { DateCellContent } from "@/components/_v1/columns/base-columns";
 import { Icons } from "@/components/_v1/icons";
 import { useModal } from "@/components/common/modal/provider";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useDataPage } from "@/lib/data-page-context";
+
+import { Button } from "@gnd/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@gnd/ui/card";
 import {
     Table,
     TableBody,
@@ -11,10 +14,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { useDataPage } from "@/lib/data-page-context";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/table";
 
 import CreateDeliveryModal from "../../_modal/create-delivery";
 import { SalesOverview } from "../../type";

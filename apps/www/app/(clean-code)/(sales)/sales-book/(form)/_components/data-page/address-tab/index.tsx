@@ -1,10 +1,12 @@
-import { Label } from "@/components/ui/label";
-import { useFormDataStore } from "../../../_common/_stores/form-data-store";
-import { Input, LineSwitch } from "../line-input";
-import { FieldPath } from "react-hook-form";
 import { SalesFormZusData } from "@/app/(clean-code)/(sales)/types";
-import { CustomerSearch } from "../customer-search";
 import { cn } from "@/lib/utils";
+import { FieldPath } from "react-hook-form";
+
+import { Label } from "@gnd/ui/label";
+
+import { useFormDataStore } from "../../../_common/_stores/form-data-store";
+import { CustomerSearch } from "../customer-search";
+import { Input, LineSwitch } from "../line-input";
 
 export function AddressTab({}) {
     const zus = useFormDataStore();
@@ -14,13 +16,13 @@ export function AddressTab({}) {
         <div
             className={cn(
                 "lg:max-w-5xl xl:max-w-4xl",
-                sameAddress && "lg:max-w-2xl xl:max-w-xl"
+                sameAddress && "lg:max-w-2xl xl:max-w-xl",
             )}
         >
             <div
                 className={cn(
-                    " p-4  gap-4 sm:gap-10 lg:gap-16",
-                    !sameAddress ? "grid grid-cols-2" : ""
+                    " gap-4  p-4 sm:gap-10 lg:gap-16",
+                    !sameAddress ? "grid grid-cols-2" : "",
                 )}
             >
                 <AddressForm addressType="billing" />
@@ -64,7 +66,7 @@ function AddressForm({ addressType }) {
     if (isShipping && sameAddress) return null;
     return (
         <div className="mt-2">
-            <div className="border-b h-10 flex gap-2 items-center">
+            <div className="flex h-10 items-center gap-2 border-b">
                 <Label className="text-xl">{config.title}</Label>
                 <div className="flex-1"></div>
                 <CustomerSearch addressType={addressType} />
@@ -80,7 +82,7 @@ function AddressForm({ addressType }) {
                 </div>
             </div>
             {isShipping || (
-                <div className="flex mt-4 items-center">
+                <div className="mt-4 flex items-center">
                     <Label>Shipping Address: (Same as Billing)</Label>
                     <div className="flex-1"></div>
                     <div className="flex items-center space-x-4">

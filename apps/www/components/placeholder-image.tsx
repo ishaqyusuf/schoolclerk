@@ -1,9 +1,9 @@
+import { Icons } from "@/components/_v1/icons";
+import { cn } from "@/lib/utils";
 import { Slot } from "@radix-ui/react-slot";
 
-import { cn } from "@/lib/utils";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Icons } from "@/components/_v1/icons";
+import { AspectRatio } from "@gnd/ui/aspect-ratio";
+import { Skeleton } from "@gnd/ui/skeleton";
 
 interface PlaceholderImageProps
     extends React.ComponentPropsWithoutRef<typeof AspectRatio> {
@@ -31,7 +31,7 @@ export function PlaceholderImage({
                 aria-roledescription="placeholder"
                 className={cn(
                     "flex size-full items-center justify-center",
-                    isSkeleton ? "animate-pulse" : "animate-none"
+                    isSkeleton ? "animate-pulse" : "animate-none",
                 )}
             >
                 <Icons.placeholder

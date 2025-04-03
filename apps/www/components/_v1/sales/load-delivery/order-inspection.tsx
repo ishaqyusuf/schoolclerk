@@ -1,13 +1,4 @@
 import PageHeader from "@/components/_v1/page-header";
-import { Label } from "@/components/ui/label";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
 import { useDataPage } from "@/lib/data-page-context";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/store";
@@ -15,6 +6,15 @@ import { ISalesOrder } from "@/types/sales";
 import { UseFormReturn } from "react-hook-form";
 
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@gnd/ui/table";
 
 import { SalesDataPage, TruckLoaderForm } from "./load-delivery";
 

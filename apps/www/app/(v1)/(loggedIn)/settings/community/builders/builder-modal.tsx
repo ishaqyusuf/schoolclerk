@@ -20,14 +20,14 @@ import { Plus, Trash } from "lucide-react";
 import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 
+import { Button } from "@gnd/ui/button";
+import { Checkbox } from "@gnd/ui/checkbox";
+import { Form, FormField } from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
 
 import Btn from "../../../../../../components/_v1/btn";
 import BaseModal from "../../../../../../components/_v1/modals/base-modal";
-import { Button } from "../../../../../../components/ui/button";
-import { Checkbox } from "../../../../../../components/ui/checkbox";
-import { Form, FormField } from "../../../../../../components/ui/form";
-import { Label } from "../../../../../../components/ui/label";
 import { saveBuilder, saveBuilderInstallations } from "./action";
 
 export const useBuilderModal = () => {

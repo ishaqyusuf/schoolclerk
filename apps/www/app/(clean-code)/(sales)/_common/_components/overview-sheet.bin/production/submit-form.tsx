@@ -1,16 +1,18 @@
-import Button from "@/components/common/button";
-import { ItemAssignment } from "../item-view/sales-items-overview";
-import { useForm } from "react-hook-form";
-import { useItemProdViewContext } from "./use-hooks";
-import { Form } from "@/components/ui/form";
-import { cn, sum } from "@/lib/utils";
 import NumberPicker from "@/components/(clean-code)/custom/controlled/number-picker";
+import Button from "@/components/common/button";
 import FormInput from "@/components/common/controls/form-input";
+import { cn, sum } from "@/lib/utils";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
+
 import {
     AssignmentSubmitForm,
     submitAssignmentUseCase,
 } from "../../../use-case/sales-prod.use-case";
+import { ItemAssignment } from "../item-view/sales-items-overview";
+import { useItemProdViewContext } from "./use-hooks";
 
 interface Props {
     assignment: ItemAssignment;
@@ -40,7 +42,7 @@ export default function SubmitProductionForm({ assignment }: Props) {
             if (item.hasSwing) data.qty = sum([data.lhQty, data.rhQty]);
             await submitAssignmentUseCase(
                 data,
-                item.analytics.control.produceable
+                item.analytics.control.produceable,
             );
             toast.success("Submitted");
             mainCtx.refresh();
@@ -49,7 +51,7 @@ export default function SubmitProductionForm({ assignment }: Props) {
         }
     }
     return (
-        <div className="p-4 grid gap-4">
+        <div className="grid gap-4 p-4">
             <Form {...form}>
                 <div className={cn(hasBothSide && "grid grid-cols-2 gap-4")}>
                     {(item.hasSwing && pending.lh) || pending.qty ? (

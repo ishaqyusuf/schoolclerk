@@ -1,8 +1,13 @@
 "use client";
 
 import { getCustomerRecentSales } from "@/actions/get-customer-recent-sales";
+import ProgressStatus from "@/components/_v1/progress-status";
+import { DataSkeleton } from "@/components/data-skeleton";
 import { useDataSkeleton } from "@/hooks/use-data-skeleton";
+import { formatDate } from "@/lib/use-day";
+import { formatMoney } from "@/lib/use-number";
 import { toFnType } from "@/utils/server-data-type";
+
 import {
     Table,
     TableBody,
@@ -10,18 +15,15 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { DataSkeleton } from "@/components/data-skeleton";
-import { formatDate } from "@/lib/use-day";
-import { formatMoney } from "@/lib/use-number";
-import ProgressStatus from "@/components/_v1/progress-status";
+} from "@gnd/ui/table";
+
 export function SalesList({ data }) {
     const skel = useDataSkeleton();
     let list = toFnType(getCustomerRecentSales, data);
 
     return !skel.loading && !list?.length ? (
         <>
-            <div className="flex items-center justify-center h-40">
+            <div className="flex h-40 items-center justify-center">
                 <p className="text-muted-foreground">
                     No customer sales data available
                 </p>

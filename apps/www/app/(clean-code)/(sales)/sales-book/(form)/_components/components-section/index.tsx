@@ -13,11 +13,6 @@ import { Icons } from "@/components/_v1/icons";
 import { Menu } from "@/components/(clean-code)/menu";
 import { _modal } from "@/components/common/modal/provider";
 import { CustomComponentForm } from "@/components/forms/sales-form/custom-component";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sortable, SortableItem } from "@/components/ui/sortable";
 import { useSortControl } from "@/hooks/use-sort-control";
 import { cn } from "@/lib/utils";
 import { closestCorners } from "@dnd-kit/core";
@@ -33,7 +28,12 @@ import {
     VariableIcon,
 } from "lucide-react";
 
+import { Badge } from "@gnd/ui/badge";
 import { Button } from "@gnd/ui/button";
+import { Checkbox } from "@gnd/ui/checkbox";
+import { Label } from "@gnd/ui/label";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+import { Sortable, SortableItem } from "@gnd/ui/sortable";
 
 import {
     useFormDataStore,

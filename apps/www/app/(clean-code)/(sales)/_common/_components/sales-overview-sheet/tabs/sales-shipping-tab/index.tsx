@@ -3,17 +3,17 @@ import { openSalesPrint } from "@/app/(v2)/printer/utils";
 import { Icons } from "@/components/_v1/icons";
 import { TCell } from "@/components/(clean-code)/data-table/table-cells";
 import { Menu } from "@/components/(clean-code)/menu";
+import { timeout } from "@/lib/timeout";
+import { toast } from "sonner";
+
+import { Button } from "@gnd/ui/button";
 import {
     Table,
     TableBody,
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { timeout } from "@/lib/timeout";
-import { toast } from "sonner";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/table";
 
 import { deleteDispatchAction } from "../../../../data-actions/dispatch-actions/delete-dispatch-action";
 import { resetSalesStatAction } from "../../../../data-actions/sales-stat-control.action";

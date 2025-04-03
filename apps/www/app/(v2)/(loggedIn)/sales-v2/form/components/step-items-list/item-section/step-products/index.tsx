@@ -1,43 +1,41 @@
-import { DykeItemStepSectionProps } from "../../../item-section/components-section";
-
+import { useEffect } from "react";
+import { createCustomDykeStepUseCase } from "@/app/(clean-code)/(sales)/_common/use-case/dyke-steps-use-case";
+import salesFormUtils from "@/app/(clean-code)/(sales)/_common/utils/sales-form-utils";
+import {
+    LegacyDykeFormStepContext,
+    useLegacyDykeFormStep,
+    useLegacyDykeFormStepContext,
+} from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
+import stepHelpers from "@/app/(clean-code)/(sales)/sales-book/(form)/_utils/helpers/step-helper";
+import { Icons } from "@/components/_v1/icons";
+import Button from "@/components/common/button";
+import FormInput from "@/components/common/controls/form-input";
+import { _modal, useModal } from "@/components/common/modal/provider";
+import { useIsVisible } from "@/hooks/use-is-visible";
 import { cn } from "@/lib/utils";
+import { closestCorners } from "@dnd-kit/core";
+import { motion } from "framer-motion";
+import { ArchiveRestoreIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Card } from "@gnd/ui/card";
+import { Form } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
+import { Sortable, SortableItem } from "@gnd/ui/sortable";
 
 import { getStepProduct } from "../../../../_action/get-dyke-step-product";
-
-import { Icons } from "@/components/_v1/icons";
-
+import { useDykeCtx, useDykeForm } from "../../../../_hooks/form-context";
+import { BatchSelectionAction } from "../../../../_hooks/use-prod-batch-action";
 import useStepItems, {
     StepItemCtx,
     useStepItemCtx,
 } from "../../../../_hooks/use-step-items";
-import { StepProduct } from "./product";
-import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/form";
-import FormInput from "@/components/common/controls/form-input";
-import { toast } from "sonner";
-import { useEffect } from "react";
-import { useIsVisible } from "@/hooks/use-is-visible";
-import { motion } from "framer-motion";
-import { Sortable, SortableItem } from "@/components/ui/sortable";
-import { closestCorners } from "@dnd-kit/core";
-import { Card } from "@/components/ui/card";
-import { _modal, useModal } from "@/components/common/modal/provider";
-import { useDykeCtx, useDykeForm } from "../../../../_hooks/form-context";
-import { BatchSelectionAction } from "../../../../_hooks/use-prod-batch-action";
-import {
-    LegacyDykeFormStepContext,
-    useLegacyDykeFormStep,
-} from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
+import { DykeItemStepSectionProps } from "../../../item-section/components-section";
 import RestoreComponentsModal from "../../../modals/restore-modal";
-import { ArchiveRestoreIcon } from "lucide-react";
-import { Label } from "@/components/ui/label";
-
+import { StepProduct } from "./product";
 import StepMenu from "./step-trigger";
-import stepHelpers from "@/app/(clean-code)/(sales)/sales-book/(form)/_utils/helpers/step-helper";
-import Button from "@/components/common/button";
-import { createCustomDykeStepUseCase } from "@/app/(clean-code)/(sales)/_common/use-case/dyke-steps-use-case";
-import salesFormUtils from "@/app/(clean-code)/(sales)/_common/utils/sales-form-utils";
-import { useLegacyDykeFormStepContext } from "@/app/(clean-code)/(sales)/sales-book/(form)/_hooks/legacy/use-dyke-form-step";
+
 export interface StepProductProps extends DykeItemStepSectionProps {
     stepActionNodeId;
     // rowIndex;
@@ -123,7 +121,7 @@ StepProductProps) {
                             <div className="size-full rounded-md bg-primary/10" />
                         }
                     >
-                        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
                             {components
                                 // ?.filter(
                                 //     (s) => !s.custom && !s._metaData?.hidden
@@ -135,12 +133,12 @@ StepProductProps) {
                                         asTrigger={sortMode}
                                         asChild
                                     >
-                                        <Card className="border-none flex flex-col h-full bg-red-50">
+                                        <Card className="flex h-full flex-col border-none bg-red-50">
                                             <StepProduct
                                                 className={cn(
-                                                    "relative border-muted-foreground/10  borno group",
+                                                    "borno group  relative border-muted-foreground/10",
                                                     !sortMode &&
-                                                        "hover:border-muted-foreground"
+                                                        "hover:border-muted-foreground",
                                                 )}
                                                 isMultiSection={isMultiSection}
                                                 select={selectProduct}
@@ -163,7 +161,7 @@ StepProductProps) {
                                             openStepForm();
                                         }}
                                         className={cn(
-                                            "border hover:shadow-xl hover:bg-slate-200 rounded-lg flex flex-col justify-center items-center h-[200px] w-full"
+                                            "flex h-[200px] w-full flex-col items-center justify-center rounded-lg border hover:bg-slate-200 hover:shadow-xl",
                                         )}
                                     >
                                         <Icons.add />
@@ -181,11 +179,11 @@ StepProductProps) {
                                                             stepCtx={
                                                                 legacyStepCtx
                                                             }
-                                                        />
+                                                        />,
                                                     );
                                                 }}
                                                 className={cn(
-                                                    "border border-red-500 bg-red-50/50 hover:shadow-xl hover:bg-red-50 rounded-lg flex flex-col justify-center items-center h-[200px] w-full"
+                                                    "flex h-[200px] w-full flex-col items-center justify-center rounded-lg border border-red-500 bg-red-50/50 hover:bg-red-50 hover:shadow-xl",
                                                 )}
                                             >
                                                 <ArchiveRestoreIcon />
@@ -225,7 +223,7 @@ StepProductProps) {
                 </motion.div>
                 <BatchSelectionAction />
                 {sortMode && (
-                    <div className="fixed shadow-xl  z-10 mb-16 bottom-0 left-1/2">
+                    <div className="fixed bottom-0  left-1/2 z-10 mb-16 shadow-xl">
                         <Button
                             onClick={() =>
                                 stepHelpers.finishSort(legacyStepCtx)
@@ -268,7 +266,7 @@ function CustomInput({ currentValue }) {
                       basePrice: formData.price,
                       price: salesFormUtils.salesProfileCost(
                           ctx.mainCtx.form,
-                          formData.price
+                          formData.price,
                       ),
                   }
                 : {},

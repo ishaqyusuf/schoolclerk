@@ -9,16 +9,13 @@ import { useFormDataStore } from "@/app/(clean-code)/(sales)/sales-book/(form)/_
 import { SettingsClass } from "@/app/(clean-code)/(sales)/sales-book/(form)/_utils/helpers/zus/settings-class";
 import { Icons } from "@/components/_v1/icons";
 import Button from "@/components/common/button";
-import { Command, CommandInput, CommandList } from "@/components/ui/command";
-import { Label } from "@/components/ui/label";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCreateCustomerParams } from "@/hooks/use-create-customer-params";
 import { useDebounce } from "@/hooks/use-debounce";
+
+import { Command, CommandInput, CommandList } from "@gnd/ui/command";
+import { Label } from "@gnd/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@gnd/ui/popover";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 
 import {
     CustomerFormData,

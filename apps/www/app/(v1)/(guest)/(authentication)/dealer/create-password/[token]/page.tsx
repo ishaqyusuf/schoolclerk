@@ -1,5 +1,8 @@
-import { Shell } from "@/components/_v1/shells/shell";
 import { Metadata } from "next";
+import Link from "next/link";
+import { Shell } from "@/components/_v1/shells/shell";
+import dayjs from "dayjs";
+
 import {
     Card,
     CardContent,
@@ -7,11 +10,11 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
-import Link from "next/link";
-import Form from "./form";
+} from "@gnd/ui/card";
+
 import { verifyToken } from "./action";
-import dayjs from "dayjs";
+import Form from "./form";
+
 export const metadata: Metadata = {
     title: "Sign Up - GND Prodesk",
     description: "",
@@ -47,7 +50,7 @@ export default async function CreatePasswordPage({ params }) {
                 <CardContent className="grid gap-4">
                     <Form val={ver} />
                 </CardContent>
-                <CardFooter className="flex flex-wrap items-center space-x-4 justify-between gap-2">
+                <CardFooter className="flex flex-wrap items-center justify-between gap-2 space-x-4">
                     <Link
                         aria-label="Reset password"
                         href="/login"

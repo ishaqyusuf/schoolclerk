@@ -3,12 +3,12 @@ import AutoComplete from "@/components/_v1/common/auto-complete";
 import { DatePicker } from "@/components/_v1/date-range-picker";
 import { Icons } from "@/components/_v1/icons";
 import FormSelect from "@/components/common/controls/form-select";
-import { Form } from "@/components/ui/form";
 import { useEnterSubmit } from "@/hooks/use-enter-submit";
 import { useForm, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Form } from "@gnd/ui/form";
 
 import { createNoteAction } from "./actions/create-note-action";
 import { getNoteSuggestionsAction } from "./actions/get-note-suggestions";

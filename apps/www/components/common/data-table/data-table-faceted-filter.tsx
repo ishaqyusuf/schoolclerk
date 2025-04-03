@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { DataTableFilterableColumn } from "@/types/data-table";
+import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
+import { Table, type Column } from "@tanstack/react-table";
+import { Check } from "lucide-react";
+
+import { Badge } from "@gnd/ui/badge";
+import { Button } from "@gnd/ui/button";
 import {
     Command,
     CommandEmpty,
@@ -8,20 +15,9 @@ import {
     CommandItem,
     CommandList,
     CommandSeparator,
-} from "@/components/ui/command";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
-import { DataTableFilterableColumn } from "@/types/data-table";
-import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
-import { Table, type Column } from "@tanstack/react-table";
-import { Check } from "lucide-react";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@gnd/ui/popover";
+import { Separator } from "@gnd/ui/separator";
 
 export interface Option {
     label: string;

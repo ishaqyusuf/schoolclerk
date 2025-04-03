@@ -1,13 +1,18 @@
 import { useCustomerProfiles } from "@/_v2/hooks/use-static-data";
 import FormInput from "@/components/common/controls/form-input";
 import FormSelect from "@/components/common/controls/form-select";
+import { useAppSelector } from "@/store";
+import { ISalesSetting } from "@/types/post";
+import { UseFormReturn } from "react-hook-form";
+
 import {
     Form,
     FormControl,
     FormField,
     FormItem,
     FormLabel,
-} from "@/components/ui/form";
+} from "@gnd/ui/form";
+import { Input } from "@gnd/ui/input";
 import {
     Select,
     SelectContent,
@@ -15,13 +20,8 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
-import { useAppSelector } from "@/store";
-import { ISalesSetting } from "@/types/post";
-import { UseFormReturn } from "react-hook-form";
-
-import { Input } from "@gnd/ui/input";
+} from "@gnd/ui/select";
+import { Separator } from "@gnd/ui/separator";
 
 export default function GeneralSettings({
     form,

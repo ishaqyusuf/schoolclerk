@@ -21,6 +21,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Key } from "lucide-react";
 import { toast } from "sonner";
 
+import { Button } from "@gnd/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -54,7 +55,6 @@ import { SmartTable } from "../../../../../components/_v1/data-table/smart-table
 import { BuilderFilter } from "../../../../../components/_v1/filters/builder-filter";
 import { RolesFilter } from "../../../../../components/_v1/filters/roles-filter";
 import { Icons } from "../../../../../components/_v1/icons";
-import { Button } from "../../../../../components/ui/button";
 
 export default function EmployeesTableShell<T>({
     // data,

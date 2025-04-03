@@ -1,9 +1,11 @@
-import { Label } from "@/components/ui/label";
-import { useFormDataStore } from "../../_common/_stores/form-data-store";
-import { Input, LineSwitch, Select } from "./line-input";
 import { useMemo } from "react";
-import { SettingsClass } from "../../_utils/helpers/zus/settings-class";
 import salesData from "@/app/(clean-code)/(sales)/_common/utils/sales-data";
+
+import { Label } from "@gnd/ui/label";
+
+import { useFormDataStore } from "../../_common/_stores/form-data-store";
+import { SettingsClass } from "../../_utils/helpers/zus/settings-class";
+import { Input, LineSwitch, Select } from "./line-input";
 
 export function FormDataPage({}) {
     const zus = useFormDataStore();
@@ -12,7 +14,7 @@ export function FormDataPage({}) {
     const taxList = setting.taxList();
     return (
         <div className="lg:max-w-5xl xl:max-w-4xl">
-            <div className="grid p-4 grid-cols-2 gap-4 sm:gap-6">
+            <div className="grid grid-cols-2 gap-4 p-4 sm:gap-6">
                 <div className="">
                     <Input label="Q.B Order #" name="metaData.qb" />
                 </div>

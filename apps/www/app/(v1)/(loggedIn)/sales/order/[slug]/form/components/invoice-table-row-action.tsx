@@ -1,4 +1,3 @@
-import { TableCell } from "@/components/ui/table";
 import { deepCopy } from "@/lib/deep-copy";
 import {
     copySalesItem,
@@ -32,6 +31,7 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@gnd/ui/dropdown-menu";
+import { TableCell } from "@gnd/ui/table";
 
 import salesUtils from "../sales-utils";
 

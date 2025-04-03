@@ -1,15 +1,15 @@
-import Modal from "@/components/common/modal";
-import { useFormDataStore } from "../../../_common/_stores/form-data-store";
 import { createContext, useContext, useMemo } from "react";
-import { useForm } from "react-hook-form";
-
-import { Form } from "@/components/ui/form";
-import FormSelect from "@/components/common/controls/form-select";
-import { ComboxBox } from "@/components/(clean-code)/custom/controlled/combo-box";
-
 import { updateStepMetaUseCase } from "@/app/(clean-code)/(sales)/_common/use-case/step-component-use-case";
+import { ComboxBox } from "@/components/(clean-code)/custom/controlled/combo-box";
+import FormSelect from "@/components/common/controls/form-select";
+import Modal from "@/components/common/modal";
 import { _modal } from "@/components/common/modal/provider";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
+
+import { useFormDataStore } from "../../../_common/_stores/form-data-store";
 import { StepHelperClass } from "../../../_utils/helpers/zus/step-component-class";
 
 interface Props {
@@ -52,7 +52,7 @@ export function useInitContext(itemStepUid) {
         } else {
             if (meta.priceStepDeps?.length == 0 || !meta.priceStepDeps) {
                 toast.error(
-                    `Multi Pricing requires atleast one price dependencies.`
+                    `Multi Pricing requires atleast one price dependencies.`,
                 );
                 return;
             }

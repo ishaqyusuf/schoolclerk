@@ -1,19 +1,21 @@
-import Button from "@/components/common/button";
-import Modal from "@/components/common/modal";
-import useEffectLoader from "@/lib/use-effect-loader";
-import { loadSales } from "./action";
-import { Table, TableBody, TableRow } from "@/components/ui/table";
-import { TableCell } from "@/app/_components/data-table/table-cells";
-import { useModal } from "@/components/common/modal/provider";
-import { updateSalesStat } from "@/data-access/sales.stats";
-import { toast } from "sonner";
 import { useEffect, useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
+import { TableCell } from "@/app/_components/data-table/table-cells";
 import {
     Menu,
     MenuItem,
 } from "@/components/_v1/data-table/data-table-row-actions";
-import { Label } from "@/components/ui/label";
+import Button from "@/components/common/button";
+import Modal from "@/components/common/modal";
+import { useModal } from "@/components/common/modal/provider";
+import { updateSalesStat } from "@/data-access/sales.stats";
+import useEffectLoader from "@/lib/use-effect-loader";
+import { toast } from "sonner";
+
+import { Checkbox } from "@gnd/ui/checkbox";
+import { Label } from "@gnd/ui/label";
+import { Table, TableBody, TableRow } from "@gnd/ui/table";
+
+import { loadSales } from "./action";
 
 export function SaleSattBtn() {
     const modal = useModal();
@@ -43,7 +45,7 @@ function SaleStatBootstrapModal({}) {
         const promise = Promise.all(
             vals.map(async (d, i) => {
                 await updateSalesStat(d.id);
-            })
+            }),
         );
         toast.promise(promise, {
             loading: "Loading...",

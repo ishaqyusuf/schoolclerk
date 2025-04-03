@@ -1,5 +1,10 @@
 "use client";
+
+import Link from "next/link";
 import { Icons } from "@/components/_v1/icons";
+import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
+
 import {
     NavigationMenu,
     NavigationMenuItem,
@@ -7,17 +12,14 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-import { cn } from "@/lib/utils";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
+} from "@gnd/ui/navigation-menu";
 
 export default function DealerHeader() {
     const user = useSession();
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background">
-            <div className="container flex min-h-16 py-2 items-center">
+            <div className="container flex min-h-16 items-center py-2">
                 <div className="hidden gap-6 lg:flex">
                     <Link href="/" className="">
                         <div className="hidden items-center space-x-2 lg:flex">
@@ -36,7 +38,7 @@ export default function DealerHeader() {
                                     <NavigationMenuLink
                                         className={cn(
                                             navigationMenuTriggerStyle(),
-                                            "h-auto"
+                                            "h-auto",
                                         )}
                                     >
                                         Quotes
@@ -46,7 +48,7 @@ export default function DealerHeader() {
                                     <NavigationMenuLink
                                         className={cn(
                                             navigationMenuTriggerStyle(),
-                                            "h-auto"
+                                            "h-auto",
                                         )}
                                     >
                                         Orders

@@ -1,13 +1,11 @@
-import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
-import { Form } from "@/components/ui/form";
-import FormSelect from "@/components/common/controls/form-select";
-import { dispatchModes } from "../../../../utils/contants";
-import Button from "@/components/common/button";
 import Portal from "@/components/_v1/portal";
+import ProgressStatus from "@/components/_v1/progress-status";
 import { Menu } from "@/components/(clean-code)/menu";
-import { cn, generateRandomString, sum } from "@/lib/utils";
+import Button from "@/components/common/button";
 import FormInput from "@/components/common/controls/form-input";
+import FormSelect from "@/components/common/controls/form-select";
+import { cn, generateRandomString, sum } from "@/lib/utils";
 import {
     CheckCircle,
     ClipboardList,
@@ -15,17 +13,20 @@ import {
     PackageCheck,
     Send,
 } from "lucide-react";
-import ProgressStatus from "@/components/_v1/progress-status";
+import { useFormContext } from "react-hook-form";
+
+import { Form } from "@gnd/ui/form";
+
+import { dispatchModes } from "../../../../utils/contants";
+import { ItemControlMenu } from "../../components/item-control-menu";
+import { salesOverviewStore } from "../../store";
+import { createSalesShipment } from "./create-shipment";
 import {
     ItemShippable,
     Shippable,
     UseSalesShipmentForm,
     useSalesShipmentForm,
 } from "./ctx";
-import { createSalesShipment } from "./create-shipment";
-import { salesOverviewStore } from "../../store";
-
-import { ItemControlMenu } from "../../components/item-control-menu";
 
 export function SalesShippingForm({}) {
     const ctx = useSalesShipmentForm();
@@ -37,7 +38,7 @@ export function SalesShippingForm({}) {
         <Form {...form}>
             <div className="">
                 <Portal nodeId={"tabHeader"}>
-                    <div className="flex items-center py-2 border-b gap-4">
+                    <div className="flex items-center gap-4 border-b py-2">
                         <div className="flex-1">
                             <FormSelect
                                 size="xs"
@@ -65,7 +66,7 @@ export function SalesShippingForm({}) {
                             onClick={() => {
                                 form.setValue(
                                     "selectAllToken",
-                                    generateRandomString()
+                                    generateRandomString(),
                                 );
                             }}
                             variant="secondary"
@@ -145,7 +146,7 @@ function ShippingItem({
                     "dispatchAssigned",
                     "dispatchCompleted",
                     "dispatchInProgress",
-                ])
+                ]),
             );
 
             let totalQty = getValue("qty");
@@ -198,13 +199,13 @@ function ShippingItem({
                     <CheckCircle
                         className={cn(
                             "size-4",
-                            total > 0 ? "text-green-500" : "opacity-0"
+                            total > 0 ? "text-green-500" : "opacity-0",
                         )}
                     />
                 </div>
-                <div className="space-y-2  flex-1">
+                <div className="flex-1  space-y-2">
                     <div className="flex-1 cursor-pointer">
-                        <div className="uppercase font-mono text-muted-foreground text-sm font-semibold">
+                        <div className="font-mono text-sm font-semibold uppercase text-muted-foreground">
                             <span>{item.inlineSubtitle}</span>
                         </div>
                         {/* <div className="uppercase text-muted-foreground text-sm font-normal space-x-2">
@@ -212,7 +213,7 @@ function ShippingItem({
                             <span>{item.subtitle}</span>
                             <span>{item.swing}</span>
                         </div> */}
-                        <div className="text-sm uppercase font-semibold">
+                        <div className="text-sm font-semibold uppercase">
                             {item?.title}
                         </div>
                     </div>
@@ -346,7 +347,7 @@ function QtyInput({ uid, input }) {
 
     return (
         <div className="flex items-center gap-1">
-            <span className="uppercase font-mono text-xs font-semibold">
+            <span className="font-mono text-xs font-semibold uppercase">
                 {input.label}:
             </span>
             {/* {inputOptions.length > 15 ? ( */}
@@ -366,7 +367,7 @@ function QtyInput({ uid, input }) {
             //         options={inputOptions}
             //     />
             // )} */}
-            <span className="text-xs font-mono font-bold">/{available}</span>
+            <span className="font-mono text-xs font-bold">/{available}</span>
         </div>
     );
 }

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-
 import { useInfiniteQuery } from "@tanstack/react-query";
+
 import {
     Command,
     CommandInput,
     CommandItem,
     CommandList,
-} from "@/components/ui/command";
+} from "@gnd/ui/command";
 
 // Simulated already fetched items
 const itemList = Array.from({ length: 100 }, (_, i) => `Item ${i + 1}`);
@@ -15,7 +15,7 @@ const fetchItems = ({ pageParam = 0, query = "" }) => {
     const pageSize = 20;
     const filtered = query
         ? itemList.filter((item) =>
-              item.toLowerCase().includes(query.toLowerCase())
+              item.toLowerCase().includes(query.toLowerCase()),
           )
         : itemList;
     const items = filtered.slice(pageParam, pageParam + pageSize);
@@ -96,7 +96,7 @@ const InfiniteScrollCommand = () => {
                         <CommandItem key={`${pageIndex}-${index}`}>
                             {item}
                         </CommandItem>
-                    ))
+                    )),
                 )}
                 {isFetchingNextPage && (
                     <div className="loading-spinner">Loading more...</div>

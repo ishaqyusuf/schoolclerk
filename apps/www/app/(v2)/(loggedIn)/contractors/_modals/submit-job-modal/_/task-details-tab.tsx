@@ -3,9 +3,12 @@ import {
     SecondaryCellContent,
 } from "@/components/_v1/columns/base-columns";
 import Money from "@/components/_v1/money";
-import { FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+
+import { FormControl, FormField, FormItem } from "@gnd/ui/form";
+import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 import {
     Table,
     TableBody,
@@ -13,10 +16,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { cn } from "@/lib/utils";
-
-import { Input } from "@gnd/ui/input";
+} from "@gnd/ui/table";
 
 import ProjectFormSection from "./project-form-section";
 import { useJobSubmitCtx } from "./use-submit-job";

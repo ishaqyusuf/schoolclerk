@@ -1,12 +1,14 @@
-import { Menu } from "@/components/(clean-code)/menu";
 import Portal from "@/components/_v1/portal";
-import { salesOverviewStore } from "../../store";
-import { useSalesOverviewItemsTab } from "@/components/sheets/sales-overview-sheet/items-tab-context";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Menu } from "@/components/(clean-code)/menu";
 import {
     BatchAssignAction,
     BatchAssignActionMenu,
 } from "@/components/sheets/sales-overview-sheet/batch-assign-action";
+import { useSalesOverviewItemsTab } from "@/components/sheets/sales-overview-sheet/items-tab-context";
+
+import { Tabs, TabsList, TabsTrigger } from "@gnd/ui/tabs";
+
+import { salesOverviewStore } from "../../store";
 
 export function ProductionHeader({ children = null }) {
     const store = salesOverviewStore();
@@ -15,7 +17,7 @@ export function ProductionHeader({ children = null }) {
     return (
         <>
             <Portal noDelay nodeId={"tabHeader"}>
-                <div className="flex py-2 border-b">
+                <div className="flex border-b py-2">
                     {children}
 
                     <Tabs value={tab} onValueChange={setTab}>

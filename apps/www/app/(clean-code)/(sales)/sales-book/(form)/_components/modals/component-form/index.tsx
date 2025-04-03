@@ -1,21 +1,21 @@
-import Modal from "@/components/common/modal";
 import { createContext, useContext } from "react";
-import { useForm } from "react-hook-form";
-
-import { Form } from "@/components/ui/form";
-
 import { createComponentUseCase } from "@/app/(clean-code)/(sales)/_common/use-case/step-component-use-case";
-import { _modal } from "@/components/common/modal/provider";
-import { toast } from "sonner";
-import { StepHelperClass } from "../../../_utils/helpers/zus/step-component-class";
-import FormInput from "@/components/common/controls/form-input";
 import { StepComponentForm } from "@/app/(clean-code)/(sales)/types";
-import { ComponentImg } from "../../component-img";
-import { Label } from "@/components/ui/label";
 import Button from "@/components/common/button";
-import { Image } from "lucide-react";
-import { openImgModal } from "../img-gallery-modal";
+import FormInput from "@/components/common/controls/form-input";
 import { FileUploader } from "@/components/common/file-uploader";
+import Modal from "@/components/common/modal";
+import { _modal } from "@/components/common/modal/provider";
+import { Image } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Form } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
+
+import { StepHelperClass } from "../../../_utils/helpers/zus/step-component-class";
+import { ComponentImg } from "../../component-img";
+import { openImgModal } from "../img-gallery-modal";
 
 interface Props {
     stepCls: StepHelperClass;
@@ -26,7 +26,7 @@ const Context = createContext<ReturnType<typeof useInitContext>>(null);
 const useCtx = () => useContext(Context);
 export function openComponentModal(
     stepCls: StepHelperClass,
-    data?: Props["data"]
+    data?: Props["data"],
 ) {
     if (!data) {
         data = {
@@ -102,10 +102,10 @@ export default function StepComponentFormModal(props: Props) {
                         name="productCode"
                         label="Product Code"
                     />
-                    <div className="flex justify-between items-center">
+                    <div className="flex items-center justify-between">
                         <Label>Image</Label>
                         <Button onClick={ctx.browseImg} size="xs">
-                            <Image className="size-4 mr-2" />
+                            <Image className="mr-2 size-4" />
                             Images
                         </Button>
                     </div>

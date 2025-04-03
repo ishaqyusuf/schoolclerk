@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
-import type { MainNavItem } from "@/types";
-
+import { Icons } from "@/components/_v1/icons";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
+import type { MainNavItem } from "@/types";
+
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -14,8 +15,7 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-import { Icons } from "@/components/_v1/icons";
+} from "@gnd/ui/navigation-menu";
 
 interface MainNavProps {
     items?: MainNavItem[];
@@ -107,7 +107,7 @@ export function MainNav({ items }: MainNavProps) {
                                             <NavigationMenuLink
                                                 className={cn(
                                                     navigationMenuTriggerStyle(),
-                                                    "h-auto"
+                                                    "h-auto",
                                                 )}
                                             >
                                                 {item.title}
@@ -115,7 +115,7 @@ export function MainNav({ items }: MainNavProps) {
                                         </Link>
                                     </NavigationMenuItem>
                                 )
-                            )
+                            ),
                         )}
                 </NavigationMenuList>
             </NavigationMenu>
@@ -135,7 +135,7 @@ const ListItem = React.forwardRef<
                     href={String(href) || "/"}
                     className={cn(
                         "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-                        className
+                        className,
                     )}
                     {...props}
                 >

@@ -1,17 +1,18 @@
 "use client";
 
+import Money from "@/components/_v1/money";
+import StatusBadge from "@/components/_v1/status-badge";
+import { useDataPage } from "@/lib/data-page-context";
+import { formatDate } from "@/lib/use-day";
 import { useAppSelector } from "@/store";
 import { IAddressBook, ISalesOrder } from "@/types/sales";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@gnd/ui/card";
 
-import { Info } from "../../../../../../../components/_v1/info";
 import OrderOverviewActions from "../../../../../../../components/_v1/actions/order-overview-actions";
-import Money from "@/components/_v1/money";
-import StatusBadge from "@/components/_v1/status-badge";
-import { formatDate } from "@/lib/use-day";
-import { useDataPage } from "@/lib/data-page-context";
+import { Info } from "../../../../../../../components/_v1/info";
 import { OrderPriorityFlagCell } from "../../../orders/components/cells/sales-columns";
+
 // import ProductionDueDate from "../../../../../../../components/_v1/sales/prod-due-date";
 
 interface Props {
@@ -44,7 +45,7 @@ export default function DetailsSection({ myProd, estimate }: Props) {
                         )}
                     </CardTitle>
                 </CardHeader>
-                <CardContent className="divide-y space-y-4 flex flex-col">
+                <CardContent className="flex flex-col space-y-4 divide-y">
                     <div className="grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
                         <Info label="Order ID">{order.orderId}</Info>
                         <Info label="Production (Due)">
@@ -94,7 +95,7 @@ export default function DetailsSection({ myProd, estimate }: Props) {
                                     <p>{order.paymentTerm}</p>
                                     <p>
                                         {formatDate(
-                                            order.paymentDueDate as any
+                                            order.paymentDueDate as any,
                                         )}
                                     </p>
                                 </Info>
@@ -111,7 +112,7 @@ export default function DetailsSection({ myProd, estimate }: Props) {
                     </div>
                     {!isProd && (
                         <div className="">
-                            <div className="pt-4 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
+                            <div className="grid grid-cols-2 gap-4 pt-4 text-sm sm:grid-cols-3">
                                 <AddressInfo
                                     label="Bill To"
                                     address={order.billingAddress}

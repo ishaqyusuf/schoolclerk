@@ -1,8 +1,18 @@
 "use client";
 
+import { ProdItemActions } from "@/components/_v1/actions/prod-item-actions";
+import { PrimaryCellContent } from "@/components/_v1/columns/base-columns";
+import Money from "@/components/_v1/money";
+import StatusBadge from "@/components/_v1/status-badge";
+import XProgress from "@/components/_v1/x-progress";
+import { useDataPage } from "@/lib/data-page-context";
+import { formatDate } from "@/lib/use-day";
 import { useAppSelector } from "@/store";
 import { ISalesOrder, ISalesOrderItem } from "@/types/sales";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { IInboundOrderItems } from "@/types/sales-inbound";
+
+import { Badge } from "@gnd/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@gnd/ui/card";
 import {
     Table,
     TableBody,
@@ -10,16 +20,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import XProgress from "@/components/_v1/x-progress";
-import { ProdItemActions } from "@/components/_v1/actions/prod-item-actions";
-import { Badge } from "@/components/ui/badge";
-import { IInboundOrderItems } from "@/types/sales-inbound";
-import StatusBadge from "@/components/_v1/status-badge";
-import { PrimaryCellContent } from "@/components/_v1/columns/base-columns";
-import Money from "@/components/_v1/money";
-import { useDataPage } from "@/lib/data-page-context";
-import { formatDate } from "@/lib/use-day";
+} from "@gnd/ui/table";
 
 export default function ItemDetailsSection() {
     const { data: order } = useDataPage<ISalesOrder>();
@@ -34,23 +35,23 @@ export default function ItemDetailsSection() {
                 <CardContent className="max-sm:-mt-4">
                     <div className="grid divide-y sm:hidden">
                         {order.items?.map((item, key) => (
-                            <div className="grid py-2 gap-2" key={key}>
+                            <div className="grid gap-2 py-2" key={key}>
                                 <PrimaryCellContent className="text-sm leading-relaxed">
                                     {item.description}{" "}
                                     <span className="mx-2">x{item.qty}</span>
                                 </PrimaryCellContent>
-                                <div className="flex items-centerspace-x-2">
-                                    <p className="whitespace-nowrap font-semibold text-muted-foreground text-sm uppercase">
+                                <div className="items-centerspace-x-2 flex">
+                                    <p className="whitespace-nowrap text-sm font-semibold uppercase text-muted-foreground">
                                         {item.swing}
                                     </p>
                                     {item.supplier && (
-                                        <Badge className="leading-none bg-accent text-accent-foreground hover:bg-accent">
+                                        <Badge className="bg-accent leading-none text-accent-foreground hover:bg-accent">
                                             {item.supplier}
                                         </Badge>
                                     )}
                                     <div className="flex-1"></div>
                                     {!isProd && (
-                                        <div className="text-right font-semibold text-muted-foreground text-sm">
+                                        <div className="text-right text-sm font-semibold text-muted-foreground">
                                             {item.total && (
                                                 <Money value={item.total} />
                                             )}
@@ -58,9 +59,9 @@ export default function ItemDetailsSection() {
                                     )}
                                 </div>
                                 {item.swing && (
-                                    <div className="flex justify-between items-end space-x-2">
+                                    <div className="flex items-end justify-between space-x-2">
                                         <div className="grid gap-1">
-                                            <div className="flex justify-end font-semibold text-sm">
+                                            <div className="flex justify-end text-sm font-semibold">
                                                 {item.meta.produced_qty || 0} of{" "}
                                                 {item.qty} completed
                                             </div>
@@ -119,13 +120,14 @@ export default function ItemDetailsSection() {
                                         </p>
                                         <div className="inline-flex space-x-2">
                                             {item.supplier && (
-                                                <Badge className="leading-none bg-accent text-accent-foreground hover:bg-accent">
+                                                <Badge className="bg-accent leading-none text-accent-foreground hover:bg-accent">
                                                     {item.supplier}
 
                                                     {item.meta.supplyDate &&
                                                         item.supplier &&
                                                         ` | ${formatDate(
-                                                            item.meta.supplyDate
+                                                            item.meta
+                                                                .supplyDate,
                                                         )}`}
                                                 </Badge>
                                             )}

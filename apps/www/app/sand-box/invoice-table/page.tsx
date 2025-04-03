@@ -10,7 +10,11 @@ import {
     Menu,
     MenuItem,
 } from "@/components/_v1/data-table/data-table-row-actions";
-import { Form, FormField } from "@/components/ui/form";
+import dayjs from "dayjs";
+import { useFieldArray, useForm } from "react-hook-form";
+
+import { Form, FormField } from "@gnd/ui/form";
+import { Input } from "@gnd/ui/input";
 import {
     Table,
     TableBody,
@@ -18,11 +22,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import dayjs from "dayjs";
-import { useFieldArray, useForm } from "react-hook-form";
-
-import { Input } from "@gnd/ui/input";
+} from "@gnd/ui/table";
 
 export default function InvoiceTable() {
     const form = useForm({

@@ -1,5 +1,12 @@
+import { useEffect, useState } from "react";
+import { createPaymentSchemaOld } from "@/actions/schema";
+import { revalidateTable } from "@/components/(clean-code)/data-table/use-infinity-data-table";
+import { _modal } from "@/components/common/modal/provider";
+import { isProdClient } from "@/lib/is-prod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { txStore } from "./store";
+import { toast } from "sonner";
+
 import {
     cancelTerminalCheckoutAction,
     checkTerminalPaymentStatusAction,
@@ -7,17 +14,11 @@ import {
     CreateTerminalPaymentAction,
     paymentReceivedAction,
 } from "../../data-actions/sales-payment/terminal-payment.action";
-import { useEffect, useState } from "react";
 import {
     createTransactionUseCase,
     getPaymentTerminalsUseCase,
 } from "../../use-case/sales-payment-use-case";
-import { toast } from "sonner";
-import { _modal } from "@/components/common/modal/provider";
-import { isProdClient } from "@/lib/is-prod";
-import { revalidateTable } from "@/components/(clean-code)/data-table/use-infinity-data-table";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createPaymentSchemaOld } from "@/actions/schema";
+import { txStore } from "./store";
 
 export type UsePayForm = ReturnType<typeof usePayForm>;
 export const usePayForm = () => {
@@ -75,6 +76,7 @@ export const usePayForm = () => {
             allowTipping: data.enableTip,
             deviceName,
         });
+        console.log({ resp });
 
         if (resp.error) {
             toast.error(resp.error.message);
@@ -88,7 +90,6 @@ export const usePayForm = () => {
     useEffect(() => {
         const status = terminal?.status;
         if (status == "PENDING") {
-            console.log(waitSeconds);
             // if (waitSeconds) {
             //     return;
             // }

@@ -8,11 +8,11 @@ import {
 } from "@/components/_v1/data-table/data-table-row-actions";
 import { DatePicker } from "@/components/_v1/date-range-picker";
 import { Icons } from "@/components/_v1/icons";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { useFormContext, useWatch } from "react-hook-form";
 
 import { Button } from "@gnd/ui/button";
+import { Label } from "@gnd/ui/label";
+import { Switch } from "@gnd/ui/switch";
 
 import { SalesFormContext } from "../ctx";
 import useSaveSalesHook from "../hooks/use-save-sales";

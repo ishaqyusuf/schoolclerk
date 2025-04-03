@@ -2,35 +2,37 @@ import TableItemOverviewSheet, {
     TableSheetHeader,
 } from "@/components/(clean-code)/data-table/item-overview-sheet";
 import { useInfiniteDataTable } from "@/components/(clean-code)/data-table/use-data-table";
-import { motion, AnimatePresence } from "framer-motion";
-import { SalesItemProp } from "../../../sales-book/(pages)/_components/orders-page-cells";
-
 import { _modal } from "@/components/common/modal/provider";
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-    useSalesOverview,
-    OverviewProvider,
-    DispatchOverviewProvider,
-} from "./overview-provider";
-import { SalesGeneralOverview } from "./general/sales-general-overview";
-
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { ItemProdView } from "./production/item-prod-view";
-
-import { ShippingForm } from "./shipping/shipping-form";
 import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "framer-motion";
+
+import { ScrollArea } from "@gnd/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
+
+import { SalesItemProp } from "../../../sales-book/(pages)/_components/orders-page-cells";
+import { SalesGeneralOverview } from "./general/sales-general-overview";
+import {
+    DispatchOverviewProvider,
+    OverviewProvider,
+    useSalesOverview,
+} from "./overview-provider";
+import { ItemProdView } from "./production/item-prod-view";
 import { SalesShippingTab } from "./shipping/sales-shippings-tab";
+import { ShippingForm } from "./shipping/shipping-form";
 import { ShippingOverview } from "./shipping/shipping-overview";
+
 import "./style.css";
-import ActionFooter from "./footer/action-footer";
-import NotificationTab from "./notification";
-import { SalesDispatchListDto } from "../../data-access/dto/sales-shipping-dto";
-import { PaymentTab, TerminalPay } from "./payments/payment-tab";
-import { SalesItemsOverview } from "./item-view/sales-items-overview";
-import { isProdClient } from "@/lib/is-prod";
+
 import { useEffect } from "react";
+import { isProdClient } from "@/lib/is-prod";
+
+import { SalesDispatchListDto } from "../../data-access/dto/sales-shipping-dto";
 import { openSalesOverview } from "../sales-overview-sheet";
+import ActionFooter from "./footer/action-footer";
+import { SalesItemsOverview } from "./item-view/sales-items-overview";
+import NotificationTab from "./notification";
+import { PaymentTab, TerminalPay } from "./payments/payment-tab";
+
 export function OrderOverviewSheet({}) {
     // if (isProdClient) return;
     const { table, selectedRow } = useInfiniteDataTable();
@@ -70,7 +72,7 @@ function PrimaryTab() {
         <div
             className={cn(
                 "w-[60vw] lg:w-[600px]",
-                ctx.tabData && "hidden xl:block"
+                ctx.tabData && "hidden xl:block",
             )}
         >
             <TableSheetHeader

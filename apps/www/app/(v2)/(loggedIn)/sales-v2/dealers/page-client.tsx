@@ -1,19 +1,21 @@
 "use client";
 
+import { use } from "react";
+import { useSearchParams } from "next/navigation";
+import { DataTable } from "@/app/_components/data-table";
+import { TableToolbar } from "@/app/_components/data-table/toolbar";
 import FPageNav from "@/components/(clean-code)/fikr-ui/f-page-nav";
 import { FPageTabs } from "@/components/(clean-code)/fikr-ui/f-page-tabs";
+import { useDataTableColumn2 } from "@/components/common/data-table/columns/use-data-table-columns";
+
+import { Badge } from "@gnd/ui/badge";
+
 import {
     DealerStatus,
     GetDealersAction,
     GetDealersPageTabAction,
 } from "./action";
-import { use } from "react";
-import { Badge } from "@/components/ui/badge";
-import { useDataTableColumn2 } from "@/components/common/data-table/columns/use-data-table-columns";
 import { Cells } from "./cells";
-import { DataTable } from "@/app/_components/data-table";
-import { TableToolbar } from "@/app/_components/data-table/toolbar";
-import { useSearchParams } from "next/navigation";
 
 interface Props {
     response?;
@@ -37,11 +39,11 @@ export default function PageClient({ response, tabResp }: Props) {
             ...(status == "Pending Approval"
                 ? [ctx.ActionColumn(Cells.MainActions)]
                 : status == "Rejected"
-                ? []
-                : status == "Restricted"
-                ? []
-                : [ctx.ActionColumn(Cells.MainActions)]),
-        ]
+                  ? []
+                  : status == "Restricted"
+                    ? []
+                    : [ctx.ActionColumn(Cells.MainActions)]),
+        ],
     );
     return (
         <>

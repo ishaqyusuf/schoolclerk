@@ -1,13 +1,20 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { createSalesCheckoutLinkAction } from "@/actions/create-sales-payment-checkout";
 import {
-    getSalesPaymentCheckoutInfoAction,
     GetSalesPaymentCheckoutInfo,
+    getSalesPaymentCheckoutInfoAction,
 } from "@/actions/get-sales-payment-checkout-info-action";
 import { Icons } from "@/components/_v1/icons";
 import Money from "@/components/_v1/money";
 import Button from "@/components/common/button";
+import { openLink } from "@/lib/open-link";
+import { timeout } from "@/lib/timeout";
+import { cn } from "@/lib/utils";
+import { formatPaymentParams } from "@/utils/format-payment-params";
+import { toast } from "sonner";
+
 import {
     Table,
     TableBody,
@@ -15,13 +22,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { openLink } from "@/lib/open-link";
-import { timeout } from "@/lib/timeout";
-import { cn } from "@/lib/utils";
-import { formatPaymentParams } from "@/utils/format-payment-params";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+} from "@gnd/ui/table";
 
 // export async function generateMetadata({ params }) {
 //     return constructMetadata({
@@ -37,7 +38,7 @@ export default function Page({ params }) {
         async function load() {
             const resp = await getSalesPaymentCheckoutInfoAction(
                 orderIds,
-                emailToken
+                emailToken,
             );
             setData(resp);
             setLoading(false);
@@ -61,15 +62,15 @@ export default function Page({ params }) {
         // const paymentLink = await
     }
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
-            <div className="flex items-center  space-x-2 mb-6">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
+            <div className="mb-6 flex  items-center space-x-2">
                 <Icons.LogoLg />
                 <h1 className="text-2xl font-semibold text-gray-800">
                     Sales Checkout
                 </h1>
             </div>
 
-            <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
+            <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
                 {loading ? (
                     <div className="flex flex-col items-center space-y-4">
                         <Icons.spinner className="h-12 w-12 animate-spin text-blue-500" />
@@ -85,7 +86,7 @@ export default function Page({ params }) {
                                     <p className="font-medium text-gray-600">
                                         Customer Name:
                                     </p>
-                                    <p className="text-gray-800 font-semibold">
+                                    <p className="font-semibold text-gray-800">
                                         {data?.orders?.[0]?.customerName}
                                     </p>
                                 </div>
@@ -93,7 +94,7 @@ export default function Page({ params }) {
                                     <p className="font-medium text-gray-600">
                                         Invoice No:
                                     </p>
-                                    <p className="text-gray-800 font-semibold">
+                                    <p className="font-semibold text-gray-800">
                                         {data?.orders?.[0]?.orderNo}
                                     </p>
                                 </div>
@@ -129,7 +130,7 @@ export default function Page({ params }) {
                             </>
                         )}
                         {data.amountDue <= 0 ? (
-                            <p className="text-green-600 font-medium text-center">
+                            <p className="text-center font-medium text-green-600">
                                 No payment is due at this time.
                             </p>
                         ) : (
@@ -138,13 +139,13 @@ export default function Page({ params }) {
                                     className={cn(
                                         "text-lg",
                                         data.orders.length > 1 &&
-                                            "flex flex-col items-end"
+                                            "flex flex-col items-end",
                                     )}
                                 >
                                     <p className="font-medium text-gray-600">
                                         Due Amount:
                                     </p>
-                                    <p className="text-gray-800 font-bold">
+                                    <p className="font-bold text-gray-800">
                                         <Money value={data.amountDue} />
                                     </p>
                                 </div>
@@ -161,7 +162,7 @@ export default function Page({ params }) {
                         )}
                     </div>
                 ) : (
-                    <p className="text-red-500 text-center">
+                    <p className="text-center text-red-500">
                         Failed to load payment details.
                     </p>
                 )}

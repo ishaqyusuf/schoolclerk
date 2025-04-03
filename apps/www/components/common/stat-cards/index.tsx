@@ -1,4 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@gnd/ui/card";
+
 import { StatCardProps } from "./utils";
 
 interface Props {

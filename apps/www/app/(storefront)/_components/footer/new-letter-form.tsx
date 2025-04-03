@@ -2,14 +2,6 @@
 
 import * as React from "react";
 import { Icons } from "@/components/_v1/icons";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
 import { newsletterSchema } from "@/lib/validations/email";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
@@ -18,6 +10,14 @@ import { toast } from "sonner";
 import type { z } from "zod";
 
 import { Button } from "@gnd/ui/button";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
 
 type Inputs = z.infer<typeof newsletterSchema>;

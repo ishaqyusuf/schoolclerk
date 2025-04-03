@@ -1,33 +1,31 @@
-import { Badge } from "@/components/ui/badge";
-import { useSalesItem } from "./item-production-card";
-import { cn } from "@/lib/utils";
-import { formatDate } from "@/lib/use-day";
-import Button from "@/components/common/button";
-import { Label } from "@/components/ui/label";
-import ConfirmBtn from "@/components/_v1/confirm-btn";
-import { Admin } from "../overview-sheet.bin/common/admin";
 import { createContext, useContext, useEffect, useState } from "react";
+import ConfirmBtn from "@/components/_v1/confirm-btn";
 import { DatePicker } from "@/components/_v1/date-range-picker";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
 import { Menu } from "@/components/(clean-code)/menu";
+import Button from "@/components/common/button";
+import { formatDate } from "@/lib/use-day";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+import { Badge } from "@gnd/ui/badge";
+import { Calendar } from "@gnd/ui/calendar";
+import { Label } from "@gnd/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@gnd/ui/popover";
+
+import { LineAssignment } from "../../data-access/dto/sales-item-dto";
 import {
     deleteAssignmentSubmissionUseCase,
     deleteAssignmentUseCase,
     submitAssignmentUseCase,
     updateAssignmentDueDateUseCase,
 } from "../../use-case/sales-prod.use-case";
-import { toast } from "sonner";
+import { Admin } from "../overview-sheet.bin/common/admin";
 import { zSalesOverview } from "../overview-sheet.bin/utils/store";
+import { useSalesItem } from "./item-production-card";
 import { SubmitForm } from "./submit-form";
-import { LineAssignment } from "../../data-access/dto/sales-item-dto";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 
 export function ItemAssignments({}) {
     const ctx = useSalesItem();
@@ -44,7 +42,7 @@ export function ItemAssignments({}) {
     );
 }
 const AssignmentContext = createContext<ReturnType<typeof useAssingmentCtx>>(
-    null as any
+    null as any,
 );
 function useAssingmentCtx(assignment: LineAssignment) {
     const [submit, setSubmit] = useState(false);
@@ -67,7 +65,7 @@ function useAssingmentCtx(assignment: LineAssignment) {
                     .min(0)
                     .max(pending?.rh || 0),
                 note: z.string().nullable(),
-            })
+            }),
         ),
         defaultValues: {
             qty: pending.qty,
@@ -100,7 +98,7 @@ function Assignment({ assignment, index }) {
     return (
         <AssignmentContext.Provider value={ctx}>
             <div className="" key={assignment.id}>
-                <div className="flex border-b font-mono items-center p-1 gap-4">
+                <div className="flex items-center gap-4 border-b p-1 font-mono">
                     <div>
                         {index + 1}. {assignment.assignedTo}
                     </div>
@@ -112,7 +110,7 @@ function Assignment({ assignment, index }) {
                         qtyKey="qty"
                     />
                     <div className="flex-1"></div>
-                    <div className="items-center flex gap-1">
+                    <div className="flex items-center gap-1">
                         <Button
                             onClick={() => {
                                 ctx.setSubmit(true);
@@ -128,7 +126,7 @@ function Assignment({ assignment, index }) {
                                     await deleteAssignmentUseCase(
                                         assignment.id,
                                         itemCtx.item?.analytics?.control
-                                            ?.produceable
+                                            ?.produceable,
                                     );
                                 }}
                                 trash
@@ -141,7 +139,7 @@ function Assignment({ assignment, index }) {
                     {assignment.submissions.map((submission) => (
                         <div
                             key={submission.id}
-                            className="text-muted-foreground border-b py-1 flex items-center"
+                            className="flex items-center border-b py-1 text-muted-foreground"
                         >
                             <div className="font-mono">
                                 {submission.qty?.total} {" items submitted on "}
@@ -153,7 +151,7 @@ function Assignment({ assignment, index }) {
                                     await deleteAssignmentSubmissionUseCase(
                                         submission.id,
                                         itemCtx.item?.analytics?.control
-                                            ?.produceable
+                                            ?.produceable,
                                     );
                                 }}
                                 trash
@@ -189,7 +187,7 @@ function DueDate({ assignment }) {
                     variant={"outline"}
                     className={cn(
                         "justify-start text-left font-normal",
-                        !date && "text-muted-foreground"
+                        !date && "text-muted-foreground",
                     )}
                 >
                     {date ? `Due on: ${formatDate(date)}` : "No due date"}
@@ -214,7 +212,7 @@ function DueDate({ assignment }) {
                     variant={"outline"}
                     className={cn(
                         "justify-start text-left font-normal",
-                        !date && "text-muted-foreground"
+                        !date && "text-muted-foreground",
                     )}
                 >
                     {date ? ` Due on: ${formatDate(date)}` : "No due date"}
@@ -247,7 +245,7 @@ function SubmissionStatusPill({
     return (
         <Badge
             variant="destructive"
-            className={cn("uppercase font-mono py-0.5")}
+            className={cn("py-0.5 font-mono uppercase")}
         >
             {`${completedQty}/${assignedQty} ${qtyKey}`}
         </Badge>

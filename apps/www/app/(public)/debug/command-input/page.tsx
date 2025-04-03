@@ -1,7 +1,8 @@
 "use client";
 
-import { Command, CommandInput, CommandList } from "@/components/ui/command";
 import { useState } from "react";
+
+import { Command, CommandInput, CommandList } from "@gnd/ui/command";
 
 export default function CommandInputPage({}) {
     const [v, vc] = useState("");

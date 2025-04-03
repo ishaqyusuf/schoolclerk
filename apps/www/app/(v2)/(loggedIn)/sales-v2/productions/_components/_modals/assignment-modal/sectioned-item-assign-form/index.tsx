@@ -8,23 +8,6 @@ import { Icons } from "@/components/_v1/icons";
 import FormInput from "@/components/common/controls/form-input";
 import FormSelect from "@/components/common/controls/form-select";
 import { TableCol } from "@/components/common/data-table/table-cells";
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import { Form } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
 import { screens } from "@/lib/responsive";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
@@ -33,10 +16,27 @@ import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
 import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@gnd/ui/card";
+import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "@gnd/ui/dropdown-menu";
+import { Form } from "@gnd/ui/form";
+import { Label } from "@gnd/ui/label";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@gnd/ui/table";
 
 import { useAssignmentData } from "..";
 import { createProdAssignment } from "../_action/create-assignment";

@@ -4,18 +4,6 @@ import React, { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Btn from "@/components/_v1/btn";
 import { SecondaryCellContent } from "@/components/_v1/columns/base-columns";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { closeModal } from "@/lib/modal";
 import { _useAsync } from "@/lib/use-async";
 import { cn } from "@/lib/utils";
@@ -24,7 +12,19 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@gnd/ui/button";
+import { Checkbox } from "@gnd/ui/checkbox";
+import { Form, FormControl, FormField, FormItem } from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
+import { ScrollArea } from "@gnd/ui/scroll-area";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@gnd/ui/table";
+import { Tabs, TabsContent } from "@gnd/ui/tabs";
 
 import BaseModal from "../base-modal";
 

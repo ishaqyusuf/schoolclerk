@@ -1,14 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { Slot } from "@radix-ui/react-slot";
@@ -17,7 +9,15 @@ import { PanelLeft } from "lucide-react";
 
 import { Button } from "@gnd/ui/button";
 import { Input } from "@gnd/ui/input";
+import { Separator } from "@gnd/ui/separator";
 import { Sheet, SheetContent } from "@gnd/ui/sheet";
+import { Skeleton } from "@gnd/ui/skeleton";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@gnd/ui/tooltip";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;

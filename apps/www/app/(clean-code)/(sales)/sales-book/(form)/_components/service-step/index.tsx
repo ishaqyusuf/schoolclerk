@@ -3,6 +3,10 @@ import { Icons } from "@/components/_v1/icons";
 import Money from "@/components/_v1/money";
 import TextWithTooltip from "@/components/(clean-code)/custom/text-with-tooltip";
 import { AnimatedNumber } from "@/components/animated-number";
+import { cn } from "@/lib/utils";
+
+import { Button } from "@gnd/ui/button";
+import { Input } from "@gnd/ui/input";
 import {
     Table,
     TableBody,
@@ -11,11 +15,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { cn } from "@/lib/utils";
-
-import { Button } from "@gnd/ui/button";
-import { Input } from "@gnd/ui/input";
+} from "@gnd/ui/table";
 
 import { LineInput, LineSwitch } from "../line-input";
 import { Context, useCreateContext, useCtx } from "./ctx";

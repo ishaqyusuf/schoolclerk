@@ -3,12 +3,14 @@
 // import { getColorFromName } from "@/utils/categories";
 // import { createClient } from "@/components/supabase/client";
 // import { getCategoriesQuery } from "@/components/supabase/queries";
-import { ComboboxDropdown } from "@/components/ui/combobox-dropdown";
-import { Spinner } from "@/components/ui/spinner";
-import { useAction } from "next-safe-action/hooks";
 import { useEffect, useState } from "react";
-import { CategoryColor } from "./category";
+import { useAction } from "next-safe-action/hooks";
+
+import { ComboboxDropdown } from "@gnd/ui/combobox-dropdown";
+import { Spinner } from "@gnd/ui/spinner";
+
 import { getColorFromName } from "../utils/categories";
+import { CategoryColor } from "./category";
 
 type Selected = {
     id: string;
@@ -93,7 +95,7 @@ export function SelectCategory({
 
     if (!selected && isLoading && !hideLoading) {
         return (
-            <div className="w-full h-full flex items-center justify-center">
+            <div className="flex h-full w-full items-center justify-center">
                 <Spinner />
             </div>
         );
@@ -130,7 +132,7 @@ export function SelectCategory({
             renderSelectedItem={(selectedItem) => (
                 <div className="flex items-center space-x-2">
                     <CategoryColor color={selectedItem.color} />
-                    <span className="text-left truncate max-w-[90%]">
+                    <span className="max-w-[90%] truncate text-left">
                         {selectedItem.label}
                     </span>
                 </div>

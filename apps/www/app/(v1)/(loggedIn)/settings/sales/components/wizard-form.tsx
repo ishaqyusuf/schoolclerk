@@ -2,27 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Btn from "@/components/_v1/btn";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-} from "@/components/ui/form";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 import { ISalesWizardForm } from "@/types/post";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { UseFormReturn } from "react-hook-form";
 
+import { Checkbox } from "@gnd/ui/checkbox";
 import {
     Dialog,
     DialogContent,
@@ -30,7 +14,23 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@gnd/ui/dialog";
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+} from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@gnd/ui/select";
 
 export default function WizardForm({
     form,

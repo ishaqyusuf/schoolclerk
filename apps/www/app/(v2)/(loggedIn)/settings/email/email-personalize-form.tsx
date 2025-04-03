@@ -3,19 +3,19 @@
 import { useTransition } from "react";
 import { _saveCommunitModelCostData } from "@/app/(v1)/_actions/community/community-model-cost";
 import Btn from "@/components/_v1/btn";
+import { IUser } from "@/types/hrm";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
 import {
     Form,
     FormControl,
     FormField,
     FormItem,
     FormLabel,
-} from "@/components/ui/form";
-import { Separator } from "@/components/ui/separator";
-import { IUser } from "@/types/hrm";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-
+} from "@gnd/ui/form";
 import { Input } from "@gnd/ui/input";
+import { Separator } from "@gnd/ui/separator";
 
 import { _saveEmailPersonalizeForm } from "./_save-email-personalize-form";
 

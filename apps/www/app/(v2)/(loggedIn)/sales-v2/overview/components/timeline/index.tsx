@@ -2,10 +2,10 @@
 
 import { Icons } from "@/components/_v1/icons";
 import { useModal } from "@/components/common/modal/provider";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDataPage } from "@/lib/data-page-context";
 
 import { Button } from "@gnd/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@gnd/ui/card";
 
 import SalesNoteModal from "../../../_components/_sales-note/_modal";
 import Note from "../../../_components/_sales-note/note";

@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
+import { LoaderCircle, PanelLeftClose, PanelLeftOpen, X } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { LoaderCircle, PanelLeftClose, PanelLeftOpen, X } from "lucide-react";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/tooltip";
 
 import { Kbd } from "../../kbd";
 import { useInfiniteDataTable } from "../use-data-table";

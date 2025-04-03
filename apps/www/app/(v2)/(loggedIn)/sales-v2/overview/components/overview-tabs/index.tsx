@@ -1,11 +1,13 @@
 "use client";
 
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useDataPage } from "@/lib/data-page-context";
+
+import { Badge } from "@gnd/ui/badge";
+import { Card, CardContent, CardHeader } from "@gnd/ui/card";
+import { Tabs, TabsList, TabsTrigger } from "@gnd/ui/tabs";
+
 import { SalesOverviewType } from "../overview-shell";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SalesOverviewDykeInvoiceTab } from "./dyke-doors-sales-overview-tab";
-import { Badge } from "@/components/ui/badge";
 import { ShelfItemsSalesOverviewTab } from "./shelf-items-sales-overview-tab";
 
 export default function OverviewTabs() {

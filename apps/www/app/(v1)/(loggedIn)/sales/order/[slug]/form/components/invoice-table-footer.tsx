@@ -1,6 +1,11 @@
 import * as React from "react";
 import { SalesFormCtx } from "@/app/(v1)/(loggedIn)/sales/_actions/sales-form";
 import Money from "@/components/_v1/money";
+import { cn } from "@/lib/utils";
+import { store, useAppSelector } from "@/store";
+import { IPaymentOptions, ISalesOrderForm } from "@/types/sales";
+
+import { Input } from "@gnd/ui/input";
 import {
     Select,
     SelectContent,
@@ -8,19 +13,14 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
+} from "@gnd/ui/select";
 import {
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableRow,
-} from "@/components/ui/table";
-import { cn } from "@/lib/utils";
-import { store, useAppSelector } from "@/store";
-import { IPaymentOptions, ISalesOrderForm } from "@/types/sales";
-
-import { Input } from "@gnd/ui/input";
+} from "@gnd/ui/table";
 
 import { calculateSalesInvoice } from "../sales-invoice-calculator";
 

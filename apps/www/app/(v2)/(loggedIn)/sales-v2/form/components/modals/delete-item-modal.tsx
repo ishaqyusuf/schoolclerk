@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import FormCheckbox from "@/components/common/controls/form-checkbox";
 import Modal from "@/components/common/modal";
 import { useModal } from "@/components/common/modal/provider";
-import { Form } from "@/components/ui/form";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useForm, UseFormReturn } from "react-hook-form";
 
 import { Button } from "@gnd/ui/button";
+import { Form } from "@gnd/ui/form";
+import { Table, TableBody, TableCell, TableRow } from "@gnd/ui/table";
 
 import { updateDykeStepProductMeta } from "../../_action/dyke-step-setting";
 import { DykeForm, DykeStep } from "../../../type";

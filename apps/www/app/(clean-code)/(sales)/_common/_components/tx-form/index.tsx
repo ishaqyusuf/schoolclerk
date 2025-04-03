@@ -2,7 +2,11 @@ import { useEffect, useMemo } from "react";
 import { TCell } from "@/components/(clean-code)/data-table/table-cells";
 import Modal from "@/components/common/modal";
 import { _modal } from "@/components/common/modal/provider";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { formatMoney } from "@/lib/use-number";
+import { cn, sum } from "@/lib/utils";
+import { toast } from "sonner";
+
+import { ScrollArea } from "@gnd/ui/scroll-area";
 import {
     Table,
     TableBody,
@@ -10,10 +14,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { formatMoney } from "@/lib/use-number";
-import { cn, sum } from "@/lib/utils";
-import { toast } from "sonner";
+} from "@gnd/ui/table";
 
 import { PaymentMethods } from "../../../types";
 import { getCustomerOverviewUseCase } from "../../use-case/customer-use-case";

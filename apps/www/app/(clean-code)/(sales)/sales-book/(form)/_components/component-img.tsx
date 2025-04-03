@@ -1,9 +1,11 @@
-import { motion } from "framer-motion";
 import Image from "next/image";
-import { env } from "@/env.mjs";
-import SVG from "react-inlinesvg";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { PlaceholderImage } from "@/components/placeholder-image";
+import { env } from "@/env.mjs";
+import { motion } from "framer-motion";
+import SVG from "react-inlinesvg";
+
+import { AspectRatio } from "@gnd/ui/aspect-ratio";
+
 interface Props {
     src?: string;
     aspectRatio?;
@@ -22,7 +24,7 @@ export function ComponentImg({
 }: Props) {
     const Wrapper = ({ children }) => (
         <motion.div
-            className="flex flex-1 h-full flex-col items-center space-y-2 justify-center relative "
+            className="relative flex h-full flex-1 flex-col items-center justify-center space-y-2 "
             whileHover={noHover ? undefined : { scale: 1.01 }}
             transition={{ type: "spring", stiffness: 300 }}
         >

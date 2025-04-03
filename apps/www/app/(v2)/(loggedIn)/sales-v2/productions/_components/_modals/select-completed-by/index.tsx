@@ -1,15 +1,17 @@
 "use client";
 
-import Modal from "@/components/common/modal";
-import { AssignmentModalProps } from "../assignment-modal";
 import { useStaticProducers } from "@/_v2/hooks/use-static-data";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import Modal from "@/components/common/modal";
+import { useModal } from "@/components/common/modal/provider";
+import { toast } from "sonner";
+
+import { Table, TableBody, TableCell, TableRow } from "@gnd/ui/table";
+
 import {
     assignAllAction,
     markAsSubmittedAction,
 } from "../../../_actions/production-batch-actions";
-import { toast } from "sonner";
-import { useModal } from "@/components/common/modal/provider";
+import { AssignmentModalProps } from "../assignment-modal";
 import { useAssignment } from "../assignment-modal/use-assignment";
 
 interface Props {

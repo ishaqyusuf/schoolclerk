@@ -6,6 +6,11 @@ import {
     SortableDragHandle,
     SortableItem,
 } from "@/components/(clean-code)/custom/sortable";
+import { cn } from "@/lib/utils";
+import type { Table } from "@tanstack/react-table";
+import { Check, GripVertical, Settings2 } from "lucide-react";
+
+import { Button } from "@gnd/ui/button";
 import {
     Command,
     CommandEmpty,
@@ -13,17 +18,8 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
-} from "@/components/ui/command";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import type { Table } from "@tanstack/react-table";
-import { Check, GripVertical, Settings2 } from "lucide-react";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@gnd/ui/popover";
 
 interface DataTableViewOptionsProps<TData> {
     table: Table<TData>;

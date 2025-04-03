@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@gnd/ui/skeleton";
 import {
     Table,
     TableBody,
@@ -6,7 +6,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
+} from "@gnd/ui/table";
 
 interface DataTableSkeletonProps {
     columnCount: number;
@@ -36,7 +36,7 @@ export function DataTableSkeleton({
                                       key={i}
                                       className="h-7 w-[150px] lg:w-[250px]"
                                   />
-                              )
+                              ),
                           )
                         : null}
                     {filterableFieldCount > 0
@@ -46,7 +46,7 @@ export function DataTableSkeleton({
                                       key={i}
                                       className="h-7 w-[70px] border-dashed"
                                   />
-                              )
+                              ),
                           )
                         : null}
                 </div>
@@ -69,7 +69,7 @@ export function DataTableSkeleton({
                                         <TableHead key={i}>
                                             <Skeleton className="h-6 w-full" />
                                         </TableHead>
-                                    )
+                                    ),
                                 )}
                             </TableRow>
                         ))}
@@ -82,7 +82,7 @@ export function DataTableSkeleton({
                                         <TableCell key={j}>
                                             <Skeleton className="h-6 w-full" />
                                         </TableCell>
-                                    )
+                                    ),
                                 )}
                             </TableRow>
                         ))}

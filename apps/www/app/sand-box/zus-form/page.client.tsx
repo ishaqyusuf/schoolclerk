@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { Label } from "@/components/ui/label";
 
 import { Input } from "@gnd/ui/input";
+import { Label } from "@gnd/ui/label";
 
 import { ZusClass } from "./page-class";
 import { useZusStore } from "./store";

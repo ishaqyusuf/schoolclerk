@@ -10,19 +10,19 @@ import { AnimatedNumber } from "@/components/animated-number";
 import { FormSelectProps } from "@/components/common/controls/form-select";
 import { NumberInput } from "@/components/currency-input";
 import { LabelInput } from "@/components/label-input";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+import { NumericFormatProps } from "react-number-format";
+
+import { Button } from "@gnd/ui/button";
+import { Label } from "@gnd/ui/label";
+import { ScrollArea } from "@gnd/ui/scroll-area";
 import {
     Select as BaseSelect,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
-import { cn } from "@/lib/utils";
-import { NumericFormatProps } from "react-number-format";
-
-import { Button } from "@gnd/ui/button";
+} from "@gnd/ui/select";
 
 import { Footer } from "./footer";
 import { SalesCustomerForm } from "./sales-customer-form";
