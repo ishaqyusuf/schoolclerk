@@ -33,6 +33,7 @@ import { Button } from "@gnd/ui/button";
 import { Checkbox } from "@gnd/ui/checkbox";
 import { Label } from "@gnd/ui/label";
 import { ScrollArea } from "@gnd/ui/scroll-area";
+import { Skeleton } from "@gnd/ui/skeleton";
 import { Sortable, SortableItem } from "@gnd/ui/sortable";
 
 import {
@@ -81,7 +82,6 @@ export function ComponentsSection({ itemStepUid }: Props) {
                     return a.prevIndex == null || a.prevIndex != a.sortIndex;
                 });
 
-            console.log(data);
             await updateComponentsSortingAction({
                 list: data,
             });
@@ -101,6 +101,18 @@ export function ComponentsSection({ itemStepUid }: Props) {
                 overlay={<div className="size-full rounded-md bg-primary/10" />}
             >
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+                    {!items.length &&
+                        Array(10)
+                            .fill(null)
+                            .map((_, i) => (
+                                <div
+                                    className="flex min-h-[25vh] flex-col rounded-lg border xl:min-h-[35vh]"
+                                    key={i}
+                                >
+                                    <Skeleton className="flex-1" />
+                                    <Skeleton className="h-10" />
+                                </div>
+                            ))}
                     {items?.map((component, index) => (
                         <SortableItem
                             key={component.id}
@@ -373,7 +385,7 @@ export function Component({
     const multiSelect = cls.isMultiSelect();
 
     return (
-        <div className="group relative flex min-h-[25vh] flex-col p-2 xl:min-h-[40vh]">
+        <div className="group relative flex min-h-[25vh] flex-col p-2 xl:min-h-[35vh]">
             {/* {multiSelect &&
                 cls.multiSelected() &&
                 cls.getMultiSelectData()?.length} */}
