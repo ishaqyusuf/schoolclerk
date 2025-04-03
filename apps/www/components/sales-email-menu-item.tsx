@@ -1,7 +1,8 @@
 import { __sendInvoiceEmailTrigger } from "@/actions/triggers/send-invoice-email";
-import { Menu } from "./(clean-code)/menu";
-import { toast } from "sonner";
 import { SalesType } from "@/app/(clean-code)/(sales)/types";
+import { toast } from "sonner";
+
+import { Menu } from "./(clean-code)/menu";
 
 export function SalesEmailMenuItem({
     salesId,
@@ -27,7 +28,10 @@ export function SalesEmailMenuItem({
             {
                 loading: "Sending email...",
                 error: (data) => data.message,
-            }
+                success: ((data) => {
+                    toast.success("Sent.");
+                }) as any,
+            },
         );
     };
 
