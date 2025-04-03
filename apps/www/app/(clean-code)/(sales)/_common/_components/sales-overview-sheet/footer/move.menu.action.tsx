@@ -1,9 +1,11 @@
+import { useState } from "react";
 import Link from "next/link";
 import { revalidateTable } from "@/components/(clean-code)/data-table/use-infinity-data-table";
 import { Menu } from "@/components/(clean-code)/menu";
 import { _modal } from "@/components/common/modal/provider";
 import { Move } from "lucide-react";
 
+import { ToastAction } from "@gnd/ui/toast";
 import { useToast } from "@gnd/ui/use-toast";
 
 import { moveOrderUseCase } from "../../../use-case/sales-book-form-use-case";
@@ -16,38 +18,35 @@ export function MoveMenuAction({}) {
     const { toast, dismiss, update } = useToast();
     async function _moveSales() {
         const to = type == "order" ? "quote" : "order";
-
-        toast({
-            duration: 10000,
-            title: `Moved to ${to}`,
+        const { id } = toast({
+            title: `Moving ${type} to ${to}`,
+            duration: Number.POSITIVE_INFINITY,
             variant: "spinner",
         });
-
-        return;
         const resp = await moveOrderUseCase(ctx.overview.orderId, to);
         revalidateTable();
-        console.log({ resp });
 
         if (resp.error) {
-            // toast.error(resp.error);
+            update(id, {
+                variant: "destructive",
+                title: resp.error,
+                duration: 3000,
+                id,
+            });
             return;
         }
         _modal.close();
-
-        // toast.success(`Moved to ${to}`, {
-        //     action: {
-        //         label: "Open",
-        //         onClick(event) {},
-        //     },
-        // });
-        // ctx.refreshList();
-        // ctx.closeModal();
-        // toast.success("Success", {
-        //     action: {
-        //         label: "Open",
-        //         onClick(event) {},
-        //     },
-        // });
+        update(id, {
+            variant: "success",
+            title: `Moved to ${to}`,
+            id,
+            duration: 6000,
+            action: (
+                <ToastAction altText="Open" asChild>
+                    <Link href={resp.link}>Open</Link>
+                </ToastAction>
+            ),
+        });
     }
     return (
         <Menu.Item onClick={_moveSales} Icon={Move}>
