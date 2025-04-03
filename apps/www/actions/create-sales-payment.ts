@@ -1,7 +1,10 @@
 "use server";
 
 import { SquarePaymentStatus } from "@/_v2/lib/square";
-import { SquarePaymentMethods } from "@/app/(clean-code)/(sales)/types";
+import {
+    SalesPaymentStatus,
+    SquarePaymentMethods,
+} from "@/app/(clean-code)/(sales)/types";
 import { authId } from "@/app/(v1)/_actions/utils";
 import { prisma } from "@/db";
 import { errorHandler } from "@/modules/error/handler";
@@ -12,6 +15,7 @@ import { getCustomerPendingSales } from "./get-customer-pending-sales";
 import { getCustomerWalletAction } from "./get-customer-wallet";
 import { actionClient } from "./safe-action";
 import { createPaymentSchema } from "./schema";
+import { updateSalesDueAmount } from "./update-sales-due-amount";
 
 export const createSalesPaymentAction = actionClient
     .schema(createPaymentSchema)
@@ -24,7 +28,7 @@ export const createSalesPaymentAction = actionClient
             status: null,
         };
         if (input.paymentMethod == "terminal") {
-            if (input.terminalPaymentSession.squarePaymentId) {
+            if (input.terminalPaymentSession?.squarePaymentId) {
                 await applySalesPayment(input);
                 response.status = "success";
             } else {
@@ -86,28 +90,14 @@ async function applySalesPayment(props: z.infer<typeof createPaymentSchema>) {
                                   },
                               }
                             : undefined,
-                        // squarePID:
-                        //     props.terminalPaymentSession?.squarePaymentId,
                         salesPayments: {
                             create: {
                                 meta: {
                                     checkNo: props.checkNo,
                                 },
                                 amount: payAmount,
-                                status: "COMPLETED" as SquarePaymentStatus,
+                                status: "success" as SalesPaymentStatus,
                                 orderId: order.id,
-                                // order: {
-                                //     connect: {
-                                //         id: order.id,
-                                //     },
-                                // },
-                                // squarePaymentsId
-                                // squarePayments: {
-                                //     connect: {
-                                //         id: props.terminalPaymentSession
-                                //         ?.squarePaymentId
-                                //     }
-                                // }
                                 squarePaymentsId:
                                     props.terminalPaymentSession
                                         ?.squarePaymentId,
@@ -115,6 +105,7 @@ async function applySalesPayment(props: z.infer<typeof createPaymentSchema>) {
                         },
                     },
                 });
+                await updateSalesDueAmount(orderId);
             }),
         );
         return {};

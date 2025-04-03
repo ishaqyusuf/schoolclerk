@@ -1,11 +1,13 @@
 import { env } from "process";
 import { useEffect, useState } from "react";
+import { renderToHTML } from "next/dist/server/render";
 import { cancelTerminaPaymentAction } from "@/actions/cancel-terminal-payment-action";
 import { createSalesPaymentAction } from "@/actions/create-sales-payment";
 import { getCustomerPayPortalAction } from "@/actions/get-customer-pay-portal-action";
 import { getTerminalPaymentStatusAction } from "@/actions/get-terminal-payment-status";
 import { createPaymentSchema } from "@/actions/schema";
 import { TCell } from "@/components/(clean-code)/data-table/table-cells";
+import { revalidateTable } from "@/components/(clean-code)/data-table/use-infinity-data-table";
 import FormInput from "@/components/common/controls/form-input";
 import FormSelect from "@/components/common/controls/form-select";
 import { DataSkeleton } from "@/components/data-skeleton";
@@ -15,8 +17,9 @@ import {
     DataSkeletonProvider,
     useCreateDataSkeletonCtx,
 } from "@/hooks/use-data-skeleton";
+import { staticPaymentData, usePaymentToast } from "@/hooks/use-payment-toast";
 import { formatMoney } from "@/lib/use-number";
-import { cn, sum } from "@/lib/utils";
+import { cn, generateRandomString, sum } from "@/lib/utils";
 import { salesPaymentMethods } from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle, Dot } from "lucide-react";
@@ -75,7 +78,15 @@ export function PayPortalTab({}) {
     });
 
     const [waitSeconds, setWaitSeconds] = useState(null);
-
+    const [waitTok, setWaitTok] = useState(null);
+    useEffect(() => {
+        if (waitTok) {
+            setWaitTok(null);
+            setWaitSeconds((waitSeconds || 0) + 1);
+            checkTerminalStatus();
+        }
+    }, [waitTok, waitSeconds]);
+    const pToast = usePaymentToast();
     async function terminalPaymentSuccessful() {
         makePayment.execute({
             ...form.getValues(),
@@ -87,37 +98,46 @@ export function PayPortalTab({}) {
     }, [query.params?.["pay-selections"]]);
     const pm = form.watch("paymentMethod");
     const terminalPaymentSession = form.watch("terminalPaymentSession");
-    // useEffect(() => {
-    //     if (terminalPaymentSession?.status == "PENDING") {
-    //         // terminalPaymentSuccessful();
-    //     }
-    // }, [terminalPaymentSession, waitSeconds]);
+
     const makePayment = useAction(createSalesPaymentAction, {
         onSuccess: (args) => {
             if (args.data?.terminalPaymentSession) {
+                pToast.updateNotification("terminal-waiting");
                 setWaitSeconds(0);
                 form.setValue(
                     "terminalPaymentSession",
                     args.data.terminalPaymentSession,
                 );
             } else {
+                if (args.data.status) {
+                    pToast.updateNotification("payment-success");
+                    revalidateTable();
+                }
             }
+        },
+        onError(error) {
+            console.log(error);
 
-            // query.setParams({
-            //     "pay-selections": [],
-            // });
-            // skel.reload();
+            staticPaymentData.description = error.error?.serverError;
+            pToast.updateNotification("failed");
         },
     });
     const cancelTerminalPayment = useAction(cancelTerminaPaymentAction, {
         onSuccess: (args) => {
             setWaitSeconds(null);
             form.setValue("terminalPaymentSession", null);
+            pToast.updateNotification("terminal-cancelled");
         },
     });
+    function terminalManulAcceptPayment() {}
+    staticPaymentData.accept = terminalManulAcceptPayment;
     function checkTerminalStatus() {
         setTimeout(
             () => {
+                pToast.updateNotification("terminal-waiting");
+                if (waitSeconds > 3) {
+                    pToast.updateNotification("terminal-long-waiting");
+                }
                 checkTerminalPaymentStatus.execute({
                     checkoutId: terminalPaymentSession.squareCheckoutId,
                 });
@@ -131,16 +151,16 @@ export function PayPortalTab({}) {
             onSuccess: (args) => {
                 if (args.data.status == "COMPLETED") {
                     setWaitSeconds(null);
+                    setWaitTok(null);
                 }
                 switch (args.data.status) {
                     case "COMPLETED":
-                        //   form.setValue("terminal.tip", response.tip);
+                        // form.setValue("terminal.tip", response.tip);
                         form.setValue(
                             "terminalPaymentSession.status",
                             "COMPLETED",
                         );
                         terminalPaymentSuccessful();
-                        //   await paymentReceived();
                         break;
                     case "CANCELED":
                     case "CANCEL_REQUESTED":
@@ -151,12 +171,12 @@ export function PayPortalTab({}) {
                         cancelTerminalPayment.execute({
                             checkoutId: terminalPaymentSession.squareCheckoutId,
                         });
-                        //   await cancelTerminalPayment();
-
+                        pToast.updateNotification("terminal-cancelled");
                         break;
                     default:
-                        setWaitSeconds((waitSeconds || 0) + 1);
-                        checkTerminalStatus();
+                        setWaitTok(generateRandomString());
+                        // setWaitSeconds((waitSeconds || 0) + 1);
+                        // checkTerminalStatus();
                         break;
                 }
             },
@@ -190,8 +210,8 @@ export function PayPortalTab({}) {
                                     className={cn(
                                         "cursor-pointer",
                                         selections?.includes(sale?.id)
-                                            ? "bg-muted-foreground/30 hover:bg-muted-foreground/30"
-                                            : "hover:bg-muted-foreground/25",
+                                            ? "bg-muted hover:bg-muted/30"
+                                            : "hover:bg-muted/25",
                                     )}
                                     onClick={(e) => {
                                         let sels = [...(selections || [])];
@@ -257,12 +277,14 @@ export function PayPortalTab({}) {
                     </TableBody>
                 </Table>
                 <CustomSheetContentPortal>
-                    <SheetFooter>
+                    <SheetFooter className="-m-4 -mb-2 border-t p-4 shadow-xl">
                         <Form {...form}>
                             <form
-                                onSubmit={form.handleSubmit(
-                                    makePayment.execute,
-                                )}
+                                onSubmit={form.handleSubmit((e) => {
+                                    pToast.updateNotification("loading");
+
+                                    makePayment.execute(e);
+                                })}
                                 className="grid w-full grid-cols-2 gap-2"
                             >
                                 <FormSelect
@@ -296,7 +318,9 @@ export function PayPortalTab({}) {
                                     options={data?.terminals || []}
                                     control={form.control}
                                     size="sm"
-                                    // disabled={tx.inProgress}
+                                    onSelect={(e) => {
+                                        form.setValue("deviceName", e.label);
+                                    }}
                                     name="deviceId"
                                     disabled={pm != "terminal"}
                                     SelectItem={({ option }) => (
@@ -327,7 +351,10 @@ export function PayPortalTab({}) {
                                 />
                                 <div className="col-span-2 flex justify-end">
                                     <SubmitButton
-                                        isSubmitting={makePayment.isExecuting}
+                                        isSubmitting={
+                                            makePayment.isExecuting ||
+                                            !pToast.idle
+                                        }
                                         disabled={
                                             makePayment.isExecuting ||
                                             !form.formState.isValid

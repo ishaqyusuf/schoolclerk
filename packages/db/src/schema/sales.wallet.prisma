@@ -106,7 +106,7 @@ model SquarePaymentOrders {
 
 model PaymentTerminals {
     terminalId   String    @unique
-    terminalName String
+    terminalName String?
     deletedAt    DateTime? @db.Timestamp(0)
     createdAt    DateTime? @default(now()) @db.Timestamp(0)
     updatedAt    DateTime? @updatedAt

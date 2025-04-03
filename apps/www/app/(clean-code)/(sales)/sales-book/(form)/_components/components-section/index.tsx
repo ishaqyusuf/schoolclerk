@@ -52,7 +52,6 @@ import DoorSizeModal from "../modals/door-size-modal";
 import { openDoorSizeSelectModal } from "../modals/door-size-select-modal/open-modal";
 import { openStepPricingModal } from "../modals/step-pricing-modal";
 import { UseStepContext, useStepContext } from "./ctx";
-import { CustomComponent } from "./custom-component";
 import { CustomComponentAction } from "./custom-component.action";
 import SearchBar from "./search-bar";
 
