@@ -1,6 +1,7 @@
 "use client";
 
 import { Loader2 } from "lucide-react";
+
 import { Icons } from "./icons";
 import { Progress } from "./progress";
 import {
@@ -31,11 +32,11 @@ export function Toaster() {
           return (
             <Toast key={id} {...props} className="flex flex-col">
               <div className="flex w-full">
-                <div className="space-y-2 w-full justify-center">
-                  <div className="flex space-x-2 justify-between">
-                    <div className="flex space-x-2 items-center">
+                <div className="w-full justify-center space-y-2">
+                  <div className="flex justify-between space-x-2">
+                    <div className="flex items-center space-x-2">
                       {props?.variant && (
-                        <div className="w-[20px] h-[20px] flex items-center">
+                        <div className="flex h-[20px] w-[20px] items-center">
                           {props.variant === "ai" && (
                             <Icons.AI className="text-[#0064D9]" />
                           )}
@@ -66,7 +67,7 @@ export function Toaster() {
                   {props.variant === "progress" && (
                     <Progress
                       value={progress}
-                      className="w-full rounded-none h-[3px] bg-border"
+                      className="h-[3px] w-full rounded-none bg-border"
                     />
                   )}
 
@@ -78,7 +79,7 @@ export function Toaster() {
                 <ToastClose />
               </div>
 
-              <div className="w-full flex justify-end">{footer}</div>
+              <div className="flex w-full justify-end">{footer}</div>
             </Toast>
           );
         },

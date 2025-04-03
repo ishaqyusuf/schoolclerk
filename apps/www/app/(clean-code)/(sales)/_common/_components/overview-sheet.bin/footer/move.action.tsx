@@ -1,9 +1,10 @@
 import { SalesType } from "@/app/(clean-code)/(sales)/types";
-import { useSalesOverview } from "../overview-provider";
 import { Menu } from "@/components/(clean-code)/menu";
 import { Move } from "lucide-react";
-import { moveOrderUseCase } from "../../../use-case/sales-book-form-use-case";
 import { toast } from "sonner";
+
+import { moveOrderUseCase } from "../../../use-case/sales-book-form-use-case";
+import { useSalesOverview } from "../overview-provider";
 
 export function MoveAction({}) {
     const ctx = useSalesOverview();
