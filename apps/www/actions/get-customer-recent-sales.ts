@@ -6,6 +6,7 @@ import { SearchParamsType } from "@/components/(clean-code)/data-table/search-pa
 export async function getCustomerRecentSales(accountNo) {
     const query: SearchParamsType = {
         // invoice: "pending",
+        "sales.type": "order",
     };
     const [p1, p2] = accountNo?.split("-");
     if (p1 == "cust") query["customer.id"] = Number(p2);
