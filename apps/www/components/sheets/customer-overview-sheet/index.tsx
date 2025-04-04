@@ -9,8 +9,11 @@ import { SheetDescription, SheetHeader, SheetTitle } from "@gnd/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@gnd/ui/tabs";
 
 import { CustomSheet, CustomSheetContent } from "../custom-sheet-content";
+import { CustomerQuotesTab } from "./customer-quotes-tab";
+import { CustomerSalesTab } from "./customer-sales-tab";
 import { GeneralTab } from "./general-tab";
 import { PayPortalTab } from "./pay-portal-tab";
+import { TransactionsTab } from "./transactions-tab";
 
 export function CustomerOverviewSheet() {
     const ctx = useCustomerOverviewQuery();
@@ -77,6 +80,15 @@ export function CustomerOverviewSheet() {
                     </TabsContent>
                     <TabsContent value="pay-portal">
                         <PayPortalTab />
+                    </TabsContent>
+                    <TabsContent value="transactions">
+                        <TransactionsTab accountNo={ctx.params.accountNo} />
+                    </TabsContent>
+                    <TabsContent value="quotes">
+                        <CustomerQuotesTab accountNo={ctx.params.accountNo} />
+                    </TabsContent>
+                    <TabsContent value="sales">
+                        <CustomerSalesTab accountNo={ctx.params.accountNo} />
                     </TabsContent>
                 </Tabs>
             </CustomSheetContent>

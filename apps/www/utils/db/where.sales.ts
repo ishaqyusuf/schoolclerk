@@ -312,6 +312,13 @@ export function whereSales(query: SearchParamsType) {
         case "part assigned":
             break;
     }
+
+    if (query["account.no"])
+        whereAnd.push({
+            customer: {
+                phoneNo: query["account.no"],
+            },
+        });
     return composeQuery(whereAnd);
 }
 function whereSearch(query): Prisma.SalesOrdersWhereInput | null {

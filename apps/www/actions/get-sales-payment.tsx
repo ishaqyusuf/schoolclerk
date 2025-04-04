@@ -1,18 +1,18 @@
 "use server";
 
+import { SearchParamsType } from "@/components/(clean-code)/data-table/search-params";
 import { prisma } from "@/db";
 import { formatMoney } from "@/lib/use-number";
 import { AsyncFnType } from "@/types";
 import { ISalesPaymentMeta } from "@/types/sales";
+import { whereSalesPayment } from "@/utils/db/where.sales-payment";
 
 export type GetSalesPayments = AsyncFnType<typeof getSalesPaymentsAction>;
-export async function getSalesPaymentsAction(id) {
+export async function getSalesPaymentsAction(query: SearchParamsType) {
+    const where = whereSalesPayment(query);
+
     const payments = await prisma.salesPayments.findMany({
-        where: {
-            order: {
-                id,
-            },
-        },
+        where,
         orderBy: {
             createdAt: "desc",
         },
@@ -44,7 +44,7 @@ export async function getSalesPaymentsAction(id) {
             },
         },
     });
-    return payments.map((payment) => {
+    const transactions = payments.map((payment) => {
         let meta: ISalesPaymentMeta = payment.meta as any;
         return {
             payment,
@@ -65,4 +65,8 @@ export async function getSalesPaymentsAction(id) {
                 meta?.payment_option,
         };
     });
+    return {
+        status: "success",
+        transactions,
+    };
 }

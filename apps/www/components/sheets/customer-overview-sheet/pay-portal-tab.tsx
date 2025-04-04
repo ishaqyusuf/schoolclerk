@@ -13,6 +13,7 @@ import Button from "@/components/common/button";
 import FormInput from "@/components/common/controls/form-input";
 import FormSelect from "@/components/common/controls/form-select";
 import { DataSkeleton } from "@/components/data-skeleton";
+import { EmptyState } from "@/components/empty-state";
 import { SubmitButton } from "@/components/submit-button";
 import { useCustomerOverviewQuery } from "@/hooks/use-customer-overview-query";
 import {
@@ -200,7 +201,11 @@ export function PayPortalTab({}) {
         },
     );
     return (
-        <div className="">
+        <EmptyState
+            empty={data?.totalPayable == 0}
+            title="No pending payments"
+            description="No pending payments found for this customer."
+        >
             <DataSkeletonProvider value={skel}>
                 <Table className="table-sm">
                     <TableHeader>
@@ -400,6 +405,6 @@ export function PayPortalTab({}) {
                     </SheetFooter>
                 </CustomSheetContentPortal>
             </DataSkeletonProvider>
-        </div>
+        </EmptyState>
     );
 }

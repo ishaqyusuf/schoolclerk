@@ -12,7 +12,10 @@ export function formatSize(bytes: number): string {
 
     const unitIndex = Math.max(
         0,
-        Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1)
+        Math.min(
+            Math.floor(Math.log(bytes) / Math.log(1024)),
+            units.length - 1,
+        ),
     );
 
     return Intl.NumberFormat("en-US", {
@@ -135,7 +138,7 @@ export function formatDateRange(dates: TZDate[]): string {
     if (startDate.getMonth() === endDate.getMonth()) {
         // Same month
         return `${format(startDate, "MMM")} ${formatDay(
-            startDate
+            startDate,
         )} - ${formatDay(endDate)}`;
     }
     // Different months
@@ -198,7 +201,7 @@ export function formatRelativeTime(date: Date): string {
 export function skeletonListData<T>(
     data: T[],
     count = 5,
-    placeholder: T | null = null
+    placeholder: Partial<T> | null = null,
 ) {
     if (!data)
         return Array(5)
