@@ -27,7 +27,7 @@ import {
 } from "@gnd/ui/table";
 
 interface Props {
-    accountNo: string;
+    accountNo?: string;
     salesId?: string;
 }
 export function TransactionsTab({ accountNo, salesId }: Props) {

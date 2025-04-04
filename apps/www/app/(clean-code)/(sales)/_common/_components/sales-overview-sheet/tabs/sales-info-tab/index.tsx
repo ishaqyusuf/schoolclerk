@@ -63,18 +63,16 @@ export function SalesInfoTab({}) {
                         >
                             {overview?.displayName || overview?.phoneNo}
                         </Button>
-                        <DevOnly>
-                            <Button
-                                onClick={() => {
-                                    _modal.close();
-                                    customerOverviewQuery.open(
-                                        overview.phoneNo,
-                                    );
-                                }}
-                            >
-                                V2
-                            </Button>
-                        </DevOnly>
+                        {/* <DevOnly> */}
+                        <Button
+                            onClick={() => {
+                                _modal.close();
+                                customerOverviewQuery.open(overview.phoneNo);
+                            }}
+                        >
+                            V2
+                        </Button>
+                        {/* </DevOnly> */}
                     </div>
                 }
             ></InfoLine>
