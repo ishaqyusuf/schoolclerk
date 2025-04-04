@@ -20,7 +20,6 @@ import { buttonVariants } from "@gnd/ui/button";
 import { Label } from "@gnd/ui/label";
 
 import { composeSalesUrl } from "../../../../utils/sales-utils";
-import { openCustomerOverviewSheet } from "../../../customer-overview-sheet";
 import { salesOverviewStore } from "../../store";
 
 export function SalesInfoTab({}) {
@@ -55,7 +54,8 @@ export function SalesInfoTab({}) {
                             size="xs"
                             disabled={!overview?.phoneNo}
                             onClick={() => {
-                                openCustomerOverviewSheet(overview.phoneNo);
+                                _modal.close();
+                                customerOverviewQuery.open(overview.phoneNo);
                             }}
                             variant={
                                 overview?.phoneNo ? "destructive" : "outline"
@@ -63,16 +63,6 @@ export function SalesInfoTab({}) {
                         >
                             {overview?.displayName || overview?.phoneNo}
                         </Button>
-                        {/* <DevOnly> */}
-                        <Button
-                            onClick={() => {
-                                _modal.close();
-                                customerOverviewQuery.open(overview.phoneNo);
-                            }}
-                        >
-                            V2
-                        </Button>
-                        {/* </DevOnly> */}
                     </div>
                 }
             ></InfoLine>

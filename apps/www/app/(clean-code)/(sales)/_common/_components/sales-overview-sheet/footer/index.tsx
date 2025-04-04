@@ -6,6 +6,7 @@ import { revalidateTable } from "@/components/(clean-code)/data-table/use-infini
 import { Menu } from "@/components/(clean-code)/menu";
 import { useSalesPreviewModal } from "@/components/modals/sales-preview-modal";
 import { SalesEmailMenuItem } from "@/components/sales-email-menu-item";
+import { useCustomerOverviewQuery } from "@/hooks/use-customer-overview-query";
 import { RefreshCcw } from "lucide-react";
 import { toast } from "sonner";
 
@@ -16,7 +17,6 @@ import {
     deleteSalesUseCase,
     restoreDeleteUseCase,
 } from "../../../use-case/sales-use-case";
-import { openTxForm } from "../../tx-form";
 import { refreshTabData } from "../helper";
 import { salesOverviewStore } from "../store";
 import { CopyMenuAction } from "./copy.menu.action";
@@ -29,6 +29,7 @@ export function Footer({}) {
     function preview() {
         sPreview.preview(store.overview?.orderId, store.overview.type as any);
     }
+    const customerQuery = useCustomerOverviewQuery();
     return (
         <div className="flex w-full gap-4 border-t py-2">
             <div className="flex-1"></div>
@@ -65,23 +66,11 @@ export function Footer({}) {
                 <>
                     <Button
                         onClick={() => {
-                            if (!store.overview?.customerId)
-                                toast.error(
-                                    "Payment requires a valid customer name.",
-                                );
-                            else
-                                openTxForm({
-                                    phoneNo: store.overview?.phoneNo,
-                                    customerId: store.overview?.customerId,
-                                    paymentMethod: "terminal",
-                                    payables: [
-                                        {
-                                            amountDue: store.overview.due,
-                                            id: store.overview.id,
-                                            orderId: store.overview.orderId,
-                                        },
-                                    ],
-                                });
+                            customerQuery.pay({
+                                phoneNo: store.overview?.phoneNo,
+                                customerId: store.overview?.customerId,
+                                orderId: store.overview.id,
+                            });
                         }}
                         size="xs"
                         disabled={!store.overview?.due}

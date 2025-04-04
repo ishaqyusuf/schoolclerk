@@ -1,17 +1,17 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { SalesItemProp } from "../../../sales-book/(pages)/_components/orders-page-cells";
+import { useInfiniteDataTable } from "@/components/(clean-code)/data-table/use-data-table";
+import { _modal } from "@/components/common/modal/provider";
 import { generateRandomString } from "@/lib/utils";
+import { toast } from "sonner";
+
+import { SalesItemProp } from "../../../sales-book/(pages)/_components/orders-page-cells";
+import { SalesDispatchListDto } from "../../data-access/dto/sales-shipping-dto";
 import {
     getSalesItemOverviewUseCase,
     GetSalesOverview,
 } from "../../use-case/sales-item-use-case";
-import { useInfiniteDataTable } from "@/components/(clean-code)/data-table/use-data-table";
-import { SalesDispatchListDto } from "../../data-access/dto/sales-shipping-dto";
 import { getSalesListByIdUseCase } from "../../use-case/sales-list-use-case";
-import { toast } from "sonner";
 import { usePayment } from "./payments/payment-hooks";
-import { _modal } from "@/components/common/modal/provider";
-import { openCustomerOverviewSheet } from "../customer-overview-sheet";
 
 interface Props {}
 type TabItems = "itemView" | "makePayment" | "createShipping" | "shippingView";
@@ -103,7 +103,6 @@ export const useOverviewContext = (_item: SalesItemProp) => {
     }
     function openCustomer() {
         __ctx.closeModal();
-        openCustomerOverviewSheet(item.customerPhone);
     }
     const __ctx = {
         refreshList: ctx?.refetch,
