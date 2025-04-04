@@ -1,6 +1,7 @@
 import { env } from "process";
 import { useEffect, useState } from "react";
 import { renderToHTML } from "next/dist/server/render";
+import DevOnly from "@/_v2/components/common/dev-only";
 import { cancelTerminaPaymentAction } from "@/actions/cancel-terminal-payment-action";
 import { createSalesPaymentAction } from "@/actions/create-sales-payment";
 import { getCustomerPayPortalAction } from "@/actions/get-customer-pay-portal-action";
@@ -8,6 +9,7 @@ import { getTerminalPaymentStatusAction } from "@/actions/get-terminal-payment-s
 import { createPaymentSchema } from "@/actions/schema";
 import { TCell } from "@/components/(clean-code)/data-table/table-cells";
 import { revalidateTable } from "@/components/(clean-code)/data-table/use-infinity-data-table";
+import Button from "@/components/common/button";
 import FormInput from "@/components/common/controls/form-input";
 import FormSelect from "@/components/common/controls/form-select";
 import { DataSkeleton } from "@/components/data-skeleton";
@@ -20,6 +22,7 @@ import {
 import { staticPaymentData, usePaymentToast } from "@/hooks/use-payment-toast";
 import { formatMoney } from "@/lib/use-number";
 import { cn, generateRandomString, sum } from "@/lib/utils";
+import { TerminalCheckoutStatus } from "@/modules/square";
 import { salesPaymentMethods } from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle, Dot } from "lucide-react";
@@ -129,56 +132,70 @@ export function PayPortalTab({}) {
             pToast.updateNotification("terminal-cancelled");
         },
     });
-    function terminalManulAcceptPayment() {}
-    staticPaymentData.accept = terminalManulAcceptPayment;
+    function terminalManualAcceptPayment(e) {
+        pToast.updateNotification("terminal-waiting");
+        setWaitSeconds(0);
+        setWaitTok(generateRandomString());
+    }
+    staticPaymentData.accept = terminalManualAcceptPayment;
+    useEffect(() => {
+        if (terminalPaymentSession) checkTerminalStatus();
+    }, [terminalPaymentSession]);
     function checkTerminalStatus() {
         setTimeout(
             () => {
-                pToast.updateNotification("terminal-waiting");
                 if (waitSeconds > 3) {
                     pToast.updateNotification("terminal-long-waiting");
+                } else pToast.updateNotification("terminal-waiting");
+                if (waitSeconds > 5) {
+                    setWaitTok(null);
+                    return;
                 }
+                if (mockStatus) processTerminalPaymentStatus(mockStatus);
                 checkTerminalPaymentStatus.execute({
                     checkoutId: terminalPaymentSession.squareCheckoutId,
+                    squarePaymentId: terminalPaymentSession.squarePaymentId,
                 });
             },
             waitSeconds > 5 ? 2000 : waitSeconds > 10 ? 3000 : 1500,
         );
     }
+    const [mockStatus, setMockStatus] = useState<TerminalCheckoutStatus>(null);
+    function processTerminalPaymentStatus(status: TerminalCheckoutStatus) {
+        if (status == "COMPLETED") {
+            setWaitSeconds(null);
+            setWaitTok(null);
+        }
+        switch (status) {
+            case "COMPLETED":
+                // form.setValue("terminal.tip", response.tip);
+                form.setValue("terminalPaymentSession.status", "COMPLETED");
+                terminalPaymentSuccessful();
+                break;
+            case "CANCELED":
+            case "CANCEL_REQUESTED":
+                form.setValue("terminalPaymentSession.status", "CANCELED");
+                cancelTerminalPayment.execute({
+                    checkoutId: terminalPaymentSession.squareCheckoutId,
+                });
+                pToast.updateNotification("terminal-cancelled");
+                break;
+            default:
+                setWaitTok(generateRandomString());
+                // setWaitSeconds((waitSeconds || 0) + 1);
+                // checkTerminalStatus();
+                break;
+        }
+    }
     const checkTerminalPaymentStatus = useAction(
         getTerminalPaymentStatusAction,
         {
             onSuccess: (args) => {
-                if (args.data.status == "COMPLETED") {
-                    setWaitSeconds(null);
-                    setWaitTok(null);
-                }
-                switch (args.data.status) {
-                    case "COMPLETED":
-                        // form.setValue("terminal.tip", response.tip);
-                        form.setValue(
-                            "terminalPaymentSession.status",
-                            "COMPLETED",
-                        );
-                        terminalPaymentSuccessful();
-                        break;
-                    case "CANCELED":
-                    case "CANCEL_REQUESTED":
-                        form.setValue(
-                            "terminalPaymentSession.status",
-                            "CANCELED",
-                        );
-                        cancelTerminalPayment.execute({
-                            checkoutId: terminalPaymentSession.squareCheckoutId,
-                        });
-                        pToast.updateNotification("terminal-cancelled");
-                        break;
-                    default:
-                        setWaitTok(generateRandomString());
-                        // setWaitSeconds((waitSeconds || 0) + 1);
-                        // checkTerminalStatus();
-                        break;
-                }
+                processTerminalPaymentStatus(args.data.status);
+            },
+            onError(args) {
+                console.log(args);
+                pToast.updateNotification("terminal-cancelled");
             },
         },
     );
@@ -276,6 +293,21 @@ export function PayPortalTab({}) {
                             ))}
                     </TableBody>
                 </Table>
+                {!terminalPaymentSession || (
+                    <DevOnly>
+                        <div className="flex gap-4">
+                            <Button
+                                onClick={(e) => setMockStatus("CANCELED")}
+                                variant="destructive"
+                            >
+                                Failed
+                            </Button>
+                            <Button onClick={(e) => setMockStatus("COMPLETED")}>
+                                Success
+                            </Button>
+                        </div>
+                    </DevOnly>
+                )}
                 <CustomSheetContentPortal>
                     <SheetFooter className="-m-4 -mb-2 border-t p-4 shadow-xl">
                         <Form {...form}>

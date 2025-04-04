@@ -80,20 +80,24 @@ function toastDetail(status: Status, toastId, description?): Toast | null {
             return {
                 id: toastId,
                 title: `Waiting to accept payment...`,
+                description,
                 duration: Number.POSITIVE_INFINITY,
                 variant: "spinner",
+                action: null,
             };
-        case "terminal-waiting":
+        case "terminal-long-waiting":
             return {
                 id: toastId,
                 title: `Payment taking too long...`,
-                description: `This may be a network problem. Have you received payment ?`,
+                description: `This may be a network problem. Have you received payment?`,
                 duration: Number.POSITIVE_INFINITY,
                 variant: "spinner",
+
                 action: (
                     <ToastAction
                         altText="payment-received"
                         onClick={(e) => {
+                            e.preventDefault();
                             staticPaymentData.accept?.();
                         }}
                     >

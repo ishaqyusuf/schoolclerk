@@ -306,7 +306,7 @@ model HomeTasks {
     assignedTo           Users?    @relation(fields: [assignedToId], references: [id])
 
     @@index([createdAt, deletedAt, produceable, billable, addon, deco, punchout, installable, taskName, projectId, jobId])
-    @@index([homeId], name: "idx_HomeTasks_on_homeId")
+    @@index([homeId])
     @@index([projectId])
     @@index([jobId])
     @@index([assignedToId])
