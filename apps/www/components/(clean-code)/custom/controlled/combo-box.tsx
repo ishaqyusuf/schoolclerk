@@ -1,11 +1,6 @@
 import { useState } from "react";
-import { cn } from "@/lib/utils";
-import { cva } from "class-variance-authority";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
-
-import { Badge } from "@gnd/ui/badge";
-import { buttonVariants } from "@gnd/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import {
     Command,
     CommandEmpty,
@@ -13,10 +8,23 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
-} from "@gnd/ui/command";
-import { FacetedFilterItem } from "@gnd/ui/faceted-filter";
-import { FormControl, FormField, FormItem, FormLabel } from "@gnd/ui/form";
-import { Popover, PopoverContent, PopoverTrigger } from "@gnd/ui/popover";
+} from "@/components/ui/command";
+import { FacetedFilterItem } from "@/components/ui/faceted-filter";
+import {
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+} from "@/components/ui/form";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { cva } from "class-variance-authority";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
 
 export const comboBoxVariants = cva("", {
     variants: {

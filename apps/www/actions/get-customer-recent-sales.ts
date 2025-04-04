@@ -14,14 +14,4 @@ export async function getCustomerRecentSales(accountNo) {
     query["start"] = 0;
     query["size"] = 5;
     return (await getSalesOrdersDta(query))?.data;
-
-    // const where = whereSales(query);
-    // const ls = await prisma.salesOrders.findMany({
-    //     where,
-    //     select: {
-    //         amountDue: true,
-    //         id: true,
-    //     },
-    // });
-    // return ls;
 }
