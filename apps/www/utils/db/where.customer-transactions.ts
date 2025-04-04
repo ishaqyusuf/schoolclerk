@@ -1,3 +1,4 @@
+import { SquarePaymentStatus } from "@/_v2/lib/square";
 import { CustomerTransactionType } from "@/actions/get-sales-transactions";
 import { composeQuery } from "@/app/(clean-code)/(sales)/_common/utils/db-utils";
 import { PaymentMethods } from "@/app/(clean-code)/(sales)/types";
@@ -9,6 +10,13 @@ export function whereCustomerTx(query: SearchParamsType) {
         {
             OR: [
                 {
+                    status: "success" as any as SquarePaymentStatus,
+                    paymentMethod: {
+                        not: null,
+                    },
+                    salesPayments: { some: {} },
+                },
+                {
                     AND: [
                         { type: {} },
                         // { type: "transaction" as CustomerTransactionType },
@@ -17,12 +25,16 @@ export function whereCustomerTx(query: SearchParamsType) {
                                 lt: 0,
                             },
                         },
+                        { salesPayments: { some: {} } },
                     ],
                 },
                 {
                     paymentMethod: "link" as PaymentMethods,
                     amount: {
                         gt: 0,
+                    },
+                    salesPayments: {
+                        some: {},
                     },
                 },
             ],

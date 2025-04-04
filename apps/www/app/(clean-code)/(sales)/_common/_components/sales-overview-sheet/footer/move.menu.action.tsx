@@ -13,8 +13,8 @@ import { salesOverviewStore } from "../store";
 
 export function MoveMenuAction({}) {
     const ctx = salesOverviewStore();
-    const type = ctx.overview.type;
-    const isDyke = ctx.overview.dyke;
+    const type = ctx?.overview?.type;
+    // const isDyke = ctx.overview.dyke;
     const { toast, dismiss, update } = useToast();
     async function _moveSales() {
         const to = type == "order" ? "quote" : "order";
