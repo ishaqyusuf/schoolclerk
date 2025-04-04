@@ -12,7 +12,7 @@ export async function getCustomerPendingSales(accountNo) {
     const [p1, p2] = accountNo?.split("-");
     if (p1 == "cust") query["customer.id"] = Number(p2);
     else query["phone"] = accountNo;
-
+    query["invoice"] = "pending";
     const where = whereSales(query);
     const ls = await prisma.salesOrders.findMany({
         where,
