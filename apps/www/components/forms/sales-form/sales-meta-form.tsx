@@ -154,7 +154,7 @@ function SummaryTab({}) {
                             <Select
                                 name="metaData.tax.taxCode"
                                 options={taxList}
-                                value={md.tax.taxCode}
+                                value={md.tax?.taxCode}
                                 titleKey="title"
                                 valueKey="taxCode"
                                 onSelect={(e) => {

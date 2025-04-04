@@ -158,10 +158,14 @@ function RuleComponent({ index }) {
         const stepUid = ctx.form.watch(
             `variations.${index}.rules.${fieldIndex}.stepUid`,
         );
+        const options = (ctx.data?.componentsByStepUid[stepUid] || [])?.filter(
+            (a) => a.title && a.uid,
+        );
+        console.log("OPTIONS", options);
         return (
             <ComboxBox
                 maxSelection={999}
-                options={ctx.data?.componentsByStepUid[stepUid] || []}
+                options={options}
                 labelKey="title"
                 valueKey="uid"
                 className="w-full"
