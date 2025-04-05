@@ -1,10 +1,10 @@
 // @ts-check
 import "./src/env.mjs";
 
-// import "@gnd/auth/env.mjs";
+// import "@school-clerk/auth/env.mjs";
 
 import { withNextDevtools } from "@next-devtools/core/plugin";
-// import "@gnd/api/env"
+// import "@school-clerk/api/env"
 import withMDX from "@next/mdx";
 
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
@@ -14,12 +14,12 @@ const config = {
   reactStrictMode: true,
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
-    // "@gnd/api",
-    // "@gnd/auth",
-    // "@gnd/db",
-    // "@gnd/common",
-    "@gnd/ui",
-    // "@gnd/stripe",
+    // "@school-clerk/api",
+    // "@school-clerk/auth",
+    // "@school-clerk/db",
+    // "@school-clerk/common",
+    "@school-clerk/ui",
+    // "@school-clerk/stripe",
   ],
   pageExtensions: ["ts", "tsx", "mdx"],
   experimental: {

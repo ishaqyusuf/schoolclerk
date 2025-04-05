@@ -1,5 +1,5 @@
 {
-  "extends": "@gnd/tsconfig/base.json",
+  "extends": "@school-clerk/tsconfig/base.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

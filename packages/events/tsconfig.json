@@ -1,5 +1,5 @@
 {
-  "extends": "@gnd/tsconfig/nextjs.json",
+  "extends": "@school-clerk/tsconfig/nextjs.json",
   "include": ["src"],
   "exclude": ["node_modules"]
 }

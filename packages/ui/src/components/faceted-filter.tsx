@@ -12,8 +12,8 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "@gnd/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@gnd/ui/popover";
+} from "@school-clerk/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@school-clerk/ui/popover";
 
 import { cn } from "../utils";
 

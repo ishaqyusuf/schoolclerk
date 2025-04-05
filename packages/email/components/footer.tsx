@@ -8,7 +8,7 @@ import {
   Text,
 } from "@react-email/components";
 
-import { getAppUrl } from "@gnd/utils/envs";
+import { getAppUrl } from "@school-clerk/utils/envs";
 
 const baseUrl = getAppUrl();
 

@@ -1,5 +1,5 @@
 {
-  "name": "@gnd/utils",
+  "name": "@school-clerk/utils",
   "version": "1.0.0",
   "main": "src/index.ts",
   "private": true,

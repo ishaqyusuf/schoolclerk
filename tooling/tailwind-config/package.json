@@ -1,5 +1,5 @@
 {
-  "name": "@gnd/tailwind-config",
+  "name": "@school-clerk/tailwind-config",
   "private": true,
   "version": "0.1.0",
   "main": "index.ts",
@@ -19,9 +19,9 @@
     "tailwindcss": "^3.4.15"
   },
   "devDependencies": {
-    "@gnd/eslint-config": "workspace:*",
-    "@gnd/prettier-config": "workspace:*",
-    "@gnd/tsconfig": "workspace:*",
+    "@school-clerk/eslint-config": "workspace:*",
+    "@school-clerk/prettier-config": "workspace:*",
+    "@school-clerk/tsconfig": "workspace:*",
     "eslint": "8.57.0",
     "prettier": "3.2.5",
     "typescript": "^5.6.3"
@@ -29,8 +29,8 @@
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@gnd/eslint-config/base"
+      "@school-clerk/eslint-config/base"
     ]
   },
-  "prettier": "@gnd/prettier-config"
+  "prettier": "@school-clerk/prettier-config"
 }

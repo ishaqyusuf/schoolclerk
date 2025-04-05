@@ -7,7 +7,7 @@ import {
   Text,
 } from "@react-email/components";
 
-import { formatCurrency } from "@gnd/utils/format";
+import { formatCurrency } from "@school-clerk/utils/format";
 
 interface NotifySalesRepPayment {
   repName: string;

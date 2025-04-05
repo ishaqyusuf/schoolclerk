@@ -32,7 +32,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { Slot, type SlotProps } from "@radix-ui/react-slot";
 
-import { Button, type ButtonProps } from "@gnd/ui/button";
+import { Button, type ButtonProps } from "@school-clerk/ui/button";
 
 import { cn } from "../utils";
 import { composeRefs } from "../utils/compose-refs";

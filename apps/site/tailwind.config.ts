@@ -1,4 +1,4 @@
-import baseConfig from "@gnd/tailwind-config";
+import baseConfig from "@school-clerk/tailwind-config";
 import type { Config } from "tailwindcss";
 
 export default {

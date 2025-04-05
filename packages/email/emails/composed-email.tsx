@@ -11,7 +11,7 @@ import {
 } from "@react-email/components";
 import { cva } from "class-variance-authority";
 
-import { cn } from "@gnd/ui/cn";
+import { cn } from "@school-clerk/ui/cn";
 
 import { Footer } from "../components/footer";
 import { Logo } from "../components/logo";

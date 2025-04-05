@@ -1,5 +1,5 @@
 {
-  "name": "@gnd/eslint-config",
+  "name": "@school-clerk/eslint-config",
   "version": "0.0.1",
   "private": true,
   "files": [
@@ -26,8 +26,8 @@
     "eslint-plugin-react-hooks": "4.6.0"
   },
   "devDependencies": {
-    "@gnd/prettier-config": "workspace:*",
-    "@gnd/tsconfig": "workspace:*",
+    "@school-clerk/prettier-config": "workspace:*",
+    "@school-clerk/tsconfig": "workspace:*",
     "eslint": "8.57.0",
     "typescript": "^5.6.3"
   },
@@ -37,5 +37,5 @@
       "./base.js"
     ]
   },
-  "prettier": "@gnd/prettier-config"
+  "prettier": "@school-clerk/prettier-config"
 }

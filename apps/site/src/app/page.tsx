@@ -6,7 +6,7 @@ import { CreditCard, DollarSign, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@gnd/ui/button";
+import { Button } from "@school-clerk/ui/button";
 import {
   Form,
   FormControl,
@@ -14,16 +14,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@gnd/ui/form";
-import { Input } from "@gnd/ui/input";
+} from "@school-clerk/ui/form";
+import { Input } from "@school-clerk/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@gnd/ui/select";
-// import { Button } from "@gnd/ui/button";
+} from "@school-clerk/ui/select";
+// import { Button } from "@school-clerk/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -31,7 +31,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@gnd/ui/sheet";
+} from "@school-clerk/ui/sheet";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
