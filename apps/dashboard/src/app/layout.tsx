@@ -3,8 +3,7 @@ import localFont from "next/font/local";
 
 import "~/styles/globals.css";
 
-import { cn } from "@school-clerk/ui";
-import { Toaster } from "@school-clerk/ui/toaster";
+import { cn } from "@school-clerk/ui/cn";
 
 const fontSans = FontSans({
   subsets: ["latin"],
