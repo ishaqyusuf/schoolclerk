@@ -1,9 +1,11 @@
 import { Inter as FontSans } from "next/font/google";
 import localFont from "next/font/local";
 
-import "~/styles/globals.css";
+import "@school-clerk/ui/globals.css";
+import "@/styles/globals.css";
 
 import { cn } from "@school-clerk/ui/cn";
+import { Toaster } from "@school-clerk/ui/toaster";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -31,6 +33,7 @@ export default function RootLayout({
           fontHeading.variable,
         )}
       >
+        <Toaster />
         {children}
         {/* <ThemeProvider
           attribute="class"

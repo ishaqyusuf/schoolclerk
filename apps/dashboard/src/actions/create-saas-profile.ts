@@ -1,12 +1,12 @@
 "use server";
 
-// import z from "zod";
+import z from "zod";
 
 // import { db } from "@school-clerk/db";
 
 // import { actionClient } from "./safe-action";
 
-// const schema = z.object({});
+const schema = z.object({});
 // actionClient
 //   .schema(schema)
 //   .metadata({})
