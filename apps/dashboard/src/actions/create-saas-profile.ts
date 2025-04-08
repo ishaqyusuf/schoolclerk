@@ -27,7 +27,7 @@ export const createSaasProfileAction = actionClient
     //     },
     //   });
     // });
-    return await prisma.$transaction(async (tx) => {
+    const resp = await prisma.$transaction(async (tx) => {
       console.log({ input });
 
       const password = await hash(input.password, 10);
@@ -62,6 +62,9 @@ export const createSaasProfileAction = actionClient
       const host = process.env.APP_ROOT_DOMAIN;
       const subDomain = s.schools?.[0]?.subDomain;
       const redirectUrl = `${protocol}://${subDomain}.${host}`;
-      redirect(redirectUrl);
+      return {
+        redirectUrl,
+      };
     });
+    redirect(resp.redirectUrl);
   });
