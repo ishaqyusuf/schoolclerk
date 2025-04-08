@@ -19,12 +19,12 @@
     "lint": "biome check .",
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit",
-    "db:generate": "bunx with-env prisma generate",
+    "db:generate": "bunx prisma generate",
     "db-migrate": "bunx prisma migrate dev",
     "prisma-generate": "bunx prisma generate",
-    "push": "bunx with-env prisma db push",
-    "pull": "bunx with-env prisma db pull",
-    "studio": "bunx with-env prisma studio --port 5556",
+    "push": "bunx prisma db push",
+    "pull": "bunx prisma db pull",
+    "studio": "bunx prisma studio --port 5556",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {

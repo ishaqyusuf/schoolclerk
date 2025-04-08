@@ -1,13 +1,16 @@
+import { fileURLToPath } from "url";
 // @ts-check
-import "./src/env.mjs";
+// import "./src/env";
 
 // import "@school-clerk/auth/env.mjs";
 
 import { withNextDevtools } from "@next-devtools/core/plugin";
 // import "@school-clerk/api/env"
 import withMDX from "@next/mdx";
+import createJiti from "jiti";
 
-!process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
+// !process.env.SKIP_ENV_VALIDATION && (await import("./src/env"));
+createJiti(fileURLToPath(import.meta.url))("./src/env");
 
 /** @type {import("next").NextConfig} */
 const config = {

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { createSaasProfileAction } from "@/actions/create-saas-profile";
+import { createSignupSchema } from "@/actions/schema";
 // Get the list of countries in multiple languages
 import { countries } from "@/lib/i18n/countries";
 import { useTranslations } from "@/lib/i18n/translations";
@@ -18,8 +20,9 @@ import {
   User,
   Users,
 } from "lucide-react";
+import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import type { z } from "zod";
 
 import { Button } from "@school-clerk/ui/button";
 import {
@@ -41,44 +44,6 @@ import { toast } from "@school-clerk/ui/use-toast";
 
 import { DomainInput } from "../domain-input";
 
-const createSignupSchema = (t: any) =>
-  z.object({
-    institutionName: z.string().min(2, {
-      message: "Institution name must be at least 2 characters.",
-    }),
-    institutionType: z.string({
-      required_error: "Please select an institution type.",
-    }),
-    adminName: z.string().min(2, {
-      message: "Name must be at least 2 characters.",
-    }),
-    email: z.string().email({
-      message: "Please enter a valid email address.",
-    }),
-    password: z.string().min(8, {
-      message: "Password must be at least 8 characters.",
-    }),
-    studentCount: z.string().min(1, {
-      message: "Please enter approximate number of students.",
-    }),
-    country: z.string().min(1, {
-      message: "Please select your country/region.",
-    }),
-    phone: z.string().optional(),
-    educationSystem: z.string().optional(),
-    curriculumType: z.string().optional(),
-    languageOfInstruction: z.string().optional(),
-    // Add to the schema (inside createSignupSchema function)
-    domainName: z
-      .string()
-      .min(2, {
-        message: "Subdomain must be at least 2 characters.",
-      })
-      .regex(/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i, {
-        message: "Domain can only contain letters, numbers, and hyphens.",
-      }),
-  });
-
 export default function SignupForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -86,8 +51,8 @@ export default function SignupForm() {
     // Get from localStorage or browser preference if on client
     if (typeof window !== "undefined") {
       return (
-        localStorage.getItem("preferredLanguage") ||
-        navigator.language.split("-")[0] ||
+        localStorage.getItem("preferredLanguage") ??
+        navigator.language.split("-")[0] ??
         "en"
       );
     }
@@ -103,19 +68,19 @@ export default function SignupForm() {
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      institutionName: "",
-      institutionType: "",
-      adminName: "",
-      email: "",
-      password: "",
-      studentCount: "",
-      country: "",
-      phone: "",
-      educationSystem: "",
-      curriculumType: "",
-      languageOfInstruction: "",
+      institutionName: undefined,
+      institutionType: undefined,
+      adminName: undefined,
+      email: undefined,
+      password: undefined,
+      studentCount: undefined,
+      country: undefined,
+      phone: undefined,
+      educationSystem: undefined,
+      curriculumType: undefined,
+      languageOfInstruction: undefined,
       // Add to the form defaultValues
-      domainName: "",
+      domainName: undefined,
     },
   });
 
@@ -154,9 +119,12 @@ export default function SignupForm() {
       form.setValue("domainName", suggestedDomain);
     }
   }, [form.watch("institutionName")]);
-
+  const createSchool = useAction(createSaasProfileAction, {
+    onSuccess(args) {},
+  });
   // Update the onSubmit function to include domain validation
   async function onSubmit(data: SignupFormValues) {
+    // createSchool.execute()
     if (!isDomainValid) {
       toast({
         title: "Invalid domain",
@@ -208,7 +176,7 @@ export default function SignupForm() {
           <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
       </CardHeader>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(createSchool.execute)}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -460,7 +428,11 @@ export default function SignupForm() {
           </div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
-          <Button type="submit" className="w-full" disabled={isLoading}>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isLoading || createSchool.isExecuting}
+          >
             {isLoading ? t("creatingAccount") : t("createAccount")}
           </Button>
           <p className="text-center text-xs text-muted-foreground">

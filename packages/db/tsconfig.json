@@ -1,5 +1,5 @@
 {
   "extends": "@school-clerk/tsconfig/internal-package.json",
-  "include": ["src", "."],
+  "include": ["src.bin", "."],
   "exclude": ["node_modules"]
 }

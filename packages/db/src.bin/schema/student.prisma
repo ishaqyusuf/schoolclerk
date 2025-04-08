@@ -1,0 +1,43 @@
+model Student {
+    id              String               @id @default(uuid())
+    studentId       String?
+    name            String
+    surname         String?
+    otherName       String?
+    createdAt       DateTime?            @default(now()) @db.Timestamp(0)
+    updatedAt       DateTime?            @updatedAt
+    deletedAt       DateTime?            @db.Timestamp(0)
+    SchoolProfile   SchoolProfile?       @relation(fields: [schoolProfileId], references: [id])
+    schoolProfileId String?
+    sessionForms    StudentSessionForm[]
+}
+
+model StudentSessionForm {
+    id String @id @default(uuid())
+
+    Student         Student?       @relation(fields: [studentId], references: [id])
+    studentId       String?
+    createdAt       DateTime?      @default(now()) @db.Timestamp(0)
+    updatedAt       DateTime?      @updatedAt
+    deletedAt       DateTime?      @db.Timestamp(0)
+    SchoolSession   SchoolSession? @relation(fields: [schoolSessionId], references: [id])
+    schoolSessionId String?
+    SchoolProfile   SchoolProfile? @relation(fields: [schoolProfileId], references: [id])
+    schoolProfileId String?
+}
+
+model StudentTermForm {
+    id               String                      @id @default(uuid())
+    SchoolProfile    SchoolProfile?              @relation(fields: [schoolProfileId], references: [id])
+    schoolProfileId  String?
+    createdAt        DateTime?                   @default(now()) @db.Timestamp(0)
+    updatedAt        DateTime?                   @updatedAt
+    deletedAt        DateTime?                   @db.Timestamp(0)
+    SessionTerm      SessionTerm?                @relation(fields: [sessionTermId], references: [id])
+    sessionTermId    String?
+    SchoolSession    SchoolSession?              @relation(fields: [schoolSessionId], references: [id])
+    schoolSessionId  String?
+    attendanceList   StudentAttendance[]
+    studentBillables StudentBillable[]
+    paymentReceipts  StudentBillPaymentReceipt[]
+}

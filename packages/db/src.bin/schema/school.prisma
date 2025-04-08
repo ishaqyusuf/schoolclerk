@@ -1,7 +1,7 @@
 model SchoolProfile {
     id                      String                      @id @default(uuid())
     name                    String
-    slug                    String
+    // slug                    String                      @unique
     subDomain               String                      @unique
     createdAt               DateTime?                   @default(now()) @db.Timestamp(0)
     accountId               String
@@ -23,12 +23,11 @@ model SchoolProfile {
     studentPaymentReceipts  StudentBillPaymentReceipt[]
     account                 SaasAccount                 @relation(fields: [accountId], references: [id])
 
-    @@unique([name, subDomain, slug, deletedAt])
+    @@unique([name, subDomain, deletedAt])
 }
 
 model SchoolSession {
-    id String @id @default(uuid())
-
+    id        String        @id @default(uuid())
     createdAt DateTime?     @default(now()) @db.Timestamp(0)
     updatedAt DateTime?     @updatedAt
     deletedAt DateTime?     @db.Timestamp(0)
