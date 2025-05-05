@@ -41,11 +41,7 @@ export function AppSideBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const store = useSidebarStore((s) => s);
   useEffect(() => {
     store.reset();
-    console.log({ linkModules });
   }, []);
-  useEffect(() => {
-    console.log({ store });
-  }, [store]);
   if (!store.render) return null;
   return (
     <Sidebar collapsible="icon">

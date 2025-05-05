@@ -4,7 +4,7 @@ import { prisma } from "@school-clerk/db";
 
 import { getSaasProfileCookie } from "./cookies/login-session";
 
-export async function getClassRooms() {
+export async function getClassRooms(params) {
   const profile = await getSaasProfileCookie();
 
   const classRooms = await prisma.classRoomDepartment.findMany({
@@ -23,5 +23,8 @@ export async function getClassRooms() {
       },
     },
   });
-  return classRooms;
+  return {
+    data: classRooms,
+    meta: {} as any,
+  };
 }
