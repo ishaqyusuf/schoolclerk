@@ -11,11 +11,11 @@ model SchoolProfile {
     terms                   SessionTerm[]
     classRooms              ClassRoom[]
     classRoomDepartments    ClassRoomDepartment[]
+    classRoomAttendanceList ClassRoomAttendance[]
     students                Student[]
     sessionForms            StudentSessionForm[]
     termForms               StudentTermForm[]
     studentAttendanceList   StudentAttendance[]
-    classRoomAttendanceList ClassRoomAttendance[]
     staffProfiles           StaffProfile[]
     subjects                Subject[]
     billables               Billable[]
@@ -37,6 +37,7 @@ model SchoolSession {
     school    SchoolProfile @relation(fields: [schoolId], references: [id])
 
     terms            SessionTerm[]
+    classRooms       ClassRoom[]
     sessionForms     StudentSessionForm[]
     termForms        StudentTermForm[]
     termBillables    DepartmentTermBillable[]

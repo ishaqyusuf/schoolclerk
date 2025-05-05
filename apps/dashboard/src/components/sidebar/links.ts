@@ -5,7 +5,13 @@ import { IconKeys } from "../icons";
 
 // const { ICan } = {} as any
 type Permission = any | null | string | undefined;
-type moduleNames = "HRM" | "Sales" | "Community";
+type moduleNames =
+  | "HRM"
+  | "Sales"
+  | "Community"
+  | "Settings"
+  | "PTA"
+  | "Academic";
 const _module = (
   name: moduleNames,
   icon: IconKeys,
@@ -80,7 +86,16 @@ const __access = (
   ...values
 ) => ({ type, equator, values }) as Access;
 
-type Role = "Admin" | "Production";
+type Role =
+  | "Admin"
+  | "Teacher"
+  | "Student"
+  | "Parent"
+  | "Accountant"
+  | "Registrar"
+  | "HR"
+  | "Staff"
+  | "Support";
 const _role = {
   is: (role: Role) => __access("role", "is", role),
   isNot: (role: Role) => __access("role", "isNot", role),
@@ -99,34 +114,104 @@ const _perm = {
 };
 
 export const linkModules = [
-  _module("HRM", "hrm", "GND HRM", [
-    _section("main", null, [
-      _link("HRM", "hrm", "/").access(_perm.in("viewHrm")).data,
+  _module("Community", "school", "School Management", [
+    _section("main", "General", [
+      _link("Dashboard", "dashboard", "/dashboard").access(
+        _role.in("Admin", "Staff"),
+      ).data,
+      _link("Announcements", "speaker", "/announcements").access(
+        _role.in("Admin", "Teacher"),
+      ).data,
+      _link("Calendar", "calendar", "/calendar").access(
+        _role.in("Admin", "Staff"),
+      ).data,
     ]),
   ]),
-  _module("Sales", "orders", "GND Sales", [
-    _section("main", null, [
-      _link("Dashboard", "dashboard", "/sales-rep").access(
-        _perm.is("editOrders"),
+
+  _module("HRM", "users", "HR & Staff", [
+    _section("main", "Staff Management", [
+      _link("Teachers", "users", "/staff/teachers").access(_role.is("Admin"))
+        .data,
+      _link("Non-Teaching Staff", "users", "/staff/non-teaching").access(
+        _role.is("Admin"),
       ).data,
-      _link("Sales", "orders", "/sales-books/orders").access(
-        _perm.is("editOrders"),
+      _link("Departments", "building", "/staff/departments").access(
+        _role.is("Admin"),
       ).data,
-      _link("Quotes", "estimates", "/sales-books/quotes").access(
-        _perm.is("editOrders"),
+      _link("Attendance", "calendar-check", "/staff/attendance").access(
+        _role.in("Admin", "HR"),
       ).data,
-      _link("Productions", "estimates", "/sales-books/quotes").access(
-        _perm.is("editOrders"),
+      _link("Payroll", "wallet", "/staff/payroll").access(_role.is("Admin"))
+        .data,
+    ]),
+  ]),
+
+  _module("Sales", "wallet", "Finance & Payments", [
+    _section("main", "Fees", [
+      _link("Fee Management", "coins", "/finance/fees").access(
+        _role.is("Admin"),
       ).data,
-      _link("Dispatch", "estimates", "/sales-books/quotes", [
-        _subLink("Delivey", "/sales-book/dispatchs").access(
-          _perm.is("editDelivery"),
-        ).data,
-        _subLink("Pickup", "/sales-book/pickups").access(_perm.is("editPickup"))
-          .data,
-      ]).access(_perm.is("editOrders")).data,
-      _link("Dispatch", "estimates", "/sales-books/quotes").access(
-        _perm.is("editOrders"),
+      _link("Invoices", "file-text", "/finance/invoices").access(
+        _role.in("Admin", "Accountant"),
+      ).data,
+      _link("Payments", "credit-card", "/finance/payments").access(
+        _role.in("Admin", "Accountant"),
+      ).data,
+    ]),
+  ]),
+
+  _module("Academic", "graduation-cap", "Academic", [
+    _section("main", "Students", [
+      _link("Enrollment", "user-plus", "/students/enrollment").access(
+        _role.in("Admin", "Registrar"),
+      ).data,
+      _link("Student List", "users", "/students/list").access(
+        _role.in("Admin", "Teacher"),
+      ).data,
+      _link("Classes", "list", "/academic/classes").access(
+        _role.in("Admin", "Teacher"),
+      ).data,
+      _link("Subjects", "book", "/academic/subjects").access(
+        _role.in("Admin", "Teacher"),
+      ).data,
+    ]),
+    _section("main", "Assessment", [
+      _link("Tests & Exams", "clipboard-list", "/academic/assessments").access(
+        _role.in("Admin", "Teacher"),
+      ).data,
+      _link("Grading", "award", "/academic/grading").access(
+        _role.in("Admin", "Teacher"),
+      ).data,
+      _link("Report Cards", "file-text", "/academic/reports").access(
+        _role.in("Admin", "Teacher"),
+      ).data,
+    ]),
+  ]),
+
+  _module("PTA", "user", "Parent Portal", [
+    _section("main", "Engagement", [
+      _link("Student Performance", "bar-chart", "/parents/performance").access(
+        _role.is("Parent"),
+      ).data,
+      _link("Communication", "message-square", "/parents/messages").access(
+        _role.is("Parent"),
+      ).data,
+      _link("Payments", "credit-card", "/parents/payments").access(
+        _role.is("Parent"),
+      ).data,
+    ]),
+  ]),
+
+  _module("Settings", "settings", "Settings", [
+    _section("main", "Configuration", [
+      _link("School Profile", "settings", "/settings/school-profile").access(
+        _role.is("Admin"),
+      ).data,
+      _link("Academic Session", "calendar", "/settings/sessions").access(
+        _role.is("Admin"),
+      ).data,
+      _link("Roles & Permissions", "shield", "/settings/roles").access(
+        _role.is("Admin"),
       ).data,
     ]),
   ]),

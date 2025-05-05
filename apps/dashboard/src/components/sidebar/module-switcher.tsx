@@ -39,6 +39,7 @@ export function ModuleSwitcher() {
       currentModule,
     };
   }, [store]);
+
   if (!modules?.length) return null;
   return (
     <SidebarMenu>
