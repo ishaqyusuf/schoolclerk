@@ -30,7 +30,13 @@ export default function middleware(req: NextRequest) {
       const _url = `/dashboard/${
         // isProd ? "daarul-hadith" :
         host
+        // ?.replace(
+        //   ".localhost:2200",
+        //   ".schoolclerk.com",
+        //   // "",
+        // )
       }${path}`;
+      // console.log({ _url });
 
       return NextResponse.rewrite(new URL(_url, req.url));
       // return NextResponse.rewrite(new URL(`/dashboard/${subdomain}/`, req.url));
