@@ -63,7 +63,7 @@
       "cache": false
     }
   },
-  "globalEnv": ["APP_ROOT_DOMAIN"],
+  "globalEnv": ["APP_ROOT_DOMAIN", "DIRECT_URL", "POSTGRES_URL"],
   "globalPassThroughEnv": [
     "NODE_ENV",
     "CI",
