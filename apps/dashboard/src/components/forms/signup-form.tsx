@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { createSaasProfileAction } from "@/actions/create-saas-profile";
 import { createSignupSchema } from "@/actions/schema";
 // Get the list of countries in multiple languages
-import { countries } from "@/lib/i18n/countries";
-import { useTranslations } from "@/lib/i18n/translations";
+import { countries } from "@/utils/i18n/countries";
+import { useTranslations } from "@/utils/i18n/translations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   BookOpen,

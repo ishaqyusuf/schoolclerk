@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "@/lib/i18n/translations";
+import { useTranslations } from "@/utils/i18n/translations";
 import { Check, Globe, X } from "lucide-react";
 
 import { Input } from "@school-clerk/ui/input";

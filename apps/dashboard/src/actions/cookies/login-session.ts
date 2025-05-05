@@ -1,7 +1,10 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+"use server";
 
-import { db } from "@school-clerk/db";
+import { cookies, headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { env } from "@/env";
+
+import { prisma } from "@school-clerk/db";
 
 function getCookieName(domain, name) {
   return `${domain}-${name}`;
@@ -11,25 +14,40 @@ interface SaasProfile {
   sessionId?: string;
   termId?: string;
 }
-export function getSaasProfileCookie(domain: string) {
-  const cookieStore = cookies();
-  const cookieName = getCookieName(domain, "saas-profile");
-  const profile = cookieStore.get(cookieName);
-  if (profile) {
-    return JSON.parse(profile.value) as SaasProfile;
-  }
-  return null;
+export async function getTenantDomain() {
+  const host = decodeURIComponent(headers().get("host") || "");
+
+  return {
+    host,
+    domain: host?.replace(`.${env.APP_ROOT_DOMAIN}`, ""),
+  };
 }
-export async function setSaasProfileCookie(domain: string) {
+export async function getSaasProfileCookie() {
+  const { domain, host } = await getTenantDomain();
   const cookieStore = cookies();
   const cookieName = getCookieName(domain, "saas-profile");
   const profile = cookieStore.get(cookieName);
   if (profile) {
     return JSON.parse(profile.value) as SaasProfile;
   }
-  const school = await db.schoolProfile.findFirst({
+
+  return await setSaasProfileCookie();
+}
+export async function setSaasProfileCookie() {
+  const { domain, host } = await getTenantDomain();
+
+  const cookieStore = cookies();
+  const cookieName = getCookieName(domain, "saas-profile");
+  const profile = cookieStore.get(cookieName);
+  if (profile) {
+    const resp = JSON.parse(profile.value) as SaasProfile;
+    if (!resp.sessionId) redirect(`/onboarding/create-academic-session`);
+    return resp;
+  }
+  const school = await prisma.schoolProfile.findFirst({
     where: {
-      domain: domain,
+      // domain: domain,
+      subDomain: domain,
     },
     select: {
       id: true,
@@ -55,15 +73,20 @@ export async function setSaasProfileCookie(domain: string) {
       },
     },
   });
-  if (!school) redirect("/not-found");
+  if (!school) redirect("/create-school");
   const session = school?.sessions?.[0];
   const term = session?.terms?.[0];
-  cookieStore.set(
-    cookieName,
-    JSON.stringify({
-      domain: domain,
-      sessionId: session?.id,
-      termId: term?.id,
-    } satisfies SaasProfile),
-  );
+  const cookieData = {
+    domain: domain,
+    sessionId: session?.id,
+    termId: term?.id,
+  } satisfies SaasProfile;
+  cookies().set({
+    name: cookieName,
+    value: JSON.stringify(cookieData),
+  });
+  console.log({
+    cookieData,
+  });
+  if (!session) redirect("/create-school-session");
 }
