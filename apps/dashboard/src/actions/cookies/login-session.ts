@@ -31,7 +31,7 @@ export async function getSaasProfileCookie() {
     return JSON.parse(profile.value) as SaasProfile;
   }
 
-  return await setSaasProfileCookie();
+  // return await setSaasProfileCookie();
 }
 export async function setSaasProfileCookie() {
   const { domain, host } = await getTenantDomain();
@@ -81,10 +81,7 @@ export async function setSaasProfileCookie() {
     sessionId: session?.id,
     termId: term?.id,
   } satisfies SaasProfile;
-  cookies().set({
-    name: cookieName,
-    value: JSON.stringify(cookieData),
-  });
+  cookieStore.set(cookieName, JSON.stringify(cookieData));
   console.log({
     cookieData,
   });
