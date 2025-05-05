@@ -36,7 +36,7 @@ export default function middleware(req: NextRequest) {
         //   // "",
         // )
       }${path}`;
-      // console.log({ _url });
+      console.log({ _url });
 
       return NextResponse.rewrite(new URL(_url, req.url));
       // return NextResponse.rewrite(new URL(`/dashboard/${subdomain}/`, req.url));

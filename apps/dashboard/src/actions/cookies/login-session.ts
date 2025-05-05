@@ -62,7 +62,11 @@ export async function initializeSaasProfile() {
   }
   return profile;
 }
-export async function loadSaasProfile() {
+interface Query {
+  termId?: string;
+  sessionId?: string;
+}
+export async function loadSaasProfile({ termId, sessionId }: Query = {}) {
   const { domain, host } = await getTenantDomain();
   const school = await prisma.schoolProfile.findFirst({
     where: {
@@ -74,6 +78,19 @@ export async function loadSaasProfile() {
       // sessi: true,
       // termId: true,
       sessions: {
+        where: sessionId
+          ? {
+              id: sessionId,
+            }
+          : termId
+            ? {
+                terms: {
+                  some: {
+                    id: termId,
+                  },
+                },
+              }
+            : undefined,
         orderBy: {
           createdAt: "desc",
         },
@@ -82,6 +99,11 @@ export async function loadSaasProfile() {
           id: true,
           terms: {
             take: 1,
+            where: termId
+              ? {
+                  id: termId,
+                }
+              : undefined,
             select: {
               id: true,
             },
@@ -116,16 +138,31 @@ export async function setSaasProfileCookie() {
     const resp = JSON.parse(profile.value) as SaasProfile;
     if (resp?.schoolId) return resp;
   }
-
+  const cookieData = await loadSaasProfile();
   cookieStore.set(cookieName, JSON.stringify(cookieData));
+
   // console.log({
   //   cookieData,
   // });
-  if (!session) redirect("/onboarding/create-school-session");
+  // if (!session) redirect("/onboarding/create-school-session");
   return cookieData;
 }
 export async function switchSessionTerm(termId) {
   const term = await prisma.sessionTerm.findFirstOrThrow({
-    where: {},
+    where: {
+      id: termId,
+    },
+    select: {
+      id: true,
+      sessionId: true,
+      schoolId: true,
+    },
   });
+  const { domain, host } = await getTenantDomain();
+
+  const cookieStore = cookies();
+  const cookieName = getCookieName(domain, "saas-profile");
+  const profile = await loadSaasProfile({ termId });
+  cookieStore.set(cookieName, JSON.stringify(profile));
+  redirect("/");
 }

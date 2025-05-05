@@ -1,10 +1,11 @@
 "use server";
 
-import { z } from "zod";
-
 import { prisma } from "@school-clerk/db";
 
-import { getSaasProfileCookie } from "./cookies/login-session";
+import {
+  getSaasProfileCookie,
+  switchSessionTerm,
+} from "./cookies/login-session";
 import { actionClient } from "./safe-action";
 import { createAcadSessionSchema } from "./schema";
 
@@ -12,6 +13,8 @@ export const createAcadSessionAction = actionClient
   .schema(createAcadSessionSchema)
   .action(async ({ parsedInput: data }) => {
     // throw new Error("....");
+    await prisma.sessionTerm.deleteMany({});
+    await prisma.schoolSession.deleteMany({});
     const resp = await prisma.$transaction(async (tx) => {
       const profile = await getSaasProfileCookie();
       const schoolSession = await tx.schoolSession.create({
@@ -45,10 +48,12 @@ export const createAcadSessionAction = actionClient
       });
       return schoolSession;
     });
-    console.log(resp);
-    await prisma.schoolSession.deleteMany({});
-    await prisma.sessionTerm.deleteMany({});
-    throw new Error();
+    const termId = (resp as any)?.terms?.[0]?.id;
+    await switchSessionTerm(termId);
+    // console.log(resp);
+    // throw new Error("", {
+    //   cause: resp,
+    // });
     // const termId = resp?.terms?.
     return resp;
   });
