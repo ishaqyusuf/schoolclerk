@@ -9,8 +9,7 @@ export default async function CreateAcademicSessionPage({}) {
     terms: [],
   };
   return (
-    <div className="bg-red-400">
-      <div>abc</div>
+    <div className="">
       <AcademicSessionForm defaultValues={defaultValues} />
     </div>
   );

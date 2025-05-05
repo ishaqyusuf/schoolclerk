@@ -124,3 +124,8 @@ export async function setSaasProfileCookie() {
   if (!session) redirect("/onboarding/create-school-session");
   return cookieData;
 }
+export async function switchSessionTerm(termId) {
+  const term = await prisma.sessionTerm.findFirstOrThrow({
+    where: {},
+  });
+}

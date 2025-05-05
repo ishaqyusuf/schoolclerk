@@ -1,5 +1,17 @@
 import { z } from "zod";
 
+export const createAcadSessionSchema = z.object({
+  title: z.string().min(1),
+  terms: z
+    .array(
+      z.object({
+        startDate: z.date().optional(),
+        endDate: z.date().optional(),
+        title: z.string().min(1),
+      }),
+    )
+    .optional(),
+});
 export const createSignupSchema = (t: any) =>
   z.object({
     institutionName: z.string().min(2, {

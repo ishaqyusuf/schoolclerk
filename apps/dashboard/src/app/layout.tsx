@@ -28,7 +28,7 @@ export default function RootLayout({
       {/*</Suspense>*/}
       <body
         className={cn(
-          "min-h-screen bg-background font-sans text-muted-foreground antialiased",
+          "min-h-screen bg-background font-sans text-black antialiased",
           fontSans.variable,
           fontHeading.variable,
         )}

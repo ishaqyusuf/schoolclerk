@@ -27,8 +27,8 @@ model SchoolProfile {
 }
 
 model SchoolSession {
-    id    String  @id @default(uuid())
-    title String?
+    id    String @id @default(uuid())
+    title String
 
     createdAt DateTime?     @default(now()) @db.Timestamp(0)
     updatedAt DateTime?     @updatedAt
@@ -47,6 +47,7 @@ model SessionTerm {
     id                 String                   @id @default(uuid())
     sessionId          String
     schoolId           String
+    title              String
     startDate          DateTime?                @db.Timestamp(0)
     endDate            DateTime?                @db.Timestamp(0)
     createdAt          DateTime?                @default(now()) @db.Timestamp(0)

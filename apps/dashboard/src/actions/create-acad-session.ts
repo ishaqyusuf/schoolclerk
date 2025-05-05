@@ -6,39 +6,49 @@ import { prisma } from "@school-clerk/db";
 
 import { getSaasProfileCookie } from "./cookies/login-session";
 import { actionClient } from "./safe-action";
-
-export const createAcadSessionSchema = z.object({
-  title: z.string(),
-  terms: z.array(
-    z.object({
-      startDate: z.date().optional(),
-      endDate: z.date().optional(),
-    }),
-  ),
-});
+import { createAcadSessionSchema } from "./schema";
 
 export const createAcadSessionAction = actionClient
   .schema(createAcadSessionSchema)
   .action(async ({ parsedInput: data }) => {
-    const profile = await getSaasProfileCookie();
-    await prisma.schoolSession.create({
-      data: {
-        title: data.title,
-        school: {
-          connect: {
-            id: profile?.schoolId,
+    // throw new Error("....");
+    const resp = await prisma.$transaction(async (tx) => {
+      const profile = await getSaasProfileCookie();
+      const schoolSession = await tx.schoolSession.create({
+        data: {
+          title: data.title,
+          school: {
+            connect: {
+              id: profile?.schoolId,
+            },
+          },
+          terms: {
+            createMany: data.terms?.length
+              ? {
+                  data: data.terms.map((d) => ({
+                    schoolId: profile?.schoolId,
+                    title: d.title,
+                    startDate: d.startDate,
+                    endDate: d.endDate,
+                  })),
+                }
+              : undefined,
           },
         },
-        terms: {
-          createMany: data.terms?.length
-            ? {
-                data: data.terms.map((d) => ({
-                  schoolId: profile?.schoolId,
-                  ...d,
-                })),
-              }
-            : undefined,
+        select: {
+          terms: {
+            orderBy: {
+              startDate: "desc",
+            },
+          },
         },
-      },
+      });
+      return schoolSession;
     });
+    console.log(resp);
+    await prisma.schoolSession.deleteMany({});
+    await prisma.sessionTerm.deleteMany({});
+    throw new Error();
+    // const termId = resp?.terms?.
+    return resp;
   });
