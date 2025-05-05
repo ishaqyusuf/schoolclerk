@@ -13,7 +13,7 @@
     "schema": "./src/schema"
   },
   "scripts": {
-    "build": "prisma db push && tsc",
+    "build": "prisma db push && prisma generate && tsc",
     "dev": "rm -rf .cache dist tsc",
     "clean": "rm -rf .turbo node_modules",
     "lint": "biome check .",
