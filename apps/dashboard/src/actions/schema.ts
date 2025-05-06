@@ -12,6 +12,18 @@ export const createAcadSessionSchema = z.object({
     )
     .optional(),
 });
+export const createClassroomSchema = z.object({
+  className: z.string().min(1),
+  departments: z
+    .array(
+      z
+        .object({
+          name: z.string(),
+        })
+        .optional(),
+    )
+    .optional(),
+});
 export const createSignupSchema = (t: any) =>
   z.object({
     institutionName: z.string().min(2, {

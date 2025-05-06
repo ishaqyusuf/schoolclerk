@@ -1,7 +1,6 @@
 "use client";
 
 import { useClassesParams } from "@/hooks/use-classes-params";
-import { addDomainToVercel } from "@/utils/domain";
 
 import { Button } from "@school-clerk/ui/button";
 
@@ -19,16 +18,6 @@ export function EmptyState() {
           </p>
         </div>
 
-        <Button
-          variant="outline"
-          onClick={() => {
-            addDomainToVercel("schoolclerk-dashboard.vercel.app").then((e) => {
-              console.log(e);
-            });
-          }}
-        >
-          Create Domain
-        </Button>
         <Button
           variant="outline"
           onClick={() =>

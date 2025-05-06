@@ -10,6 +10,8 @@ model ClassRoom {
     session              SchoolSession         @relation(fields: [schoolSessionId], references: [id])
     school               SchoolProfile         @relation(fields: [schoolProfileId], references: [id])
     classRoomDepartments ClassRoomDepartment[]
+
+    @@unique([schoolSessionId, name])
 }
 
 model ClassRoomDepartment {
@@ -28,6 +30,8 @@ model ClassRoomDepartment {
     studentAttendanceList StudentAttendance[]
     subjects              DepartmentSubject[]
     billables             DepartmentTermBillable[]
+
+    @@unique([classRoomsId, departmentName])
 }
 
 model DepartmentSubject {

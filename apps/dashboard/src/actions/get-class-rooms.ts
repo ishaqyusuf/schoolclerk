@@ -1,9 +1,14 @@
 "use server";
 
+import { AsyncFnType } from "@/types";
+
 import { prisma } from "@school-clerk/db";
 
 import { getSaasProfileCookie } from "./cookies/login-session";
 
+export type ClassRoomPageItem = AsyncFnType<
+  typeof getClassRooms
+>["data"][number];
 export async function getClassRooms(params) {
   const profile = await getSaasProfileCookie();
 
@@ -22,6 +27,9 @@ export async function getClassRooms(params) {
         },
       },
     },
+  });
+  console.log({
+    classRooms,
   });
   return {
     data: classRooms,

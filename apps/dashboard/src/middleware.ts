@@ -17,9 +17,8 @@ export default function middleware(req: NextRequest) {
   const host = req.headers.get("host") ?? "";
   const subdomain = host.replace(`.${hostName}`, "");
 
-  console.log({ host, subdomain, hostName, url });
   if (subdomain && (subdomain !== host || hostName !== host)) {
-    if (subdomain === "app") {
+    if (subdomain === "app" || subdomain?.startsWith("app.")) {
       return NextResponse.rewrite(new URL(`/app/`, req.url));
     } else {
       const searchParams = req.nextUrl.searchParams.toString();
@@ -27,7 +26,7 @@ export default function middleware(req: NextRequest) {
       const path = `${url.pathname}${
         searchParams.length > 0 ? `?${searchParams}` : ""
       }`;
-      console.log({ host, path, subdomain });
+      // console.log({ host, path, subdomain });
 
       // const isProd = env.NODE_ENV == "production";
       const _url = `/dashboard/${
@@ -39,8 +38,6 @@ export default function middleware(req: NextRequest) {
         //   // "",
         // )
       }${path}`;
-      console.log({ _url });
-
       return NextResponse.rewrite(new URL(_url, req.url));
       // return NextResponse.rewrite(new URL(`/dashboard/${subdomain}/`, req.url));
     }

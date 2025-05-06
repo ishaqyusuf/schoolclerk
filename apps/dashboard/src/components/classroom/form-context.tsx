@@ -1,8 +1,15 @@
+import { CreateClassRoom } from "@/actions/create-classroom";
+import { createClassroomSchema } from "@/actions/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 
 export function FormContext({ children }) {
-  const form = useForm({
-    defaultValues: {},
+  const form = useForm<CreateClassRoom>({
+    resolver: zodResolver(createClassroomSchema),
+    defaultValues: {
+      className: "",
+      departments: [],
+    },
   });
 
   return <FormProvider {...form}>{children}</FormProvider>;
