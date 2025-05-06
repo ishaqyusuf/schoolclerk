@@ -8,6 +8,7 @@ export const config = {
 
 export default function middleware(req: NextRequest) {
   const hostName = env.APP_ROOT_DOMAIN;
+  // schoolclerk-dashboard.vercel.app
   const url = req.nextUrl;
   if (!hostName) {
     throw new Error("APP_ROOT_DOMAIN is not defined in environment variables");
@@ -16,6 +17,7 @@ export default function middleware(req: NextRequest) {
   const host = req.headers.get("host") ?? "";
   const subdomain = host.replace(`.${hostName}`, "");
 
+  console.log({ host, subdomain, hostName, url });
   if (subdomain && subdomain !== host) {
     if (subdomain === "app") {
       return NextResponse.rewrite(new URL(`/app/`, req.url));
