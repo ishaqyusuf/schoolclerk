@@ -10,12 +10,13 @@ import {
 import { useAction } from "next-safe-action/hooks";
 import { useInView } from "react-intersection-observer";
 
+import { Button } from "@school-clerk/ui/button";
 import { Spinner } from "@school-clerk/ui/spinner";
 import { Table, TableBody } from "@school-clerk/ui/table";
 
+import { ClassroomTableHeader } from "./classroom-table-header";
 import { columns, type ClassItem } from "./columns";
 import { ClassRow } from "./row";
-import { TableHeader } from "./table-header";
 
 type Props = {
   data: ClassItem[];
@@ -105,8 +106,21 @@ export function DataTable({
 
   return (
     <div>
+      {" "}
+      <div className="flex justify-end">
+        <Button
+          variant="outline"
+          onClick={() =>
+            setParams({
+              type: "create",
+            })
+          }
+        >
+          Create invoice
+        </Button>
+      </div>
       <Table>
-        <TableHeader />
+        <ClassroomTableHeader table={table} />
 
         <TableBody>
           {table.getRowModel().rows.map((row) => (
@@ -114,7 +128,6 @@ export function DataTable({
           ))}
         </TableBody>
       </Table>
-
       {hasNextPage && (
         <div className="mt-6 flex items-center justify-center" ref={ref}>
           <div className="flex items-center space-x-2 px-6 py-5">
@@ -123,7 +136,6 @@ export function DataTable({
           </div>
         </div>
       )}
-
       {/* <InvoiceDetailsSheet
         data={selectedInvoice}
         isOpen={type === "details" && !!invoiceId}

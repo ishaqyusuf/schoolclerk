@@ -48,7 +48,7 @@ export function AppSideBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <ModuleSwitcher />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="bg-white">
         {linkModules.map((module, mi) => (
           <SidebarModule
             name={module.name as any}
