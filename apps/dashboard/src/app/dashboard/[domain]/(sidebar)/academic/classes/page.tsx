@@ -1,16 +1,15 @@
 import { Suspense } from "react";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
+import { getTenantDomain } from "@/actions/cookies/login-session";
 import { ErrorFallback } from "@/components/error-fallback";
 import { ClassessTable } from "@/components/tables/classrooms";
 import { ClassesSkeleton } from "@/components/tables/classrooms/skeleton";
 
 import { searchParamsCache } from "./search-params";
 
-export default async function Page({ searchParams }) {
+export default async function Page({ searchParams, params }) {
   const searchQuery = searchParamsCache.parse(await searchParams);
   const { q: query, sort, start, end, statuses, customers, page } = searchQuery;
-
-  //  const defaultSettings = await getDefaultSettings();
 
   const loadingKey = JSON.stringify({
     q: query,

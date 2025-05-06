@@ -25,6 +25,7 @@ export default function middleware(req: NextRequest) {
       const path = `${url.pathname}${
         searchParams.length > 0 ? `?${searchParams}` : ""
       }`;
+      console.log({ host, path, subdomain });
 
       // const isProd = env.NODE_ENV == "production";
       const _url = `/dashboard/${

@@ -16,8 +16,12 @@ interface SaasProfile {
   termId?: string;
 }
 export async function getTenantDomain() {
-  const host = decodeURIComponent(headers().get("host") || "");
-
+  let host = decodeURIComponent(headers().get("host") || "");
+  // let rootDmain  = env.APP_ROOT_DOMAIN;
+  if (env.NODE_ENV == "development") {
+    host = host?.replaceAll(`.${env.APP_ROOT_DOMAIN}`, ".vercel.app");
+    // rootDmain =
+  }
   return {
     host,
     domain: host?.replace(`.${env.APP_ROOT_DOMAIN}`, ""),

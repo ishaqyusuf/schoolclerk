@@ -21,6 +21,10 @@ export const env = createEnv({
     // STRIPE_API_KEY: z.string().min(1),
     // STRIPE_WEBHOOK_SECRET: z.string().min(1),
     APP_ROOT_DOMAIN: z.string().min(1),
+    VERCEL_TEAM_ID: z.string().min(1),
+    VERCEL_PROJECT_SLUG: z.string().min(1),
+    VERCEL_PROJECT_ID: z.string().min(1),
+    VERCEL_BEARER_TOKEN: z.string().min(1),
   },
   client: {
     // NEXT_PUBLIC_APP_URL: z.string().min(1),
@@ -35,7 +39,6 @@ export const env = createEnv({
   },
   experimental__runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   skipValidation:
