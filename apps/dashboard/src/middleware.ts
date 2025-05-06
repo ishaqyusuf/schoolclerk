@@ -18,7 +18,7 @@ export default function middleware(req: NextRequest) {
   const subdomain = host.replace(`.${hostName}`, "");
 
   console.log({ host, subdomain, hostName, url });
-  if (subdomain && subdomain !== host) {
+  if (subdomain && (subdomain !== host || hostName !== host)) {
     if (subdomain === "app") {
       return NextResponse.rewrite(new URL(`/app/`, req.url));
     } else {
