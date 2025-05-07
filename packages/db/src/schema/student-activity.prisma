@@ -24,7 +24,7 @@ model StudentAttendance {
     createdAt             DateTime?            @default(now()) @db.Timestamp(0)
     updatedAt             DateTime?            @updatedAt
     deletedAt             DateTime?            @db.Timestamp(0)
-    ClassroomAttendance   ClassRoomAttendance? @relation(fields: [classroomAttendanceId], references: [id])
+    classroomAttendance   ClassRoomAttendance? @relation(fields: [classroomAttendanceId], references: [id])
     classroomAttendanceId String?
     department            ClassRoomDepartment? @relation(fields: [departmentId], references: [id])
     departmentId          String?
@@ -33,13 +33,16 @@ model StudentAttendance {
 model Billable {
     id              String         @id @default(uuid())
     title           String
+    description     String?
     createdAt       DateTime?      @default(now()) @db.Timestamp(0)
     updatedAt       DateTime?      @updatedAt
     deletedAt       DateTime?      @db.Timestamp(0)
-    SchoolProfile   SchoolProfile? @relation(fields: [schoolProfileId], references: [id])
+    schoolProfile   SchoolProfile? @relation(fields: [schoolProfileId], references: [id])
     schoolProfileId String?
 
     priceHistories BillablePriceHistory[]
+
+    @@unique([title, schoolProfileId])
 }
 
 model BillablePriceHistory {
@@ -48,7 +51,7 @@ model BillablePriceHistory {
     createdAt           DateTime?                @default(now()) @db.Timestamp(0)
     updatedAt           DateTime?                @updatedAt
     deletedAt           DateTime?                @db.Timestamp(0)
-    Billable            Billable?                @relation(fields: [billableId], references: [id])
+    billable            Billable?                @relation(fields: [billableId], references: [id])
     billableId          String?
     studentBillables    StudentBillable[]
     departmentBillables DepartmentTermBillable[]
@@ -62,9 +65,9 @@ model DepartmentTermBillable {
     billablePrice        BillablePriceHistory? @relation(fields: [billablesPriceId], references: [id])
     billablesPriceId     String?
     classRoomDepartments ClassRoomDepartment[]
-    SessionTerm          SessionTerm?          @relation(fields: [sessionTermId], references: [id])
+    sessionTerm          SessionTerm?          @relation(fields: [sessionTermId], references: [id])
     sessionTermId        String?
-    SchoolSession        SchoolSession?        @relation(fields: [schoolSessionId], references: [id])
+    schoolSession        SchoolSession?        @relation(fields: [schoolSessionId], references: [id])
     schoolSessionId      String?
 }
 
@@ -73,13 +76,16 @@ model StudentBillable {
     createdAt         DateTime?                   @default(now()) @db.Timestamp(0)
     updatedAt         DateTime?                   @updatedAt
     deletedAt         DateTime?                   @db.Timestamp(0)
-    Billable          BillablePriceHistory?       @relation(fields: [billablePriceId], references: [id])
+    billable          BillablePriceHistory?       @relation(fields: [billablePriceId], references: [id])
+    description       String?
+    billAmount        Float
+    pendingAmount     Float
     billablePriceId   String?
-    SchoolProfile     SchoolProfile?              @relation(fields: [schoolProfileId], references: [id])
+    schoolProfile     SchoolProfile?              @relation(fields: [schoolProfileId], references: [id])
     schoolProfileId   String?
-    StudentTermForm   StudentTermForm?            @relation(fields: [studentTermFormId], references: [id])
+    studentTermForm   StudentTermForm?            @relation(fields: [studentTermFormId], references: [id])
     studentTermFormId String?
-    SchoolSession     SchoolSession?              @relation(fields: [schoolSessionId], references: [id])
+    schoolSession     SchoolSession?              @relation(fields: [schoolSessionId], references: [id])
     schoolSessionId   String?
     receipts          StudentBillPaymentReceipt[]
 }

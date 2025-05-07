@@ -52,9 +52,6 @@ const commissionFilters = ["all", "earned", "pending"] as const;
 export const searchParamsParser: {
   [k in SearchParamsKeys]: any;
 } = {
-  // success: parseAsArrayOf(parseAsBoolean, ARRAY_DELIMITER),
-
-  "account.no": parseAsString,
   sort: parseAsSort,
   uuid: parseAsString,
   search: parseAsString,
@@ -69,7 +66,6 @@ export const searchParamsParser: {
   // ),
 };
 export const searchSchema = z.object({
-  "account.no": z.string().optional(),
   size: z.number().optional(),
   start: z.number().optional(),
   "with.trashed": z.boolean().optional(),

@@ -30,6 +30,7 @@ model ClassRoomDepartment {
     studentAttendanceList StudentAttendance[]
     subjects              DepartmentSubject[]
     billables             DepartmentTermBillable[]
+    studentSessionForms   StudentSessionForm[]
 
     @@unique([classRoomsId, departmentName])
 }

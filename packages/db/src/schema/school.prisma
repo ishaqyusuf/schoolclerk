@@ -12,7 +12,7 @@ model SchoolProfile {
     classRooms              ClassRoom[]
     classRoomDepartments    ClassRoomDepartment[]
     classRoomAttendanceList ClassRoomAttendance[]
-    students                Student[]
+    students                Students[]
     sessionForms            StudentSessionForm[]
     termForms               StudentTermForm[]
     studentAttendanceList   StudentAttendance[]

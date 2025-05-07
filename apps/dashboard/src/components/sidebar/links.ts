@@ -152,6 +152,9 @@ export const linkModules = [
       _link("Fee Management", "coins", "/finance/fees").access(
         _role.is("Admin"),
       ).data,
+      _link("Billables", "coins", "/finance/billables").access(
+        _role.is("Admin"),
+      ).data,
       _link("Invoices", "file-text", "/finance/invoices").access(
         _role.in("Admin", "Accountant"),
       ).data,

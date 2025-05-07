@@ -9,7 +9,6 @@ const data = {
   render: false,
   siteModules: {},
   activeLinkName: null,
-  activeModule: null,
   subLinks: {},
   links: {},
 } as z.infer<typeof schema>;

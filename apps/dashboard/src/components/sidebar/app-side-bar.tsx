@@ -90,11 +90,11 @@ export function AppSideBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <Fragment key={li}>
                     {link?.subLinks?.length ? (
                       <SidebarLink
-                        name={li.name}
-                        title={li.title}
-                        icon={li.icon}
+                        name={link.name}
+                        title={link.title}
+                        icon={link.icon}
                       >
-                        {li.links?.map((sub, si) => (
+                        {link.subLinks?.map((sub, si) => (
                           <SubLink
                             name={sub?.name}
                             title={sub?.title}
@@ -222,10 +222,6 @@ function SidebarLink({ title, icon, name, link, children }: SidebarLinkProps) {
                 <span>{title}</span>
                 <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
               </SidebarMenuButton>
-              {/* <SidebarMenuAction className="data-[state=open]:rotate-90">
-                                <ChevronRight />
-                                <span className="sr-only">Toggle</span>
-                            </SidebarMenuAction> */}
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
@@ -234,9 +230,9 @@ function SidebarLink({ title, icon, name, link, children }: SidebarLinkProps) {
                   .map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <a href={subItem.url || ""}>
+                        <Link href={subItem.url || ""}>
                           <span>{subItem.title}</span>
-                        </a>
+                        </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}
@@ -292,13 +288,4 @@ function SubLink({ title, name, link }: SubLinkProps) {
     });
   }, [linkCtx?.name]);
   return null;
-  return (
-    <SidebarMenuSubItem>
-      <SidebarMenuSubButton asChild>
-        <a href={link}>
-          <span>{title}</span>
-        </a>
-      </SidebarMenuSubButton>
-    </SidebarMenuSubItem>
-  );
 }

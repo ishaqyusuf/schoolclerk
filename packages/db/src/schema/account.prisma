@@ -1,8 +1,3 @@
-model WhatIsGoingOn {
-    id   String @id @default(uuid())
-    name String
-}
-
 model SaasAccount {
     id      String  @id @default(uuid())
     name    String
