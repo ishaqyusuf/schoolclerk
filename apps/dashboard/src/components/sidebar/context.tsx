@@ -16,6 +16,8 @@ export const schema = z.object({
         title: z.string(),
         subtitle: z.string(),
         icon: z.string(),
+        index: z.number(),
+        // globalIndex: z.number(),
         // visibleLinkCount
       }),
     )
@@ -30,6 +32,8 @@ export const schema = z.object({
         url: z.string(),
         title: z.string(),
         custom: z.boolean(),
+        index: z.number(),
+        globalIndex: z.number(),
       }),
     )
     .default({}),
@@ -43,6 +47,8 @@ export const schema = z.object({
       title: z.string(),
       url: z.string(),
       paths: z.array(z.string()),
+      index: z.number(),
+      globalIndex: z.number(),
     }),
   ),
 });

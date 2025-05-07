@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { ChevronsUpDown } from "lucide-react";
 
 import {
@@ -24,6 +25,16 @@ export function ModuleSwitcher() {
   const sb = useSidebar();
   const store = useSidebarStore();
   const { isMobile } = sb;
+  const route = useRouter();
+  function switchModule(moduleName) {
+    const links = Object.values(store.links);
+    const link = links
+      .sort((a, b) => a.globalIndex - b.globalIndex)
+      // .filter((a) => a.visible)
+      .find((a) => a.moduleName == moduleName);
+    console.log({ link, moduleName, links });
+    route?.push(link?.url);
+  }
   const { modules, currentModule } = useMemo(() => {
     const modules = Object.values(store?.siteModules ?? {}).filter(
       // (module) => module.visible,
@@ -76,6 +87,9 @@ export function ModuleSwitcher() {
             </DropdownMenuLabel>
             {modules.map((team, index) => (
               <DropdownMenuItem
+                onClick={(e) => {
+                  switchModule(team.name);
+                }}
                 key={team.name}
                 // onClick={() => setActiveTeam(team)}
                 className="gap-2 p-2"

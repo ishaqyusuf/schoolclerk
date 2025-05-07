@@ -36,7 +36,7 @@ import {
   useSidebarModule,
   useSidebarSection,
 } from "./context";
-import { linkModules } from "./links";
+import { getLinkModules } from "./links";
 import { ModuleSwitcher } from "./module-switcher";
 import { useSidebarStore } from "./store";
 
@@ -64,6 +64,7 @@ export function AppSideBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   useEffect(() => {
     store.reset();
   }, []);
+  const linkModules = getLinkModules();
   if (!store.render) return null;
   return (
     <Sidebar collapsible="icon">

@@ -24,6 +24,7 @@ const _module = (
   title: name,
   subtitle,
   sections,
+  index: -1,
 });
 type sectionNames = "main" | "sales";
 type Link = {
@@ -216,3 +217,26 @@ export const linkModules = [
     ]),
   ]),
 ];
+export function getLinkModules() {
+  let i = {
+    section: 0,
+    links: 0,
+    subLinks: 0,
+  };
+  const modules = linkModules.map((m, mi) => {
+    m.index = mi;
+    m.sections = m.sections.map((s, si) => {
+      s.index = si;
+      s.globalIndex = i.section++;
+      // i.section += 1;
+      s.links = s.links.map((l, li) => {
+        l.index = li;
+        l.globalIndex = i.links++;
+        return l;
+      });
+      return s;
+    });
+    return m;
+  });
+  return modules;
+}
