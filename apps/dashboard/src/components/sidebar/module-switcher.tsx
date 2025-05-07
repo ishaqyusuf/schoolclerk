@@ -29,10 +29,11 @@ export function ModuleSwitcher() {
       // (module) => module.visible,
       Boolean,
     );
-    const currentModule = modules.find((module) =>
-      Object.entries(store?.links ?? {}).some(([key, link]) => {
-        return link.moduleName === module.name && link.visible;
-      }),
+    const currentModule = modules.find(
+      (module) => module?.name == store.activeModule,
+      // Object.entries(store?.links ?? {}).some(([key, link]) => {
+      //   return link.moduleName === module.name && link.visible;
+      // }),
     );
     return {
       modules,
@@ -48,10 +49,10 @@ export function ModuleSwitcher() {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground border"
             >
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                <Icon name="Delete" className="size-4" />
+                <Icon name={currentModule?.icon as any} className="size-6" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">
@@ -71,7 +72,7 @@ export function ModuleSwitcher() {
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-xs text-muted-foreground">
-              Teams
+              Modules
             </DropdownMenuLabel>
             {modules.map((team, index) => (
               <DropdownMenuItem
@@ -80,21 +81,13 @@ export function ModuleSwitcher() {
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-sm border">
-                  <Icon name="Delete" className="size-4 shrink-0" />
+                  <Icon name={team?.icon as any} className="size-4 shrink-0" />
                 </div>
                 {team.title}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
-            {/* <DropdownMenuItem className="gap-2 p-2">
-                            <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                                <Plus className="size-4" />
-                            </div>
-                            <div className="font-medium text-muted-foreground">
-                                Add team
-                            </div>
-                        </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

@@ -66,14 +66,13 @@ export async function ClassessTable({
 
     return <EmptyState />;
   }
-
   return (
     <DataTable
       data={data}
       loadMore={loadMore}
       pageSize={pageSize}
       hasNextPage={hasNextPage}
-      page={page}
+      // page={page}
     />
   );
 }

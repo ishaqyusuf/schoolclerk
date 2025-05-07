@@ -21,6 +21,7 @@ export const schema = z.object({
     )
     .default({}),
   activeLinkName: z.string(),
+  activeModule: z.string(),
   // {[id in string]: z.object{}}
   subLinks: z
     .record(
@@ -82,12 +83,13 @@ export const { useContext: useSidebarModule, Provider: SideBarModuleProvider } =
   createContextFactory(function (name) {
     const ctx = useSidebar();
     const store = useSidebarStore();
+    const isCurrentModule = ctx.data?.activeModule == name;
     // ctx.isMobile;
     // const module = ctx?.data?.siteModules?.[name];
     const siteModule = store.siteModules?.[name];
     //  ctx.form.watch(`siteModules.${name}`);
     // const data = useAsyncMemo(loader, []);
-    return { siteModule };
+    return { siteModule, isCurrentModule };
   });
 
 export const {

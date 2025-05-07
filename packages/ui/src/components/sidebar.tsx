@@ -139,7 +139,7 @@ const SidebarProvider = React.forwardRef<
                 toggleSidebar,
             ],
         );
-
+    
         return (
             <SidebarContext.Provider value={contextValue}>
                 <TooltipProvider delayDuration={0}>

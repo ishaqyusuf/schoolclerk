@@ -30,6 +30,7 @@
     "date-fns": "3.3.1",
     "dot-object": "^2.1.5",
     "framer-motion": "11.0.3",
+    "little-date": "^1.0.0",
     "negotiator": "0.6.3",
     "next": "14.2.10",
     "next-safe-action": "^7.9.9",

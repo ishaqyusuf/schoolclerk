@@ -7,7 +7,6 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useAction } from "next-safe-action/hooks";
 import { useInView } from "react-intersection-observer";
 
 import { Button } from "@school-clerk/ui/button";
@@ -106,7 +105,6 @@ export function DataTable({
 
   return (
     <div>
-      {" "}
       <div className="flex justify-end">
         <Button
           variant="outline"
@@ -136,11 +134,6 @@ export function DataTable({
           </div>
         </div>
       )}
-      {/* <InvoiceDetailsSheet
-        data={selectedInvoice}
-        isOpen={type === "details" && !!invoiceId}
-        setOpen={setOpen}
-      /> */}
     </div>
   );
 }

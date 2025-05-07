@@ -1,6 +1,9 @@
 import { Fragment, useEffect, useMemo } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 
+import { cn } from "@school-clerk/ui/cn";
 import {
   Collapsible,
   CollapsibleContent,
@@ -39,6 +42,25 @@ import { useSidebarStore } from "./store";
 
 export function AppSideBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const store = useSidebarStore((s) => s);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setTimeout(() => {
+      const links = store.links || {};
+      const entry = Object.entries(links).find(([k, link]) => {
+        return link?.url?.toLocaleLowerCase() === pathname?.toLocaleLowerCase();
+      })?.[1];
+
+      if (entry) {
+        // console.log({ entry, links, pathname });
+        store.update("activeLinkName", entry.name);
+        store.update("activeModule", entry.moduleName);
+      } else {
+        store.update("activeLinkName", null);
+        store.update("activeModule", null);
+      }
+    }, 500);
+  }, [pathname, store.links]);
   useEffect(() => {
     store.reset();
   }, []);
@@ -139,13 +161,14 @@ function SidebarModuleSection({
   title,
   children,
 }: SidebarModuleSectionProps) {
-  const ctx = useSidebar();
   const mod = useSidebarModule();
 
   return (
     <SideBarSectionProvider args={[name]}>
-      <SidebarGroup>
-        {!title || <SidebarGroupLabel>{title}</SidebarGroupLabel>}
+      <SidebarGroup className={cn(mod?.isCurrentModule || "hidden")}>
+        {!title || !mod?.isCurrentModule || (
+          <SidebarGroupLabel>{title}</SidebarGroupLabel>
+        )}
         <SidebarMenu>{children}</SidebarMenu>
       </SidebarGroup>
     </SideBarSectionProvider>
@@ -161,9 +184,10 @@ interface SidebarLinkProps {
 function SidebarLink({ title, icon, name, link, children }: SidebarLinkProps) {
   const Icon = icon ? Icons[icon] : null;
   const ctx = useSidebar();
-  const { siteModule } = useSidebarModule();
+  const { siteModule, isCurrentModule } = useSidebarModule();
   const sectionCtx = useSidebarSection();
 
+  const store = useSidebarStore();
   useEffect(() => {
     ctx.form.setValue(`links.${name}`, {
       moduleName: siteModule?.name,
@@ -189,7 +213,10 @@ function SidebarLink({ title, icon, name, link, children }: SidebarLinkProps) {
         <Collapsible className="group/collapsible" asChild defaultOpen={false}>
           <SidebarMenuItem>
             <CollapsibleTrigger asChild>
-              <SidebarMenuButton tooltip={title}>
+              <SidebarMenuButton
+                className={cn(isCurrentModule || "hidden")}
+                tooltip={title}
+              >
                 {!Icon || <Icon name={icon} className="mr-2 h-4 w-4" />}
                 <span>{title}</span>
                 <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -218,12 +245,19 @@ function SidebarLink({ title, icon, name, link, children }: SidebarLinkProps) {
         </Collapsible>
       ) : (
         <SidebarMenuItem>
-          <SidebarMenuButton asChild>
-            <a href={link}>
+          <SidebarMenuButton
+            asChild
+            variant="outline"
+            className={cn(
+              store?.activeLinkName == name && "bg-muted",
+              isCurrentModule || "hidden",
+            )}
+          >
+            <Link href={link}>
               {!Icon || <Icon className="mr-2 h-4 w-4" />}
               <span>{title}</span>
               {/* <span>aaa</span> */}
-            </a>
+            </Link>
             {/* <File /> */}
             {/* {!Icon || <Icon className="mr-2 h-4 w-4" />}
                         {title} */}
