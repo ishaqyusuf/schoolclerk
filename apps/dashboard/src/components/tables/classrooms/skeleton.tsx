@@ -1,12 +1,12 @@
 import { Skeleton } from "@school-clerk/ui/skeleton";
 import { Table, TableBody, TableCell, TableRow } from "@school-clerk/ui/table";
 
-import { TableHeader } from "./classroom-table-header";
+import { ClassroomTableHeader } from "./classroom-table-header";
 
 export function ClassesSkeleton() {
   return (
     <Table>
-      <TableHeader />
+      {/* <ClassroomTableHeader table={} /> */}
       <TableBody>
         {Array.from({ length: 25 }).map((_, index) => (
           <TableRow key={index.toString()} className="h-[57px]">

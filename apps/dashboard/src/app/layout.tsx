@@ -35,17 +35,6 @@ export default function RootLayout({
       >
         <Toaster />
         {children}
-        {/* <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-        >
-          <NextDevtoolsProvider>{children}</NextDevtoolsProvider>
-          <Analytics />
-          <SpeedInsights />
-          <Toaster />
-          <TailwindIndicator />
-        </ThemeProvider> */}
       </body>
     </html>
   );

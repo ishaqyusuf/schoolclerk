@@ -1,3 +1,5 @@
+"use client";
+
 import { Separator } from "@school-clerk/ui/separator";
 import {
   SidebarInset,

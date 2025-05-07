@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+"use client";
 
 import { ClassroomCreateSheet } from "./classroom-create-sheet";
 
