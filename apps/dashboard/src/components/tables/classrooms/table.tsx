@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { MiddaySearchFilter } from "@/components/midday-search-filter/search-filter";
 import { useClassesParams } from "@/hooks/use-classes-params";
 import {
   getCoreRowModel,
@@ -104,8 +105,17 @@ export function DataTable({
   }, [initialData]);
 
   return (
-    <div>
-      <div className="flex justify-end">
+    <div className="flex flex-col gap-4">
+      <div className="flex">
+        <MiddaySearchFilter
+          placeholder={"Search"}
+          filterList={[
+            {
+              value: "search",
+            },
+          ]}
+        />
+        <div className="flex-1"></div>
         <Button
           variant="outline"
           onClick={() =>

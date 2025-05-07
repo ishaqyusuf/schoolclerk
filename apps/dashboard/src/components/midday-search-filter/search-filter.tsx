@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "@/hooks/use-debounce";
-import { searchParamsParser } from "@/utils/search-params";
+import { SearchParamsKeys, searchParamsParser } from "@/utils/search-params";
 import { useQueryStates } from "nuqs";
 import { useHotkeys } from "react-hotkeys-hook";
 
@@ -31,7 +31,11 @@ interface Props {
   // setFilters;
   defaultSearch?;
   placeholder?;
-  filterList?;
+  filterList?: {
+    value: SearchParamsKeys;
+    options?: {}[];
+    label?: string;
+  }[];
 }
 
 export function MiddaySearchFilter({
@@ -154,7 +158,14 @@ export function MiddaySearchFilter({
         </form>
         <FilterList
           loading={streaming}
-          onRemove={setFilters}
+          onRemove={(obj) => {
+            setFilters(obj);
+            const clearPrompt = Object.entries(obj).find(
+              ([k, v]) => k == "search" || k == "_q",
+            )?.[0];
+            console.log({ clearPrompt });
+            if (clearPrompt) setPrompt(null);
+          }}
           filters={filters}
           filterList={filterList}
         />
@@ -166,54 +177,56 @@ export function MiddaySearchFilter({
         side="bottom"
         align="end"
       >
-        {filterList?.map((f) => (
-          <DropdownMenuGroup key={f.value}>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger>
-                <Icon name={searchIcons[f.value]} className={"mr-2 size-4"} />
-                <span className="capitalize">
-                  {f.value?.split(".").join(" ")}
-                </span>
-              </DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent
-                  sideOffset={14}
-                  alignOffset={-4}
-                  className="p-0"
-                >
-                  {f.options?.length > 20 ? (
-                    <>
-                      <SelectTag
-                        headless
-                        data={f.options?.map((opt) => ({
-                          label: opt.label,
-                          id: opt.value,
-                        }))}
-                        onChange={(selected) => {
-                          optionSelected(f.value, {
-                            ...selected,
-                            value: selected.id,
-                          });
-                        }}
-                      />
-                    </>
-                  ) : (
-                    f.options?.map(({ label, value }, _i) => (
-                      <DropdownMenuCheckboxItem
-                        onCheckedChange={() => {
-                          optionSelected(f.value, { value, label });
-                        }}
-                        key={_i}
-                      >
-                        {label}
-                      </DropdownMenuCheckboxItem>
-                    ))
-                  )}
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
-            </DropdownMenuSub>
-          </DropdownMenuGroup>
-        ))}
+        {filterList
+          ?.filter((a) => a.value != "search")
+          ?.map((f) => (
+            <DropdownMenuGroup key={f.value}>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <Icon name={searchIcons[f.value]} className={"mr-2 size-4"} />
+                  <span className="capitalize">
+                    {f.value?.split(".").join(" ")}
+                  </span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent
+                    sideOffset={14}
+                    alignOffset={-4}
+                    className="p-0"
+                  >
+                    {f.options?.length > 20 ? (
+                      <>
+                        <SelectTag
+                          headless
+                          data={f.options?.map((opt) => ({
+                            label: opt.label,
+                            id: opt.value,
+                          }))}
+                          onChange={(selected) => {
+                            optionSelected(f.value, {
+                              ...selected,
+                              value: selected.id,
+                            });
+                          }}
+                        />
+                      </>
+                    ) : (
+                      f.options?.map(({ label, value }, _i) => (
+                        <DropdownMenuCheckboxItem
+                          onCheckedChange={() => {
+                            optionSelected(f.value, { value, label });
+                          }}
+                          key={_i}
+                        >
+                          {label}
+                        </DropdownMenuCheckboxItem>
+                      ))
+                    )}
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
+            </DropdownMenuGroup>
+          ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );
