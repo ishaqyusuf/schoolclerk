@@ -67,8 +67,8 @@ export function AppSideBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const linkModules = getLinkModules();
   if (!store.render) return null;
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader>
+    <Sidebar collapsible="icon" className="">
+      <SidebarHeader className="bg-white">
         <ModuleSwitcher />
       </SidebarHeader>
       <SidebarContent className="bg-white">
