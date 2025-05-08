@@ -40,7 +40,7 @@ export function NoResults() {
   const [params, setParams] = useQueryStates({
     ...studentPageQuery,
   });
-
+  const q = useStudentParams();
   return (
     <div className="flex items-center justify-center ">
       <div className="mt-40 flex flex-col items-center">
@@ -53,9 +53,13 @@ export function NoResults() {
 
         <Button
           variant="outline"
-          onClick={() => setParams(null, { shallow: false })}
+          onClick={() =>
+            q.setParams({
+              createStudent: true,
+            })
+          }
         >
-          Clear filters
+          Create
         </Button>
       </div>
     </div>
