@@ -1,6 +1,5 @@
 import { getCachedClassRooms } from "@/actions/cache/classrooms";
-import { loadSaasProfile } from "@/actions/cookies/login-session";
-import { createBillableAction } from "@/actions/create-school-fee";
+import { getSaasProfileCookie } from "@/actions/cookies/login-session";
 import { useClassesParams } from "@/hooks/use-classes-params";
 import { useTermBillableParams } from "@/hooks/use-term-billable-params";
 import { useAction } from "next-safe-action/hooks";
@@ -16,7 +15,7 @@ export function BillableForm({}) {
   const { billableId, setParams } = useTermBillableParams();
   const { watch, control, trigger, handleSubmit, formState } =
     useBillableFormContext();
-  const create = useAction(createBillableAction, {
+  const create = useAction({} as any, {
     onSuccess(args) {
       setParams(null);
     },
@@ -26,7 +25,7 @@ export function BillableForm({}) {
   });
 
   const classList = useAsyncMemo(async () => {
-    const profile = await loadSaasProfile();
+    const profile = await getSaasProfileCookie();
     const classList = await getCachedClassRooms(profile.termId);
     return classList;
   }, [billableId]);

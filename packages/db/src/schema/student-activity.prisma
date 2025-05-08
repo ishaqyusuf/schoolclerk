@@ -95,6 +95,7 @@ model StudentPayment {
     id                    String             @id @default(uuid())
     amount                Float?
     paymentType           String
+    description           String
     studentFee            StudentFee?        @relation(fields: [studentBillPaymentsId], references: [id])
     type                  StudentPaymentType
     studentBillPaymentsId String?

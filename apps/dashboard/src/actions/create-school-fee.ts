@@ -20,6 +20,7 @@ export async function createSchoolFee(data: CreateBillableForm) {
         amount: data.amount,
         schoolProfileId: profile.schoolId,
         description: data.description,
+
         feeHistory: {
           create: {
             amount: data.amount,

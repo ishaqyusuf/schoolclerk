@@ -1,5 +1,5 @@
 import { getCachedClassRooms } from "@/actions/cache/classrooms";
-import { loadSaasProfile } from "@/actions/cookies/login-session";
+import { getSaasProfileCookie } from "@/actions/cookies/login-session";
 import { createSchoolFeeAction } from "@/actions/create-school-fee";
 import { useSchoolFeeParams } from "@/hooks/use-school-fee-params";
 import { useAction } from "next-safe-action/hooks";
@@ -25,7 +25,7 @@ export function SchoolFeeForm({}) {
   });
 
   const classList = useAsyncMemo(async () => {
-    const profile = await loadSaasProfile();
+    const profile = await getSaasProfileCookie();
     const classList = await getCachedClassRooms(profile.termId);
     return classList;
   }, [schoolFeeId]);

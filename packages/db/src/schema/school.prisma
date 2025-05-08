@@ -24,6 +24,7 @@ model SchoolProfile {
     account                SaasAccount      @relation(fields: [accountId], references: [id])
     fees                   Fees[]
     wallets                Wallet[]
+    guardians              Guardians[]
 
     @@unique([name, subDomain, slug, deletedAt])
 }

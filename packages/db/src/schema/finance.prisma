@@ -11,12 +11,15 @@ model Wallet {
     createdAt DateTime? @default(now()) @db.Timestamp(0)
     updatedAt DateTime? @updatedAt
     deletedAt DateTime? @db.Timestamp(0)
+
+    @@unique([name, schoolProfileId, sessionTermId])
 }
 
 model WalletTransactions {
     id       String  @id @default(uuid())
     wallet   Wallet? @relation(fields: [walletId], references: [id])
     type     String
+    summary  String?
     amount   Float
     walletId String?
 

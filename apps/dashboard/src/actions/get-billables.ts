@@ -3,11 +3,11 @@ import { SearchParamsType } from "@/utils/search-params";
 
 import { prisma } from "@school-clerk/db";
 
-import { loadSaasProfile } from "./cookies/login-session";
+import { getSaasProfileCookie } from "./cookies/login-session";
 
 export type SchoolFeePageItem = PageItemData<typeof getBillables>;
 export async function getBillables(query: SearchParamsType = {}) {
-  const profile = await loadSaasProfile();
+  const profile = await getSaasProfileCookie();
 
   const fees = await prisma.fees.findMany({
     where: {},

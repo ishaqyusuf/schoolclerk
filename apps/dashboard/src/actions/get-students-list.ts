@@ -3,10 +3,10 @@ import { whereStudents } from "@/utils/where.students";
 
 import { prisma } from "@school-clerk/db";
 
-import { loadSaasProfile } from "./cookies/login-session";
+import { getSaasProfileCookie } from "./cookies/login-session";
 
 export async function getStudentsListAction(query: SearchParamsType = {}) {
-  const profile = await loadSaasProfile();
+  const profile = await getSaasProfileCookie();
   const where = whereStudents(query);
   const students = await prisma.students.findMany({
     where,

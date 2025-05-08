@@ -12,6 +12,28 @@ export const createAcadSessionSchema = z.object({
     )
     .optional(),
 });
+export const studentFeePaymentSchema = z.object({
+  studentFeeId: z.string(),
+  amount: z.number(),
+  paymentType: z.string(),
+  termId: z.string(),
+});
+export const studentFeeSchema = z.object({
+  feeId: z.string(),
+  title: z.string().optional(),
+  amount: z.number().optional(),
+  paid: z.number().optional(),
+  studentTermId: z.string().optional(),
+});
+export const createStudentSchema = z.object({
+  name: z.string(),
+  surname: z.string(),
+  otherName: z.string(),
+  gender: z.enum(["Male", "Female"]),
+  dob: z.date().nullable(),
+  classRoomId: z.string().nullable(),
+  fees: z.array(studentFeeSchema).optional(),
+});
 export const createSchoolFeeSchema = z.object({
   title: z.string(),
   description: z.string().optional(),

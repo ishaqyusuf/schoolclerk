@@ -11,8 +11,23 @@ model Students {
     schoolProfile   SchoolProfile?       @relation(fields: [schoolProfileId], references: [id])
     schoolProfileId String?
     sessionForms    StudentSessionForm[]
+    guardians       StudentGuardians[]
 
     @@unique([name, surname, otherName, schoolProfileId])
+}
+
+model StudentGuardians {
+    id          String    @id @default(uuid())
+    guardian    Guardians @relation(fields: [guardiansId], references: [id])
+    guardiansId String
+    relation    String?
+
+    createdAt DateTime? @default(now()) @db.Timestamp(0)
+    updatedAt DateTime? @updatedAt
+    deletedAt DateTime? @db.Timestamp(0)
+
+    student   Students? @relation(fields: [studentId], references: [id])
+    studentId String
 }
 
 enum Gender {

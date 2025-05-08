@@ -1,5 +1,6 @@
 import {
   parseAsArrayOf,
+  parseAsBoolean,
   parseAsJson,
   parseAsString,
   parseAsStringEnum,
@@ -27,6 +28,7 @@ export function useClassesParams(options?: { shallow: boolean }) {
       type: parseAsStringEnum(["edit", "create", "details", "comments"]),
       lineItems: parseAsJson<z.infer<typeof lineItemSchema>>(),
       currency: parseAsString,
+      createStudent: parseAsBoolean,
     },
     options,
   );
