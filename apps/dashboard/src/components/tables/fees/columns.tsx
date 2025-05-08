@@ -1,6 +1,5 @@
 "use client";
 
-import { ClassRoomPageItem } from "@/actions/get-class-rooms";
 import { SchoolFeePageItem } from "@/actions/get-school-fees";
 import { ColumnDef } from "@tanstack/react-table";
 
