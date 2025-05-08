@@ -16,9 +16,23 @@ export async function getCachedClassRooms(termId) {
       });
       const classrooms = await prisma.classRoom.findMany({
         where,
-        include: {},
+        include: {
+          classRoomDepartments: {
+            include: {},
+          },
+        },
       });
-      return classrooms;
+      return classrooms
+        .map((c) => {
+          return c.classRoomDepartments.map((d) => {
+            return {
+              departmentId: d.id,
+              classId: c.id,
+              name: [c.name, d.departmentName].filter(Boolean).join(" "),
+            };
+          });
+        })
+        .flat();
     },
     [`classrooms_${termId}`],
     {

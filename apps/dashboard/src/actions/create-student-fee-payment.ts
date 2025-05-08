@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { transaction } from "@/utils/db";
 import { sum } from "@/utils/utils";
 import z from "zod";
 
@@ -12,61 +13,63 @@ import { actionClient } from "./safe-action";
 import { studentFeePaymentSchema } from "./schema";
 
 export type CreateClassRoom = z.infer<typeof studentFeePaymentSchema>;
-export async function createStudentFeePayment(data: CreateClassRoom) {
+export async function createStudentFeePayment(
+  data: CreateClassRoom,
+  tx: typeof prisma = prisma,
+) {
   const profile = await getSaasProfileCookie();
 
-  return await prisma.$transaction(async (tx) => {
-    const wallet = await getWalletAction(data.paymentType);
-    const p = await tx.studentFee.update({
-      where: {
-        id: data.studentFeeId,
-      },
-      data: {
-        receipts: {
-          create: {
-            type: "FEE",
-            paymentType: data.paymentType,
-            amount: data.amount,
-            schoolProfile: {
-              connect: { id: profile.schoolId },
-            },
-            studentTermForm: {
-              connect: { id: data.termId },
-            },
-            walletTransaction: {
-              create: {
-                amount: data.amount,
-                walletId: wallet.id,
-                type: data.paymentType,
-              },
+  const wallet = await getWalletAction(data.paymentType, tx);
+  const p = await tx.studentFee.update({
+    where: {
+      id: data.studentFeeId,
+      studentTermFormId: data.termId,
+    },
+    data: {
+      receipts: {
+        create: {
+          type: "FEE",
+          description: "",
+          paymentType: data.paymentType,
+          amount: data.amount,
+          schoolProfile: {
+            connect: { id: profile.schoolId },
+          },
+          studentTermForm: {
+            connect: { id: data.termId },
+          },
+
+          walletTransaction: {
+            create: {
+              amount: data.amount,
+              walletId: wallet.id,
+              type: data.paymentType,
             },
           },
         },
       },
-      select: {
-        billAmount: true,
-        receipts: {
-          select: {
-            amount: true,
-          },
+      pendingAmount: {
+        decrement: data.amount,
+      },
+    },
+    select: {
+      billAmount: true,
+      receipts: {
+        select: {
+          amount: true,
         },
       },
-    });
-    const paid = sum(p.receipts, "amount");
-    await tx.studentFee.update({
-      where: {
-        id: data.studentFeeId,
-      },
-      data: {
-        pendingAmount: p.billAmount - paid,
-      },
-    });
+    },
   });
+
+  return p;
 }
 export const createStudentFeePaymentAction = actionClient
   .schema(studentFeePaymentSchema)
   .action(async ({ parsedInput: data }) => {
-    const resp = await createStudentFeePayment(data);
-    revalidatePath("/student/list");
-    return resp;
+    return await transaction(async (tx) => {
+      const resp = await createStudentFeePayment(data, tx);
+      revalidatePath("/student/list");
+      return resp;
+    });
   });

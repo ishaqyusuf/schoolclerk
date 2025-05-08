@@ -23,3 +23,6 @@ export function sum<T>(array?: T[], key: keyof T | undefined = undefined) {
 export function randomInt(max, min = 5) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+export function studentDisplayName({ name, surname, otherName }) {
+  return [name, surname, otherName].filter(Boolean).join(" ");
+}

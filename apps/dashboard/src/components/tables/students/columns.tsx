@@ -1,24 +1,19 @@
 "use client";
 
 import { ClassRoomPageItem } from "@/actions/get-class-rooms";
+import { StudentData } from "@/actions/get-students-list";
 import { ColumnDef } from "@tanstack/react-table";
 
-export type ClassItem = ClassRoomPageItem;
-export const columns: ColumnDef<ClassItem>[] = [
+export type Student = StudentData;
+export const columns: ColumnDef<StudentData>[] = [
   {
     header: "Classroom",
     accessorKey: "class_room",
-    cell: ({ row: { original: item } }) => (
-      <div>
-        {item.classRoom?.name === item.departmentName
-          ? ""
-          : item.classRoom.name}
-      </div>
-    ),
+    cell: ({ row: { original: item } }) => <div>{item.studentName}</div>,
   },
   {
     header: "Department",
     accessorKey: "department",
-    cell: ({ row: { original: item } }) => <div>{item.departmentName}</div>,
+    cell: ({ row: { original: item } }) => <div>{item.department}</div>,
   },
 ];

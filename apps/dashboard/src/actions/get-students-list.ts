@@ -1,10 +1,13 @@
+import { PageItemData } from "@/types";
 import { SearchParamsType } from "@/utils/search-params";
+import { studentDisplayName } from "@/utils/utils";
 import { whereStudents } from "@/utils/where.students";
 
 import { prisma } from "@school-clerk/db";
 
 import { getSaasProfileCookie } from "./cookies/login-session";
 
+export type StudentData = PageItemData<typeof getStudentsListAction>;
 export async function getStudentsListAction(query: SearchParamsType = {}) {
   const profile = await getSaasProfileCookie();
   const where = whereStudents(query);
@@ -51,6 +54,22 @@ export async function getStudentsListAction(query: SearchParamsType = {}) {
   });
   return {
     meta: {},
-    data: students.map((student) => {}),
+    data: students.map((student) => {
+      const [
+        {
+          termForms: [termForm],
+          id,
+          classroomDepartment: {
+            classRoom: { name: className },
+            departmentName,
+          },
+        },
+      ] = student.sessionForms;
+      return {
+        id: student.id,
+        studentName: studentDisplayName(student),
+        department: Array.from(new Set([className, departmentName])).join(" "),
+      };
+    }),
   };
 }

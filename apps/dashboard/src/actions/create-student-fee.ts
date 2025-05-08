@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { AsyncFnType } from "@/types";
+import { transaction } from "@/utils/db";
 import z from "zod";
 
 import { prisma } from "@school-clerk/db";
@@ -11,29 +13,40 @@ import { actionClient } from "./safe-action";
 import { studentFeeSchema } from "./schema";
 
 export type Type = z.infer<typeof studentFeeSchema>;
-export async function createStudentFee(data: Type) {
+export async function createStudentFee(data: Type, tx: typeof prisma = prisma) {
   const profile = await getSaasProfileCookie();
 
-  return await prisma.$transaction(async (tx) => {
-    const wallet = await getWalletAction(data.title);
-    const fee = await tx.studentFee.create({
-      data: {
-        billAmount: data.amount,
-        pendingAmount: data.amount,
-        schoolProfileId: profile.schoolId,
-        studentTermFormId: data.studentTermId,
-        schoolSessionId: profile.sessionId,
-        feeHistoryId: data.feeId,
-        // description: data.feeDescription
+  const wallet = await getWalletAction(data.title, tx);
+  const fee = await tx.studentFee.create({
+    data: {
+      billAmount: data.amount,
+      pendingAmount: data.amount,
+      schoolProfileId: profile.schoolId,
+      studentTermFormId: data.studentTermId,
+      schoolSessionId: profile.sessionId,
+      feeHistoryId: data.feeId,
+      description: data.title,
+      // description: data.feeDescription
+    },
+    select: {
+      id: true,
+      description: true,
+      studentTermForm: {
+        select: {
+          sessionTermId: true,
+        },
       },
-    });
-    // const student = await prisma
+    },
   });
+  return fee;
+  // const student = await prisma
 }
 export const createStudentFeeAction = actionClient
   .schema(studentFeeSchema)
   .action(async ({ parsedInput: data }) => {
-    const resp = await createStudentFee(data);
-    revalidatePath("/student/list");
-    return resp;
+    const res = await transaction(async (tx) => {
+      const resp = await createStudentFee(data, tx);
+      revalidatePath("/student/list");
+      return resp;
+    });
   });

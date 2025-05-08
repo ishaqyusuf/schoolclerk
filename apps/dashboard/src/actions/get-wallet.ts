@@ -4,9 +4,9 @@ import { prisma } from "@school-clerk/db";
 
 import { getSaasProfileCookie } from "./cookies/login-session";
 
-export async function getWalletAction(name) {
+export async function getWalletAction(name, tx: typeof prisma = prisma) {
   const profile = await getSaasProfileCookie();
-  const wallet = await prisma.wallet.upsert({
+  const wallet = await tx.wallet.upsert({
     where: {
       name_schoolProfileId_sessionTermId: {
         name,

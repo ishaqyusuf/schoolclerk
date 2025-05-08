@@ -33,6 +33,7 @@ import { CollapseForm } from "../collapse-form";
 import Formdate from "../controls/form-date";
 import FormInput from "../controls/form-input";
 import FormSelect from "../controls/form-select";
+import { CurrencyInput, NumberInput } from "../currency-input";
 import { CustomSheetContentPortal } from "../custom-sheet-content";
 import { FormDebugBtn } from "../form-debug-btn";
 import { Icons } from "../icons";
@@ -42,13 +43,14 @@ import { SubmitButton } from "../submit-button";
 
 export function Form({}) {
   const { setParams } = useTermBillableParams();
-  const { watch, control, trigger, handleSubmit, formState } =
+  const { watch, control, getValues, trigger, handleSubmit, formState } =
     useStudentFormContext();
   const toast = useLoadingToast();
   const create = useAction(createStudentAction, {
     onSuccess(args) {
       console.log(args);
-      setParams(null);
+      toast.success("Created");
+      // setParams(null);
     },
     onError(e) {
       console.log(e);
@@ -62,7 +64,7 @@ export function Form({}) {
     return classList;
   }, []);
   return (
-    <form className="grid gap-4" onSubmit={handleSubmit(create.execute)}>
+    <div className="grid gap-4">
       <FormInput name="name" label="Name" control={control} />
       <div className="grid grid-cols-2 gap-4">
         <FormInput name="surname" label="Surname" control={control} />
@@ -79,7 +81,7 @@ export function Form({}) {
         control={control}
         name="classRoomId"
         options={classList}
-        valueKey="id"
+        valueKey="departmentId"
         label="Class"
         titleKey="name"
       />
@@ -107,10 +109,18 @@ export function Form({}) {
       <CustomSheetContentPortal>
         <div className="flex justify-end">
           <FormDebugBtn />
-          <SubmitButton isSubmitting={create?.isExecuting}>Submit</SubmitButton>
+          <form
+            onSubmit={handleSubmit(create.execute, (arg) => {
+              toast.error("Invalid Form");
+            })}
+          >
+            <SubmitButton isSubmitting={create?.isExecuting}>
+              Submit
+            </SubmitButton>
+          </form>
         </div>
       </CustomSheetContentPortal>
-    </form>
+    </div>
   );
 }
 function PaymentSection({}) {
@@ -137,7 +147,7 @@ function PaymentSection({}) {
               disabled={!!fees.fields.find((a) => a.feeId == l.feeId)}
               onClick={(e) => {
                 fees.append({
-                  feeId: l.feeId,
+                  feeId: l.historyId,
                   amount: l.amount,
                   paid: 0,
                   title: l.title,
@@ -164,9 +174,14 @@ function PaymentSection({}) {
           {fees.fields.map((field, fi) => (
             <TableRow key={field._id}>
               <TableCell>{field.title}</TableCell>
-              <TableCell>{field.amount}</TableCell>
+              <TableCell>
+                <NumberInput prefix="NGN " value={field.amount} readOnly />
+              </TableCell>
               <TableCell>
                 <FormInput
+                  midday={{
+                    prefix: "NGN ",
+                  }}
                   control={control}
                   name={`fees.${fi}.paid`}
                   type="number"

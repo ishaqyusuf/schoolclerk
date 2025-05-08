@@ -18,6 +18,7 @@ export function useStudentParams(options?: { shallow: boolean }) {
   const [params, setParams] = useQueryStates(
     {
       createStudent: parseAsBoolean,
+      openStudentId: parseAsString,
     },
     options,
   );
