@@ -30,6 +30,7 @@ export async function getStudentsListAction(query: SearchParamsType = {}) {
             select: {
               departmentLevel: true,
               departmentName: true,
+              id: true,
               classRoom: {
                 select: {
                   id: true,
@@ -57,18 +58,20 @@ export async function getStudentsListAction(query: SearchParamsType = {}) {
     data: students.map((student) => {
       const [
         {
-          termForms: [termForm],
+          termForms: [termForm] = [],
           id,
           classroomDepartment: {
-            classRoom: { name: className },
+            classRoom: { name: className } = {},
             departmentName,
-          },
-        },
-      ] = student.sessionForms;
+            id: departmentId,
+          } = {},
+        } = {},
+      ] = student.sessionForms ?? [];
       return {
         id: student.id,
         studentName: studentDisplayName(student),
         department: Array.from(new Set([className, departmentName])).join(" "),
+        departmentId,
       };
     }),
   };

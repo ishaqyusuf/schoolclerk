@@ -16,7 +16,6 @@ export type Type = z.infer<typeof studentFeeSchema>;
 export async function createStudentFee(data: Type, tx: typeof prisma = prisma) {
   const profile = await getSaasProfileCookie();
 
-  const wallet = await getWalletAction(data.title, tx);
   const fee = await tx.studentFee.create({
     data: {
       billAmount: data.amount,
@@ -33,6 +32,7 @@ export async function createStudentFee(data: Type, tx: typeof prisma = prisma) {
       description: true,
       studentTermForm: {
         select: {
+          id: true,
           sessionTermId: true,
         },
       },

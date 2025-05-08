@@ -97,24 +97,30 @@ model StudentPurchase {
 }
 
 model StudentPayment {
-    id                    String             @id @default(uuid())
-    amount                Float?
-    paymentType           String
-    description           String?
-    studentFee            StudentFee?        @relation(fields: [studentBillPaymentsId], references: [id])
-    type                  StudentPaymentType
+    id          String             @id @default(uuid())
+    amount      Float?
+    paymentType String
+    description String?
+    type        StudentPaymentType
+
+    createdAt DateTime? @default(now()) @db.Timestamp(0)
+    updatedAt DateTime? @updatedAt
+    deletedAt DateTime? @db.Timestamp(0)
+
+    studentFee            StudentFee? @relation(fields: [studentBillPaymentsId], references: [id])
     studentBillPaymentsId String?
-    createdAt             DateTime?          @default(now()) @db.Timestamp(0)
-    updatedAt             DateTime?          @updatedAt
-    deletedAt             DateTime?          @db.Timestamp(0)
-    studentTermForm       StudentTermForm?   @relation(fields: [studentTermFormId], references: [id])
-    studentTermFormId     String?
-    schoolProfile         SchoolProfile?     @relation(fields: [schoolProfileId], references: [id])
-    schoolProfileId       String?
-    walletTransaction     WalletTransactions @relation(fields: [walletTransactionsId], references: [id])
-    studentPurchase       StudentPurchase?   @relation(fields: [studentPurchaseId], references: [id])
-    studentPurchaseId     String?
-    walletTransactionsId  String             @unique
+
+    studentTermForm   StudentTermForm @relation(fields: [studentTermFormId], references: [id])
+    studentTermFormId String
+
+    schoolProfile   SchoolProfile @relation(fields: [schoolProfileId], references: [id])
+    schoolProfileId String
+
+    walletTransaction    WalletTransactions? @relation(fields: [walletTransactionsId], references: [id])
+    walletTransactionsId String?             @unique
+
+    studentPurchase   StudentPurchase? @relation(fields: [studentPurchaseId], references: [id])
+    studentPurchaseId String?
 }
 
 enum StudentPaymentType {

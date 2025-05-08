@@ -100,10 +100,9 @@ export const createStudentAction = actionClient
   .action(async ({ parsedInput: data }) => {
     const student = await transaction(async (tx) => {
       if (!data?.guardian?.name) data.guardian = null;
-      return await createStudent(data, tx);
-    });
-    const payments = transaction(async (tx) => {
-      const respp = await Promise.all(
+      const student = await createStudent(data, tx);
+      console.log(data.fees);
+      const payments = await Promise.all(
         data.fees.map(async (feeData) => {
           const fee = await createStudentFee(
             {
@@ -114,30 +113,63 @@ export const createStudentAction = actionClient
             },
             tx,
           );
-          console.log({ fee });
+          // console.log({ fee });
           if (feeData.paid) {
             const payment = await createStudentFeePayment(
               {
                 studentFeeId: fee.id,
                 amount: feeData.paid,
                 paymentType: fee.description,
-                termId: fee.studentTermForm.sessionTermId,
+                termId: fee.studentTermForm.id,
               },
               tx,
             );
-            console.log({ payment });
+
             return { fee, payment };
           }
           return { fee };
         }),
       );
-      throw new Error("BREAK!");
-      revalidatePath("/student/list");
-
-      return respp;
+      // throw new Error("BRK!");
+      return { student, payments };
     });
-    return {
-      student,
-      payments,
-    };
+    return student;
+    // const payments = transaction(async (tx) => {
+    //   const respp = await Promise.all(
+    //     data.fees.map(async (feeData) => {
+    //       const fee = await createStudentFee(
+    //         {
+    //           amount: feeData.amount,
+    //           feeId: feeData.feeId,
+    //           studentTermId: student?.sessionForms?.[0]?.termForms?.[0]?.id,
+    //           title: feeData.title,
+    //         },
+    //         tx,
+    //       );
+    //       console.log({ fee });
+    //       if (feeData.paid) {
+    //         const payment = await createStudentFeePayment(
+    //           {
+    //             studentFeeId: fee.id,
+    //             amount: feeData.paid,
+    //             paymentType: fee.description,
+    //             termId: fee.studentTermForm.sessionTermId,
+    //           },
+    //           tx,
+    //         );
+    //         console.log({ payment });
+    //         return { fee, payment };
+    //       }
+    //       return { fee };
+    //     }),
+    //   );
+    //   throw new Error("BREAK!");
+    //   revalidatePath("/student/list");
+
+    //   return respp;
+    // });
+    // return {
+    //   student,
+    //   payments,
+    // };
   });

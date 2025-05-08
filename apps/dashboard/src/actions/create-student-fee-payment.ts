@@ -20,16 +20,50 @@ export async function createStudentFeePayment(
   const profile = await getSaasProfileCookie();
 
   const wallet = await getWalletAction(data.paymentType, tx);
+  console.log({ wallet, data });
+
+  // const r = await tx.studentPayment.create({
+  //   data: {
+  //     studentFee: {
+  //       connect: {
+  //         id: data.studentFeeId,
+  //       },
+  //     },
+  //     type: "FEE",
+  //     description: "x",
+  //     paymentType: data.paymentType,
+  //     amount: data.amount,
+  //     schoolProfile: {
+  //       connect: { id: profile.schoolId },
+  //     },
+  //     studentTermForm: {
+  //       connect: { id: data.termId },
+  //     },
+  //     walletTransaction: {
+  //       create: {
+  //         amount: data.amount,
+  //         // walletId: wallet.id,
+  //         type: data.paymentType,
+
+  //         wallet: {
+  //           connect: {
+  //             id: wallet.id,
+  //           },
+  //         },
+  //       },
+  //     },
+  //   },
+  // });
+  // console.log({ r });
   const p = await tx.studentFee.update({
     where: {
       id: data.studentFeeId,
-      studentTermFormId: data.termId,
     },
     data: {
       receipts: {
         create: {
           type: "FEE",
-          description: "",
+          description: "x",
           paymentType: data.paymentType,
           amount: data.amount,
           schoolProfile: {
@@ -38,12 +72,17 @@ export async function createStudentFeePayment(
           studentTermForm: {
             connect: { id: data.termId },
           },
-
           walletTransaction: {
             create: {
               amount: data.amount,
-              walletId: wallet.id,
+              // walletId: wallet.id,
               type: data.paymentType,
+
+              wallet: {
+                connect: {
+                  id: wallet.id,
+                },
+              },
             },
           },
         },
