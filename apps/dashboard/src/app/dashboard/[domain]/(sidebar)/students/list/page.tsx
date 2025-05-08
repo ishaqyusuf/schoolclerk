@@ -8,16 +8,10 @@ import { searchParamsCache } from "./search-params";
 
 export default async function Page({ searchParams, params }) {
   const searchQuery = searchParamsCache.parse(await searchParams);
-  const { q: query, sort, start, end, statuses, customers, page } = searchQuery;
+  const { search } = searchQuery;
 
   const loadingKey = JSON.stringify({
-    q: query,
-    sort,
-    start,
-    end,
-    statuses,
-    customers,
-    page,
+    search,
   });
   return (
     <div className="flex flex-col gap-6">

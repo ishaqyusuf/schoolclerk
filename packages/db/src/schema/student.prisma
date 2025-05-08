@@ -13,7 +13,7 @@ model Students {
     sessionForms    StudentSessionForm[]
     guardians       StudentGuardians[]
 
-    @@unique([name, surname, otherName, schoolProfileId])
+    @@unique([name, surname, otherName, schoolProfileId, deletedAt])
 }
 
 model StudentGuardians {

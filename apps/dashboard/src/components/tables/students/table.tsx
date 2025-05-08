@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
+import { StudentData } from "@/actions/get-students-list";
 import { MiddaySearchFilter } from "@/components/midday-search-filter/search-filter";
 import { useClassesParams } from "@/hooks/use-classes-params";
 import { useStudentParams } from "@/hooks/use-student-params";
+import { PageFilterData } from "@/types";
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -16,20 +18,21 @@ import { Spinner } from "@school-clerk/ui/spinner";
 import { Table, TableBody } from "@school-clerk/ui/table";
 
 import { ClassroomTableHeader } from "./classroom-table-header";
-import { columns, type ClassItem } from "./columns";
+import { columns } from "./columns";
 import { ClassRow } from "./row";
 
 type Props = {
-  data: ClassItem[];
+  data: StudentData[];
   loadMore: ({
     from,
     to,
   }: {
     from: number;
     to: number;
-  }) => Promise<{ data: ClassItem[]; meta: { count: number } }>;
+  }) => Promise<{ data: StudentData[]; meta: { count: number } }>;
   pageSize: number;
   hasNextPage: boolean;
+  filterDataPromise;
 };
 
 export function DataTable({
@@ -37,13 +40,16 @@ export function DataTable({
   loadMore,
   pageSize,
   hasNextPage: initialHasNextPage,
+  filterDataPromise,
 }: Props) {
   const [data, setData] = useState(initialData);
   const [from, setFrom] = useState(pageSize);
   const { ref, inView } = useInView();
   const [hasNextPage, setHasNextPage] = useState(initialHasNextPage);
   const { setParams, openStudentId } = useStudentParams();
-
+  const filterData: PageFilterData[] = filterDataPromise
+    ? use(filterDataPromise)
+    : [];
   //   const deleteInvoice = useAction(deleteInvoiceAction);
   //   const { date_format: dateFormat } = useUserContext((state) => state.data);
 
@@ -110,11 +116,17 @@ export function DataTable({
       <div className="flex">
         <MiddaySearchFilter
           placeholder={"Search"}
-          filterList={[
-            {
-              value: "search",
-            },
-          ]}
+          filterList={filterData}
+          // filterList={[
+          //   {
+          //     value: "search",
+          //   },
+          //   {
+          //     value: "departmentId",
+          //     label: 'Department',
+          //     options:
+          //   }
+          // ]}
         />
         <div className="flex-1"></div>
         <Button

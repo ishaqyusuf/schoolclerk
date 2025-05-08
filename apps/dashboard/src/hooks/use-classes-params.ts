@@ -1,6 +1,5 @@
 import {
   parseAsArrayOf,
-  parseAsBoolean,
   parseAsJson,
   parseAsString,
   parseAsStringEnum,

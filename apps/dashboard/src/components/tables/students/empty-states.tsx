@@ -1,7 +1,9 @@
 "use client";
 
+import { studentPageQuery } from "@/app/dashboard/[domain]/(sidebar)/students/list/search-params";
 import { useClassesParams } from "@/hooks/use-classes-params";
 import { useStudentParams } from "@/hooks/use-student-params";
+import { useQueryStates } from "nuqs";
 
 import { Button } from "@school-clerk/ui/button";
 
@@ -35,7 +37,9 @@ export function EmptyState() {
 }
 
 export function NoResults() {
-  const { setParams } = useClassesParams();
+  const [params, setParams] = useQueryStates({
+    ...studentPageQuery,
+  });
 
   return (
     <div className="flex items-center justify-center ">

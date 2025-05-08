@@ -1,4 +1,4 @@
-import { PageItemData } from "@/types";
+import { PageDataMeta, PageItemData } from "@/types";
 import { SearchParamsType } from "@/utils/search-params";
 import { studentDisplayName } from "@/utils/utils";
 import { whereStudents } from "@/utils/where.students";
@@ -10,6 +10,7 @@ import { getSaasProfileCookie } from "./cookies/login-session";
 export type StudentData = PageItemData<typeof getStudentsListAction>;
 export async function getStudentsListAction(query: SearchParamsType = {}) {
   const profile = await getSaasProfileCookie();
+  query.sessionId = profile.sessionId;
   const where = whereStudents(query);
   const students = await prisma.students.findMany({
     where,
@@ -54,11 +55,12 @@ export async function getStudentsListAction(query: SearchParamsType = {}) {
     },
   });
   return {
-    meta: {},
+    meta: {} as PageDataMeta,
     data: students.map((student) => {
       const [{ termForms: [termForm] = [], id, classroomDepartment }] =
         student.sessionForms;
-      const className = classroomDepartment?.classRoom?.name;
+      const classRoom = classroomDepartment?.classRoom;
+      const className = classRoom?.name;
       const departmentName = classroomDepartment?.departmentName;
       const departmentId = classroomDepartment?.id;
       return {
@@ -66,6 +68,7 @@ export async function getStudentsListAction(query: SearchParamsType = {}) {
         studentName: studentDisplayName(student),
         department: Array.from(new Set([className, departmentName])).join(" "),
         departmentId,
+        classId: classRoom?.id,
       };
     }),
   };

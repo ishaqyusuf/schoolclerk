@@ -115,6 +115,7 @@ export const Icons = {
   book: Book,
   building: Building,
   calendar: Calendar,
+
   "calendar-check": CalendarCheck,
   "clipboard-list": ClipboardList,
   coins: Coins,

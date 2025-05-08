@@ -12,6 +12,9 @@ export const createAcadSessionSchema = z.object({
     )
     .optional(),
 });
+export const deleteStudentSchema = z.object({
+  studentId: z.string(),
+});
 export const studentFeePaymentSchema = z.object({
   studentFeeId: z.string(),
   amount: z.number(),

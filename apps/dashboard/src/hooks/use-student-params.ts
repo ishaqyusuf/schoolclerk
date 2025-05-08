@@ -1,3 +1,4 @@
+import { studentPageQuery } from "@/app/dashboard/[domain]/(sidebar)/students/list/search-params";
 import {
   parseAsArrayOf,
   parseAsBoolean,
@@ -19,6 +20,7 @@ export function useStudentParams(options?: { shallow: boolean }) {
     {
       createStudent: parseAsBoolean,
       openStudentId: parseAsString,
+      // ...studentPageQuery,
     },
     options,
   );

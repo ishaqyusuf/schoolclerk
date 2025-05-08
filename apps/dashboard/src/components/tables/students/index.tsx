@@ -1,3 +1,6 @@
+import { getCachedClassRooms } from "@/actions/cache/classrooms";
+import { studentFilterData } from "@/actions/cache/student-filter-data";
+import { getSaasProfileCookie } from "@/actions/cookies/login-session";
 import { getClassRooms } from "@/actions/get-class-rooms";
 import { getStudentsListAction } from "@/actions/get-students-list";
 
@@ -33,6 +36,8 @@ export async function StudentsTable({
     statuses,
     customers,
   };
+  const profile = await getSaasProfileCookie();
+  const filterDataPromise = studentFilterData(profile.termId);
 
   async function loadMore({ from, to }: { from: number; to: number }) {
     "use server";
@@ -43,11 +48,12 @@ export async function StudentsTable({
       // from: from + 1,
       // searchQuery: query,
       sort,
+      ...query,
       // filter,
     });
   }
-
   const { data, meta } = await getStudentsListAction({
+    ...query,
     // searchQuery: query,
     // sort,
     // filter,
@@ -70,6 +76,7 @@ export async function StudentsTable({
   }
   return (
     <DataTable
+      filterDataPromise={filterDataPromise}
       data={data}
       loadMore={loadMore}
       pageSize={pageSize}

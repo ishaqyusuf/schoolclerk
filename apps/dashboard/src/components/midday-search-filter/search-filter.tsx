@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "@/hooks/use-debounce";
+import { PageFilterData } from "@/types";
 import { SearchParamsKeys, searchParamsParser } from "@/utils/search-params";
 import { useQueryStates } from "nuqs";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -31,11 +32,7 @@ interface Props {
   // setFilters;
   defaultSearch?;
   placeholder?;
-  filterList?: {
-    value: SearchParamsKeys;
-    options?: {}[];
-    label?: string;
-  }[];
+  filterList?: PageFilterData[];
 }
 
 export function MiddaySearchFilter({

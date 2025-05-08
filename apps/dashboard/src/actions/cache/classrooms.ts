@@ -28,7 +28,9 @@ export async function getCachedClassRooms(termId) {
             return {
               departmentId: d.id,
               classId: c.id,
-              name: [c.name, d.departmentName].filter(Boolean).join(" "),
+              name: Array.from(new Set([c.name, d.departmentName]))
+                .filter(Boolean)
+                .join(" "),
             };
           });
         })

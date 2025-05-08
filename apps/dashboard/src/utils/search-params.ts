@@ -61,12 +61,14 @@ export const searchParamsParser: {
   "trashed.only": parseAsBoolean,
   termId: parseAsString,
   sessionId: parseAsString,
+  departmentId: parseAsString,
 };
 export const searchSchema = z.object({
   size: z.number().optional(),
   start: z.number().optional(),
   termId: z.string().optional(),
   sessionId: z.string().optional(),
+  departmentId: z.string().optional(),
   "with.trashed": z.boolean().optional(),
   "trashed.only": z.boolean().optional(),
 });

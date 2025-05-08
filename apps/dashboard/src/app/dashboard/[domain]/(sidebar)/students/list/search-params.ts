@@ -1,16 +1,8 @@
-import {
-  createSearchParamsCache,
-  parseAsArrayOf,
-  parseAsInteger,
-  parseAsString,
-} from "nuqs/server";
+import { SearchParamsKeys } from "@/utils/search-params";
+import { createSearchParamsCache, parseAsString } from "nuqs/server";
 
-export const searchParamsCache = createSearchParamsCache({
-  page: parseAsInteger.withDefault(0),
-  q: parseAsString.withDefault(""),
-  sort: parseAsArrayOf(parseAsString),
-  start: parseAsString,
-  end: parseAsString,
-  statuses: parseAsArrayOf(parseAsString),
-  customers: parseAsArrayOf(parseAsString),
-});
+export const studentPageQuery = {
+  search: parseAsString,
+  departmentId: parseAsString,
+} as { [k in SearchParamsKeys]: any };
+export const searchParamsCache = createSearchParamsCache(studentPageQuery);
