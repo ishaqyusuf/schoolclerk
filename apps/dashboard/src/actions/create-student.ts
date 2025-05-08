@@ -12,6 +12,7 @@ import { createStudentSchema } from "./schema";
 export type CreateClassRoom = z.infer<typeof createStudentSchema>;
 export async function createStudent(data: CreateClassRoom) {
   const profile = await getSaasProfileCookie();
+
   return await prisma.$transaction(async (tx) => {
     const student = await tx.students.create({
       data: {
@@ -21,6 +22,27 @@ export async function createStudent(data: CreateClassRoom) {
         surname: data.surname,
         schoolProfileId: profile.schoolId,
         dob: data.dob,
+        guardians: !data.guardian
+          ? undefined
+          : {
+              create: {
+                guardian: {
+                  connect: data.guardian.id
+                    ? {
+                        id: data.guardian.id,
+                      }
+                    : undefined,
+                  create: !data.guardian.id
+                    ? {
+                        name: data.guardian.name,
+                        phone: data.guardian.phone,
+                        phone2: data.guardian.phone2,
+                        schoolProfileId: profile.schoolId,
+                      }
+                    : undefined,
+                },
+              },
+            },
         sessionForms: {
           create: {
             schoolSessionId: profile.sessionId,
