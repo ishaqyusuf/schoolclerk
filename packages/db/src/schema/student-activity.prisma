@@ -56,10 +56,15 @@ model FeeHistory {
     term             SessionTerm   @relation(fields: [termId], references: [id])
     termId           String
     studentBillables StudentFee[]
+
+    createdAt DateTime? @default(now()) @db.Timestamp(0)
+    updatedAt DateTime? @updatedAt
+    deletedAt DateTime? @db.Timestamp(0)
 }
 
 model StudentFee {
-    id        String    @id @default(uuid())
+    id String @id @default(uuid())
+
     createdAt DateTime? @default(now()) @db.Timestamp(0)
     updatedAt DateTime? @updatedAt
     deletedAt DateTime? @db.Timestamp(0)

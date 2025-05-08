@@ -65,6 +65,7 @@ export async function createStudent(data: CreateClassRoom) {
 export const createStudentAction = actionClient
   .schema(createStudentSchema)
   .action(async ({ parsedInput: data }) => {
+    return { data };
     const resp = await createStudent(data);
     revalidatePath("/student/list");
     return resp;

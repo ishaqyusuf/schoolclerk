@@ -86,7 +86,7 @@ export function CustomSheetContentPortal({ children, sheetId = null }) {
 export function CustomSheetContent({ children = null, className = "" }) {
   return (
     <ScrollArea className={cn("-mx-4 flex-1 px-4", className)}>
-      {children}
+      <div className="pb-16">{children}</div>
     </ScrollArea>
   );
 }

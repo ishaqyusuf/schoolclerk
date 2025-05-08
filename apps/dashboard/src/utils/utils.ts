@@ -20,3 +20,6 @@ export function sum<T>(array?: T[], key: keyof T | undefined = undefined) {
       .reduce((sum, val) => (sum || 0) + (val as number), 0) || 0
   );
 }
+export function randomInt(max, min = 5) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}

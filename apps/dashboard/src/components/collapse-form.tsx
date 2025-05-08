@@ -10,7 +10,7 @@ export function CollapseForm({ label, children }) {
     <Collapsible>
       <CollapsibleTrigger className="w-full">
         <Button className="w-full" size="xs" variant="secondary" type="button">
-          Parent
+          {label}
         </Button>
       </CollapsibleTrigger>
       <CollapsibleContent>
