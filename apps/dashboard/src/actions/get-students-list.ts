@@ -56,17 +56,11 @@ export async function getStudentsListAction(query: SearchParamsType = {}) {
   return {
     meta: {},
     data: students.map((student) => {
-      const [
-        {
-          termForms: [termForm] = [],
-          id,
-          classroomDepartment: {
-            classRoom: { name: className } = {},
-            departmentName,
-            id: departmentId,
-          } = {},
-        } = {},
-      ] = student.sessionForms ?? [];
+      const [{ termForms: [termForm] = [], id, classroomDepartment }] =
+        student.sessionForms;
+      const className = classroomDepartment?.classRoom?.name;
+      const departmentName = classroomDepartment?.departmentName;
+      const departmentId = classroomDepartment?.id;
       return {
         id: student.id,
         studentName: studentDisplayName(student),
