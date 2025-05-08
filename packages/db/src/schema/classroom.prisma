@@ -16,20 +16,19 @@ model ClassRoom {
 
 model ClassRoomDepartment {
     // if a class has multiple sub classes: eg: js 1 A, js 1 B etc.
-    id                    String                   @id @default(uuid())
+    id                    String                @id @default(uuid())
     departmentName        String?
     classRoomsId          String?
     schoolProfileId       String?
     departmentLevel       Float?
-    classRoom             ClassRoom?               @relation(fields: [classRoomsId], references: [id])
-    createdAt             DateTime?                @default(now()) @db.Timestamp(0)
-    updatedAt             DateTime?                @updatedAt
-    deletedAt             DateTime?                @db.Timestamp(0)
-    SchoolProfile         SchoolProfile?           @relation(fields: [schoolProfileId], references: [id])
+    classRoom             ClassRoom?            @relation(fields: [classRoomsId], references: [id])
+    createdAt             DateTime?             @default(now()) @db.Timestamp(0)
+    updatedAt             DateTime?             @updatedAt
+    deletedAt             DateTime?             @db.Timestamp(0)
+    SchoolProfile         SchoolProfile?        @relation(fields: [schoolProfileId], references: [id])
     attendance            ClassRoomAttendance[]
     studentAttendanceList StudentAttendance[]
     subjects              DepartmentSubject[]
-    billables             DepartmentTermBillable[]
     studentSessionForms   StudentSessionForm[]
 
     @@unique([classRoomsId, departmentName])

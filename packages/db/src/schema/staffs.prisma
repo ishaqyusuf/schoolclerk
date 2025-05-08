@@ -1,13 +1,22 @@
 model StaffProfile {
     id                      String                @id @default(uuid())
+    name                    String
     classRoomAttendanceList ClassRoomAttendance[]
-    SchoolProfile           SchoolProfile?        @relation(fields: [schoolProfileId], references: [id])
+    schoolProfile           SchoolProfile?        @relation(fields: [schoolProfileId], references: [id])
     schoolProfileId         String?
     subjects                StaffSubject[]
+    termProfiles            StaffSessionProfile[]
+    createdAt               DateTime?             @default(now()) @db.Timestamp(0)
+    updatedAt               DateTime?             @updatedAt
+    deletedAt               DateTime?             @db.Timestamp(0)
+}
 
-    createdAt DateTime? @default(now()) @db.Timestamp(0)
-    updatedAt DateTime? @updatedAt
-    deletedAt DateTime? @db.Timestamp(0)
+model StaffSessionProfile {
+    id String @id @default(uuid())
+
+    bills          Bills[]
+    staffProfileId String
+    staffProfile   StaffProfile @relation(fields: [staffProfileId], references: [id])
 }
 
 model StaffSubject {

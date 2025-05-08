@@ -59,15 +59,14 @@ export const searchParamsParser: {
   start: parseAsInteger.withDefault(0),
   "with.trashed": parseAsBoolean,
   "trashed.only": parseAsBoolean,
-
-  // "sales.priority": parseAsArrayOf(
-  //     parseAsStringLiteral(Object.keys(SalesPriority)),
-  //     ARRAY_DELIMITER,
-  // ),
+  termId: parseAsString,
+  sessionId: parseAsString,
 };
 export const searchSchema = z.object({
   size: z.number().optional(),
   start: z.number().optional(),
+  termId: z.string().optional(),
+  sessionId: z.string().optional(),
   "with.trashed": z.boolean().optional(),
   "trashed.only": z.boolean().optional(),
 });

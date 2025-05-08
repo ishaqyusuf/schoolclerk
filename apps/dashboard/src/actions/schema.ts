@@ -12,6 +12,21 @@ export const createAcadSessionSchema = z.object({
     )
     .optional(),
 });
+export const createSchoolFeeSchema = z.object({
+  title: z.string(),
+  amount: z.number(),
+});
+export const createBillableSchema = z.object({
+  title: z.string(),
+  amount: z.number(),
+  departments: z
+    .array(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .optional(),
+});
 export const createClassroomSchema = z.object({
   className: z.string().min(1),
   departments: z

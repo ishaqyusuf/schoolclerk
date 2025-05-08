@@ -18,7 +18,7 @@ model StudentAttendance {
     isPresent             Boolean?             @default(false)
     comment               String?
     StudentTermForm       StudentTermForm?     @relation(fields: [studentTermFormId], references: [id])
-    SchoolProfile         SchoolProfile?       @relation(fields: [schoolProfileId], references: [id])
+    schoolProfile         SchoolProfile?       @relation(fields: [schoolProfileId], references: [id])
     schoolProfileId       String?
     studentTermFormId     String?
     createdAt             DateTime?            @default(now()) @db.Timestamp(0)
@@ -30,76 +30,88 @@ model StudentAttendance {
     departmentId          String?
 }
 
-model Billable {
-    id              String         @id @default(uuid())
-    title           String
-    description     String?
-    createdAt       DateTime?      @default(now()) @db.Timestamp(0)
-    updatedAt       DateTime?      @updatedAt
-    deletedAt       DateTime?      @db.Timestamp(0)
-    schoolProfile   SchoolProfile? @relation(fields: [schoolProfileId], references: [id])
-    schoolProfileId String?
+model Fees {
+    id          String  @id @default(uuid())
+    title       String
+    description String?
+    amount      Float?
 
-    priceHistories BillablePriceHistory[]
+    createdAt DateTime? @default(now()) @db.Timestamp(0)
+    updatedAt DateTime? @updatedAt
+    deletedAt DateTime? @db.Timestamp(0)
 
-    @@unique([title, schoolProfileId])
+    feeHistory      FeeHistory[]
+    schoolProfileId String
+    schoolProfile   SchoolProfile @relation(fields: [schoolProfileId], references: [id])
 }
 
-model BillablePriceHistory {
-    id                  String                   @id @default(uuid())
-    amount              Float
-    createdAt           DateTime?                @default(now()) @db.Timestamp(0)
-    updatedAt           DateTime?                @updatedAt
-    deletedAt           DateTime?                @db.Timestamp(0)
-    billable            Billable?                @relation(fields: [billableId], references: [id])
-    billableId          String?
-    studentBillables    StudentBillable[]
-    departmentBillables DepartmentTermBillable[]
+model FeeHistory {
+    id               String        @id @default(uuid())
+    amount           Float
+    current          Boolean       @default(false)
+    fee              Fees          @relation(fields: [feeId], references: [id])
+    feeId            String
+    schoolSession    SchoolSession @relation(fields: [schoolSessionId], references: [id])
+    schoolSessionId  String
+    term             SessionTerm   @relation(fields: [termId], references: [id])
+    termId           String
+    studentBillables StudentFee[]
 }
 
-model DepartmentTermBillable {
-    id                   String                @id @default(uuid())
-    createdAt            DateTime?             @default(now()) @db.Timestamp(0)
-    updatedAt            DateTime?             @updatedAt
-    deletedAt            DateTime?             @db.Timestamp(0)
-    billablePrice        BillablePriceHistory? @relation(fields: [billablesPriceId], references: [id])
-    billablesPriceId     String?
-    classRoomDepartments ClassRoomDepartment[]
-    sessionTerm          SessionTerm?          @relation(fields: [sessionTermId], references: [id])
-    sessionTermId        String?
-    schoolSession        SchoolSession?        @relation(fields: [schoolSessionId], references: [id])
-    schoolSessionId      String?
-}
+model StudentFee {
+    id        String    @id @default(uuid())
+    createdAt DateTime? @default(now()) @db.Timestamp(0)
+    updatedAt DateTime? @updatedAt
+    deletedAt DateTime? @db.Timestamp(0)
 
-model StudentBillable {
-    id                String                      @id @default(uuid())
-    createdAt         DateTime?                   @default(now()) @db.Timestamp(0)
-    updatedAt         DateTime?                   @updatedAt
-    deletedAt         DateTime?                   @db.Timestamp(0)
-    billable          BillablePriceHistory?       @relation(fields: [billablePriceId], references: [id])
     description       String?
     billAmount        Float
     pendingAmount     Float
     billablePriceId   String?
-    schoolProfile     SchoolProfile?              @relation(fields: [schoolProfileId], references: [id])
+    schoolProfile     SchoolProfile?   @relation(fields: [schoolProfileId], references: [id])
     schoolProfileId   String?
-    studentTermForm   StudentTermForm?            @relation(fields: [studentTermFormId], references: [id])
+    studentTermForm   StudentTermForm? @relation(fields: [studentTermFormId], references: [id])
     studentTermFormId String?
-    schoolSession     SchoolSession?              @relation(fields: [schoolSessionId], references: [id])
+    schoolSession     SchoolSession?   @relation(fields: [schoolSessionId], references: [id])
     schoolSessionId   String?
-    receipts          StudentBillPaymentReceipt[]
+    receipts          StudentPayment[]
+    price             FeeHistory?      @relation(fields: [feeHistoryId], references: [id])
+    feeHistoryId      String?
 }
 
-model StudentBillPaymentReceipt {
-    id                    String           @id @default(uuid())
+model StudentPurchase {
+    id          String           @id @default(uuid())
+    description String
+    title       String
+    amount      Float
+    paid        Float
+    createdAt   DateTime?        @default(now()) @db.Timestamp(0)
+    updatedAt   DateTime?        @updatedAt
+    deletedAt   DateTime?        @db.Timestamp(0)
+    payments    StudentPayment[]
+}
+
+model StudentPayment {
+    id                    String             @id @default(uuid())
     amount                Float?
-    studentBillable       StudentBillable? @relation(fields: [studentBillPaymentsId], references: [id])
+    paymentType           String
+    studentFee            StudentFee?        @relation(fields: [studentBillPaymentsId], references: [id])
+    type                  StudentPaymentType
     studentBillPaymentsId String?
-    createdAt             DateTime?        @default(now()) @db.Timestamp(0)
-    updatedAt             DateTime?        @updatedAt
-    deletedAt             DateTime?        @db.Timestamp(0)
-    StudentTermForm       StudentTermForm? @relation(fields: [studentTermFormId], references: [id])
+    createdAt             DateTime?          @default(now()) @db.Timestamp(0)
+    updatedAt             DateTime?          @updatedAt
+    deletedAt             DateTime?          @db.Timestamp(0)
+    studentTermForm       StudentTermForm?   @relation(fields: [studentTermFormId], references: [id])
     studentTermFormId     String?
-    SchoolProfile         SchoolProfile?   @relation(fields: [schoolProfileId], references: [id])
+    schoolProfile         SchoolProfile?     @relation(fields: [schoolProfileId], references: [id])
     schoolProfileId       String?
+    walletTransaction     WalletTransactions @relation(fields: [walletTransactionsId], references: [id])
+    studentPurchase       StudentPurchase?   @relation(fields: [studentPurchaseId], references: [id])
+    studentPurchaseId     String?
+    walletTransactionsId  String             @unique
+}
+
+enum StudentPaymentType {
+    FEE
+    PURCHASE
 }
