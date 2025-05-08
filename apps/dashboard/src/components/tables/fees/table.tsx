@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { MiddaySearchFilter } from "@/components/midday-search-filter/search-filter";
 import { useClassesParams } from "@/hooks/use-classes-params";
+import { useSchoolFeeParams } from "@/hooks/use-school-fee-params";
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -41,12 +42,12 @@ export function DataTable({
   const [from, setFrom] = useState(pageSize);
   const { ref, inView } = useInView();
   const [hasNextPage, setHasNextPage] = useState(initialHasNextPage);
-  const { setParams, invoiceId, type } = useClassesParams();
+  const { setParams } = useSchoolFeeParams();
 
   //   const deleteInvoice = useAction(deleteInvoiceAction);
   //   const { date_format: dateFormat } = useUserContext((state) => state.data);
 
-  const selectedInvoice = data.find((invoice) => invoice?.id === invoiceId);
+  // const selectedInvoice = data.find((invoice) => invoice?.id === invoiceId);
 
   const setOpen = (id?: string) => {
     if (id) {
@@ -120,11 +121,11 @@ export function DataTable({
           variant="outline"
           onClick={() =>
             setParams({
-              type: "create",
+              createSchoolFee: true,
             })
           }
         >
-          Create invoice
+          Create Fee
         </Button>
       </div>
       <Table>

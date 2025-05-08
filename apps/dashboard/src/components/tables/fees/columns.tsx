@@ -11,6 +11,8 @@ export const columns: ColumnDef<Item>[] = [
     accessorKey: "class_room",
     cell: ({ row: { original: item } }) => (
       <div>
+        <div>{item.title}</div>
+        <div>{item.description}</div>
         {/* {item.classRoom?.name === item.departmentName
           ? ""
           : item.classRoom.name} */}
@@ -18,10 +20,8 @@ export const columns: ColumnDef<Item>[] = [
     ),
   },
   {
-    header: "Department",
+    header: "Amount",
     accessorKey: "department",
-    cell: ({ row: { original: item } }) => (
-      <div>{/* {item.departmentName} */}</div>
-    ),
+    cell: ({ row: { original: item } }) => <div>{item.amount}</div>,
   },
 ];

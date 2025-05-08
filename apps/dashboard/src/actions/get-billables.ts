@@ -1,6 +1,5 @@
 import { PageItemData } from "@/types";
 import { SearchParamsType } from "@/utils/search-params";
-import { whereStudents } from "@/utils/where.students";
 
 import { prisma } from "@school-clerk/db";
 
