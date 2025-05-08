@@ -1,11 +1,12 @@
 "use client";
 
 import { useClassesParams } from "@/hooks/use-classes-params";
+import { useStudentParams } from "@/hooks/use-student-params";
 
 import { Button } from "@school-clerk/ui/button";
 
 export function EmptyState() {
-  const { setParams } = useClassesParams();
+  const { setParams } = useStudentParams();
 
   return (
     <div className="flex items-center justify-center ">

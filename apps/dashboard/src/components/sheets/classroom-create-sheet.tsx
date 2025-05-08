@@ -1,8 +1,14 @@
 import { useClassesParams } from "@/hooks/use-classes-params";
 
-import { Sheet } from "@school-clerk/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@school-clerk/ui/sheet";
 
 import { FormContext } from "../classroom/form-context";
+import { Form } from "../forms/classroom-form";
 import { ClassroomSheetContent } from "./classroom-sheet-content";
 
 export function ClassroomCreateSheet({}) {
@@ -12,7 +18,12 @@ export function ClassroomCreateSheet({}) {
   return (
     <FormContext>
       <Sheet open={isOpen} onOpenChange={() => setParams(null)}>
-        <ClassroomSheetContent />
+        <SheetContent className="flex flex-col gap-2">
+          <SheetHeader>
+            <SheetTitle>Classroom Form</SheetTitle>
+          </SheetHeader>
+          <Form />
+        </SheetContent>
       </Sheet>
     </FormContext>
   );

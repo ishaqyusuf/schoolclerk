@@ -11,13 +11,19 @@ export function FormContext({ children }) {
       name: "",
       surname: "",
       otherName: "",
-      gender: "MALE",
+      gender: "Male",
       dob: null,
       classRoomId: null,
       fees: [],
+      guardian: {
+        id: null,
+        name: null,
+        phone: null,
+        phone2: null,
+      },
     },
   });
 
   return <FormProvider {...form}>{children}</FormProvider>;
 }
-export const useSchoolFeeFormContext = () => useFormContext<Type>();
+export const useStudentFormContext = () => useFormContext<Type>();
