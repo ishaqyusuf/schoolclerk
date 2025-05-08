@@ -1,7 +1,7 @@
 import { CreateClassRoom } from "@/actions/create-classroom";
 import { createClassroomSchema } from "@/actions/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
 
 export function FormContext({ children }) {
   const form = useForm<CreateClassRoom>({
@@ -14,3 +14,4 @@ export function FormContext({ children }) {
 
   return <FormProvider {...form}>{children}</FormProvider>;
 }
+export const useClassroomFormContext = () => useFormContext<CreateClassRoom>();

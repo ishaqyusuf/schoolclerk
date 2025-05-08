@@ -1,6 +1,5 @@
 import { getCachedClassRooms } from "@/actions/cache/classrooms";
 import { getSaasProfileCookie } from "@/actions/cookies/login-session";
-import { useClassesParams } from "@/hooks/use-classes-params";
 import { useTermBillableParams } from "@/hooks/use-term-billable-params";
 import { useAction } from "next-safe-action/hooks";
 import { useAsyncMemo } from "use-async-memo";

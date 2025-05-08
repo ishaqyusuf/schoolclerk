@@ -2,7 +2,6 @@ import { getCachedClassRooms } from "@/actions/cache/classrooms";
 import { getCachedFees } from "@/actions/cache/fees";
 import { getSaasProfileCookie } from "@/actions/cookies/login-session";
 import { createStudentAction } from "@/actions/create-student";
-import { useClassesParams } from "@/hooks/use-classes-params";
 import { useLoadingToast } from "@/hooks/use-loading-toast";
 import { useTermBillableParams } from "@/hooks/use-term-billable-params";
 import { timeout } from "@/utils/timeout";

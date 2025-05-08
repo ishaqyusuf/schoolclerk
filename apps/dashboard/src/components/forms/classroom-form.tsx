@@ -1,5 +1,6 @@
 import { getCachedClassRooms } from "@/actions/cache/classrooms";
 import { getSaasProfileCookie } from "@/actions/cookies/login-session";
+import { createClassroomAction } from "@/actions/create-classroom";
 import { useClassesParams } from "@/hooks/use-classes-params";
 import { useTermBillableParams } from "@/hooks/use-term-billable-params";
 import { useAction } from "next-safe-action/hooks";
@@ -8,14 +9,16 @@ import { useAsyncMemo } from "use-async-memo";
 import { Button } from "@school-clerk/ui/button";
 
 import { useBillableFormContext } from "../billable/form-context";
+import { useClassroomFormContext } from "../classroom/form-context";
 import FormInput from "../controls/form-input";
+import { CustomSheetContentPortal } from "../custom-sheet-content";
 import { SubmitButton } from "../submit-button";
 
 export function Form({}) {
-  const { billableId, setParams } = useTermBillableParams();
+  const { setParams } = useClassesParams();
   const { watch, control, trigger, handleSubmit, formState } =
-    useBillableFormContext();
-  const create = useAction({} as any, {
+    useClassroomFormContext();
+  const create = useAction(createClassroomAction, {
     onSuccess(args) {
       setParams(null);
     },
@@ -24,28 +27,26 @@ export function Form({}) {
     },
   });
 
-  const classList = useAsyncMemo(async () => {
-    const profile = await getSaasProfileCookie();
-    const classList = await getCachedClassRooms(profile.termId);
-    return classList;
-  }, [billableId]);
   return (
-    <form className="grid gap-4" onSubmit={handleSubmit(create.execute)}>
-      <FormInput name="title" label="Billable Title" control={control} />
-      <FormInput name="amount" type="number" label="Amount" control={control} />
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          onClick={() => {
-            trigger().then((e) => {
-              console.log(formState);
-            });
-          }}
-        >
-          AA
-        </Button>
-        <SubmitButton isSubmitting={create?.isExecuting}>Submit</SubmitButton>
-      </div>
-    </form>
+    <div className="grid gap-4">
+      <FormInput name="className" label="Class Name" control={control} />
+      <CustomSheetContentPortal>
+        <form onSubmit={handleSubmit(create.execute)}>
+          <div className="flex justify-end">
+            <Button
+              type="button"
+              onClick={() => {
+                trigger().then((e) => {
+                  console.log(formState);
+                });
+              }}
+            ></Button>
+            <SubmitButton isSubmitting={create?.isExecuting}>
+              Submit
+            </SubmitButton>
+          </div>
+        </form>
+      </CustomSheetContentPortal>
+    </div>
   );
 }

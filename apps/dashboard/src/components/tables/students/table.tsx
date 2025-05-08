@@ -17,9 +17,9 @@ import { Button } from "@school-clerk/ui/button";
 import { Spinner } from "@school-clerk/ui/spinner";
 import { Table, TableBody } from "@school-clerk/ui/table";
 
-import { ClassroomTableHeader } from "./classroom-table-header";
 import { columns } from "./columns";
 import { ClassRow } from "./row";
+import { TableHeaderComponent } from "./table-header";
 
 type Props = {
   data: StudentData[];
@@ -141,7 +141,7 @@ export function DataTable({
         </Button>
       </div>
       <Table>
-        <ClassroomTableHeader table={table} />
+        <TableHeaderComponent table={table} />
 
         <TableBody>
           {table.getRowModel().rows.map((row) => (

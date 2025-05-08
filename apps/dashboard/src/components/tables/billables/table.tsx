@@ -14,9 +14,9 @@ import { Button } from "@school-clerk/ui/button";
 import { Spinner } from "@school-clerk/ui/spinner";
 import { Table, TableBody } from "@school-clerk/ui/table";
 
-import { ClassroomTableHeader } from "./classroom-table-header";
 import { columns, type ClassItem } from "./columns";
 import { ClassRow } from "./row";
+import { TableHeaderComponent } from "./table-header";
 
 type Props = {
   data: ClassItem[];
@@ -41,16 +41,14 @@ export function DataTable({
   const [from, setFrom] = useState(pageSize);
   const { ref, inView } = useInView();
   const [hasNextPage, setHasNextPage] = useState(initialHasNextPage);
-  const { setParams, invoiceId, type } = useClassesParams();
+  const { setParams } = useClassesParams();
 
   //   const deleteInvoice = useAction(deleteInvoiceAction);
   //   const { date_format: dateFormat } = useUserContext((state) => state.data);
 
-  const selectedInvoice = data.find((invoice) => invoice?.id === invoiceId);
-
   const setOpen = (id?: string) => {
     if (id) {
-      setParams({ type: "details", invoiceId: id });
+      setParams({});
     } else {
       setParams(null);
     }
@@ -116,19 +114,10 @@ export function DataTable({
           ]}
         />
         <div className="flex-1"></div>
-        <Button
-          variant="outline"
-          onClick={() =>
-            setParams({
-              type: "create",
-            })
-          }
-        >
-          Create invoice
-        </Button>
+        <Button variant="outline">Create invoice</Button>
       </div>
       <Table>
-        <ClassroomTableHeader table={table} />
+        <TableHeaderComponent table={table} />
 
         <TableBody>
           {table.getRowModel().rows.map((row) => (

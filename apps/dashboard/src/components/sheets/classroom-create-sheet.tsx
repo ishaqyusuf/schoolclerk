@@ -8,23 +8,30 @@ import {
 } from "@school-clerk/ui/sheet";
 
 import { FormContext } from "../classroom/form-context";
+import { CustomSheet, CustomSheetContent } from "../custom-sheet-content";
 import { Form } from "../forms/classroom-form";
-import { ClassroomSheetContent } from "./classroom-sheet-content";
 
 export function ClassroomCreateSheet({}) {
-  const { type, setParams } = useClassesParams();
-  const isOpen = Boolean(type == "create" || type == "edit");
+  const { createClassroom, setParams } = useClassesParams();
+  const isOpen = Boolean(createClassroom);
 
   return (
     <FormContext>
-      <Sheet open={isOpen} onOpenChange={() => setParams(null)}>
-        <SheetContent className="flex flex-col gap-2">
-          <SheetHeader>
-            <SheetTitle>Classroom Form</SheetTitle>
-          </SheetHeader>
+      <CustomSheet
+        floating
+        rounded
+        size="lg"
+        open={isOpen}
+        onOpenChange={() => setParams(null)}
+        sheetName="create-student"
+      >
+        <SheetHeader>
+          <SheetTitle>Student Form</SheetTitle>
+        </SheetHeader>
+        <CustomSheetContent className="flex flex-col gap-2">
           <Form />
-        </SheetContent>
-      </Sheet>
+        </CustomSheetContent>
+      </CustomSheet>
     </FormContext>
   );
 }

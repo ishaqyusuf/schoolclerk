@@ -8,7 +8,7 @@ import { TableHead, TableHeader, TableRow } from "@school-clerk/ui/table";
 
 import { columns } from "./columns";
 
-export function ClassroomTableHeader({ table }) {
+export function TableHeaderComponent({ table }) {
   const { setParams, sort } = useClassesParams({ shallow: false });
   const [column, value] = sort || [];
 

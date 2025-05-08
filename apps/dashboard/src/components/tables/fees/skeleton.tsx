@@ -1,7 +1,7 @@
 import { Skeleton } from "@school-clerk/ui/skeleton";
 import { Table, TableBody, TableCell, TableRow } from "@school-clerk/ui/table";
 
-import { ClassroomTableHeader } from "./classroom-table-header";
+import { ClassroomTableHeader } from "./table-header";
 
 export function ClassesSkeleton() {
   return (

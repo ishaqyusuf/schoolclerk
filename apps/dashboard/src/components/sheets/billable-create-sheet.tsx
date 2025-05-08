@@ -1,4 +1,3 @@
-import { useClassesParams } from "@/hooks/use-classes-params";
 import { useTermBillableParams } from "@/hooks/use-term-billable-params";
 
 import {
