@@ -23,12 +23,12 @@ export function ClassroomCreateSheet({}) {
         size="lg"
         open={isOpen}
         onOpenChange={() => setParams(null)}
-        sheetName="create-student"
+        sheetName="create-classroom"
       >
         <SheetHeader>
           <SheetTitle>Student Form</SheetTitle>
         </SheetHeader>
-        <CustomSheetContent className="flex flex-col gap-2">
+        <CustomSheetContent className="mb-5 flex flex-col gap-2 bg-red-400">
           <Form />
         </CustomSheetContent>
       </CustomSheet>

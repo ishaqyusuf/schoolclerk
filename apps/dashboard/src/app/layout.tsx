@@ -4,6 +4,8 @@ import localFont from "next/font/local";
 import "@school-clerk/ui/globals.css";
 import "@/styles/globals.css";
 
+import { TailwindIndicator } from "@/components/tailwind-indicator";
+
 import { cn } from "@school-clerk/ui/cn";
 import { Toaster } from "@school-clerk/ui/toaster";
 
@@ -33,6 +35,7 @@ export default function RootLayout({
           fontHeading.variable,
         )}
       >
+        <TailwindIndicator />
         <Toaster />
         {children}
       </body>

@@ -28,7 +28,7 @@ export function Form({}) {
   });
 
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-4 ">
       <FormInput name="className" label="Class Name" control={control} />
       <CustomSheetContentPortal>
         <form onSubmit={handleSubmit(create.execute)}>
