@@ -47,6 +47,8 @@ model Bills {
     staffSessionProfileId String?
     Wallet                Wallet?              @relation(fields: [walletId], references: [id])
     walletId              String?
+    billPayment           BillPayment?         @relation(fields: [billPaymentId], references: [id])
+    billPaymentId         String?
 }
 
 enum BillType {
@@ -77,4 +79,5 @@ model BillPayment {
     transaction   WalletTransactions @relation(fields: [transactionId], references: [id])
     invoiceId     String             @unique
     invoice       BillInvoice        @relation(fields: [invoiceId], references: [id])
+    bills         Bills[]
 }

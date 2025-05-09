@@ -10,7 +10,7 @@ import { Sheet, SheetContent, SheetContentProps } from "@school-clerk/ui/sheet";
 import Portal from "./portal";
 
 const sheetContentVariant = cva(
-  "flex flex-col h-screens   h-[100vh] w-full overflow-x-hidden ",
+  "flex flex-col h-screens   h-[80vh] w-full overflow-x-hidden ",
   {
     variants: {
       floating: {
