@@ -38,7 +38,7 @@ type Link = {
   }[];
 };
 const _section = (
-  name: sectionNames,
+  name: any,
   title?: string,
   links?: Link[],
   access: Access[] = [],
@@ -148,6 +148,10 @@ export const linkModules = [
   ]),
 
   _module("Bursary", "wallet", "Finance & Payments", [
+    _section("dashboard", null, [
+      _link("Dashboard", "dashboard", "/finance").access(_role.is("Admin"))
+        .data,
+    ]),
     _section("main", "Fees", [
       _link("Fee Management", "coins", "/finance/fees").access(
         _role.is("Admin"),

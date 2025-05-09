@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { transaction } from "@/utils/db";
 import z from "zod";
 
@@ -37,7 +37,9 @@ export const createSchoolFeeAction = actionClient
   .schema(createBillableSchema)
   .action(async ({ parsedInput: data }) => {
     return await transaction(async (tx) => {
+      const profile = await getSaasProfileCookie();
       const resp = await createSchoolFee(data, tx);
+      revalidateTag(`fees_${profile.termId}`);
       revalidatePath("/academic/classes");
       return resp;
     });

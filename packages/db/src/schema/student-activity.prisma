@@ -64,10 +64,10 @@ model FeeHistory {
 model StudentFee {
     id String @id @default(uuid())
 
-    createdAt DateTime? @default(now()) @db.Timestamp(0)
-    updatedAt DateTime? @updatedAt
-    deletedAt DateTime? @db.Timestamp(0)
-
+    createdAt         DateTime?        @default(now()) @db.Timestamp(0)
+    updatedAt         DateTime?        @updatedAt
+    deletedAt         DateTime?        @db.Timestamp(0)
+    feeTitle          String?
     description       String?
     billAmount        Float
     pendingAmount     Float

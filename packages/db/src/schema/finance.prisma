@@ -2,7 +2,7 @@ model Wallet {
     id              String               @id @default(uuid())
     name            String
     schoolProfile   SchoolProfile?       @relation(fields: [schoolProfileId], references: [id])
-    type            WalletType?
+    type            String?
     schoolProfileId String?
     sessionTerm     SessionTerm?         @relation(fields: [sessionTermId], references: [id])
     sessionTermId   String?
@@ -17,9 +17,9 @@ model Wallet {
 }
 
 model WalletTransactions {
-    id       String      @id @default(uuid())
-    wallet   Wallet?     @relation(fields: [walletId], references: [id])
-    type     WalletType?
+    id       String  @id @default(uuid())
+    wallet   Wallet? @relation(fields: [walletId], references: [id])
+    type     String?
     summary  String?
     amount   Float
     walletId String?
@@ -72,7 +72,7 @@ model BillableHistory {
 
 model Bills {
     id          String  @id @default(uuid())
-    // title       String
+    title       String
     description String?
 
     amount Float?
@@ -89,9 +89,9 @@ model Bills {
     walletId              String?
     billPayment           BillPayment?         @relation(fields: [billPaymentId], references: [id])
     billPaymentId         String?
-    Billable              Billable?            @relation(fields: [billableId], references: [id])
+    billable              Billable?            @relation(fields: [billableId], references: [id])
     billableId            String?
-    BillableHistory       BillableHistory?     @relation(fields: [billableHistoryId], references: [id])
+    billableHistory       BillableHistory?     @relation(fields: [billableHistoryId], references: [id])
     billableHistoryId     String?
 }
 

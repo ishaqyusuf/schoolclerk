@@ -1,14 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { AsyncFnType } from "@/types";
 import { transaction } from "@/utils/db";
 import z from "zod";
 
 import { prisma } from "@school-clerk/db";
 
 import { getSaasProfileCookie } from "./cookies/login-session";
-import { getWalletAction } from "./get-wallet";
 import { actionClient } from "./safe-action";
 import { studentFeeSchema } from "./schema";
 
@@ -18,13 +16,14 @@ export async function createStudentFee(data: Type, tx: typeof prisma = prisma) {
 
   const fee = await tx.studentFee.create({
     data: {
+      feeTitle: data.title,
       billAmount: data.amount,
       pendingAmount: data.amount,
       schoolProfileId: profile.schoolId,
       studentTermFormId: data.studentTermId,
       schoolSessionId: profile.sessionId,
       feeHistoryId: data.feeId,
-      description: data.title,
+      // description: data.title,
       // description: data.feeDescription
     },
     select: {
