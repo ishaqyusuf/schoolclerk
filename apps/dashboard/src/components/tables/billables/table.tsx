@@ -15,9 +15,9 @@ import { Spinner } from "@school-clerk/ui/spinner";
 import { Table, TableBody } from "@school-clerk/ui/table";
 
 import { TableProvider } from "..";
+import { TableHeaderComponent } from "../table-header";
 import { columns, Item } from "./columns";
 import { ClassRow } from "./row";
-import { TableHeaderComponent } from "./table-header";
 
 type Props = {
   data: Item[];
@@ -117,10 +117,19 @@ export function DataTable({
             ]}
           />
           <div className="flex-1"></div>
-          <Button variant="outline">Create invoice</Button>
+          <Button
+            variant="outline"
+            onClick={() => {
+              setParams({
+                createTermBillable: true,
+              });
+            }}
+          >
+            Create Bill
+          </Button>
         </div>
         <Table>
-          <TableHeaderComponent table={table} />
+          <TableHeaderComponent />
 
           <TableBody>
             {table.getRowModel().rows.map((row) => (

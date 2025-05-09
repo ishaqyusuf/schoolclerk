@@ -46,7 +46,7 @@ export function TableHeaderComponent({}) {
                   className={cn(
                     "whitespace-nowrap",
                     (header.column.columnDef.meta as any)?.className,
-                    "h-10",
+                    "h-10 uppercase",
                   )}
                   key={`${header.id}_${index}`}
                 >

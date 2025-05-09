@@ -9,6 +9,7 @@ export function FormContext({ children }) {
     resolver: zodResolver(createSchoolFeeSchema),
     defaultValues: {
       title: "",
+      description: "",
       amount: 0,
     },
   });
