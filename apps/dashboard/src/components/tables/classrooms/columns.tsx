@@ -8,17 +8,24 @@ export const columns: ColumnDef<ClassItem>[] = [
   {
     header: "Classroom",
     accessorKey: "class_room",
+    meta: {},
     cell: ({ row: { original: item } }) => (
       <div>
-        {item.classRoom?.name === item.departmentName
-          ? ""
-          : item.classRoom.name}
+        {Array.from(new Set([item.classRoom?.name, item.departmentName])).join(
+          "-",
+        )}
       </div>
     ),
   },
   {
-    header: "Department",
+    header: "Students",
     accessorKey: "department",
-    cell: ({ row: { original: item } }) => <div>{item.departmentName}</div>,
+    cell: ({ row: { original: item } }) => <div>{10}</div>,
+  },
+  {
+    header: "Subjects",
+    accessorKey: "subjects",
+
+    cell: ({ row: { original: item } }) => <div className="w-12">{0}</div>,
   },
 ];

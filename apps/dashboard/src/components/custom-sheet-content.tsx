@@ -10,11 +10,11 @@ import { Sheet, SheetContent, SheetContentProps } from "@school-clerk/ui/sheet";
 import Portal from "./portal";
 
 const sheetContentVariant = cva(
-  "flex flex-col h-screen w-full overflow-x-hidden ",
+  "flex flex-col h-screens h-[50vh] w-full overflow-x-hidden ",
   {
     variants: {
       floating: {
-        true: "h-screen md:h-[96vh] md:mx-4 md:mt-[2vh]",
+        true: "md:h-[96vh] md:mx-4 md:mt-[2vh]",
       },
       rounded: {
         true: "md:rounded-xl",
