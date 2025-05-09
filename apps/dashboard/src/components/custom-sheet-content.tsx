@@ -96,11 +96,10 @@ export function CustomSheetContent({ children = null, className = "" }) {
   const sheet = useSheet();
   return (
     <ScrollArea
+      id={sheet.scrollContentId}
       className={cn("-mx-4 flex-1  px-4", className, "flex flex-col")}
     >
-      <div id={sheet.scrollContentId} className="flex flex-col gap-4 pb-16">
-        {children}
-      </div>
+      <div className="flex flex-col gap-4 pb-16">{children}</div>
     </ScrollArea>
   );
 }

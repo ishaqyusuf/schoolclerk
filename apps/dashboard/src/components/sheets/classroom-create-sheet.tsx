@@ -26,9 +26,9 @@ export function ClassroomCreateSheet({}) {
         sheetName="create-classroom"
       >
         <SheetHeader>
-          <SheetTitle>Student Form</SheetTitle>
+          <SheetTitle>Create Classroom</SheetTitle>
         </SheetHeader>
-        <CustomSheetContent className="mb-5 flex flex-col gap-2 bg-red-400">
+        <CustomSheetContent className="flex flex-col gap-2">
           <Form />
         </CustomSheetContent>
       </CustomSheet>
