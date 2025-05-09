@@ -17,6 +17,7 @@ import {
   parseAsBoolean,
   parseAsInteger,
   parseAsString,
+  parseAsStringEnum,
   parseAsStringLiteral,
 } from "nuqs/server";
 import { z } from "zod";
@@ -52,24 +53,30 @@ const commissionFilters = ["all", "earned", "pending"] as const;
 export const searchParamsParser: {
   [k in SearchParamsKeys]: any;
 } = {
-  sort: parseAsSort,
-  uuid: parseAsString,
-  search: parseAsString,
-  size: parseAsInteger.withDefault(30),
-  start: parseAsInteger.withDefault(0),
-  "with.trashed": parseAsBoolean,
-  "trashed.only": parseAsBoolean,
+  ...{
+    sort: parseAsSort,
+    uuid: parseAsString,
+    search: parseAsString,
+    size: parseAsInteger.withDefault(30),
+    start: parseAsInteger.withDefault(0),
+    "with.trashed": parseAsBoolean,
+    "trashed.only": parseAsBoolean,
+    sessionId: parseAsString,
+    schoolProfileId: parseAsString,
+  },
+  gender: parseAsStringEnum(["Male", "Female"]),
   termId: parseAsString,
-  sessionId: parseAsString,
+  studentId: parseAsString,
   departmentId: parseAsString,
-  schoolProfileId: parseAsString,
 };
 export const searchSchema = z.object({
+  gender: z.enum(["Male", "Female"]),
   size: z.number().optional(),
   start: z.number().optional(),
   termId: z.string().optional(),
   sessionId: z.string().optional(),
   schoolProfileId: z.string().optional(),
+  studentId: z.string().optional(),
   departmentId: z.string().optional(),
   "with.trashed": z.boolean().optional(),
   "trashed.only": z.boolean().optional(),

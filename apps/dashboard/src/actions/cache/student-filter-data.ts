@@ -2,6 +2,8 @@
 
 import { PageFilterData } from "@/types";
 
+import { Gender } from "@school-clerk/db";
+
 import { getCachedClassRooms } from "./classrooms";
 
 export async function studentFilterData(termId) {
@@ -25,6 +27,20 @@ export async function studentFilterData(termId) {
           label: c.name,
           value: c.departmentId,
         })),
+      ],
+    },
+    {
+      value: "gender",
+      icon: "gender",
+      options: [
+        {
+          label: "Male",
+          value: "Male" as Gender,
+        },
+        {
+          label: "Female",
+          value: "Female" as Gender,
+        },
       ],
     },
   ];

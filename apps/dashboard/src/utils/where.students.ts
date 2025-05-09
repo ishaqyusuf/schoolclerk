@@ -1,6 +1,6 @@
 import { Prisma } from "@school-clerk/db";
 
-import { SearchParamsType } from "./search-params";
+import { SearchParamsKeys, SearchParamsType } from "./search-params";
 import { composeQuery } from "./utils";
 
 export function whereStudents(query: SearchParamsType) {
@@ -25,5 +25,16 @@ export function whereStudents(query: SearchParamsType) {
       },
     });
   }
+  Object.entries(query).map(([key, value]) => {
+    if (!value) return;
+    switch (key as SearchParamsKeys) {
+      case "studentId":
+        where.push({
+          id: value,
+        });
+        break;
+    }
+  });
+
   return composeQuery(where);
 }

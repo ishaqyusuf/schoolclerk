@@ -1,3 +1,5 @@
+"use server";
+
 import { PageDataMeta, PageItemData } from "@/types";
 import { SearchParamsType } from "@/utils/search-params";
 import { studentDisplayName } from "@/utils/utils";
