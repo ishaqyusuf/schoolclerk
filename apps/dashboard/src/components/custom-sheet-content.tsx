@@ -4,13 +4,14 @@ import { createContextFactory } from "@/utils/context-factory";
 import { cva, VariantProps } from "class-variance-authority";
 
 import { cn } from "@school-clerk/ui/cn";
+import { useIsMobile } from "@school-clerk/ui/hooks";
 import { ScrollArea } from "@school-clerk/ui/scroll-area";
 import { Sheet, SheetContent, SheetContentProps } from "@school-clerk/ui/sheet";
 
 import Portal from "./portal";
 
 const sheetContentVariant = cva(
-  "flex flex-col h-screens   h-[90vh] w-full overflow-x-hidden ",
+  "flex flex-col h-[93vh]  w-full overflow-x-hidden ",
   {
     variants: {
       floating: {
@@ -40,6 +41,9 @@ const { Provider: SheetProvider, useContext: useSheet } = createContextFactory(
   function (sheetName) {
     return {
       nodeId: ["custom-sheet-content", sheetName]?.filter(Boolean).join("-"),
+      scrollContentId: ["custom-sheet-scroll-content", sheetName]
+        ?.filter(Boolean)
+        .join("-"),
     };
   },
 );
@@ -77,16 +81,23 @@ export function CustomSheetBase({
 export function CustomSheetContentPortal({ children, sheetId = null }) {
   // [`customSheetContent`,sheetId]
   const sheet = useSheet();
+  const mobile = useIsMobile();
+  const nodeId = mobile ? sheet.scrollContentId : sheet.nodeId;
+
   return (
-    <Portal nodeId={sheet.nodeId} noDelay>
+    <Portal nodeId={nodeId} noDelay>
       {children}
     </Portal>
   );
 }
 export function CustomSheetContent({ children = null, className = "" }) {
+  const sheet = useSheet();
   return (
-    <ScrollArea className={cn("-mx-4 flex-1 px-4", className)}>
-      <div className="pb-16">{children}</div>
+    <ScrollArea
+      id={sheet.scrollContentId}
+      className={cn("-mx-4 flex-1  px-4", className, "flex flex-col")}
+    >
+      <div className=" pb-16">{children}</div>
     </ScrollArea>
   );
 }
