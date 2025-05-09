@@ -18,6 +18,7 @@ export function useClassesParams(options?: { shallow: boolean }) {
   const [params, setParams] = useQueryStates(
     {
       createClassroom: parseAsBoolean,
+      viewClassroomId: parseAsString,
     },
     options,
   );

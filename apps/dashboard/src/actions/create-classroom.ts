@@ -1,10 +1,10 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import z from "zod";
 
 import { prisma } from "@school-clerk/db";
 
+import { classChanged } from "./cache/cache-control";
 import { getSaasProfileCookie } from "./cookies/login-session";
 import { actionClient } from "./safe-action";
 import { createClassroomSchema } from "./schema";
@@ -41,7 +41,8 @@ export async function createClassroom(data: CreateClassRoom) {
 export const createClassroomAction = actionClient
   .schema(createClassroomSchema)
   .action(async ({ parsedInput: data }) => {
+    const profile = await getSaasProfileCookie();
     const resp = await createClassroom(data);
-    revalidatePath("/academic/classes");
+    classChanged();
     return resp;
   });

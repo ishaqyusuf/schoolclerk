@@ -37,7 +37,7 @@ export async function StudentsTable({
     customers,
   };
   const profile = await getSaasProfileCookie();
-  const filterDataPromise = studentFilterData(profile.termId);
+  const filterDataPromise = studentFilterData();
 
   async function loadMore({ from, to }: { from: number; to: number }) {
     "use server";

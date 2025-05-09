@@ -16,8 +16,8 @@ import { Table, TableBody } from "@school-clerk/ui/table";
 
 import { TableProvider } from "..";
 import { TableHeaderComponent } from "../table-header";
+import { TableRow } from "../table-row";
 import { columns, type ClassItem } from "./columns";
-import { ClassRow } from "./row";
 
 type Props = {
   data: ClassItem[];
@@ -32,81 +32,37 @@ type Props = {
   hasNextPage: boolean;
 };
 
-export function DataTable({
-  data: initialData,
-  loadMore,
-  pageSize,
-  hasNextPage: initialHasNextPage,
-}: Props) {
-  const [data, setData] = useState(initialData);
-  const [from, setFrom] = useState(pageSize);
-  const { ref, inView } = useInView();
-  const [hasNextPage, setHasNextPage] = useState(initialHasNextPage);
+export function DataTable({ data, loadMore, pageSize, hasNextPage }: Props) {
   const { setParams, ...params } = useClassesParams();
 
-  //   const deleteInvoice = useAction(deleteInvoiceAction);
-  //   const { date_format: dateFormat } = useUserContext((state) => state.data);
-
-  // const selectedInvoice = data.find((invoice) => invoice?.id === invoiceId);
-
-  const setOpen = (id?: string) => {
-    if (id) {
-      // setParams({ type: "details", invoiceId: id });
-    } else {
-      setParams(null);
-    }
-  };
-
   const handleDeleteInvoice = (id: string) => {
-    setData((prev) => {
-      return prev.filter((item) => item.id !== id);
-    });
-
+    // setData((prev) => {
+    //   return prev.filter((item) => item.id !== id);
+    // });
     // deleteInvoice.execute({ id });
   };
 
-  const table = useReactTable({
-    data,
-    getRowId: ({ id }) => id,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    meta: {
-      deleteInvoice: handleDeleteInvoice,
-      //   dateFormat,
-    },
-  });
-
-  const loadMoreData = async () => {
-    const formatedFrom = from;
-    const to = formatedFrom + pageSize * 2;
-
-    try {
-      const { data, meta } = await loadMore({
-        from: formatedFrom,
-        to,
-      });
-
-      setData((prev) => [...prev, ...data]);
-      setFrom(to);
-      setHasNextPage(meta.count > to);
-    } catch {
-      setHasNextPage(false);
-    }
-  };
-
-  useEffect(() => {
-    if (inView) {
-      loadMoreData();
-    }
-  }, [inView]);
-
-  useEffect(() => {
-    setData(initialData);
-  }, [initialData]);
-
   return (
-    <TableProvider args={[table, setParams, params]}>
+    <TableProvider
+      args={[
+        {
+          setParams,
+          params,
+          columns,
+          tableMeta: {
+            deleteAction: handleDeleteInvoice,
+            rowClick(id, rowData) {
+              setParams({
+                viewClassroomId: id,
+              });
+            },
+          },
+          pageSize,
+          hasNextPage,
+          data,
+        },
+      ]}
+    >
       <div className="flex flex-col gap-4">
         <div className="flex">
           <MiddaySearchFilter
@@ -134,19 +90,17 @@ export function DataTable({
           <TableHeaderComponent />
 
           <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <ClassRow key={row.id} row={row} setOpen={setOpen} />
-            ))}
+            <TableRow />
           </TableBody>
         </Table>
-        {hasNextPage && (
+        {/* {hasNextPage && (
           <div className="mt-6 flex items-center justify-center" ref={ref}>
             <div className="flex items-center space-x-2 px-6 py-5">
               <Spinner />
               <span className="text-sm text-[#606060]">Loading more...</span>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </TableProvider>
   );

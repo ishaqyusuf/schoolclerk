@@ -22,12 +22,11 @@ import {
 } from "@school-clerk/ui/table";
 
 import { CollapseForm } from "../collapse-form";
-import Formdate from "../controls/form-date";
+import { FormDate } from "../controls/form-date";
 import FormInput from "../controls/form-input";
 import FormSelect from "../controls/form-select";
 import { NumberInput } from "../currency-input";
 import { CustomSheetContentPortal } from "../custom-sheet-content";
-import { FormDebugBtn } from "../form-debug-btn";
 import { Icons } from "../icons";
 import { Menu } from "../menu";
 import { useStudentFormContext } from "../students/form-context";
@@ -66,7 +65,7 @@ export function Form({}) {
     return classList;
   }, []);
   return (
-    <div className="grid gap-4">
+    <div className="flex flex-col gap-4">
       <FormInput name="name" label="Name" control={control} />
       <div className="grid grid-cols-2 gap-4">
         <FormInput name="surname" label="Surname" control={control} />
@@ -76,8 +75,8 @@ export function Form({}) {
           label="Gender"
           options={["Male", "Female"]}
           control={control}
-        />{" "}
-        <Formdate control={control} label="DoB" name="dob" />
+        />
+        <FormDate control={control} label="DoB" name="dob" />
       </div>
       <FormSelect
         control={control}
@@ -110,7 +109,6 @@ export function Form({}) {
       <PaymentSection />
       <CustomSheetContentPortal>
         <div className="flex justify-end">
-          <FormDebugBtn />
           <form
             onSubmit={handleSubmit(create.execute, (arg) => {
               toast.error("Invalid Form");

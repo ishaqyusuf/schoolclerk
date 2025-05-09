@@ -12,6 +12,9 @@ export const createAcadSessionSchema = z.object({
     )
     .optional(),
 });
+export const deleteSchema = z.object({
+  id: z.string(),
+});
 export const deleteStudentSchema = z.object({
   studentId: z.string(),
 });

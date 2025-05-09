@@ -45,7 +45,7 @@ export type DateFormats =
   | "YYYY-MM-DD HH:mm:ss"
   | "YYYY-MM-DD HH:mm"
   | any;
-export default function Formdate<
+export function FormDate<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   TOptionType = any,
@@ -129,7 +129,7 @@ export default function Formdate<
                           variant={"outline"}
                           disabled={!!props.disabled}
                           className={cn(
-                            "w-[260px] justify-start text-left font-normal",
+                            "sw-[260px] justify-start text-left font-normal",
                             !field.value && "text-muted-foreground",
                             className,
                           )}
