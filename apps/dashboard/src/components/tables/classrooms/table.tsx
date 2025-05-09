@@ -14,9 +14,10 @@ import { Button } from "@school-clerk/ui/button";
 import { Spinner } from "@school-clerk/ui/spinner";
 import { Table, TableBody } from "@school-clerk/ui/table";
 
+import { TableProvider } from "..";
+import { TableHeaderComponent } from "../table-header";
 import { columns, type ClassItem } from "./columns";
 import { ClassRow } from "./row";
-import { TableHeaderComponent } from "./table-header";
 
 type Props = {
   data: ClassItem[];
@@ -41,7 +42,7 @@ export function DataTable({
   const [from, setFrom] = useState(pageSize);
   const { ref, inView } = useInView();
   const [hasNextPage, setHasNextPage] = useState(initialHasNextPage);
-  const { setParams } = useClassesParams();
+  const { setParams, ...params } = useClassesParams();
 
   //   const deleteInvoice = useAction(deleteInvoiceAction);
   //   const { date_format: dateFormat } = useUserContext((state) => state.data);
@@ -105,46 +106,48 @@ export function DataTable({
   }, [initialData]);
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex">
-        <MiddaySearchFilter
-          placeholder={"Search"}
-          filterList={[
-            {
-              value: "search",
-              icon: "Search",
-            },
-          ]}
-        />
-        <div className="flex-1"></div>
-        <Button
-          variant="outline"
-          onClick={() =>
-            setParams({
-              createClassroom: true,
-            })
-          }
-        >
-          Create invoice
-        </Button>
-      </div>
-      <Table>
-        <TableHeaderComponent table={table} />
-
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <ClassRow key={row.id} row={row} setOpen={setOpen} />
-          ))}
-        </TableBody>
-      </Table>
-      {hasNextPage && (
-        <div className="mt-6 flex items-center justify-center" ref={ref}>
-          <div className="flex items-center space-x-2 px-6 py-5">
-            <Spinner />
-            <span className="text-sm text-[#606060]">Loading more...</span>
-          </div>
+    <TableProvider args={[table, setParams, params]}>
+      <div className="flex flex-col gap-4">
+        <div className="flex">
+          <MiddaySearchFilter
+            placeholder={"Search"}
+            filterList={[
+              {
+                value: "search",
+                icon: "Search",
+              },
+            ]}
+          />
+          <div className="flex-1"></div>
+          <Button
+            variant="outline"
+            onClick={() =>
+              setParams({
+                createClassroom: true,
+              })
+            }
+          >
+            Create invoice
+          </Button>
         </div>
-      )}
-    </div>
+        <Table>
+          <TableHeaderComponent />
+
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <ClassRow key={row.id} row={row} setOpen={setOpen} />
+            ))}
+          </TableBody>
+        </Table>
+        {hasNextPage && (
+          <div className="mt-6 flex items-center justify-center" ref={ref}>
+            <div className="flex items-center space-x-2 px-6 py-5">
+              <Spinner />
+              <span className="text-sm text-[#606060]">Loading more...</span>
+            </div>
+          </div>
+        )}
+      </div>
+    </TableProvider>
   );
 }

@@ -14,7 +14,7 @@ const sheetContentVariant = cva(
   {
     variants: {
       floating: {
-        true: "md:h-[96vh] md:mx-4 md:mt-[2vh]",
+        true: "h-screen md:h-[96vh] md:mx-4 md:mt-[2vh]",
       },
       rounded: {
         true: "md:rounded-xl",
