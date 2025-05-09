@@ -85,9 +85,11 @@ export function CustomSheetContentPortal({ children, sheetId = null }) {
   const nodeId = mobile ? sheet.scrollContentId : sheet.nodeId;
 
   return (
-    <Portal nodeId={nodeId} noDelay>
-      {children}
-    </Portal>
+    <>
+      <Portal nodeId={nodeId} noDelay>
+        {children}
+      </Portal>
+    </>
   );
 }
 export function CustomSheetContent({ children = null, className = "" }) {
