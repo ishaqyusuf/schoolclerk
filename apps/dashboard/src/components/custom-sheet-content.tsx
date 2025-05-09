@@ -98,7 +98,10 @@ export function CustomSheetContent({ children = null, className = "" }) {
     <ScrollArea
       className={cn("-mx-4 flex-1  px-4", className, "flex flex-col")}
     >
-      <div id={sheet.scrollContentId} className="flex flex-col gap-4 sm:pb-16">
+      <div
+        id={sheet.scrollContentId}
+        className="flex flex-col gap-4 pb-36 sm:pb-16"
+      >
         {children}
       </div>
     </ScrollArea>
