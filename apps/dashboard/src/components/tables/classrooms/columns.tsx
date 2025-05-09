@@ -1,7 +1,10 @@
 "use client";
 
 import { ClassRoomPageItem } from "@/actions/get-class-rooms";
+import { Menu } from "@/components/menu";
 import { ColumnDef } from "@tanstack/react-table";
+
+import { ActionCell } from "../action-cell";
 
 export type ClassItem = ClassRoomPageItem;
 export const columns: ColumnDef<ClassItem>[] = [
@@ -43,7 +46,11 @@ export const columns: ColumnDef<ClassItem>[] = [
       className: "flex-1",
     },
     cell: ({ row: { original: item } }) => (
-      <div className="flex justify-end">{0}</div>
+      <ActionCell trash itemId={item.classRoom?.id}>
+        {/* <Menu>
+          <Menu.Item>Hello Menu</Menu.Item>
+        </Menu> */}
+      </ActionCell>
     ),
   },
 ];

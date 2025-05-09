@@ -23,6 +23,7 @@ export async function getClassRooms(params: SearchParamsType) {
       classRoom: {
         select: {
           name: true,
+          id: true,
         },
       },
     },

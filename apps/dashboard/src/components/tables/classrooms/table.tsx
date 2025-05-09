@@ -1,14 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { deleteClassroomAction } from "@/actions/delete-classroom";
 import { MiddaySearchFilter } from "@/components/midday-search-filter/search-filter";
 import { useClassesParams } from "@/hooks/use-classes-params";
-import {
-  getCoreRowModel,
-  getFilteredRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { useInView } from "react-intersection-observer";
+import { useLoadingToast } from "@/hooks/use-loading-toast";
+import { useAction } from "next-safe-action/hooks";
 
 import { Button } from "@school-clerk/ui/button";
 import { Spinner } from "@school-clerk/ui/spinner";
@@ -34,8 +31,23 @@ type Props = {
 
 export function DataTable({ data, loadMore, pageSize, hasNextPage }: Props) {
   const { setParams, ...params } = useClassesParams();
-
+  const toast = useLoadingToast();
+  const deleteAction = useAction(deleteClassroomAction, {
+    onSuccess(args) {
+      toast.success("Deleted!", {
+        variant: "destructive",
+      });
+    },
+    onError(e) {
+      console.log(e);
+    },
+  });
   const handleDeleteInvoice = (id: string) => {
+    console.log("DELET", { id });
+    toast.loading("Deleting...");
+    deleteAction.execute({
+      id,
+    });
     // setData((prev) => {
     //   return prev.filter((item) => item.id !== id);
     // });

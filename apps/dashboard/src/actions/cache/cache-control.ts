@@ -15,4 +15,5 @@ export function classChanged() {
     revalidateTag(`classrooms_${termId}`);
     revalidateTag(`students_class_filter_${termId}`);
   });
+  studentChanged();
 }
