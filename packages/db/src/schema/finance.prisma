@@ -2,6 +2,7 @@ model Wallet {
     id              String               @id @default(uuid())
     name            String
     schoolProfile   SchoolProfile?       @relation(fields: [schoolProfileId], references: [id])
+    type            WalletType?
     schoolProfileId String?
     sessionTerm     SessionTerm?         @relation(fields: [sessionTermId], references: [id])
     sessionTermId   String?
@@ -16,9 +17,9 @@ model Wallet {
 }
 
 model WalletTransactions {
-    id       String  @id @default(uuid())
-    wallet   Wallet? @relation(fields: [walletId], references: [id])
-    type     String
+    id       String      @id @default(uuid())
+    wallet   Wallet?     @relation(fields: [walletId], references: [id])
+    type     WalletType?
     summary  String?
     amount   Float
     walletId String?
@@ -31,11 +32,50 @@ model WalletTransactions {
     deletedAt DateTime? @db.Timestamp(0)
 }
 
-model Bills {
-    id          String   @id @default(uuid())
-    description String
-    type        BillType
+enum WalletType {
+    Bill
+    Fee
+}
+
+model Billable {
+    id          String    @id @default(uuid())
+    title       String
+    description String?
+    type        BillType?
     amount      Float?
+    createdAt   DateTime? @default(now()) @db.Timestamp(0)
+    updatedAt   DateTime? @updatedAt
+    deletedAt   DateTime? @db.Timestamp(0)
+
+    bills           Bills[]
+    schoolProfileId String
+    schoolProfile   SchoolProfile     @relation(fields: [schoolProfileId], references: [id])
+    billableHistory BillableHistory[]
+}
+
+model BillableHistory {
+    id              String        @id @default(uuid())
+    amount          Float
+    current         Boolean       @default(false)
+    billable        Billable      @relation(fields: [feeId], references: [id])
+    feeId           String
+    schoolSession   SchoolSession @relation(fields: [schoolSessionId], references: [id])
+    schoolSessionId String
+    term            SessionTerm   @relation(fields: [termId], references: [id])
+    termId          String
+    bills           Bills[]
+
+    createdAt DateTime? @default(now()) @db.Timestamp(0)
+    updatedAt DateTime? @updatedAt
+    deletedAt DateTime? @db.Timestamp(0)
+}
+
+model Bills {
+    id          String  @id @default(uuid())
+    // title       String
+    description String?
+
+    amount Float?
 
     createdAt DateTime?    @default(now()) @db.Timestamp(0)
     updatedAt DateTime?    @updatedAt
@@ -49,11 +89,16 @@ model Bills {
     walletId              String?
     billPayment           BillPayment?         @relation(fields: [billPaymentId], references: [id])
     billPaymentId         String?
+    Billable              Billable?            @relation(fields: [billableId], references: [id])
+    billableId            String?
+    BillableHistory       BillableHistory?     @relation(fields: [billableHistoryId], references: [id])
+    billableHistoryId     String?
 }
 
 enum BillType {
     SALARY
     MISC
+    OTHER
 }
 
 model BillInvoice {

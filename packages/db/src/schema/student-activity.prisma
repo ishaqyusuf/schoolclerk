@@ -45,16 +45,16 @@ model Fees {
 }
 
 model FeeHistory {
-    id               String        @id @default(uuid())
-    amount           Float
-    current          Boolean       @default(false)
-    fee              Fees          @relation(fields: [feeId], references: [id])
-    feeId            String
-    schoolSession    SchoolSession @relation(fields: [schoolSessionId], references: [id])
-    schoolSessionId  String
-    term             SessionTerm   @relation(fields: [termId], references: [id])
-    termId           String
-    studentBillables StudentFee[]
+    id              String        @id @default(uuid())
+    amount          Float
+    current         Boolean       @default(false)
+    fee             Fees          @relation(fields: [feeId], references: [id])
+    feeId           String
+    schoolSession   SchoolSession @relation(fields: [schoolSessionId], references: [id])
+    schoolSessionId String
+    term            SessionTerm   @relation(fields: [termId], references: [id])
+    termId          String
+    studentFees     StudentFee[]
 
     createdAt DateTime? @default(now()) @db.Timestamp(0)
     updatedAt DateTime? @updatedAt

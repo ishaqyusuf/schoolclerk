@@ -1,21 +1,15 @@
 "use client";
 
+import { BillablePageItem } from "@/actions/get-billables";
 import { ClassRoomPageItem } from "@/actions/get-class-rooms";
-import { TermBillablePageItem } from "@/actions/get-school-fees";
 import { ColumnDef } from "@tanstack/react-table";
 
-export type Item = TermBillablePageItem;
+export type Item = BillablePageItem;
 export const columns: ColumnDef<Item>[] = [
   {
-    header: "Classroom",
-    accessorKey: "class_room",
-    cell: ({ row: { original: item } }) => (
-      <div>
-        {/* {item.classRoom?.name === item.departmentName
-          ? ""
-          : item.classRoom.name} */}
-      </div>
-    ),
+    header: "Billable",
+    accessorKey: "billable",
+    cell: ({ row: { original: item } }) => <div></div>,
   },
   {
     header: "Department",

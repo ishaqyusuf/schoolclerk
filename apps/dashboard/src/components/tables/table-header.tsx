@@ -1,10 +1,15 @@
 import { flexRender } from "@tanstack/react-table";
+import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@school-clerk/ui/cn";
 import { TableHead, TableHeader, TableRow } from "@school-clerk/ui/table";
 
 import { useTable } from ".";
 
+const tableHeaderVariants = cva("", {
+  variants: {},
+  defaultVariants: {},
+});
 export function TableHeaderComponent({}) {
   const {
     table,
@@ -32,13 +37,17 @@ export function TableHeaderComponent({}) {
   return (
     <TableHeader>
       {table.getHeaderGroups().map((headerGroup) => (
-        <TableRow key={headerGroup.id}>
+        <TableRow key={headerGroup.id} className="">
           {/* <CheckboxHeader /> */}
           {headerGroup.headers.map((header, index) => {
             if (!header.id.includes("__"))
               return (
                 <TableHead
-                  className={cn("whitespace-nowrap")}
+                  className={cn(
+                    "whitespace-nowrap",
+                    (header.column.columnDef.meta as any)?.className,
+                    "h-10",
+                  )}
                   key={`${header.id}_${index}`}
                 >
                   {header.isPlaceholder

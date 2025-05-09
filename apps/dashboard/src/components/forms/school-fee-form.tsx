@@ -8,10 +8,13 @@ import { useAsyncMemo } from "use-async-memo";
 import { Button } from "@school-clerk/ui/button";
 
 import FormInput from "../controls/form-input";
+import { CustomSheetContentPortal } from "../custom-sheet-content";
+import { FormActionButton } from "../form-action-button";
+import { FormDebugBtn } from "../form-debug-btn";
 import { useSchoolFeeFormContext } from "../school-fee/form-context";
 import { SubmitButton } from "../submit-button";
 
-export function SchoolFeeForm({}) {
+export function Form({}) {
   const { schoolFeeId, setParams } = useSchoolFeeParams();
   const { watch, control, trigger, handleSubmit, formState } =
     useSchoolFeeFormContext();
@@ -24,13 +27,8 @@ export function SchoolFeeForm({}) {
     },
   });
 
-  const classList = useAsyncMemo(async () => {
-    const profile = await getSaasProfileCookie();
-    const classList = await getCachedClassRooms(profile.termId);
-    return classList;
-  }, [schoolFeeId]);
   return (
-    <form className="grid gap-4" onSubmit={handleSubmit(create.execute)}>
+    <div className="grid gap-4">
       <FormInput name="title" label="Billable Title" control={control} />
       <FormInput
         name="description"
@@ -39,19 +37,9 @@ export function SchoolFeeForm({}) {
         control={control}
       />
       <FormInput name="amount" type="number" label="Amount" control={control} />
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          onClick={() => {
-            trigger().then((e) => {
-              console.log(formState);
-            });
-          }}
-        >
-          AA
-        </Button>
-        <SubmitButton isSubmitting={create?.isExecuting}>Submit</SubmitButton>
-      </div>
-    </form>
+      <CustomSheetContentPortal>
+        <FormActionButton action={create} />
+      </CustomSheetContentPortal>
+    </div>
   );
 }

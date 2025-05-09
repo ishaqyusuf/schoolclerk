@@ -10,7 +10,7 @@ export const columns: ColumnDef<Item>[] = [
     accessorKey: "class_room",
     cell: ({ row: { original: item } }) => (
       <div>
-        <div>{item.title}</div>
+        <div className="font-semibold">{item.title}</div>
         <div>{item.description}</div>
         {/* {item.classRoom?.name === item.departmentName
           ? ""

@@ -8,7 +8,8 @@ import {
 } from "@school-clerk/ui/sheet";
 
 import { FormContext } from "../billable/form-context";
-import { BillableForm } from "../forms/billable-form";
+import { CustomSheet, CustomSheetContent } from "../custom-sheet-content";
+import { Form } from "../forms/billable-form";
 
 export function BillableCreateSheet({}) {
   const { createTermBillable, setParams } = useTermBillableParams();
@@ -17,14 +18,21 @@ export function BillableCreateSheet({}) {
 
   return (
     <FormContext>
-      <Sheet open={isOpen} onOpenChange={() => setParams(null)}>
-        <SheetContent className="flex flex-col gap-2">
-          <SheetHeader>
-            <SheetTitle>Billable Form</SheetTitle>
-          </SheetHeader>
-          <BillableForm />
-        </SheetContent>
-      </Sheet>
+      <CustomSheet
+        floating
+        rounded
+        size="lg"
+        open={isOpen}
+        onOpenChange={() => setParams(null)}
+        sheetName="billable"
+      >
+        <SheetHeader>
+          <SheetTitle>Create Billable</SheetTitle>
+        </SheetHeader>
+        <CustomSheetContent className="flex flex-col gap-2">
+          <Form />
+        </CustomSheetContent>
+      </CustomSheet>
     </FormContext>
   );
 }

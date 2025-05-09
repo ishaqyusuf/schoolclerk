@@ -130,7 +130,7 @@ export function DataTable({
             Create invoice
           </Button>
         </div>
-        <Table>
+        <Table className="table-fixed">
           <TableHeaderComponent />
 
           <TableBody>

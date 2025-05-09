@@ -40,10 +40,8 @@ interface Props
 const { Provider: SheetProvider, useContext: useSheet } = createContextFactory(
   function (sheetName) {
     return {
-      nodeId: ["custom-sheet-content", sheetName]?.filter(Boolean).join("-"),
-      scrollContentId: ["custom-sheet-scroll-content", sheetName]
-        ?.filter(Boolean)
-        .join("-"),
+      nodeId: ["csc", sheetName]?.filter(Boolean).join("-"),
+      scrollContentId: ["cssc", sheetName]?.filter(Boolean).join("-"),
     };
   },
 );

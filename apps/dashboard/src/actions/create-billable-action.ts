@@ -10,19 +10,20 @@ import { getSaasProfileCookie } from "./cookies/login-session";
 import { actionClient } from "./safe-action";
 import { createBillableSchema, createSchoolFeeSchema } from "./schema";
 
-export type CreateSchoolFeeForm = z.infer<typeof createSchoolFeeSchema>;
-export async function createSchoolFee(
-  data: CreateSchoolFeeForm,
+export type CreateBillableForm = z.infer<typeof createBillableSchema>;
+export async function createBillable(
+  data: CreateBillableForm,
   tx: typeof prisma,
 ) {
   const profile = await getSaasProfileCookie();
-  return await tx.fees.create({
+  return await tx.billable.create({
     data: {
       title: data.title,
       amount: data.amount,
       schoolProfileId: profile.schoolId,
       description: data.description,
-      feeHistory: {
+      type: data.type,
+      billableHistory: {
         create: {
           amount: data.amount,
           current: true,
@@ -33,12 +34,12 @@ export async function createSchoolFee(
     },
   });
 }
-export const createSchoolFeeAction = actionClient
+export const createBillableAction = actionClient
   .schema(createBillableSchema)
   .action(async ({ parsedInput: data }) => {
     return await transaction(async (tx) => {
-      const resp = await createSchoolFee(data, tx);
-      revalidatePath("/academic/classes");
+      const resp = await createBillable(data, tx);
+      revalidatePath("/finance/billables");
       return resp;
     });
   });

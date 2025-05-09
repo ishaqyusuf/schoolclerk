@@ -8,7 +8,9 @@ export const columns: ColumnDef<ClassItem>[] = [
   {
     header: "Classroom",
     accessorKey: "class_room",
-    meta: {},
+    meta: {
+      className: "sm:w-[350px]",
+    },
     cell: ({ row: { original: item } }) => (
       <div>
         {Array.from(new Set([item.classRoom?.name, item.departmentName])).join(
@@ -20,12 +22,28 @@ export const columns: ColumnDef<ClassItem>[] = [
   {
     header: "Students",
     accessorKey: "department",
+    meta: {
+      className: "w-[80px]",
+    },
     cell: ({ row: { original: item } }) => <div>{10}</div>,
   },
   {
     header: "Subjects",
     accessorKey: "subjects",
+    meta: {
+      className: "w-[80px]",
+    },
+    cell: ({ row: { original: item } }) => <div className="">{0}</div>,
+  },
+  {
+    header: "",
+    accessorKey: "actions",
 
-    cell: ({ row: { original: item } }) => <div className="w-12">{0}</div>,
+    meta: {
+      className: "flex-1",
+    },
+    cell: ({ row: { original: item } }) => (
+      <div className="flex justify-end">{0}</div>
+    ),
   },
 ];

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { MiddaySearchFilter } from "@/components/midday-search-filter/search-filter";
-import { useClassesParams } from "@/hooks/use-classes-params";
+import { useTermBillableParams } from "@/hooks/use-term-billable-params";
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -14,19 +14,20 @@ import { Button } from "@school-clerk/ui/button";
 import { Spinner } from "@school-clerk/ui/spinner";
 import { Table, TableBody } from "@school-clerk/ui/table";
 
-import { columns, type ClassItem } from "./columns";
+import { TableProvider } from "..";
+import { columns, Item } from "./columns";
 import { ClassRow } from "./row";
 import { TableHeaderComponent } from "./table-header";
 
 type Props = {
-  data: ClassItem[];
+  data: Item[];
   loadMore: ({
     from,
     to,
   }: {
     from: number;
     to: number;
-  }) => Promise<{ data: ClassItem[]; meta: { count: number } }>;
+  }) => Promise<{ data: Item[]; meta: { count: number } }>;
   pageSize: number;
   hasNextPage: boolean;
 };
@@ -41,7 +42,7 @@ export function DataTable({
   const [from, setFrom] = useState(pageSize);
   const { ref, inView } = useInView();
   const [hasNextPage, setHasNextPage] = useState(initialHasNextPage);
-  const { setParams } = useClassesParams();
+  const { setParams, ...params } = useTermBillableParams();
 
   //   const deleteInvoice = useAction(deleteInvoiceAction);
   //   const { date_format: dateFormat } = useUserContext((state) => state.data);
@@ -103,36 +104,39 @@ export function DataTable({
   }, [initialData]);
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex">
-        <MiddaySearchFilter
-          placeholder={"Search"}
-          filterList={[
-            {
-              value: "search",
-            },
-          ]}
-        />
-        <div className="flex-1"></div>
-        <Button variant="outline">Create invoice</Button>
-      </div>
-      <Table>
-        <TableHeaderComponent table={table} />
-
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <ClassRow key={row.id} row={row} setOpen={setOpen} />
-          ))}
-        </TableBody>
-      </Table>
-      {hasNextPage && (
-        <div className="mt-6 flex items-center justify-center" ref={ref}>
-          <div className="flex items-center space-x-2 px-6 py-5">
-            <Spinner />
-            <span className="text-sm text-[#606060]">Loading more...</span>
-          </div>
+    <TableProvider args={[table, setParams, params]}>
+      <div className="flex flex-col gap-4">
+        <div className="flex">
+          <MiddaySearchFilter
+            placeholder={"Search"}
+            filterList={[
+              {
+                value: "search",
+                icon: "Search",
+              },
+            ]}
+          />
+          <div className="flex-1"></div>
+          <Button variant="outline">Create invoice</Button>
         </div>
-      )}
-    </div>
+        <Table>
+          <TableHeaderComponent table={table} />
+
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <ClassRow key={row.id} row={row} setOpen={setOpen} />
+            ))}
+          </TableBody>
+        </Table>
+        {hasNextPage && (
+          <div className="mt-6 flex items-center justify-center" ref={ref}>
+            <div className="flex items-center space-x-2 px-6 py-5">
+              <Spinner />
+              <span className="text-sm text-[#606060]">Loading more...</span>
+            </div>
+          </div>
+        )}
+      </div>
+    </TableProvider>
   );
 }

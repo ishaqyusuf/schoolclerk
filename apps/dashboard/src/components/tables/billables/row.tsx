@@ -5,10 +5,10 @@ import { flexRender, type Row } from "@tanstack/react-table";
 import { cn } from "@school-clerk/ui/cn";
 import { TableCell, TableRow } from "@school-clerk/ui/table";
 
-import { ClassItem } from "./columns";
+import { Item } from "./columns";
 
 type Props = {
-  row: Row<ClassItem>;
+  row: Row<Item>;
   setOpen: (id?: string) => void;
 };
 

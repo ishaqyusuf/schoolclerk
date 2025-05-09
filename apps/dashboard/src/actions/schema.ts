@@ -50,15 +50,10 @@ export const createSchoolFeeSchema = z.object({
   amount: z.number(),
 });
 export const createBillableSchema = z.object({
-  title: z.string(),
-  amount: z.number(),
-  departments: z
-    .array(
-      z.object({
-        id: z.string(),
-      }),
-    )
-    .optional(),
+  title: z.string().min(1),
+  amount: z.number().min(1),
+  description: z.string().optional(),
+  type: z.enum(["SALARY", "MISC", "OTHER"]).default("OTHER"),
 });
 export const createClassroomSchema = z.object({
   className: z.string().min(1),

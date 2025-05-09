@@ -25,6 +25,7 @@ model SchoolProfile {
     fees                   Fees[]
     wallets                Wallet[]
     guardians              Guardians[]
+    billables              Billable[]
 
     @@unique([name, subDomain, slug, deletedAt])
 }
@@ -39,12 +40,13 @@ model SchoolSession {
     schoolId  String
     school    SchoolProfile @relation(fields: [schoolId], references: [id])
 
-    terms        SessionTerm[]
-    classRooms   ClassRoom[]
-    sessionForms StudentSessionForm[]
-    termForms    StudentTermForm[]
-    studentFees  StudentFee[]
-    feeHistory   FeeHistory[]
+    terms           SessionTerm[]
+    classRooms      ClassRoom[]
+    sessionForms    StudentSessionForm[]
+    termForms       StudentTermForm[]
+    studentFees     StudentFee[]
+    feeHistory      FeeHistory[]
+    billableHistory BillableHistory[]
 }
 
 model SessionTerm {
@@ -62,5 +64,6 @@ model SessionTerm {
     termForms          StudentTermForm[]
     departmentSubjects DepartmentSubject[]
     feeHistory         FeeHistory[]
+    billableHistory    BillableHistory[]
     wallets            Wallet[]
 }

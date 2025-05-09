@@ -1,17 +1,16 @@
-import { CreateClassRoom } from "@/actions/create-classroom";
+import { CreateBillableForm } from "@/actions/create-billable-action";
 import { createBillableSchema, createClassroomSchema } from "@/actions/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import z from "zod";
 
-type Type = z.infer<typeof createBillableSchema>;
+type Type = CreateBillableForm;
 export function FormContext({ children }) {
   const form = useForm<Type>({
     resolver: zodResolver(createBillableSchema),
     defaultValues: {
       title: "",
-      amount: 0,
-      departments: [],
+      description: "",
     },
   });
 

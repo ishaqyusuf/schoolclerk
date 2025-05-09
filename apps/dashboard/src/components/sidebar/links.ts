@@ -7,7 +7,7 @@ import { IconKeys } from "../icons";
 type Permission = any | null | string | undefined;
 type moduleNames =
   | "HRM"
-  | "Sales"
+  | "Bursary"
   | "Community"
   | "Settings"
   | "PTA"
@@ -147,7 +147,7 @@ export const linkModules = [
     ]),
   ]),
 
-  _module("Sales", "wallet", "Finance & Payments", [
+  _module("Bursary", "wallet", "Finance & Payments", [
     _section("main", "Fees", [
       _link("Fee Management", "coins", "/finance/fees").access(
         _role.is("Admin"),
