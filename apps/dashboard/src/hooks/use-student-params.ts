@@ -1,12 +1,4 @@
-import { studentPageQuery } from "@/app/dashboard/[domain]/(sidebar)/students/list/search-params";
-import {
-  parseAsArrayOf,
-  parseAsBoolean,
-  parseAsJson,
-  parseAsString,
-  parseAsStringEnum,
-  useQueryStates,
-} from "nuqs";
+import { parseAsBoolean, parseAsString, useQueryStates } from "nuqs";
 import { z } from "zod";
 
 const lineItemSchema = z.object({

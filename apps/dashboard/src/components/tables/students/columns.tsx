@@ -13,7 +13,12 @@ export const columns: ColumnDef<StudentData>[] = [
   {
     header: "Classroom",
     accessorKey: "class_room",
-    cell: ({ row: { original: item } }) => <div>{item.studentName}</div>,
+    cell: ({ row: { original: item } }) => (
+      <div>
+        <div>{item.studentName}</div>
+        <div>{item.gender}</div>
+      </div>
+    ),
   },
   {
     header: "Department",

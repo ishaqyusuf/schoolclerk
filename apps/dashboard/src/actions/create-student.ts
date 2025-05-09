@@ -133,6 +133,7 @@ export const createStudentAction = actionClient
       // throw new Error("BRK!");
       return { student, payments };
     });
+    revalidatePath("/students/list");
     return student;
     // const payments = transaction(async (tx) => {
     //   const respp = await Promise.all(

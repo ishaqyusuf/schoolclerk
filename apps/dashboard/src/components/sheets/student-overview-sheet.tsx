@@ -33,7 +33,6 @@ export function StudentOverviewSheet({}) {
       sessionId: profile.sessionId,
       studentId: openStudentId,
     });
-    console.log({ student });
     return student;
   }, [openStudentId]);
   if (!isOpen) return null;
@@ -53,7 +52,6 @@ export function StudentOverviewSheet({}) {
       </SheetHeader>
       <Tabs
         onValueChange={(e) => {
-          console.log(e);
           setParams({
             studentViewTab: e,
           });

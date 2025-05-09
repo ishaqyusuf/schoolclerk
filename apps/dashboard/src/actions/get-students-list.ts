@@ -19,6 +19,7 @@ export async function getStudentsListAction(query: SearchParamsType = {}) {
     select: {
       id: true,
       name: true,
+
       otherName: true,
       surname: true,
       dob: true,
@@ -55,6 +56,14 @@ export async function getStudentsListAction(query: SearchParamsType = {}) {
         take: 1,
       },
     },
+    orderBy: [
+      {
+        gender: "asc",
+      },
+      {
+        name: "asc",
+      },
+    ],
   });
   return {
     meta: {} as PageDataMeta,
@@ -67,6 +76,7 @@ export async function getStudentsListAction(query: SearchParamsType = {}) {
       const departmentId = classroomDepartment?.id;
       return {
         id: student.id,
+        gender: student.gender,
         studentName: studentDisplayName(student),
         department: Array.from(new Set([className, departmentName])).join(" "),
         departmentId,
