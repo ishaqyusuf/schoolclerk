@@ -13,12 +13,6 @@ import { useAsyncMemo } from "use-async-memo";
 import { Button } from "@school-clerk/ui/button";
 import { cn } from "@school-clerk/ui/cn";
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@school-clerk/ui/collapsible";
-import { SheetPortal } from "@school-clerk/ui/sheet";
-import {
   Table,
   TableBody,
   TableCell,
@@ -27,12 +21,11 @@ import {
   TableRow,
 } from "@school-clerk/ui/table";
 
-import { useBillableFormContext } from "../billable/form-context";
 import { CollapseForm } from "../collapse-form";
 import Formdate from "../controls/form-date";
 import FormInput from "../controls/form-input";
 import FormSelect from "../controls/form-select";
-import { CurrencyInput, NumberInput } from "../currency-input";
+import { NumberInput } from "../currency-input";
 import { CustomSheetContentPortal } from "../custom-sheet-content";
 import { FormDebugBtn } from "../form-debug-btn";
 import { Icons } from "../icons";
@@ -42,18 +35,28 @@ import { SubmitButton } from "../submit-button";
 
 export function Form({}) {
   const { setParams } = useTermBillableParams();
-  const { watch, control, getValues, trigger, handleSubmit, formState } =
+  const { watch, control, getValues, reset, trigger, handleSubmit, formState } =
     useStudentFormContext();
   const toast = useLoadingToast();
+  const onError = (e) => {
+    console.log(e);
+  };
+  const onSuccess = (args?) => {
+    toast.success("Created");
+  };
   const create = useAction(createStudentAction, {
     onSuccess(args) {
-      console.log(args);
-      toast.success("Created");
-      // setParams(null);
+      onSuccess(args);
+      setParams(null);
     },
-    onError(e) {
-      console.log(e);
+    onError,
+  });
+  const createAndNew = useAction(createStudentAction, {
+    onSuccess(args) {
+      onSuccess(args);
+      // reset()
     },
+    onError,
   });
 
   const classList = useAsyncMemo(async () => {
@@ -113,9 +116,35 @@ export function Form({}) {
               toast.error("Invalid Form");
             })}
           >
-            <SubmitButton isSubmitting={create?.isExecuting}>
-              Submit
-            </SubmitButton>
+            <div className="flex">
+              <SubmitButton size="sm" isSubmitting={create?.isExecuting}>
+                Submit
+              </SubmitButton>
+              <Menu
+                Icon={Icons.more}
+                Trigger={
+                  <Button className="border-l" type="button" size="sm">
+                    {/* <Icons.more className="size-4" /> */}
+                    <span>&</span>
+                  </Button>
+                }
+              >
+                <Menu.Item
+                  onClick={async (e) => {
+                    // e.preventDefault();
+                    const isValid = await trigger(); // run validation manually
+                    if (isValid) {
+                      const values = getValues();
+                      createAndNew.execute(values); // only execute if form is valid
+                    } else {
+                      toast.error("Invalid Form");
+                    }
+                  }}
+                >
+                  New
+                </Menu.Item>
+              </Menu>
+            </div>
           </form>
         </div>
       </CustomSheetContentPortal>

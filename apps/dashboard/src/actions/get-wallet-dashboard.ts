@@ -29,6 +29,20 @@ export async function getWalletDashboard() {
       amount: true,
     },
     where: {
+      OR: [
+        { studentPayment: null },
+        {
+          studentPayment: {
+            studentTermForm: {
+              sessionForm: {
+                Student: {
+                  deletedAt: null,
+                },
+              },
+            },
+          },
+        },
+      ],
       wallet: {
         sessionTermId: profile.termId,
       },
