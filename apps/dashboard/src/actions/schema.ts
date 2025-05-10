@@ -47,6 +47,19 @@ export const createStudentSchema = z.object({
   fees: z.array(studentFeeSchema).optional(),
   guardian: guardianSchema.optional().nullable(),
 });
+export const createStaffSchema = z.object({
+  title: z.string(),
+  name: z.string().min(0),
+  email: z.string().optional(),
+  phone: z.string().optional(),
+  phone2: z.string().optional(),
+  address: z.string().optional(),
+});
+export const createSubjectSchema = z.object({
+  title: z.string(),
+  // description: z.string().optional(),
+  // amount: z.number(),
+});
 export const createSchoolFeeSchema = z.object({
   title: z.string(),
   description: z.string().optional(),

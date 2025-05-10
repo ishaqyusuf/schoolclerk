@@ -83,15 +83,15 @@ model Bills {
     invoice   BillInvoice? @relation(fields: [invoiceId], references: [id])
     invoiceId String?
 
-    staffSessionProfile   StaffSessionProfile? @relation(fields: [staffSessionProfileId], references: [id])
+    staffTermProfile      StaffTermProfile? @relation(fields: [staffSessionProfileId], references: [id])
     staffSessionProfileId String?
-    Wallet                Wallet?              @relation(fields: [walletId], references: [id])
+    Wallet                Wallet?           @relation(fields: [walletId], references: [id])
     walletId              String?
-    billPayment           BillPayment?         @relation(fields: [billPaymentId], references: [id])
+    billPayment           BillPayment?      @relation(fields: [billPaymentId], references: [id])
     billPaymentId         String?
-    billable              Billable?            @relation(fields: [billableId], references: [id])
+    billable              Billable?         @relation(fields: [billableId], references: [id])
     billableId            String?
-    billableHistory       BillableHistory?     @relation(fields: [billableHistoryId], references: [id])
+    billableHistory       BillableHistory?  @relation(fields: [billableHistoryId], references: [id])
     billableHistoryId     String?
 }
 

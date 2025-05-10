@@ -17,3 +17,17 @@ export function classChanged() {
   });
   studentChanged();
 }
+export function subjectChanged() {
+  revalidatePath("/academic/subjects");
+  getSaasProfileCookie().then(({ termId }) => {
+    revalidateTag(`subjects_${termId}`);
+    revalidateTag(`subjects_filter_${termId}`);
+  });
+}
+export function staffChanged() {
+  revalidatePath("/staff/teachers");
+  getSaasProfileCookie().then(({ termId }) => {
+    revalidateTag(`staffs_${termId}`);
+    revalidateTag(`staffs_filter_${termId}`);
+  });
+}

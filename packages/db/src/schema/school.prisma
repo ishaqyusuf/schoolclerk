@@ -40,13 +40,14 @@ model SchoolSession {
     schoolId  String
     school    SchoolProfile @relation(fields: [schoolId], references: [id])
 
-    terms           SessionTerm[]
-    classRooms      ClassRoom[]
-    sessionForms    StudentSessionForm[]
-    termForms       StudentTermForm[]
-    studentFees     StudentFee[]
-    feeHistory      FeeHistory[]
-    billableHistory BillableHistory[]
+    terms             SessionTerm[]
+    classRooms        ClassRoom[]
+    sessionForms      StudentSessionForm[]
+    termForms         StudentTermForm[]
+    studentFees       StudentFee[]
+    feeHistory        FeeHistory[]
+    billableHistory   BillableHistory[]
+    staffTermProfiles StaffTermProfile[]
 }
 
 model SessionTerm {
@@ -66,4 +67,5 @@ model SessionTerm {
     feeHistory         FeeHistory[]
     billableHistory    BillableHistory[]
     wallets            Wallet[]
+    staffTermProfiles  StaffTermProfile[]
 }
