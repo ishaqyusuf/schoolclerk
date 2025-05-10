@@ -3,7 +3,6 @@ import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import { ErrorFallback } from "@/components/error-fallback";
 import { BillablesTable } from "@/components/tables/billables";
 import { ClassesSkeleton } from "@/components/tables/classrooms/skeleton";
-import { StudentsTable } from "@/components/tables/students";
 
 import { searchParamsCache } from "./search-params";
 

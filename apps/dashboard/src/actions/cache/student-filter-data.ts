@@ -11,8 +11,11 @@ import { getCachedClassRooms } from "./classrooms";
 export async function studentFilterData() {
   const profile = await getSaasProfileCookie();
   const { termId } = profile;
+
   const fn = async () => {
-    const [classes] = await Promise.all([getCachedClassRooms(profile.termId)]);
+    const [classes] = await Promise.all([
+      getCachedClassRooms(profile.termId, profile.sessionId),
+    ]);
 
     const response: PageFilterData[] = [
       {
@@ -55,5 +58,5 @@ export async function studentFilterData() {
   const tags = [`students_class_filter_${termId}`];
   return unstable_cache(fn, tags, {
     tags,
-  });
+  })();
 }

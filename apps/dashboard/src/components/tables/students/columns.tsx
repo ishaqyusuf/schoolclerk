@@ -1,21 +1,16 @@
 "use client";
 
-import { deleteStudentAction } from "@/actions/delete-student";
-import { ClassRoomPageItem } from "@/actions/get-class-rooms";
 import { StudentData } from "@/actions/get-students-list";
-import ConfirmBtn from "@/components/confirm-button";
 import { Menu } from "@/components/menu";
-import { useLoadingToast } from "@/hooks/use-loading-toast";
 import { ColumnDef } from "@tanstack/react-table";
-import { useAction } from "next-safe-action/hooks";
 
 import { ActionCell } from "../action-cell";
 
 export type Item = StudentData;
 export const columns: ColumnDef<StudentData>[] = [
   {
-    header: "Classroom",
-    accessorKey: "class_room",
+    header: "Student",
+    accessorKey: "student",
     cell: ({ row: { original: item } }) => (
       <div>
         <div>{item.studentName}</div>
@@ -30,17 +25,12 @@ export const columns: ColumnDef<StudentData>[] = [
   },
   {
     header: "",
-    accessorKey: "action",
+    accessorKey: "actions",
+    meta: {
+      className: "flex-1",
+    },
     cell: ({ row: { original: item } }) => {
-      <ActionCell
-        trash
-        itemId={item.id}
-        Menu={
-          <>
-            <Menu.Item>Hello</Menu.Item>
-          </>
-        }
-      ></ActionCell>;
+      return <ActionCell trash itemId={item.id}></ActionCell>;
     },
   },
 ];

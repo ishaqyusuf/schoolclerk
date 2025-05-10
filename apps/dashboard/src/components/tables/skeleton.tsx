@@ -1,7 +1,7 @@
 import { Skeleton } from "@school-clerk/ui/skeleton";
 import { Table, TableBody, TableCell, TableRow } from "@school-clerk/ui/table";
 
-export function ClassesSkeleton() {
+export function TableSkeleton() {
   return (
     <Table>
       {/* <ClassroomTableHeader table={} /> */}

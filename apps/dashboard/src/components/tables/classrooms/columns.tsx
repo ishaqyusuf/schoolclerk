@@ -41,7 +41,6 @@ export const columns: ColumnDef<ClassItem>[] = [
   {
     header: "",
     accessorKey: "actions",
-
     meta: {
       className: "flex-1",
     },

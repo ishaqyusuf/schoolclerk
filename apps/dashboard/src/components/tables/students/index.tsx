@@ -1,7 +1,5 @@
-import { getCachedClassRooms } from "@/actions/cache/classrooms";
 import { studentFilterData } from "@/actions/cache/student-filter-data";
 import { getSaasProfileCookie } from "@/actions/cookies/login-session";
-import { getClassRooms } from "@/actions/get-class-rooms";
 import { getStudentsListAction } from "@/actions/get-students-list";
 
 import { EmptyState, NoResults } from "./empty-states";
@@ -20,15 +18,7 @@ type Props = {
 
 const pageSize = 25;
 
-export async function StudentsTable({
-  query,
-  //   sort,
-  //   start,
-  //   end,
-  //   statuses,
-  //   customers,
-  //   page,
-}: Props) {
+export async function StudentsTable({ query }: Props) {
   const { start, end, statuses, customers, sort, page } = query;
   const filter = {
     start,

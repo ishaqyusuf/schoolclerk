@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
-import { getTenantDomain } from "@/actions/cookies/login-session";
 import { ErrorFallback } from "@/components/error-fallback";
 import { ClassessTable } from "@/components/tables/classrooms";
 import { ClassesSkeleton } from "@/components/tables/classrooms/skeleton";

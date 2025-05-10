@@ -38,7 +38,7 @@ export function DataTable({
   hasNextPage,
   filterDataPromise,
 }: Props) {
-  const { setParams, openStudentId } = useStudentParams();
+  const { setParams, ...params } = useStudentParams();
   const filterData: PageFilterData[] = filterDataPromise
     ? use(filterDataPromise)
     : [];
@@ -70,6 +70,7 @@ export function DataTable({
           loadMore,
           pageSize,
           setParams,
+          params,
           tableMeta: {
             deleteAction(id) {
               deleteStudent.execute({
