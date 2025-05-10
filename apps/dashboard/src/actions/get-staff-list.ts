@@ -8,7 +8,7 @@ import { prisma } from "@school-clerk/db";
 
 import { getSaasProfileCookie } from "./cookies/login-session";
 
-export type StaffListItem = PageItemData<typeof getStaffListAction>;
+export type ListItem = PageItemData<typeof getStaffListAction>;
 export async function getStaffListAction(query: SearchParamsType = {}) {
   const profile = await getSaasProfileCookie();
   query.sessionId = profile.sessionId;

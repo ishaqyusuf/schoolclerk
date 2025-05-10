@@ -2,9 +2,11 @@
 
 import React, { use } from "react";
 import { deleteStudentAction } from "@/actions/delete-student";
+import { ListItem } from "@/actions/get-staff-list";
 import { StudentData } from "@/actions/get-students-list";
 import { MiddaySearchFilter } from "@/components/midday-search-filter/search-filter";
 import { useLoadingToast } from "@/hooks/use-loading-toast";
+import { useStaffParams } from "@/hooks/use-staff-params";
 import { useStudentParams } from "@/hooks/use-student-params";
 import { PageFilterData } from "@/types";
 import { useAction } from "next-safe-action/hooks";
@@ -18,7 +20,7 @@ import { TableRow } from "../table-row";
 import { columns } from "./columns";
 
 type Props = {
-  data: StudentData[];
+  data: ListItem[];
   loadMore: (query) => Promise<any>;
   pageSize: number;
   hasNextPage: boolean;
@@ -32,7 +34,7 @@ export function DataTable({
   hasNextPage,
   filterDataPromise,
 }: Props) {
-  const { setParams, ...params } = useStudentParams();
+  const { setParams, ...params } = useStaffParams();
   const filterData: PageFilterData[] = filterDataPromise
     ? use(filterDataPromise)
     : [];
@@ -73,7 +75,7 @@ export function DataTable({
             },
             rowClick(id, rowData) {
               setParams({
-                studentViewId: id,
+                staffViewId: id,
               });
             },
           },
@@ -88,7 +90,7 @@ export function DataTable({
             variant="outline"
             onClick={() =>
               setParams({
-                createStudent: true,
+                createStaff: true,
               })
             }
           >

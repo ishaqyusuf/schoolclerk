@@ -7,13 +7,11 @@ const lineItemSchema = z.object({
   quantity: z.number(),
 });
 
-export function useStudentParams(options?: { shallow: boolean }) {
+export function useStaffParams(options?: { shallow: boolean }) {
   const [params, setParams] = useQueryStates(
     {
-      createStudent: parseAsBoolean,
-      studentViewId: parseAsString,
-      studentViewTab: parseAsString,
-      // ...studentPageQuery,
+      createStaff: parseAsBoolean,
+      staffViewId: parseAsString,
     },
     options,
   );

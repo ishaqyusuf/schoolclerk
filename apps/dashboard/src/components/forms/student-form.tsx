@@ -61,7 +61,10 @@ export function Form({}) {
   const classList = useAsyncMemo(async () => {
     await timeout(randomInt(250));
     const profile = await getSaasProfileCookie();
-    const classList = await getCachedClassRooms(profile.termId);
+    const classList = await getCachedClassRooms(
+      profile.termId,
+      profile.sessionId,
+    );
     return classList;
   }, []);
   return (

@@ -20,21 +20,21 @@ import {
 import { CustomSheet, CustomSheetContent } from "../custom-sheet-content";
 
 export function StudentOverviewSheet({}) {
-  const { openStudentId, studentViewTab, setParams } = useStudentParams();
-  const isOpen = Boolean(openStudentId);
+  const { studentViewId, studentViewTab, setParams } = useStudentParams();
+  const isOpen = Boolean(studentViewId);
 
   const student = useAsyncMemo(async () => {
-    if (!openStudentId) return null;
+    if (!studentViewId) return null;
     const profile = await getSaasProfileCookie();
     await timeout(randomInt(100));
     const {
       data: [student],
     } = await getStudentsListAction({
       sessionId: profile.sessionId,
-      studentId: openStudentId,
+      studentId: studentViewId,
     });
     return student;
-  }, [openStudentId]);
+  }, [studentViewId]);
   if (!isOpen) return null;
 
   return (
