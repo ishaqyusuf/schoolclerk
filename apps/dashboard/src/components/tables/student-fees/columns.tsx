@@ -14,6 +14,7 @@ export const columns: ColumnDef<Item>[] = [
     accessorKey: "billable",
     cell: ({ row: { original: item } }) => (
       <div>
+        <div>{item?.studentName}</div>
         <div className="font-bold">{item.feeTitle}</div>
         <div className="">{item.description}</div>
       </div>
