@@ -36,6 +36,7 @@ export const studentFeeSchema = z.object({
   amount: z.number().optional(),
   paid: z.number().optional(),
   studentTermId: z.string().optional(),
+  studentId: z.string().optional(),
 });
 export const createStudentSchema = z.object({
   name: z.string().min(1),

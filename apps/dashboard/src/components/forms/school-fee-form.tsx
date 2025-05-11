@@ -9,7 +9,7 @@ import { FormDebugBtn } from "../form-debug-btn";
 import { useSchoolFeeFormContext } from "../school-fee/form-context";
 
 export function Form({}) {
-  const { schoolFeeId, setParams } = useSchoolFeeParams();
+  const { setParams } = useSchoolFeeParams();
   const { watch, control, trigger, handleSubmit, formState } =
     useSchoolFeeFormContext();
   const create = useAction(createSchoolFeeAction, {

@@ -1,23 +1,20 @@
 "use client";
 
-import { studentPageQuery } from "@/app/dashboard/[domain]/(sidebar)/students/list/search-params";
 import { useClassesParams } from "@/hooks/use-classes-params";
-import { useStaffParams } from "@/hooks/use-staff-params";
-import { useStudentParams } from "@/hooks/use-student-params";
-import { useQueryStates } from "nuqs";
+import { useTermBillableParams } from "@/hooks/use-term-billable-params";
 
 import { Button } from "@school-clerk/ui/button";
 
 export function EmptyState() {
-  const { setParams } = useStaffParams();
+  const { setParams } = useTermBillableParams();
 
   return (
     <div className="flex items-center justify-center ">
       <div className="mt-40 flex flex-col items-center">
         <div className="mb-6 space-y-2 text-center">
-          <h2 className="text-lg font-medium">No staffs</h2>
+          <h2 className="text-lg font-medium">No billables</h2>
           <p className="text-sm text-[#606060]">
-            You haven't created any invoices yet. <br />
+            You haven't created any billables yet. <br />
             Go ahead and create your first one.
           </p>
         </div>
@@ -26,11 +23,11 @@ export function EmptyState() {
           variant="outline"
           onClick={() =>
             setParams({
-              createStaff: true,
+              createTermBillable: true,
             })
           }
         >
-          Create Staff
+          Create bill
         </Button>
       </div>
     </div>
@@ -38,10 +35,8 @@ export function EmptyState() {
 }
 
 export function NoResults() {
-  const [params, setParams] = useQueryStates({
-    ...studentPageQuery,
-  });
-  const q = useStaffParams();
+  const { setParams } = useTermBillableParams();
+
   return (
     <div className="flex items-center justify-center ">
       <div className="mt-40 flex flex-col items-center">
@@ -54,13 +49,9 @@ export function NoResults() {
 
         <Button
           variant="outline"
-          onClick={() =>
-            q.setParams({
-              createStaff: true,
-            })
-          }
+          onClick={() => setParams(null, { shallow: false })}
         >
-          Create
+          Clear filters
         </Button>
       </div>
     </div>

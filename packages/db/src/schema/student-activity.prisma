@@ -81,6 +81,9 @@ model StudentFee {
     receipts          StudentPayment[]
     price             FeeHistory?      @relation(fields: [feeHistoryId], references: [id])
     feeHistoryId      String?
+
+    student   Students? @relation(fields: [studentId], references: [id])
+    studentId String?
 }
 
 model StudentPurchase {

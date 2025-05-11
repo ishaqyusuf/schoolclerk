@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
+import { DataSkeleton } from "@/components/data-skeleton";
 import { ErrorFallback } from "@/components/error-fallback";
-import { ClassesSkeleton } from "@/components/tables/classrooms/skeleton";
-import { Table } from "@/components/tables/fees";
+import { PageTable } from "@/components/tables/student-fees";
 
 import { searchParamsCache } from "./search-params";
 
@@ -22,8 +22,8 @@ export default async function Page({ searchParams, params }) {
   return (
     <div className="flex flex-col gap-6">
       <ErrorBoundary errorComponent={ErrorFallback}>
-        <Suspense fallback={<ClassesSkeleton />} key={loadingKey}>
-          <Table query={searchQuery} />
+        <Suspense fallback={<DataSkeleton />} key={loadingKey}>
+          <PageTable query={searchQuery} />
         </Suspense>
       </ErrorBoundary>
     </div>

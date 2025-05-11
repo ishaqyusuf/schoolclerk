@@ -23,6 +23,7 @@ export async function createStudentFee(data: Type, tx: typeof prisma = prisma) {
       studentTermFormId: data.studentTermId,
       schoolSessionId: profile.sessionId,
       feeHistoryId: data.feeId,
+      studentId: data.studentId,
       // description: data.title,
       // description: data.feeDescription
     },

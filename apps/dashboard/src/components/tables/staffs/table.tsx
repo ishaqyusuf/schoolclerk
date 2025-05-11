@@ -1,13 +1,11 @@
 "use client";
 
 import React, { use } from "react";
-import { deleteStudentAction } from "@/actions/delete-student";
+import { deleteStaffAction } from "@/actions/delete-staff-schema";
 import { ListItem } from "@/actions/get-staff-list";
-import { StudentData } from "@/actions/get-students-list";
 import { MiddaySearchFilter } from "@/components/midday-search-filter/search-filter";
 import { useLoadingToast } from "@/hooks/use-loading-toast";
 import { useStaffParams } from "@/hooks/use-staff-params";
-import { useStudentParams } from "@/hooks/use-student-params";
 import { PageFilterData } from "@/types";
 import { useAction } from "next-safe-action/hooks";
 
@@ -38,17 +36,8 @@ export function DataTable({
   const filterData: PageFilterData[] = filterDataPromise
     ? use(filterDataPromise)
     : [];
-  //   const deleteInvoice = useAction(deleteInvoiceAction);
-  //   const { date_format: dateFormat } = useUserContext((state) => state.data);
-
-  const handleDeleteInvoice = (id: string) => {
-    // setData((prev) => {
-    //   return prev.filter((item) => item.id !== id);
-    // });
-    // deleteInvoice.execute({ id });
-  };
   const toast = useLoadingToast();
-  const deleteStudent = useAction(deleteStudentAction, {
+  const deleteStudent = useAction(deleteStaffAction, {
     onSuccess(args) {
       toast.success("Deleted!", {
         variant: "destructive",
@@ -70,7 +59,7 @@ export function DataTable({
           tableMeta: {
             deleteAction(id) {
               deleteStudent.execute({
-                studentId: id,
+                staffId: id,
               });
             },
             rowClick(id, rowData) {

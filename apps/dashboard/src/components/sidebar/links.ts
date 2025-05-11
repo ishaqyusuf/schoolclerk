@@ -152,14 +152,22 @@ export const linkModules = [
       _link("Dashboard", "dashboard", "/finance").access(_role.is("Admin"))
         .data,
     ]),
-    _section("main", "Fees", [
-      _link("Fee Management", "coins", "/finance/fees").access(
+    _section("main", "Finance Managment", [
+      _link("Fee Management", "coins", "/finance/fees-management").access(
         _role.is("Admin"),
       ).data,
       _link("Billables", "coins", "/finance/billables").access(
         _role.is("Admin"),
       ).data,
-      _link("Invoices", "file-text", "/finance/invoices").access(
+    ]),
+    _section("main", "Fees", [
+      _link("Transactions", "file-text", "/finance/transactions").access(
+        _role.in("Admin", "Accountant"),
+      ).data,
+      _link("Student Fees", "file-text", "/finance/student-fees").access(
+        _role.in("Admin", "Accountant"),
+      ).data,
+      _link("Bills", "file-text", "/finance/bills").access(
         _role.in("Admin", "Accountant"),
       ).data,
       _link("Payments", "credit-card", "/finance/payments").access(

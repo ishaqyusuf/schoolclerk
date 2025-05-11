@@ -79,7 +79,12 @@ export function Form({}) {
           options={["Mr", "Mrs", "Ustaadh", "Ustaadha"]}
           control={control}
         />
-        <FormInput name="name" label="Name" control={control} />
+        <FormInput
+          className="flex-1"
+          name="name"
+          label="Name"
+          control={control}
+        />
       </div>
       <FormInput name="email" label="Email" control={control} />
       <FormInput name="phone" label="Phone" control={control} />

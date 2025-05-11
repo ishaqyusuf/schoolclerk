@@ -11,7 +11,9 @@ model Students {
     schoolProfile   SchoolProfile?       @relation(fields: [schoolProfileId], references: [id])
     schoolProfileId String?
     sessionForms    StudentSessionForm[]
+    termForms       StudentTermForm[]
     guardians       StudentGuardians[]
+    fees            StudentFee[]
 
     @@unique([name, surname, otherName, schoolProfileId, deletedAt])
 }
@@ -37,7 +39,7 @@ enum Gender {
 
 model StudentSessionForm {
     id                    String               @id @default(uuid())
-    Student               Students?            @relation(fields: [studentId], references: [id])
+    student               Students?            @relation(fields: [studentId], references: [id])
     studentId             String?
     createdAt             DateTime?            @default(now()) @db.Timestamp(0)
     updatedAt             DateTime?            @updatedAt
@@ -68,4 +70,7 @@ model StudentTermForm {
 
     studentSessionFormId String
     sessionForm          StudentSessionForm @relation(fields: [studentSessionFormId], references: [id])
+
+    student   Students? @relation(fields: [studentId], references: [id])
+    studentId String?
 }

@@ -46,19 +46,6 @@ export async function createStudent(
                     schoolProfileId: profile.schoolId,
                   },
                 },
-                // connect: data.guardian.id
-                //   ? {
-                //       id: data.guardian.id,
-                //     }
-                //   : undefined,
-                // create: !data.guardian.id
-                //   ? {
-                //       name: data.guardian.name,
-                //       phone: data.guardian.phone,
-                //       phone2: data.guardian.phone2,
-                //       schoolProfileId: profile.schoolId,
-                //     }
-                //   : undefined,
               },
             },
           },
@@ -72,6 +59,8 @@ export async function createStudent(
               schoolProfileId: profile.schoolId,
               sessionTermId: profile.termId,
               schoolSessionId: profile.sessionId,
+
+              // studentId
             },
           },
         },
@@ -91,7 +80,17 @@ export async function createStudent(
       },
     },
   });
-
+  await tx.studentTermForm.updateMany({
+    where: {
+      studentSessionFormId: {
+        in: student.sessionForms.map((s) => s.id),
+      },
+      studentId: null,
+    },
+    data: {
+      studentId: student.id,
+    },
+  });
   // throw new Error("FAILED S");
   return student;
 }
@@ -101,7 +100,7 @@ export const createStudentAction = actionClient
     const student = await transaction(async (tx) => {
       if (!data?.guardian?.name) data.guardian = null;
       const student = await createStudent(data, tx);
-      console.log(data.fees);
+
       const payments = await Promise.all(
         data.fees.map(async (feeData) => {
           const fee = await createStudentFee(
@@ -110,10 +109,11 @@ export const createStudentAction = actionClient
               feeId: feeData.feeId,
               studentTermId: student?.sessionForms?.[0]?.termForms?.[0]?.id,
               title: feeData.title,
+              studentId: student.id,
             },
             tx,
           );
-          // console.log({ fee });
+
           if (feeData.paid) {
             const payment = await createStudentFeePayment(
               {
@@ -130,7 +130,7 @@ export const createStudentAction = actionClient
           return { fee };
         }),
       );
-      // throw new Error("BRK!");
+
       return { student, payments };
     });
     revalidatePath("/students/list");

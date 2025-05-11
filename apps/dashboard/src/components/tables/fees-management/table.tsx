@@ -21,7 +21,7 @@ import { columns, Item } from "./columns";
 
 type Props = {
   data: Item[];
-  loadMore: (query) => Promise<{ data: Item[]; meta: { count: number } }>;
+  loadMore: (query) => Promise<any>;
   pageSize: number;
   hasNextPage: boolean;
 };

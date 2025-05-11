@@ -18,13 +18,7 @@ import { columns, type ClassItem } from "./columns";
 
 type Props = {
   data: ClassItem[];
-  loadMore: ({
-    from,
-    to,
-  }: {
-    from: number;
-    to: number;
-  }) => Promise<{ data: ClassItem[]; meta: { count: number } }>;
+  loadMore: (query) => Promise<any>;
   pageSize: number;
   hasNextPage: boolean;
 };
