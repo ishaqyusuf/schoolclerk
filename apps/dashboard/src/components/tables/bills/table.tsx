@@ -37,6 +37,7 @@ export function DataTable({ data, loadMore, pageSize, hasNextPage }: Props) {
     <TableProvider
       args={[
         {
+          checkbox: true,
           setParams,
           params,
           columns,

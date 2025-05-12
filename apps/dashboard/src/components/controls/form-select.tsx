@@ -170,7 +170,13 @@ export default function FormSelect<
                           SelItem ? (
                             <SelItem option={option} key={index} />
                           ) : (
-                            <SelectItem key={index} value={itemValue(option)}>
+                            <SelectItem
+                              onClick={(e) => {
+                                onSelect?.(option);
+                              }}
+                              key={index}
+                              value={itemValue(option)}
+                            >
                               {Item ? (
                                 <Item option={option} />
                               ) : (

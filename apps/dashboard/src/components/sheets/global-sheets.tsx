@@ -12,7 +12,7 @@ type Props = {
   //   defaultCurrency?: string;
 };
 
-export async function GlobalSheets({}: Props) {
+export function GlobalSheets({}: Props) {
   return (
     <>
       <ClassroomCreateSheet />

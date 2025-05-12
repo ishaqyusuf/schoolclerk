@@ -30,6 +30,13 @@ export function feesChanged() {
     revalidateTag(`fees_filter_${termId}`);
   });
 }
+export function staffChanged() {
+  revalidatePath("/staff/teachers");
+  getSaasProfileCookie().then(({ termId }) => {
+    revalidateTag(`staffs_${termId}`);
+    revalidateTag(`staffs_filter_${termId}`);
+  });
+}
 export function studentChanged() {
   revalidatePath("/students/list");
   getSaasProfileCookie().then(({ termId }) => {
@@ -43,11 +50,17 @@ export function subjectChanged() {
     revalidateTag(`subjects_filter_${termId}`);
   });
 }
-
-export function staffChanged() {
-  revalidatePath("/staff/teachers");
+export function walletAdded() {
+  // revalidatePath("/academic/subjects");
   getSaasProfileCookie().then(({ termId }) => {
-    revalidateTag(`staffs_${termId}`);
-    revalidateTag(`staffs_filter_${termId}`);
+    revalidateTag(`wallets_${termId}`);
+    revalidateTag(`wallet_filter_${termId}`);
+  });
+}
+export function walletTxChanged(walletName) {
+  // revalidatePath("/academic/subjects");
+  getSaasProfileCookie().then(({ termId }) => {
+    revalidateTag(`wallets_tx_${termId}_${walletName}`);
+    revalidateTag(`wallet_filter_${termId}_${walletName}`);
   });
 }

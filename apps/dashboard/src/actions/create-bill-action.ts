@@ -1,12 +1,11 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { transaction } from "@/utils/db";
 import z from "zod";
 
 import { prisma } from "@school-clerk/db";
 
-import { billChanged } from "./cache/cache-control";
+import { billChanged, walletTxChanged } from "./cache/cache-control";
 import { getSaasProfileCookie } from "./cookies/login-session";
 import { getWalletAction } from "./get-wallet";
 import { actionClient } from "./safe-action";
@@ -53,6 +52,7 @@ export async function createBill(data: CreateForm, tx: typeof prisma) {
     },
   });
   billChanged();
+  walletTxChanged(wallet.name);
   return resp;
 }
 export const createBillAction = actionClient

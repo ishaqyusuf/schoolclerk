@@ -8,10 +8,10 @@ model Wallet {
     sessionTermId   String?
     transactions    WalletTransactions[]
     bills           Bills[]
-
-    createdAt DateTime? @default(now()) @db.Timestamp(0)
-    updatedAt DateTime? @updatedAt
-    deletedAt DateTime? @db.Timestamp(0)
+    funds           Funds[]
+    createdAt       DateTime?            @default(now()) @db.Timestamp(0)
+    updatedAt       DateTime?            @updatedAt
+    deletedAt       DateTime?            @db.Timestamp(0)
 
     @@unique([name, schoolProfileId, sessionTermId])
 }
@@ -30,11 +30,31 @@ model WalletTransactions {
     createdAt DateTime? @default(now()) @db.Timestamp(0)
     updatedAt DateTime? @updatedAt
     deletedAt DateTime? @db.Timestamp(0)
+
+    func   Funds?  @relation(fields: [fundId], references: [id])
+    fundId String?
 }
 
 enum WalletType {
     Bill
     Fee
+}
+
+model Funds {
+    id            String @id @default(uuid())
+    title         String
+    description   String
+    amount        Float
+    pendingAmount Float
+
+    createdAt DateTime? @default(now()) @db.Timestamp(0)
+    updatedAt DateTime? @updatedAt
+    deletedAt DateTime? @db.Timestamp(0)
+
+    transactions WalletTransactions[]
+
+    wallet   Wallet @relation(fields: [walletId], references: [id])
+    walletId String
 }
 
 model Billable {

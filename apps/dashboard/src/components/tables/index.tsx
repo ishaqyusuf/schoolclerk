@@ -24,6 +24,7 @@ type TableProps = (WithTable | WithoutTable) & {
   pageSize?;
   hasNextPage?;
   columns?;
+  checkbox?: boolean;
   tableMeta?: {
     deleteAction?: (id) => any;
     rowClick?: (id: string, rowData?) => any;
@@ -41,6 +42,7 @@ export const { useContext: useTable, Provider: TableProvider } =
     pageSize,
     hasNextPage: initialHasNextPage,
     loadMore,
+    checkbox,
   }: TableProps) {
     const [data, setData] = useState(initialData);
     const [from, setFrom] = useState(pageSize);
@@ -86,5 +88,6 @@ export const { useContext: useTable, Provider: TableProvider } =
       params,
       tableMeta,
       loadMoreData,
+      checkbox,
     };
   });

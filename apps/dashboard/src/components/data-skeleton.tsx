@@ -45,23 +45,8 @@ export function DataSkeleton({
   ) : (
     React.createElement(
       as,
-      { className: !ctx?.loading || cn(className) },
+      { className: !ctx?.loading ? "" : cn(className) },
       children,
     )
   );
-  // if (ctx.loading)
-  //     return (
-
-  //         <span
-  //             className={cn(
-  //                 "animate-pulse rounded-md bg-muted",
-  //                 className,
-  //                 !placeholder && ""
-  //             )}
-  //         >
-  //             <div className="opacity-0">{placeholder}</div>
-  //         </span>
-  //     );
-
-  // return <span className={cn(className)}>{children}</span>;
 }

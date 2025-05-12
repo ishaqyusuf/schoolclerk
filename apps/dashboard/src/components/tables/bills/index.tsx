@@ -21,7 +21,6 @@ export async function PageTable({ query }: Props) {
 
   async function loadMore({ from, to }: { from: number; to: number }) {
     "use server";
-
     return getBills({
       sort,
     });
