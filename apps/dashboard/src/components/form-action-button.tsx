@@ -7,14 +7,22 @@ interface Props {
   action;
   label?;
   noDebug?: boolean;
+  More?;
 }
-export function FormActionButton({ action, noDebug, label = "Submit" }: Props) {
+export function FormActionButton({
+  action,
+  noDebug,
+  More,
+  label = "Submit",
+}: Props) {
   const { handleSubmit } = useFormContext();
   return (
     <form className="grid gap-4" onSubmit={handleSubmit(action.execute)}>
       <div className="flex justify-end">
         {!noDebug || <FormDebugBtn />}
-        <SubmitButton isSubmitting={action?.isExecuting}>Submit</SubmitButton>
+        <div className="flex">
+          <SubmitButton isSubmitting={action?.isExecuting}>Submit</SubmitButton>
+        </div>
       </div>
     </form>
   );

@@ -2,6 +2,7 @@
 
 import { BillableCreateSheet } from "./billable-create-sheet";
 import { ClassroomCreateSheet } from "./classroom-create-sheet";
+import { CreateBillSheet } from "./create-bill-sheet";
 import { SchoolFeeCreateSheet } from "./school-fee-create-sheet";
 import { StaffCreateSheet } from "./staff-create-sheet";
 import { StudentCreateSheet } from "./student-create-sheet";
@@ -20,6 +21,7 @@ export async function GlobalSheets({}: Props) {
       <StudentCreateSheet />
       <StudentOverviewSheet />
       <StaffCreateSheet />
+      <CreateBillSheet />
 
       {/* We preload the invoice data (template, invoice number etc) */}
       {/* <Suspense fallback={null}>

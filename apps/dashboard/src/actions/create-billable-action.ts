@@ -1,14 +1,14 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { transaction } from "@/utils/db";
 import z from "zod";
 
 import { prisma } from "@school-clerk/db";
 
+import { billablesChanged } from "./cache/cache-control";
 import { getSaasProfileCookie } from "./cookies/login-session";
 import { actionClient } from "./safe-action";
-import { createBillableSchema, createSchoolFeeSchema } from "./schema";
+import { createBillableSchema } from "./schema";
 
 export type CreateBillableForm = z.infer<typeof createBillableSchema>;
 export async function createBillable(
@@ -16,7 +16,7 @@ export async function createBillable(
   tx: typeof prisma,
 ) {
   const profile = await getSaasProfileCookie();
-  return await tx.billable.create({
+  const resp = await tx.billable.create({
     data: {
       title: data.title,
       amount: data.amount,
@@ -33,13 +33,15 @@ export async function createBillable(
       },
     },
   });
+  billablesChanged();
+  return resp;
 }
 export const createBillableAction = actionClient
   .schema(createBillableSchema)
   .action(async ({ parsedInput: data }) => {
     return await transaction(async (tx) => {
       const resp = await createBillable(data, tx);
-      revalidatePath("/finance/billables");
+
       return resp;
     });
   });

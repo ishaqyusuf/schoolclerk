@@ -66,6 +66,15 @@ export const createSchoolFeeSchema = z.object({
   description: z.string().optional(),
   amount: z.number(),
 });
+export const createBillSchema = z.object({
+  title: z.string().min(1),
+  amount: z.number().min(1),
+  billableId: z.string().optional(),
+  selectedBillableId: z.string().optional(),
+  billableHistoryId: z.string().optional(),
+  staffTermProfileId: z.string().optional(),
+  description: z.string().optional(),
+});
 export const createBillableSchema = z.object({
   title: z.string().min(1),
   amount: z.number().min(1),

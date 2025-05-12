@@ -6,6 +6,7 @@ import z from "zod";
 
 import { prisma } from "@school-clerk/db";
 
+import { feesChanged } from "./cache/cache-control";
 import { getSaasProfileCookie } from "./cookies/login-session";
 import { actionClient } from "./safe-action";
 import { createBillableSchema, createSchoolFeeSchema } from "./schema";
@@ -16,7 +17,7 @@ export async function createSchoolFee(
   tx: typeof prisma,
 ) {
   const profile = await getSaasProfileCookie();
-  return await tx.fees.create({
+  const fee = await tx.fees.create({
     data: {
       title: data.title,
       amount: data.amount,
@@ -32,15 +33,15 @@ export async function createSchoolFee(
       },
     },
   });
+  feesChanged();
+  return fee;
 }
 export const createSchoolFeeAction = actionClient
   .schema(createBillableSchema)
   .action(async ({ parsedInput: data }) => {
     return await transaction(async (tx) => {
-      const profile = await getSaasProfileCookie();
       const resp = await createSchoolFee(data, tx);
-      revalidateTag(`fees_${profile.termId}`);
-      revalidatePath("/academic/classes");
+
       return resp;
     });
   });

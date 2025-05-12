@@ -26,6 +26,7 @@ model SchoolProfile {
     wallets                Wallet[]
     guardians              Guardians[]
     billables              Billable[]
+    bills                  Bills[]
 
     @@unique([name, subDomain, slug, deletedAt])
 }
@@ -48,6 +49,7 @@ model SchoolSession {
     feeHistory        FeeHistory[]
     billableHistory   BillableHistory[]
     staffTermProfiles StaffTermProfile[]
+    bills             Bills[]
 }
 
 model SessionTerm {
@@ -68,4 +70,5 @@ model SessionTerm {
     billableHistory    BillableHistory[]
     wallets            Wallet[]
     staffTermProfiles  StaffTermProfile[]
+    bills              Bills[]
 }
