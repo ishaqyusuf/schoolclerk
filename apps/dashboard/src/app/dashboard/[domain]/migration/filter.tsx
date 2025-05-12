@@ -17,8 +17,42 @@ interface Props {
   config?;
 }
 export function Filter({ config, classes, terms }: Props) {
+  const __filters = [
+    {
+      label: "View",
+      cookieKey: "view",
+      options: ["all students", "student session record"],
+      prefix: "View: ",
+      suffix: "",
+    },
+  ];
   return (
     <div className="flex min-w-max max-w-sm justify-end gap-4">
+      {__filters.map((f) => (
+        <Menu
+          key={f.label}
+          Icon={Icons.Filter}
+          label={
+            config?.[f.cookieKey]
+              ? `${f.prefix}${config?.[f.cookieKey]} ${f.suffix}`
+              : f.label
+          }
+        >
+          {f.options.map((o, i) => (
+            <Menu.Item
+              key={i}
+              onClick={(e) => {
+                cookieChanged({
+                  ...config,
+                  [f.cookieKey]: o,
+                });
+              }}
+            >
+              {o}
+            </Menu.Item>
+          ))}
+        </Menu>
+      ))}
       <Menu
         Icon={Icons.Filter}
         label={config?.term ? `${config?.term} term` : " select term"}
