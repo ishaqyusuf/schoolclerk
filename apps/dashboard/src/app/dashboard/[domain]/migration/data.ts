@@ -3,52 +3,105 @@ import { secondTermRawData } from "@/migration/second-term-data";
 import { thirdTermData } from "@/migration/third-term-data";
 import { arToEn } from "@/utils/utils";
 
-import { dotName, getClassCode, getClassSubjectList } from "./utils";
+import { useMigrationStore } from "./store";
+import {
+  dotName,
+  getClassCode,
+  getClassSubjectList,
+  trimName,
+  undotName,
+} from "./utils";
 
 export const classList = [];
 export function sessionRecord() {
+  const store = useMigrationStore.getState();
   const terms = getTermsData();
-  const records: {
+  type Student = {
+    terms: Term["term"][];
+    fullTerm?: boolean;
+    partTerm?: boolean;
+    firstName: string;
+    fullName: string;
+    mergeNames: string[];
+    gender: string;
+  };
+  type Record = {
     [className in string]: {
       studentCount: number;
-      students: {
-        [name in string]: {
-          terms: Term["term"][];
-          fullTerm?: boolean;
-          partTerm?: boolean;
-        };
-      };
+      students: Student[];
+      studentByName: { [name in string]: Student };
     };
-  } = {};
+  };
+  const records: Record = {};
   terms.map((term) => {
     term.result.map((res) => {
       if (!records?.[res.className]) {
         records[res.className] = {
           studentCount: 0,
-          students: {},
+          students: [],
+          studentByName: {},
         };
       }
-      const students = records[res.className].students;
+      const studentByName = records[res.className].studentByName;
       res.students.map((student) => {
         const fullName = dotName(student as any);
-        // [student.firstName, student.surname, student.otherName]
-        //   //   ?.filter(Boolean)
-        //   ?.join(".")
-        //   ?.split(" ")
-        //   ?.filter(Boolean)
-        //   ?.join(" ");
-        if (!students[fullName])
-          students[fullName] = {
+        const studentMergeClass = store?.studentMerge?.[res.className];
+        const mergeName = studentMergeClass?.[fullName];
+        let __fullName = mergeName || fullName;
+
+        if (!studentByName[__fullName])
+          studentByName[__fullName] = {
             terms: [term.term],
+            firstName: student?.firstName,
+            fullName: __fullName,
+            mergeNames: mergeName ? [fullName] : [],
+            gender: store?.genders?.[student?.firstName],
           };
-        else students[fullName].terms.push(term.term);
+        else {
+          if (mergeName) studentByName[__fullName].mergeNames.push(fullName);
+          studentByName[__fullName].terms.push(term.term);
+        }
       });
     });
   });
-  return records;
+
+  const sortedRecords = Object.fromEntries(
+    Object.entries(records).map(([name, group]) => {
+      const sortedStudents = Object.values(group.studentByName).sort((a, b) => {
+        // First by gender
+        if (a.gender > b.gender) return -1;
+        if (a.gender < b.gender) return 1;
+        // Then by firstName
+        if (a.fullName < b.fullName) return -1;
+        if (a.fullName > b.fullName) return 1;
+        return 0;
+      });
+
+      return [name, { ...group, students: sortedStudents }];
+    }),
+  );
+
+  return sortedRecords;
 }
 export function getTermsData() {
-  return [firstTerm(), secondTerm(), thirdTerm()];
+  return [firstTerm(), secondTerm(), thirdTerm()].map((term) => {
+    return {
+      ...term,
+      result: term.result.map((result) => {
+        return {
+          ...result,
+          students: result.students.map((r) => {
+            return {
+              ...r,
+              firstName: trimName(r.firstName),
+              surname: trimName(r.surname),
+              otherName: trimName(r.otherName),
+            };
+          }),
+        };
+      }),
+    };
+  });
 }
 function transformClassName(_) {
   return _?.split(" ")
@@ -61,30 +114,33 @@ function firstTerm(): Term {
   const result = firstTermData.map((classRoom) => {
     let students = [];
     let subjects = [];
-    classRoom.rawData?.split("\n").map((line, index) => {
-      line = line?.replaceAll("،", ",");
-      if (index == 0) {
-        const [n, ...s] = line.split(",").map((a) => a.trim());
-        subjects = s?.map((_s) => ({
-          name: _s,
-        }));
-      } else {
-        let [name, ...scores] = line?.split(","); //?.replaceAll("  ", " ");
-        name = name?.includes("-") ? name?.split("-")?.[1] : name;
-        let [firstName, surname, otherName] = name
-          ?.split(name.includes(".") ? "." : " ")
-          ?.filter(Boolean);
-        firstName = firstName?.includes("-")
-          ? firstName?.split("-")?.[1]
-          : firstName;
-        students.push({
-          firstName,
-          surname,
-          otherName,
-          scores,
-        });
-      }
-    });
+    classRoom.rawData
+      ?.split("\n")
+      .filter(validateLine)
+      .map((line, index) => {
+        line = line?.replaceAll("،", ",");
+        if (index == 0) {
+          const [n, ...s] = line.split(",").map((a) => a.trim());
+          subjects = s?.map((_s) => ({
+            name: _s,
+          }));
+        } else {
+          let [name, ...scores] = line?.split(","); //?.replaceAll("  ", " ");
+          name = name?.includes("-") ? name?.split("-")?.[1] : name;
+          let [firstName, surname, otherName] = name
+            ?.split(name.includes(".") ? "." : " ")
+            ?.filter(Boolean);
+          firstName = firstName?.includes("-")
+            ? firstName?.split("-")?.[1]
+            : firstName;
+          students.push({
+            firstName,
+            surname,
+            otherName,
+            scores,
+          });
+        }
+      });
     classRoom.class = transformClassName(classRoom.class);
     classList.push(classRoom.class);
     return {
@@ -98,7 +154,10 @@ function firstTerm(): Term {
     term: "first",
   };
 }
-
+function validateLine(line) {
+  if (line?.startsWith("//") || !line) return false;
+  return true;
+}
 function secondTerm(): Term {
   const result = [];
   let classData = {
@@ -108,7 +167,8 @@ function secondTerm(): Term {
   };
   secondTermRawData
     .split("\n")
-    ?.filter(Boolean)
+    ?.filter(validateLine)
+
     .map((line) => {
       line = line.replaceAll("؛", ";")?.replaceAll(". ", ";");
       let [fasl, className] = line?.split(":");
@@ -154,124 +214,127 @@ function thirdTerm(): Term {
   let cls: Class = null as any;
   const _classList = [] as Class[];
   let gender: Student["gender"] = "M";
-  thirdTermData.split("\n").map((line) => {
-    if (line.includes("📃")) {
-      if (cls) {
-        _classList.push({ ...cls });
-        cls = null as any;
-      }
-      const clsName = line?.replace("📃", "")?.trim();
-      const clsCode = getClassCode(clsName);
-      cls = {
-        className: clsName,
+  thirdTermData
+    .split("\n")
+    .filter(validateLine)
+    .map((line) => {
+      if (line.includes("📃")) {
+        if (cls) {
+          _classList.push({ ...cls });
+          cls = null as any;
+        }
+        const clsName = transformClassName(line?.replace("📃", "")?.trim());
+        const clsCode = getClassCode(clsName);
+        cls = {
+          className: clsName,
 
-        students: [],
-        code: clsCode,
-        subjects: getClassSubjectList(clsCode as any),
-        subs: [],
-        subsCount: 0,
+          students: [],
+          code: clsCode,
+          subjects: getClassSubjectList(clsCode as any),
+          subs: [],
+          subsCount: 0,
+        };
+        if (!cls.subjects) return null;
+        cls.subs = cls.subjects
+          .map((a) => (a.subs.length ? a.subs : [null]))
+          .flat() as any;
+        gender = "M";
+        studentClassId = 0;
+        cls.subsCount = cls.subs?.filter(Boolean).length;
+        return;
+      }
+      if (!line || ["-", "."].some((c) => !line?.replaceAll(c, "").trim())) {
+        if (cls?.students?.length) gender = "F";
+        return null;
+      }
+      const [name, ...params] = line?.includes(". ")
+        ? line.split(". ")
+        : [line];
+      const trimmedName = name?.split(".")?.filter(Boolean).join(".");
+
+      if (!trimmedName) {
+        if (cls?.students?.length) gender = "F";
+        return null;
+      }
+      const [firstName, fathersName, otherName] = trimmedName
+        ?.split(trimmedName?.includes(".") ? "." : " ")
+        ?.filter(Boolean);
+      // if (nameSplt?.length > 2 || nameSplt?.length == 1 || !nameSplt?.length)
+      const student: Student = {
+        gender,
+        text: line,
+        studentClassId: (studentClassId += 1),
+        studentId: (studentId += 1),
+        firstName,
+        surname: fathersName,
+        otherName: otherName,
+        payments: [],
+        examStatus: "",
+        scores: [],
       };
-      if (!cls.subjects) return null;
-      cls.subs = cls.subjects
-        .map((a) => (a.subs.length ? a.subs : [null]))
-        .flat() as any;
-      gender = "M";
-      studentClassId = 0;
-      cls.subsCount = cls.subs?.filter(Boolean).length;
-      return;
-    }
-    if (!line || ["-", "."].some((c) => !line?.replaceAll(c, "").trim())) {
-      if (cls?.students?.length) gender = "F";
-      return null;
-    }
-    const [name, ...params] = line?.includes(". ") ? line.split(". ") : [line];
-    // console.log(name);
-    const trimmedName = name?.split(".")?.filter(Boolean).join(".");
-
-    if (!trimmedName) {
-      if (cls?.students?.length) gender = "F";
-      return null;
-    }
-    const [firstName, fathersName, otherName] = trimmedName
-      ?.split(trimmedName?.includes(".") ? "." : " ")
-      ?.filter(Boolean);
-    // if (nameSplt?.length > 2 || nameSplt?.length == 1 || !nameSplt?.length)
-    //   console.log(trimmedName);
-    const student: Student = {
-      gender,
-      text: line,
-      studentClassId: (studentClassId += 1),
-      studentId: (studentId += 1),
-      firstName,
-      surname: fathersName,
-      otherName: otherName,
-      payments: [],
-      examStatus: "",
-      scores: [],
-    };
-    // console.log(student.studentClassId, student.studentId);
-    params?.map((p) => {
-      p = p.split(".").filter(Boolean).join(".")?.trim();
-      if (quranClasses.includes(p as any)) {
-        student.quranClass = p as any;
-        return;
-      }
-      if (p == "م") {
-        student.payments.push({
-          paymentType: "fee",
-          term: "3rd",
-          status: "not applicable",
-        });
-        student.examStatus = examStatus.free;
-        return;
-      }
-      if (p.startsWith("رس")) {
-        const a = +arToEn(p.replace("رس", ""));
-        student.payments.push({
-          paymentType: "fee",
-          status: a == 3000 ? "paid" : "paid",
-          term: "2nd",
-          amountPaid: a,
-          amountPending: 3000 - a,
-        });
-        return;
-      }
-      if (p.startsWith("ر")) {
-        const a = +arToEn(p.replace("ر", ""));
-        student.payments.push({
-          paymentType: "fee",
-          status: a == 3000 ? "paid" : "part paid",
-          term: "3rd",
-          amountPaid: a,
-          amountPending: 3000 - a,
-        });
-        student.examStatus = a == 3000 ? examStatus.paid : examStatus.permitted;
-        return;
-      }
-      switch (p) {
-        case "ق":
+      params?.map((p) => {
+        p = p.split(".").filter(Boolean).join(".")?.trim();
+        if (quranClasses.includes(p as any)) {
+          student.quranClass = p as any;
+          return;
+        }
+        if (p == "م") {
           student.payments.push({
-            paymentType: "entrance",
-            status: "paid",
+            paymentType: "fee",
             term: "3rd",
-            amountPaid: 500,
+            status: "not applicable",
+          });
+          student.examStatus = examStatus.free;
+          return;
+        }
+        if (p.startsWith("رس")) {
+          const a = +arToEn(p.replace("رس", ""));
+          student.payments.push({
+            paymentType: "fee",
+            status: a == 3000 ? "paid" : "paid",
+            term: "2nd",
+            amountPaid: a,
+            amountPending: 3000 - a,
           });
           return;
-        case "ق*":
+        }
+        if (p.startsWith("ر")) {
+          const a = +arToEn(p.replace("ر", ""));
           student.payments.push({
-            paymentType: "entrance",
-            status: "pending",
+            paymentType: "fee",
+            status: a == 3000 ? "paid" : "part paid",
             term: "3rd",
-            amountPending: 500,
+            amountPaid: a,
+            amountPending: 3000 - a,
           });
+          student.examStatus =
+            a == 3000 ? examStatus.paid : examStatus.permitted;
           return;
-        case "*":
-          student.examStatus = examStatus.noStatus;
-          return;
-      }
+        }
+        switch (p) {
+          case "ق":
+            student.payments.push({
+              paymentType: "entrance",
+              status: "paid",
+              term: "3rd",
+              amountPaid: 500,
+            });
+            return;
+          case "ق*":
+            student.payments.push({
+              paymentType: "entrance",
+              status: "pending",
+              term: "3rd",
+              amountPending: 500,
+            });
+            return;
+          case "*":
+            student.examStatus = examStatus.noStatus;
+            return;
+        }
+      });
+      cls.students.push(student);
     });
-    cls.students.push(student);
-  });
   if (cls) _classList.push(cls);
   return { result: _classList, term: "third" };
 }

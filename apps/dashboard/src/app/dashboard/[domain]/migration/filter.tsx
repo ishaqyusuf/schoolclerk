@@ -1,15 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
-import FormSelect from "@/components/controls/form-select";
 import { Icons } from "@/components/icons";
 import { Menu } from "@/components/menu";
-import { useEffectAfterMount } from "@/components/use-effect-after-mount";
-import { useForm } from "react-hook-form";
-
-import { Form } from "@school-clerk/ui/form";
+import { generateRandomString } from "@/utils/utils";
 
 import { cookieChanged } from "./cookie";
+import { useMigrationStore } from "./store";
 
 interface Props {
   terms?: string[];
@@ -25,7 +21,14 @@ export function Filter({ config, classes, terms }: Props) {
       prefix: "View: ",
       suffix: "",
     },
+    {
+      label: "Enrolled In:",
+      cookieKey: "studentEntrolledIn",
+      options: ["default", "all", "some"],
+      prefix: "Enrolled In: ",
+    },
   ];
+  const r = useMigrationStore();
   return (
     <div className="flex min-w-max max-w-sm justify-end gap-4">
       {__filters.map((f) => (
@@ -46,6 +49,7 @@ export function Filter({ config, classes, terms }: Props) {
                   ...config,
                   [f.cookieKey]: o,
                 });
+                r.update("refreshToken", generateRandomString());
               }}
             >
               {o}
@@ -63,6 +67,7 @@ export function Filter({ config, classes, terms }: Props) {
               ...config,
               term: null,
             });
+            r.update("refreshToken", generateRandomString());
           }}
         >
           All
@@ -91,6 +96,7 @@ export function Filter({ config, classes, terms }: Props) {
               ...config,
               class: null,
             });
+            r.update("refreshToken", generateRandomString());
           }}
         >
           All
@@ -102,6 +108,7 @@ export function Filter({ config, classes, terms }: Props) {
                 ...config,
                 class: c,
               });
+              r.update("refreshToken", generateRandomString());
             }}
             key={c}
           >

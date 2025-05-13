@@ -36,7 +36,7 @@ export function getClassSubjectList(classCode: ClassCodes) {
 }
 export function undotName(name) {
   const [firstName, surname, otherName] = name
-    ?.split(".")
+    ?.split("_")
     ?.map((r) => (r == "-" ? null : r));
   return {
     firstName,
@@ -45,5 +45,9 @@ export function undotName(name) {
   };
 }
 export function dotName({ firstName, surname, otherName }) {
-  return [firstName, surname, otherName]?.map((a) => (!a ? "-" : a))?.join(".");
+  return [firstName, surname, otherName]?.map((a) => (!a ? "-" : a))?.join("_");
+}
+export function trimName(name) {
+  if (!name) return name;
+  return name?.split(" ")?.filter(Boolean)?.join(" ");
 }
