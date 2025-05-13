@@ -1,6 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { firstTermData } from "@/migration/first-term-data";
+import { secondTermRawData } from "@/migration/second-term-data";
+import { thirdTermData } from "@/migration/third-term-data";
 import { generateRandomString } from "@/utils/utils";
 import { useAsyncMemo } from "use-async-memo";
 
@@ -27,6 +30,11 @@ import { undotName } from "./utils";
 
 export default function StudentSessionRecord() {
   const store = useMigrationStore();
+  const [raw, setRaw] = useState({
+    firstTermData,
+    secondTermRawData,
+    thirdTermData,
+  });
   const mem = useAsyncMemo(async () => {
     const data = sessionRecord();
     const cook = await loadCookie();
@@ -34,7 +42,7 @@ export default function StudentSessionRecord() {
       data,
       cook,
     };
-  }, [store.refreshToken]);
+  }, [store.refreshToken, raw]);
 
   const { data, cook } = mem || {};
   function unmerge(classRoom, names) {
@@ -57,8 +65,8 @@ export default function StudentSessionRecord() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {Object.entries(data)?.map(([className, classData]) => (
-            <React.Fragment key={className}>
+          {Object.entries(data)?.map(([className, classData], di) => (
+            <React.Fragment key={di}>
               {/* {Object.entries(classData?.students)
                 ?.sort((a, b) => a?.[0]?.localeCompare(b?.[0], ["ar"]))
                 .map(([studentName, studentData]) => ( */}
@@ -70,12 +78,12 @@ export default function StudentSessionRecord() {
                     return std?.terms?.length == 3;
                   return true;
                 })
-                .map((studentData) => (
+                .map((studentData, si) => (
                   <TableRow
                     className={cn(
                       cook?.class && cook?.class != className && "hidden",
                     )}
-                    key={studentData.fullName}
+                    key={si}
                   >
                     <TableCell>
                       <div className="flex gap-4 px-4">
