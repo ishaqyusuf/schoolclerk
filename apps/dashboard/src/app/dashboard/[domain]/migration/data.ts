@@ -1,35 +1,105 @@
 import { firstTermData } from "@/migration/first-term-data";
 import { secondTermRawData } from "@/migration/second-term-data";
 import { thirdTermData } from "@/migration/third-term-data";
-import { arToEn } from "@/utils/utils";
+import { arToEn, sum } from "@/utils/utils";
 
 import { useMigrationStore } from "./store";
-import {
-  dotName,
-  getClassCode,
-  getClassSubjectList,
-  trimName,
-  undotName,
-} from "./utils";
+import { dotName, getClassCode, getClassSubjectList, trimName } from "./utils";
 
 export const classList = [];
+export type StudentRecord = {
+  terms: Term["term"][];
+  fullTerm?: boolean;
+  partTerm?: boolean;
+  firstName: string;
+  fullName: string;
+  mergeNames: string[];
+  gender: string;
+  payments: PaymentStatus[];
+  paymentData?: ReturnType<typeof paymentStructure>;
+  classRoom: string;
+};
+function paymentStructure(student: StudentRecord) {
+  const store = useMigrationStore.getState();
+  let storePayments =
+    store.studentPayments?.[student.classRoom]?.[dotName(student as any)];
+  if (!storePayments) storePayments = {} as any;
+  const pays = {} as Partial<{
+    [term in Term["term"]]: {
+      fees: { paidIn; paid }[];
+      entrance: { paidIn; amount; paid };
+      // totalPaid: null;
+      // totalPending: null;
+    };
+  }>;
+  let entranceStatus = null as PaymentStatus["status"];
+  [...student.payments, ...(storePayments?.payments || [])].map((p) => {
+    const { term, paidIn, amountPaid } = p;
+    if (!pays[p.term])
+      pays[p.term] = {
+        fees: [],
+        entrance: {
+          paidIn: null,
+          amount: null,
+          paid: null,
+        },
+      };
+    if (p.paymentType == "entrance") {
+      pays[p.term].entrance.paidIn = p.paidIn;
+      pays[p.term].entrance.paid = p.amountPaid;
+      const eAmt = (pays[p.term].entrance.amount =
+        p.amountPaid || p.amountPending);
+      if (eAmt) {
+        entranceStatus = p.status;
+      }
+    } else {
+      if (amountPaid)
+        pays[p.term].fees.push({
+          paidIn,
+          paid: amountPaid,
+        });
+    }
+  });
+  if (!storePayments?.billables)
+    storePayments.billables = {
+      "1st": { amount: 3000 },
+      "2nd": { amount: 3000 },
+      "3rd": { amount: 3000 },
+    };
+  let paid = 0;
+  let payable = 0;
+  Object.entries(pays).map(([k, v]) => {
+    if (v?.entrance?.amount) {
+      payable = sum([payable, v?.entrance?.amount]);
+      paid = sum([paid, v?.entrance?.paid]);
+    }
+    const termAmount = storePayments?.billables?.[k]?.amount;
+    v?.fees?.map((fee) => {
+      paid = sum([paid, fee.paid]);
+      payable = sum([payable, termAmount]);
+    });
+  });
+  ["2nd", "3rd"].map((a) => {
+    if (!pays?.[a]?.fees?.length)
+      payable = sum([payable, storePayments?.billables?.[a]?.amount]);
+  });
+  return {
+    storePayments,
+    paid,
+    payable,
+    pending: sum([payable, paid * -1]),
+    entranceStatus,
+  };
+}
 export function sessionRecord() {
   const store = useMigrationStore.getState();
   const terms = getTermsData();
-  type Student = {
-    terms: Term["term"][];
-    fullTerm?: boolean;
-    partTerm?: boolean;
-    firstName: string;
-    fullName: string;
-    mergeNames: string[];
-    gender: string;
-  };
+
   type Record = {
     [className in string]: {
       studentCount: number;
-      students: Student[];
-      studentByName: { [name in string]: Student };
+      students: StudentRecord[];
+      studentByName: { [name in string]: StudentRecord };
     };
   };
   const records: Record = {};
@@ -56,10 +126,13 @@ export function sessionRecord() {
             fullName: __fullName,
             mergeNames: mergeName ? [fullName] : [],
             gender: store?.genders?.[student?.firstName],
+            payments: student.payments || [],
+            classRoom: res.className,
           };
         else {
           if (mergeName) studentByName[__fullName].mergeNames.push(fullName);
           studentByName[__fullName].terms.push(term.term);
+          studentByName[__fullName].payments.push(...(student.payments || []));
         }
       });
     });
@@ -67,15 +140,20 @@ export function sessionRecord() {
 
   const sortedRecords = Object.fromEntries(
     Object.entries(records).map(([name, group]) => {
-      const sortedStudents = Object.values(group.studentByName).sort((a, b) => {
-        // First by gender
-        if (a.gender > b.gender) return -1;
-        if (a.gender < b.gender) return 1;
-        // Then by firstName
-        if (a.fullName < b.fullName) return -1;
-        if (a.fullName > b.fullName) return 1;
-        return 0;
-      });
+      const sortedStudents = Object.values(group.studentByName)
+        .sort((a, b) => {
+          // First by gender
+          if (a.gender > b.gender) return -1;
+          if (a.gender < b.gender) return 1;
+          // Then by firstName
+          if (a.fullName < b.fullName) return -1;
+          if (a.fullName > b.fullName) return 1;
+          return 0;
+        })
+        .map((student) => {
+          student.paymentData = paymentStructure(student);
+          return student;
+        });
 
       return [name, { ...group, students: sortedStudents }];
     }),
@@ -151,7 +229,7 @@ function firstTerm(): Term {
   });
   return {
     result,
-    term: "first",
+    term: "1st",
   };
 }
 function validateLine(line) {
@@ -159,7 +237,7 @@ function validateLine(line) {
   return true;
 }
 function secondTerm(): Term {
-  const result = [];
+  let result: Term["result"] = [];
   let classData = {
     className: null,
     students: [],
@@ -204,9 +282,10 @@ function secondTerm(): Term {
       }
     });
   if (classData?.className) result.push({ ...classData });
+
   return {
     result,
-    term: "second",
+    term: "2nd",
   };
 }
 function thirdTerm(): Term {
@@ -283,6 +362,7 @@ function thirdTerm(): Term {
             paymentType: "fee",
             term: "3rd",
             status: "not applicable",
+            paidIn: "3rd",
           });
           student.examStatus = examStatus.free;
           return;
@@ -295,6 +375,7 @@ function thirdTerm(): Term {
             term: "2nd",
             amountPaid: a,
             amountPending: 3000 - a,
+            paidIn: "3rd",
           });
           return;
         }
@@ -306,6 +387,7 @@ function thirdTerm(): Term {
             term: "3rd",
             amountPaid: a,
             amountPending: 3000 - a,
+            paidIn: "3rd",
           });
           student.examStatus =
             a == 3000 ? examStatus.paid : examStatus.permitted;
@@ -317,7 +399,8 @@ function thirdTerm(): Term {
               paymentType: "entrance",
               status: "paid",
               term: "3rd",
-              amountPaid: 500,
+              amountPaid: 1000,
+              paidIn: "3rd",
             });
             return;
           case "ق*":
@@ -325,7 +408,8 @@ function thirdTerm(): Term {
               paymentType: "entrance",
               status: "pending",
               term: "3rd",
-              amountPending: 500,
+              amountPending: 1000,
+              paidIn: "3rd",
             });
             return;
           case "*":
@@ -333,13 +417,26 @@ function thirdTerm(): Term {
             return;
         }
       });
+      // if (
+      //   student.examStatus != examStatus.noStatus &&
+      //   !student.payments.find((a) => a.paymentType == "fee" && a.term == "3rd")
+      // )
+      //   student.payments.push({
+      //     paymentType: "fee",
+      //     paidIn: "3rd",
+      //     amountPending: 3000,
+      //     status: "pending",
+      //     amountPaid: 0,
+      //     term: "3rd",
+      //   });
+
       cls.students.push(student);
     });
   if (cls) _classList.push(cls);
-  return { result: _classList, term: "third" };
+  return { result: _classList, term: "3rd" };
 }
 interface Term {
-  term: "first" | "second" | "third";
+  term: "1st" | "2nd" | "3rd";
   result: Class[];
 }
 interface Class {
@@ -350,12 +447,13 @@ interface Class {
   subs?: Class["subjects"][number]["subs"];
   subsCount?;
 }
-interface PaymentStatus {
+export interface PaymentStatus {
   status: "paid" | "part paid" | "pending" | "not applicable";
   paymentType: "fee" | "entrance";
   amountPaid?: number;
   amountPending?: number;
   term: "1st" | "2nd" | "3rd";
+  paidIn: "1st" | "2nd" | "3rd";
 }
 interface Student {
   studentId: number;

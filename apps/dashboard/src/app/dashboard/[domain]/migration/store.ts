@@ -5,10 +5,24 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 import { Gender } from "@school-clerk/db";
 
+import { PaymentStatus } from "./data";
+
 const data = {
   refreshToken: null,
   genders: {} as {
     [name in string]: Gender;
+  },
+  studentPayments: {} as {
+    [className in string]: {
+      [name in string]: {
+        billables: {
+          [term in string]: {
+            amount: number;
+          };
+        };
+        payments: PaymentStatus[];
+      };
+    };
   },
   studentMerge: {} as {
     [className in string]: {

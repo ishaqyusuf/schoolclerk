@@ -19,10 +19,11 @@ import {
   TableRow,
 } from "@school-clerk/ui/table";
 
-import { loadCookie, loadGenders } from "./cookie";
+import { loadCookie } from "./cookie";
 import { sessionRecord } from "./data";
 import { GenderCell } from "./gender-cell";
 import { NameCell } from "./name-cell";
+import { PaymentCell } from "./payments-cell";
 import { SessionCheckbox } from "./session-name-checkbox";
 import { SessionViewAction } from "./session-view-action";
 import { useMigrationStore } from "./store";
@@ -36,15 +37,15 @@ export default function StudentSessionRecord() {
     thirdTermData,
   });
   const mem = useAsyncMemo(async () => {
-    const data = sessionRecord();
     const cook = await loadCookie();
     return {
-      data,
+      // data,
       cook,
     };
   }, [store.refreshToken, raw]);
 
-  const { data, cook } = mem || {};
+  const data = sessionRecord();
+  const { cook } = mem || {};
   function unmerge(classRoom, names) {
     names.map((name) => {
       store.delete(`studentMerge.${classRoom}.${name}`);
@@ -62,6 +63,7 @@ export default function StudentSessionRecord() {
             <TableHead>Gender</TableHead>
             <TableHead>Class</TableHead>
             <TableHead>Terms</TableHead>
+            <TableHead>Payment</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -121,6 +123,9 @@ export default function StudentSessionRecord() {
                       {studentData.terms?.map((t, i) => (
                         <Badge key={i}>{t}</Badge>
                       ))}
+                    </TableCell>
+                    <TableCell className="w-12">
+                      <PaymentCell student={studentData} />
                     </TableCell>
                   </TableRow>
                 ))}
