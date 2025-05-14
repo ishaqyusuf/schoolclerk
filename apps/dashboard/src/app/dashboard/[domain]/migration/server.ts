@@ -18,7 +18,7 @@ export async function loadStudentPayments() {
       });
       const transformed = {};
       data.map((item) => {
-        const { className, studentName, billables, payments } =
+        const { className, studentName, billables, payments, ...rest } =
           (item.data as any) || {};
         if (!transformed[className]) transformed[className] = {};
         transformed[className][studentName] = {
@@ -26,6 +26,7 @@ export async function loadStudentPayments() {
           billables,
           studentName,
           postId: item.id,
+          ...rest,
         };
       });
       return transformed;
@@ -35,6 +36,36 @@ export async function loadStudentPayments() {
       tags: ["student-migrate-data"],
     },
   )();
+}
+export async function updateStudent(id, className, studentName, data) {
+  if (id) {
+    await prisma.posts.update({
+      where: {
+        id,
+      },
+      data: {
+        data: {
+          ...data,
+          className,
+          studentName,
+        },
+      },
+    });
+  } else {
+    const p = await prisma.posts.create({
+      data: {
+        name: "student-migrate-data",
+        data: {
+          ...data,
+          className,
+          studentName,
+        },
+      },
+    });
+    return p.id;
+  }
+  revalidateTag("student-migrate-data");
+  return id;
 }
 export async function loadGenders() {
   return unstable_cache(
@@ -89,6 +120,13 @@ export async function updateGenderData(data) {
 }
 export async function dumpData(gender, studentData, studentMergeData) {
   return transaction(async (tx) => {
+    await tx.posts.deleteMany({
+      where: {
+        name: {
+          in: ["student-genders", "student-merge-data", "student-migrate-data"],
+        },
+      },
+    });
     await tx.posts.create({
       data: {
         name: "student-genders",

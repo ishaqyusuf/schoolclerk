@@ -28,6 +28,7 @@ import { SessionCheckbox } from "./session-name-checkbox";
 import { SessionViewAction } from "./session-view-action";
 import { useMigrationStore } from "./store";
 import { undotName } from "./utils";
+import { dumpData } from "./server";
 
 export default function StudentSessionRecord({
   studentPayments,
@@ -37,11 +38,15 @@ export default function StudentSessionRecord({
   const store = useMigrationStore();
 
   useEffect(() => {
+    // console.log({ studentPayments, genders, studentMerge });
     store.reset({
       studentPayments,
       genders,
       studentMerge,
     });
+    // store.reset({
+    //   studentPayments: {},
+    // });
   }, []);
   const [raw, setRaw] = useState({
     firstTermData,
@@ -67,13 +72,17 @@ export default function StudentSessionRecord({
   if (!data) return;
   return (
     <>
-      {/* <Button
+      <Button
         onClick={async (e) => {
           const gender = store.genders;
           const studentData = [];
           Object.entries(store.studentPayments).map(([className, data]) => {
-            Object.entries(data)?.map(([name, student]) => {
-              studentData.push(student);
+            Object.entries(data)?.map(([studentName, student]) => {
+              studentData.push({
+                ...student,
+                className,
+                studentName,
+              });
             });
           });
           const studentMerge = store.studentMerge;
@@ -86,7 +95,7 @@ export default function StudentSessionRecord({
         }}
       >
         Dump Data
-      </Button> */}
+      </Button>
       <SessionViewAction />
       <Table dir="rtl">
         <TableHeader>

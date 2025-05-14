@@ -22,7 +22,6 @@ import {
 
 import { StudentRecord } from "./data";
 import { useMigrationStore } from "./store";
-import { dotName } from "./utils";
 import {
   Tabs,
   TabsContent,
@@ -94,7 +93,7 @@ function PayData({
   });
   const store = useMigrationStore();
   function save() {
-    const _name = dotName(student as any);
+    const _name = student.fullName;
     const data = form.getValues();
 
     store.update(`studentPayments.${student.classRoom}.${_name}`, data);

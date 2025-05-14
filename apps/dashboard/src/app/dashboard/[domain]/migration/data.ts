@@ -12,6 +12,8 @@ export type StudentRecord = {
   fullTerm?: boolean;
   partTerm?: boolean;
   firstName: string;
+  // surname: string;
+  // otherName: string;
   fullName: string;
   mergeNames: string[];
   gender: string;
@@ -22,7 +24,7 @@ export type StudentRecord = {
 function paymentStructure(student: StudentRecord) {
   // student.terms
   const store = useMigrationStore.getState();
-  const studentName = dotName(student as any);
+  const studentName = student.fullName; // dotName(student as any);
   let storePayments = store.studentPayments?.[student.classRoom]?.[studentName];
   if (!storePayments) storePayments = {} as any;
   storePayments.studentName = studentName;
