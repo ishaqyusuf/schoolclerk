@@ -14,13 +14,7 @@ export const columns: ColumnDef<ClassItem>[] = [
     meta: {
       className: "sm:w-[350px]",
     },
-    cell: ({ row: { original: item } }) => (
-      <div>
-        {Array.from(new Set([item.classRoom?.name, item.departmentName])).join(
-          "-",
-        )}
-      </div>
-    ),
+    cell: ({ row: { original: item } }) => <div>{item?.displayName}</div>,
   },
   {
     header: "Students",
@@ -45,7 +39,7 @@ export const columns: ColumnDef<ClassItem>[] = [
       className: "flex-1",
     },
     cell: ({ row: { original: item } }) => (
-      <ActionCell trash itemId={item.classRoom?.id}>
+      <ActionCell trash itemId={item.id}>
         {/* <Menu>
           <Menu.Item>Hello Menu</Menu.Item>
         </Menu> */}

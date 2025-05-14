@@ -30,7 +30,15 @@ export async function getClassRooms(params: SearchParamsType) {
   });
 
   return {
-    data: classRooms,
+    data: classRooms.map((a) => {
+      const displayName = a.departmentName?.includes(a.classRoom?.name)
+        ? a.departmentName
+        : `${a.classRoom?.name} ${a.departmentName}`;
+      return {
+        ...a,
+        displayName,
+      };
+    }),
     meta: {} as any,
   };
 }

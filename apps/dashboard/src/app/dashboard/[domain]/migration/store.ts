@@ -1,4 +1,4 @@
-import { dotObject, dotSet } from "@/utils/dot-utils";
+import { dotObject } from "@/utils/dot-utils";
 import { FieldPath, FieldPathValue } from "react-hook-form";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -15,9 +15,13 @@ const data = {
   studentPayments: {} as {
     [className in string]: {
       [name in string]: {
+        postId?;
+        studentName;
         billables: {
           [term in string]: {
             amount: number;
+            omit?: boolean;
+            free?: boolean;
           };
         };
         payments: PaymentStatus[];
@@ -60,7 +64,27 @@ function funcs(set: ZusFormSet) {
       }),
   };
 }
-export const useMigrationStore = create<Store>()(
+
+//
+
+export const useMigrationStore = create<Store>((set) => ({
+  ...data,
+  ...funcs(set),
+}));
+
+// export const useMigrationStore = create<Store>()(
+//   persist(
+//     (set) => ({
+//       ...data,
+//       ...funcs(set),
+//     }),
+//     // {
+//     //   name: "migration-storage",
+//     //   storage: createJSONStorage(() => sessionStorage),
+//     // },
+//   ),
+// );
+export const __useMigrationStore = create<Store>()(
   persist(
     (set) => ({
       ...data,

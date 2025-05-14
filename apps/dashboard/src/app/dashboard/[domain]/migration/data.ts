@@ -20,10 +20,14 @@ export type StudentRecord = {
   classRoom: string;
 };
 function paymentStructure(student: StudentRecord) {
+  // student.terms
   const store = useMigrationStore.getState();
-  let storePayments =
-    store.studentPayments?.[student.classRoom]?.[dotName(student as any)];
+  const studentName = dotName(student as any);
+  let storePayments = store.studentPayments?.[student.classRoom]?.[studentName];
   if (!storePayments) storePayments = {} as any;
+  storePayments.studentName = studentName;
+  // storePayments = studentName;
+
   const pays = {} as Partial<{
     [term in Term["term"]]: {
       fees: { paidIn; paid }[];
@@ -68,20 +72,25 @@ function paymentStructure(student: StudentRecord) {
     };
   let paid = 0;
   let payable = 0;
+  function billable(k) {
+    const b = storePayments?.billables?.[k];
+    return b?.free || b?.omit ? 0 : b?.amount;
+  }
   Object.entries(pays).map(([k, v]) => {
     if (v?.entrance?.amount) {
       payable = sum([payable, v?.entrance?.amount]);
       paid = sum([paid, v?.entrance?.paid]);
     }
-    const termAmount = storePayments?.billables?.[k]?.amount;
+    const termAmount = billable(k);
+    // storePayments?.billables?.[k]?.amount;
     v?.fees?.map((fee) => {
       paid = sum([paid, fee.paid]);
       payable = sum([payable, termAmount]);
     });
   });
-  ["2nd", "3rd"].map((a) => {
-    if (!pays?.[a]?.fees?.length)
-      payable = sum([payable, storePayments?.billables?.[a]?.amount]);
+  ["1st", "2nd", "3rd"].map((a) => {
+    const b = billable(a);
+    if (!pays?.[a]?.fees?.length && b) payable = sum([payable, b]);
   });
   return {
     storePayments,

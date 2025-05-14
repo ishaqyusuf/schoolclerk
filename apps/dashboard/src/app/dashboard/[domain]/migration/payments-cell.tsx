@@ -7,7 +7,7 @@ import FormSelect from "@/components/controls/form-select";
 import { Icons } from "@/components/icons";
 import { Menu } from "@/components/menu";
 import { generateRandomString } from "@/utils/utils";
-import { Form, FormProvider, useFieldArray, useForm } from "react-hook-form";
+import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
 import { Button } from "@school-clerk/ui/button";
 import { cn } from "@school-clerk/ui/cn";
@@ -15,7 +15,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -24,13 +23,21 @@ import {
 import { StudentRecord } from "./data";
 import { useMigrationStore } from "./store";
 import { dotName } from "./utils";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@school-clerk/ui/tabs";
+import FormCheckbox from "@/components/controls/form-checkbox";
+import { Actions } from "./actions-cell";
 
 export function PaymentCell({ student }: { student: StudentRecord }) {
   const store = useMigrationStore();
   const { paid, payable, entranceStatus } = student?.paymentData || {};
   const [open, openChanged] = useState(false);
   return (
-    <div className="flex">
+    <div className="flex gap-4">
       <Menu
         open={open}
         onOpenChanged={openChanged}
@@ -69,6 +76,7 @@ export function PaymentCell({ student }: { student: StudentRecord }) {
           <PayData student={student} openChanged={openChanged} />
         </div>
       </Menu>
+      <Actions student={student} />
     </div>
   );
 }
@@ -88,6 +96,7 @@ function PayData({
   function save() {
     const _name = dotName(student as any);
     const data = form.getValues();
+
     store.update(`studentPayments.${student.classRoom}.${_name}`, data);
     store.update("refreshToken", generateRandomString());
   }
@@ -99,58 +108,73 @@ function PayData({
 
   return (
     <FormProvider {...form}>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Type</TableHead>
-            <TableHead>Term</TableHead>
-            <TableHead>Paid In</TableHead>
-            <TableHead>Amount</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {arr.fields.map((f, i) => (
-            <TableRow key={i}>
-              <TableCell>
-                <FormSelect
-                  className="w-24"
-                  control={form.control}
-                  name={`payments.${i}.paymentType`}
-                  options={["fee", "entrance"]}
-                />
-              </TableCell>
-              <TableCell>
-                <FormSelect
-                  className="w-24"
-                  control={form.control}
-                  name={`payments.${i}.term`}
-                  options={["1st", "2nd", "3rd"]}
-                />
-              </TableCell>
-              <TableCell>
-                <FormSelect
-                  className="w-24"
-                  control={form.control}
-                  name={`payments.${i}.paidIn`}
-                  options={["1st", "2nd", "3rd"]}
-                />
-              </TableCell>
-              <TableCell>
-                <FormInput
-                  midday={{
-                    prefix: "NGN ",
-                  }}
-                  className="w-24"
-                  control={form.control}
-                  name={`payments.${i}.amountPaid`}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell>
+      <div className="w-[400px] flex flex-col gap-4">
+        <Tabs defaultValue="payments">
+          <TabsList>
+            <TabsTrigger value="payments">Payments</TabsTrigger>
+            <TabsTrigger value="billables">Billables</TabsTrigger>
+          </TabsList>
+          <TabsContent value="payments">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Term</TableHead>
+                  <TableHead>Paid In</TableHead>
+                  <TableHead>Amount</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {student?.payments?.map((p, i) => (
+                  <TableRow key={i}>
+                    <TableCell>{p?.paymentType}</TableCell>
+                    <TableCell>{p?.term}</TableCell>
+                    <TableCell>{p?.paidIn}</TableCell>
+                    <TableCell>{p?.amountPaid}</TableCell>
+                  </TableRow>
+                ))}
+                {arr.fields.map((f, i) => (
+                  <TableRow key={i}>
+                    <TableCell>
+                      <FormSelect
+                        className="w-24"
+                        control={form.control}
+                        name={`payments.${i}.paymentType`}
+                        options={["fee", "entrance"]}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <FormSelect
+                        className="w-24"
+                        control={form.control}
+                        name={`payments.${i}.term`}
+                        options={["1st", "2nd", "3rd"]}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <FormSelect
+                        className="w-24"
+                        control={form.control}
+                        name={`payments.${i}.paidIn`}
+                        options={["1st", "2nd", "3rd"]}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <FormInput
+                        midday={{
+                          prefix: "NGN ",
+                        }}
+                        className="w-24"
+                        control={form.control}
+                        name={`payments.${i}.amountPaid`}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+
+            <div className="flex gap-4">
               <Button
                 size="xs"
                 onClick={(e) => {
@@ -159,19 +183,65 @@ function PayData({
               >
                 <Icons.add className="size-4" />
               </Button>
-              <Button
-                size="xs"
-                onClick={(e) => {
-                  save();
-                  openChanged(false);
-                }}
-              >
-                Save
-              </Button>
-            </TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
+            </div>
+          </TabsContent>
+          <TabsContent value="billables">
+            <div className="flex flex-col">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Omit</TableHead>
+                    <TableHead>Free</TableHead>
+                    <TableHead>Term</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {Object.entries(
+                    student.paymentData?.storePayments?.billables,
+                  )?.map(([term, value]) => (
+                    <TableRow className="" key={term}>
+                      <TableCell className="flex">
+                        <FormCheckbox
+                          control={form.control}
+                          name={`billables.${term}.omit`}
+                        />
+                        <div className="font-bold">{term}</div>
+                      </TableCell>
+                      <TableCell>
+                        <FormCheckbox
+                          control={form.control}
+                          name={`billables.${term}.free`}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <FormInput
+                          key={term}
+                          control={form.control}
+                          name={`billables.${term}.amount`}
+                          midday={{
+                            prefix: "NGN ",
+                          }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </TabsContent>
+        </Tabs>
+        <div className="flex justify-end">
+          <Button
+            size="xs"
+            onClick={(e) => {
+              save();
+              openChanged(false);
+            }}
+          >
+            Save
+          </Button>
+        </div>
+      </div>
     </FormProvider>
   );
 }

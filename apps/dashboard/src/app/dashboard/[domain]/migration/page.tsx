@@ -2,11 +2,23 @@ import { loadCookie } from "./cookie";
 import { classList, getTermsData } from "./data";
 import { Filter } from "./filter";
 import { List } from "./list";
+import {
+  loadGenders,
+  loadStudentMergeData,
+  loadStudentPayments,
+} from "./server";
 import StudentSessionRecord from "./student-session-record";
 
 export default async function Migration() {
   const cook = await loadCookie();
   const data = getTermsData();
+
+  const [genders, studentPayments, studentMerge] = await Promise.all([
+    loadGenders(),
+    loadStudentPayments(),
+    loadStudentMergeData(),
+  ]);
+  const ctx = { studentPayments, genders, studentMerge };
   return (
     <div className="space-y-4 p-4">
       <div></div>
@@ -21,7 +33,7 @@ export default async function Migration() {
         <List />
       </View>
       <View view="student session record">
-        <StudentSessionRecord />
+        <StudentSessionRecord {...ctx} />
       </View>
     </div>
   );

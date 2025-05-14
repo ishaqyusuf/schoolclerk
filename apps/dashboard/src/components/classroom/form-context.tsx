@@ -8,7 +8,11 @@ export function FormContext({ children }) {
     resolver: zodResolver(createClassroomSchema),
     defaultValues: {
       className: "",
-      departments: [],
+      departments: [
+        {
+          name: "",
+        },
+      ],
     },
   });
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { deleteClassroomAction } from "@/actions/delete-classroom";
+import { deleteClassroomDepartmentAction } from "@/actions/delete-department";
 import { MiddaySearchFilter } from "@/components/midday-search-filter/search-filter";
 import { useClassesParams } from "@/hooks/use-classes-params";
 import { useLoadingToast } from "@/hooks/use-loading-toast";
@@ -26,7 +26,7 @@ type Props = {
 export function DataTable({ data, loadMore, pageSize, hasNextPage }: Props) {
   const { setParams, ...params } = useClassesParams();
   const toast = useLoadingToast();
-  const deleteAction = useAction(deleteClassroomAction, {
+  const deleteAction = useAction(deleteClassroomDepartmentAction, {
     onSuccess(args) {
       toast.success("Deleted!", {
         variant: "destructive",

@@ -20,8 +20,24 @@ export async function createClassroom(data: CreateClassRoom) {
           name: data.className,
         },
       ];
-    const resp = tx.classRoom.create({
-      data: {
+    const resp = await tx.classRoom.upsert({
+      where: {
+        schoolSessionId_name: {
+          name: data.className,
+          schoolSessionId: profile.sessionId,
+        },
+      },
+      update: {
+        classRoomDepartments: {
+          createMany: {
+            data: data.departments?.map((d) => ({
+              departmentName: d.name,
+              schoolProfileId: profile.schoolId,
+            })),
+          },
+        },
+      },
+      create: {
         name: data.className,
         schoolSessionId: profile.sessionId,
         schoolProfileId: profile.schoolId,
@@ -36,6 +52,22 @@ export async function createClassroom(data: CreateClassRoom) {
       },
     });
     return resp;
+    // const resp = tx.classRoom.create({
+    //   data: {
+    //     name: data.className,
+    //     schoolSessionId: profile.sessionId,
+    //     schoolProfileId: profile.schoolId,
+    //     classRoomDepartments: {
+    //       createMany: {
+    //         data: data.departments?.map((d) => ({
+    //           departmentName: d.name,
+    //           schoolProfileId: profile.schoolId,
+    //         })),
+    //       },
+    //     },
+    //   },
+    // });
+    // return resp;
   });
 }
 export const createClassroomAction = actionClient

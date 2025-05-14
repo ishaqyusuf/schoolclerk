@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { firstTermData } from "@/migration/first-term-data";
 import { secondTermRawData } from "@/migration/second-term-data";
 import { thirdTermData } from "@/migration/third-term-data";
@@ -29,8 +29,20 @@ import { SessionViewAction } from "./session-view-action";
 import { useMigrationStore } from "./store";
 import { undotName } from "./utils";
 
-export default function StudentSessionRecord() {
+export default function StudentSessionRecord({
+  studentPayments,
+  genders,
+  studentMerge,
+}) {
   const store = useMigrationStore();
+
+  useEffect(() => {
+    store.reset({
+      studentPayments,
+      genders,
+      studentMerge,
+    });
+  }, []);
   const [raw, setRaw] = useState({
     firstTermData,
     secondTermRawData,
@@ -55,11 +67,32 @@ export default function StudentSessionRecord() {
   if (!data) return;
   return (
     <>
+      {/* <Button
+        onClick={async (e) => {
+          const gender = store.genders;
+          const studentData = [];
+          Object.entries(store.studentPayments).map(([className, data]) => {
+            Object.entries(data)?.map(([name, student]) => {
+              studentData.push(student);
+            });
+          });
+          const studentMerge = store.studentMerge;
+          await dumpData(gender, studentData, studentMerge);
+          console.log({
+            gender,
+            studentMerge,
+            studentData,
+          });
+        }}
+      >
+        Dump Data
+      </Button> */}
       <SessionViewAction />
       <Table dir="rtl">
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
+            <TableHead>Merge</TableHead>
             <TableHead>Gender</TableHead>
             <TableHead>Class</TableHead>
             <TableHead>Terms</TableHead>
@@ -95,23 +128,25 @@ export default function StudentSessionRecord() {
                         />
                         <div className="">
                           <NameCell student={undotName(studentData.fullName)} />
-                          <div className="text-muted-foreground">
+                          <div className="text-muted-foreground flex gap-2">
                             {studentData?.mergeNames?.map((mn) => (
                               <NameCell student={undotName(mn)} />
                             ))}
                           </div>
                         </div>
-                        {!studentData?.mergeNames?.length || (
-                          <Button
-                            size="xs"
-                            onClick={(e) => {
-                              unmerge(className, studentData?.mergeNames);
-                            }}
-                          >
-                            Unmerge
-                          </Button>
-                        )}
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      {!studentData?.mergeNames?.length || (
+                        <Button
+                          size="xs"
+                          onClick={(e) => {
+                            unmerge(className, studentData?.mergeNames);
+                          }}
+                        >
+                          Unmerge
+                        </Button>
+                      )}
                     </TableCell>
                     <TableCell className="w-12">
                       <GenderCell name={studentData.firstName} />
@@ -120,9 +155,24 @@ export default function StudentSessionRecord() {
                       <Badge>{className}</Badge>
                     </TableCell>
                     <TableCell>
-                      {studentData.terms?.map((t, i) => (
-                        <Badge key={i}>{t}</Badge>
-                      ))}
+                      <div className="flex gap-2">
+                        {(["1st", "2nd", "3rd"] as any).map((t) => (
+                          <div key={t}>
+                            <Badge
+                              variant={"default"}
+                              className={cn(
+                                !studentData.terms?.includes(t)
+                                  ? "bg-muted-foreground"
+                                  : "bg-green-800",
+                                studentData?.paymentData?.storePayments
+                                  ?.billables?.[t]?.omit && "bg-red-600",
+                              )}
+                            >
+                              {t}
+                            </Badge>
+                          </div>
+                        ))}
+                      </div>
                     </TableCell>
                     <TableCell className="w-12">
                       <PaymentCell student={studentData} />
