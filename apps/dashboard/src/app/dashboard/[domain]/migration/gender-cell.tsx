@@ -3,10 +3,17 @@
 import { Button } from "@school-clerk/ui/button";
 
 import { useMigrationStore } from "./store";
+import { updateGenderData } from "./server";
 
 export function GenderCell({ name }) {
   const store = useMigrationStore();
   const gender = store?.genders?.[name];
+  async function updateGender(f) {
+    store.update(`genders.${name}`, f as any);
+    setTimeout(() => {
+      updateGenderData(store.genders);
+    }, 1000);
+  }
   return (
     <div className="flex">
       {["Male", "Female"].map((f, i) => (
@@ -18,7 +25,7 @@ export function GenderCell({ name }) {
           className=""
           key={f}
           onClick={(e) => {
-            store.update(`genders.${name}`, f as any);
+            updateGender(f);
           }}
         >
           {f?.[0]}
