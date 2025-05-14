@@ -62,7 +62,7 @@ export async function updateStudent(id, className, studentName, data) {
         },
       },
     });
-    return p.id;
+    id = p.id;
   }
   revalidateTag("student-migrate-data");
   return id;

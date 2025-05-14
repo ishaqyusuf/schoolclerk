@@ -30,11 +30,29 @@ import {
 } from "@school-clerk/ui/tabs";
 import FormCheckbox from "@/components/controls/form-checkbox";
 import { Actions } from "./actions-cell";
+import { updateStudent } from "./server";
 
 export function PaymentCell({ student }: { student: StudentRecord }) {
   const store = useMigrationStore();
   const { paid, payable, entranceStatus } = student?.paymentData || {};
   const [open, openChanged] = useState(false);
+  async function __updateStudent(data) {
+    console.log({ data });
+
+    const studentName = student.fullName;
+    const { postId, ...rest } = data;
+    updateStudent(postId, student.classRoom, studentName, rest).then(
+      (postId) => {
+        data.postId = postId;
+        console.log({ postId });
+        store.update(
+          `studentPayments.${student.classRoom}.${studentName}`,
+          data,
+        );
+        store.update("refreshToken", generateRandomString());
+      },
+    );
+  }
   return (
     <div className="flex gap-4">
       <Menu
@@ -72,19 +90,25 @@ export function PaymentCell({ student }: { student: StudentRecord }) {
         noSize
       >
         <div className="min-w-max max-w-md p-4">
-          <PayData student={student} openChanged={openChanged} />
+          <PayData
+            __updateStudent={__updateStudent}
+            student={student}
+            openChanged={openChanged}
+          />
         </div>
       </Menu>
-      <Actions student={student} />
+      <Actions student={student} __updateStudent={__updateStudent} />
     </div>
   );
 }
 function PayData({
   student,
   openChanged,
+  __updateStudent,
 }: {
   student: StudentRecord;
   openChanged;
+  __updateStudent;
 }) {
   const form = useForm({
     defaultValues: {
@@ -93,11 +117,11 @@ function PayData({
   });
   const store = useMigrationStore();
   function save() {
-    const _name = student.fullName;
+    // const _name = student.fullName;
     const data = form.getValues();
-
-    store.update(`studentPayments.${student.classRoom}.${_name}`, data);
-    store.update("refreshToken", generateRandomString());
+    __updateStudent(data);
+    // store.update(`studentPayments.${student.classRoom}.${_name}`, data);
+    // store.update("refreshToken", generateRandomString());
   }
   const arr = useFieldArray({
     control: form.control,
