@@ -7,11 +7,18 @@ import { prisma } from "@school-clerk/db";
 
 import { getSaasProfileCookie } from "../cookies/login-session";
 
-export async function getCachedFees(termId) {
+export async function getCachedFees(termId, tx: typeof prisma = prisma) {
   const profile = await getSaasProfileCookie();
   return unstable_cache(
     async () => {
-      const items = await prisma.feeHistory.findMany({
+      const _ = await tx.feeHistory.findMany({
+        where: {
+          termId,
+        },
+      });
+      console.log({ _, termId });
+
+      const items = await tx.feeHistory.findMany({
         where: {
           termId,
           current: true,

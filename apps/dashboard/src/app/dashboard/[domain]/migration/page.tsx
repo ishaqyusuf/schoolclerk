@@ -11,7 +11,6 @@ import StudentSessionRecord from "./student-session-record";
 
 export default async function Migration() {
   const cook = await loadCookie();
-  const data = getTermsData();
 
   const [genders, studentPayments, studentMerge] = await Promise.all([
     loadGenders(),

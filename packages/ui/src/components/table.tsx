@@ -6,7 +6,7 @@ interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
   containerClassName?: string;
 }
 
-const Table = React.forwardRef<HTMLTableElement, TableProps>(
+const  Table = React.forwardRef<HTMLTableElement, TableProps>(
   ({ className, containerClassName, ...props }, ref) => (
     <div className={cn("w-full overflow-auto", containerClassName)}>
       <table

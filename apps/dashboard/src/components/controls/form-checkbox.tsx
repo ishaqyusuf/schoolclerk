@@ -1,9 +1,4 @@
-import {
-  ControllerProps,
-  FieldPath,
-  FieldValues,
-  useFormContext,
-} from "react-hook-form";
+import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
 
 import { Checkbox } from "@school-clerk/ui/checkbox";
 import { cn } from "@school-clerk/ui/cn";

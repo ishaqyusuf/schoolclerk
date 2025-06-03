@@ -15,6 +15,7 @@ export async function getClassRooms(params: SearchParamsType) {
     where: {
       classRoom: {
         schoolSessionId: profile?.sessionId,
+        name: params.className ? params.className : undefined,
       },
     },
     select: {

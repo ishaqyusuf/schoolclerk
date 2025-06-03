@@ -24,7 +24,7 @@
     "db:migrate": "turbo -F @school-clerk/db db-migrate",
     "db:generate": "turbo -F @school-clerk/db prisma-generate",
     "dev": "turbo dev --parallel",
-    "dev:web": "turbo dev --parallel --filter !stripe",
+    "dev:web": "turbo dev --parallel --filter !site --filter !email",
     "format": "turbo format --continue -- --cache --cache-location='node_modules/.cache/.prettiercache' --ignore-path='../../.gitignore'",
     "format:fix": "turbo format --continue -- --write --cache --cache-location='node_modules/.cache/.prettiercache' --ignore-path='../../.gitignore'",
     "lint": "turbo lint -- --quiet -- --cache --cache-location 'node_modules/.cache/.eslintcache' && manypkg check",
@@ -39,5 +39,8 @@
     "packages/*",
     "tooling/*"
   ],
-  "dependencies": { "@types/dot-object": "^2.1.6", "install": "^0.13.0" }
+  "dependencies": {
+    "@types/dot-object": "^2.1.6",
+    "install": "^0.13.0"
+  }
 }

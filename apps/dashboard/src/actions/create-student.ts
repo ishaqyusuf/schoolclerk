@@ -54,15 +54,22 @@ export async function createStudent(
           schoolSessionId: profile.sessionId,
           schoolProfileId: profile.schoolId,
           classroomDepartmentId: data.classRoomId || undefined,
-          termForms: {
-            create: {
-              schoolProfileId: profile.schoolId,
-              sessionTermId: profile.termId,
-              schoolSessionId: profile.sessionId,
-
-              // studentId
-            },
-          },
+          termForms: data?.termForms?.length
+            ? {
+                createMany: {
+                  data: data.termForms.map((termForm) => ({
+                    ...termForm,
+                    schoolProfileId: profile.schoolId,
+                  })),
+                },
+              }
+            : {
+                create: {
+                  schoolProfileId: profile.schoolId,
+                  sessionTermId: profile.termId,
+                  schoolSessionId: profile.sessionId,
+                },
+              },
         },
       },
     },
@@ -120,7 +127,7 @@ export const createStudentAction = actionClient
                 studentFeeId: fee.id,
                 amount: feeData.paid,
                 paymentType: fee.description,
-                termId: fee.studentTermForm.id,
+                termFormId: fee.studentTermForm.id,
               },
               tx,
             );

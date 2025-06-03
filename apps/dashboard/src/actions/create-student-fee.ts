@@ -9,11 +9,11 @@ import { prisma } from "@school-clerk/db";
 import { getSaasProfileCookie } from "./cookies/login-session";
 import { actionClient } from "./safe-action";
 import { studentFeeSchema } from "./schema";
+import { createStudentFeePayment } from "./create-student-fee-payment";
 
 export type Type = z.infer<typeof studentFeeSchema>;
 export async function createStudentFee(data: Type, tx: typeof prisma = prisma) {
   const profile = await getSaasProfileCookie();
-
   const fee = await tx.studentFee.create({
     data: {
       feeTitle: data.title,
@@ -30,6 +30,7 @@ export async function createStudentFee(data: Type, tx: typeof prisma = prisma) {
     select: {
       id: true,
       description: true,
+      feeTitle: true,
       studentTermForm: {
         select: {
           id: true,
@@ -38,6 +39,14 @@ export async function createStudentFee(data: Type, tx: typeof prisma = prisma) {
       },
     },
   });
+  if (data.paid) {
+    await createStudentFeePayment({
+      amount: data.paid,
+      paymentType: fee.feeTitle,
+      studentFeeId: fee.id,
+      termFormId: profile.termId,
+    });
+  }
   return fee;
   // const student = await prisma
 }

@@ -1,8 +1,17 @@
-import { Prisma } from "@school-clerk/db";
+import { prisma, Prisma } from "@school-clerk/db";
 
 import { SearchParamsKeys, SearchParamsType } from "./search-params";
 import { composeQuery } from "./utils";
+import { composeQueryData } from "./query-response";
 
+export async function commissionQueryMetaData(query: SearchParamsType) {
+  const model = prisma.students;
+  const qd = await composeQueryData(query, whereStudents(query), model);
+  return {
+    ...qd,
+    model,
+  };
+}
 export function whereStudents(query: SearchParamsType) {
   console.log({ query });
   const where: Prisma.StudentsWhereInput[] = [

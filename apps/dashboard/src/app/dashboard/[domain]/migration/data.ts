@@ -1,5 +1,8 @@
 import { firstTermData } from "@/migration/first-term-data";
-import { secondTermRawData } from "@/migration/second-term-data";
+import {
+  rawEntranceData,
+  secondTermRawData,
+} from "@/migration/second-term-data";
 import { thirdTermData } from "@/migration/third-term-data";
 import { arToEn, sum } from "@/utils/utils";
 
@@ -102,10 +105,58 @@ function paymentStructure(student: StudentRecord) {
     entranceStatus,
   };
 }
+function wordMatchScore(input, target) {
+  const inputWords = input.toLowerCase().split(/\s+/);
+  const targetWords = target.toLowerCase().split(/\s+/);
+
+  const matchCount = inputWords.filter((word) =>
+    targetWords.includes(word),
+  ).length;
+  const score = matchCount / inputWords.length;
+
+  return score;
+}
 export function sessionRecord() {
   const store = useMigrationStore.getState();
   const terms = getTermsData();
+  const second = terms.find((a) => a.term == "2nd");
+  const forms = rawEntranceData
+    ?.split("\n")
+    ?.map((n) => {
+      const payable = 1000;
+      let paid = n?.endsWith("؟") ? 0 : 1000;
+      const v = n?.split("؟")?.filter(Boolean)?.join();
+      const student = second?.result
+        ?.map((r) => {
+          return r.students
+            ?.map((s) => {
+              const fullName = [s.firstName, s.surname, s.otherName]
+                ?.filter(Boolean)
+                ?.join(" ");
+              const score = wordMatchScore(v, fullName);
+              return {
+                fullName,
+                score,
+                matchName: v,
+                class: r.className,
+                // s,
+              };
+            })
+            .filter((a) => a.score > 0.85)
+            .flat();
+        })
+        .flat();
 
+      return {
+        paid,
+        v,
+        matches: student?.length,
+        matchList: student,
+      };
+    })
+    // .sort((a, b) => a.paid - b.)
+    .sort((a, b) => a.matches - b.matches);
+  console.log({ forms });
   type Record = {
     [className in string]: {
       studentCount: number;

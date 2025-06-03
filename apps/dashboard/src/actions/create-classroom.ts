@@ -8,73 +8,101 @@ import { classChanged } from "./cache/cache-control";
 import { getSaasProfileCookie } from "./cookies/login-session";
 import { actionClient } from "./safe-action";
 import { createClassroomSchema } from "./schema";
+import { transaction } from "@/utils/db";
+import { getClassRooms } from "./get-class-rooms";
 
 export type CreateClassRoom = z.infer<typeof createClassroomSchema>;
-export async function createClassroom(data: CreateClassRoom) {
+export async function createClassroom(
+  data: CreateClassRoom,
+  tx: typeof prisma = prisma,
+) {
   const profile = await getSaasProfileCookie();
 
-  return await prisma.$transaction(async (tx) => {
-    if (!data.departments?.length)
-      data.departments = [
-        {
-          name: data.className,
-        },
-      ];
-    const resp = await tx.classRoom.upsert({
-      where: {
-        schoolSessionId_name: {
-          name: data.className,
-          schoolSessionId: profile.sessionId,
-        },
+  if (!data.departments?.length)
+    data.departments = [
+      {
+        name: data.className,
       },
-      update: {
-        classRoomDepartments: {
-          createMany: {
-            data: data.departments?.map((d) => ({
-              departmentName: d.name,
-              schoolProfileId: profile.schoolId,
-            })),
-          },
-        },
-      },
-      create: {
+    ];
+  // const classRoom = await tx.classRoom.findFirst({
+  //   where: {
+  //     name: data.className,
+  //     schoolSessionId: profile.sessionId,
+  //   },
+  // });
+  // console.log({ classRoom });
+  // if (classRoom) return classRoom;
+  // try {
+  //   const classRoom = await tx.classRoom.create({
+  //     data: {
+  //       name: data.className,
+  //       session: {
+  //         connect: { id: profile.sessionId },
+  //       },
+  //       school: {
+  //         connect: {
+  //           id: profile.schoolId,
+  //         },
+  //       },
+  //       classRoomDepartments: {
+  //         createMany: {
+  //           data: data.departments?.map((d) => ({
+  //             departmentName: d.name,
+  //             schoolProfileId: profile.schoolId,
+  //           })),
+  //         },
+  //       },
+  //     },
+  //   });
+  //   return classRoom;
+  // } catch (error) {}
+  // return null;
+
+  const resp = await tx.classRoom.upsert({
+    where: {
+      schoolSessionId_name: {
         name: data.className,
         schoolSessionId: profile.sessionId,
-        schoolProfileId: profile.schoolId,
-        classRoomDepartments: {
-          createMany: {
-            data: data.departments?.map((d) => ({
-              departmentName: d.name,
-              schoolProfileId: profile.schoolId,
-            })),
-          },
+      },
+    },
+    update: {
+      classRoomDepartments: {
+        createMany: {
+          data: data.departments?.map((d) => ({
+            departmentName: d.name,
+            schoolProfileId: profile.schoolId,
+          })),
+          skipDuplicates: true,
         },
       },
-    });
-    return resp;
-    // const resp = tx.classRoom.create({
-    //   data: {
-    //     name: data.className,
-    //     schoolSessionId: profile.sessionId,
-    //     schoolProfileId: profile.schoolId,
-    //     classRoomDepartments: {
-    //       createMany: {
-    //         data: data.departments?.map((d) => ({
-    //           departmentName: d.name,
-    //           schoolProfileId: profile.schoolId,
-    //         })),
-    //       },
-    //     },
-    //   },
-    // });
-    // return resp;
+    },
+    create: {
+      name: data.className,
+      schoolSessionId: profile.sessionId,
+      schoolProfileId: profile.schoolId,
+      classRoomDepartments: {
+        createMany: {
+          data: data.departments?.map((d) => ({
+            departmentName: d.name,
+            schoolProfileId: profile.schoolId,
+          })),
+        },
+      },
+    },
+    include: {
+      classRoomDepartments: true,
+    },
   });
+  return resp;
 }
 export const createClassroomAction = actionClient
   .schema(createClassroomSchema)
   .action(async ({ parsedInput: data }) => {
-    const profile = await getSaasProfileCookie();
-    const resp = await createClassroom(data);
-    classChanged();
+    const resp = await transaction(async (tx) => {
+      const profile = await getSaasProfileCookie();
+      const resp = await createClassroom(data, tx);
+      classChanged();
+      return resp;
+    });
     return resp;
   });

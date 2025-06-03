@@ -8,6 +8,7 @@ const staffs = {
   ust: "الأستاذة",
   yun: "يونس",
   abk: "أبو خديجة",
+  aby: "أبو يسيروة",
   jimb: "جنبى",
   ish: "إسحاق",
 } as const;
@@ -20,7 +21,12 @@ export const loadPayments = () => {
         ctx._term = t;
         return ctx;
       },
-      pay(amt, description?: Description) {
+      pay(amount, description?: Description) {
+        ctx.list.push({
+          term: ctx._term,
+          amount,
+          description,
+        });
         return ctx;
       },
     };
@@ -45,7 +51,7 @@ export const loadPayments = () => {
       .pay(18, "month1")
       .pay(18, "month2")
       .pay(18, "month3").list,
-    ,
+
     ...profile("moh")
       .term("2nd")
       .pay(2, "wk1")
@@ -59,7 +65,21 @@ export const loadPayments = () => {
       .pay(2, "wk11")
       .pay(2, "wk12")
       .pay(2, "wk13")
-      .pay(2, "wk14").list,
+      .pay(2, "wk14")
+      .term("3rd") //3RD TERM
+      .pay(1, "wk1")
+      .pay(2, "wk2")
+      .pay(3, "wk3")
+      .pay(0, "wk4")
+      .pay(2, "wk5")
+      .pay(0, "wk6")
+      .pay(2, "wk7")
+      .pay(2, "wk8")
+      .pay(2, "wk9")
+      .pay(2, "wk10")
+      .pay(0, "wk11").list,
+
+    //
     ...profile("yun")
       .term("2nd")
       .pay(2, "wk1")
@@ -73,7 +93,19 @@ export const loadPayments = () => {
       .pay(2.75, "wk11")
       .pay(2.75, "wk12")
       .pay(2.75, "wk13")
-      .pay(2, "wk14").list,
+      .pay(2, "wk14")
+      .term("3rd") //3RD TERM
+      .pay(0, "wk1")
+      .pay(3.5, "wk2")
+      .pay(2.25, "wk3")
+      .pay(0, "wk4")
+      .pay(0, "wk5")
+      .pay(0, "wk6")
+      .pay(0, "wk7")
+      .pay(0, "wk8")
+      .pay(0, "wk9")
+      .pay(0, "wk10")
+      .pay(0, "wk11").list,
     ...profile("mb").term("3rd").pay(3.75, "wk1").list,
     ...profile("hb")
       .term("2nd")
@@ -89,7 +121,19 @@ export const loadPayments = () => {
       .pay(2.25, "wk10")
       .pay(2.25, "wk11")
       .pay(2.25, "wk12")
-      .pay(3.75, "wk13").list,
+      .pay(3.75, "wk13")
+      .term("3rd")
+      .pay(0, "wk1")
+      .pay(2.25, "wk2")
+      .pay(0.75, "wk3")
+      .pay(0, "wk4")
+      .pay(2.25, "wk5")
+      .pay(2.25, "wk6")
+      .pay(2.25, "wk7")
+      .pay(0.75, "wk8")
+      .pay(0.75, "wk9")
+      .pay(0.75, "wk10")
+      .pay(0, "wk11").list,
     ...profile("mahmood")
       .term("2nd")
       .pay(0.75, "wk1")
@@ -125,7 +169,19 @@ export const loadPayments = () => {
       .pay(2.25, "wk4")
       .pay(1.5, "wk5")
       .pay(1.5, "wk6")
-      .pay(1.5, "wk8").list,
+      .pay(1.5, "wk8")
+      .term("3rd")
+      .pay(0, "wk1")
+      .pay(3.25, "wk2")
+      .pay(3.25, "wk3")
+      .pay(0, "wk4")
+      .pay(0, "wk5")
+      .pay(3.5, "wk6")
+      .pay(0, "wk7")
+      .pay(0.75, "wk8")
+      .pay(1.5, "wk9")
+      .pay(0.75, "wk10")
+      .pay(0, "wk11").list,
     ...profile("abk").term("2nd").pay(1.5, "wk3").pay(2, "wk5").list,
     ...profile("jimb")
       .pay(19.75, "month1")
@@ -164,6 +220,12 @@ export const loadPayments = () => {
       .pay(2.5, "wk9")
       .pay(2.25, "wk10")
       .pay(3.5, "wk11").list,
+    ...profile("aby")
+      .term("3rd")
+      .pay(2, "wk8")
+      .pay(2.5, "wk9")
+      .pay(2.5, "wk10")
+      .pay(2.5, "wk11").list,
   ];
 };
 const amt = {

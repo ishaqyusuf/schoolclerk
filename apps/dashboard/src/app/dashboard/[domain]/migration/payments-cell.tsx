@@ -59,6 +59,7 @@ export function PaymentCell({ student }: { student: StudentRecord }) {
         open={open}
         onOpenChanged={openChanged}
         Icon={null}
+        triggerSize="xs"
         label={
           <div className="inline-flex gap-4">
             {!entranceStatus || (

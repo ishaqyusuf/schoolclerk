@@ -54,6 +54,7 @@ export const searchParamsParser: {
   [k in SearchParamsKeys]: any;
 } = {
   ...{
+    className: parseAsString,
     sort: parseAsSort,
     uuid: parseAsString,
     search: parseAsString,
@@ -68,6 +69,7 @@ export const searchParamsParser: {
   termId: parseAsString,
   studentId: parseAsString,
   departmentId: parseAsString,
+  title: parseAsString,
 };
 export const searchSchema = z.object({
   gender: z.enum(["Male", "Female"]),
@@ -80,6 +82,8 @@ export const searchSchema = z.object({
   departmentId: z.string().optional(),
   "with.trashed": z.boolean().optional(),
   "trashed.only": z.boolean().optional(),
+  className: z.string().optional(),
+  title: z.string().optional(),
 });
 // .merge(noteSchema);
 export const searchParamsCache = createSearchParamsCache(searchParamsParser);

@@ -17,7 +17,11 @@ export function Filter({ config, classes, terms }: Props) {
     {
       label: "View",
       cookieKey: "view",
-      options: ["all students", "student session record"],
+      options: [
+        "all students",
+        "student session record",
+        "second term payments",
+      ],
       prefix: "View: ",
       suffix: "",
     },

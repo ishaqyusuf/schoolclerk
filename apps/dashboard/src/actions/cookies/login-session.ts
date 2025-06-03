@@ -70,9 +70,12 @@ interface Query {
   termId?: string;
   sessionId?: string;
 }
-export async function loadSaasProfile({ termId, sessionId }: Query = {}) {
+export async function loadSaasProfile(
+  { termId, sessionId }: Query = {},
+  db: typeof prisma = prisma,
+) {
   const { domain, host } = await getTenantDomain();
-  const school = await prisma.schoolProfile.findFirst({
+  const school = await db.schoolProfile.findFirst({
     where: {
       // domain: domain,
       subDomain: domain,
@@ -151,8 +154,12 @@ export async function setSaasProfileCookie() {
   // if (!session) redirect("/onboarding/create-school-session");
   return cookieData;
 }
-export async function switchSessionTerm(termId) {
-  const term = await prisma.sessionTerm.findFirstOrThrow({
+export async function switchSessionTerm(
+  termId,
+  db: typeof prisma = prisma,
+  __redirect = true,
+) {
+  const term = await db.sessionTerm.findFirstOrThrow({
     where: {
       id: termId,
     },
@@ -166,7 +173,18 @@ export async function switchSessionTerm(termId) {
 
   const cookieStore = cookies();
   const cookieName = getCookieName(domain, "saas-profile");
-  const profile = await loadSaasProfile({ termId });
+  const profile = await loadSaasProfile({ termId }, db);
   cookieStore.set(cookieName, JSON.stringify(profile));
-  redirect("/");
+  if (__redirect) redirect("/");
+}
+export async function resetProfile(
+  db: typeof prisma = prisma,
+  __redirect = true,
+) {
+  const { domain, host } = await getTenantDomain();
+
+  const cookieStore = cookies();
+  const cookieName = getCookieName(domain, "saas-profile");
+  cookieStore.delete(cookieName);
+  await initializeSaasProfile();
 }

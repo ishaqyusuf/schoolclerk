@@ -35,14 +35,13 @@ export async function createStudentFeePayment(
             connect: { id: profile.schoolId },
           },
           studentTermForm: {
-            connect: { id: data.termId },
+            connect: { id: data.termFormId },
           },
           walletTransaction: {
             create: {
               amount: data.amount,
               // walletId: wallet.id,
               type: data.paymentType,
-
               wallet: {
                 connect: {
                   id: wallet.id,

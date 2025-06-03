@@ -29,6 +29,7 @@ import { SessionViewAction } from "./session-view-action";
 import { useMigrationStore } from "./store";
 import { undotName } from "./utils";
 import { dumpData } from "./server";
+import { ImportStudentAction } from "./import-student";
 
 export default function StudentSessionRecord({
   studentPayments,
@@ -101,11 +102,11 @@ export default function StudentSessionRecord({
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            <TableHead>Merge</TableHead>
-            <TableHead>Gender</TableHead>
-            <TableHead>Class</TableHead>
-            <TableHead>Terms</TableHead>
-            <TableHead>Payment</TableHead>
+            {/* <TableHead>Merge</TableHead> */}
+            <TableHead>Data</TableHead>
+            {/* <TableHead>Class</TableHead> */}
+            {/* <TableHead>Terms</TableHead> */}
+            {/* <TableHead>Payment</TableHead> */}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -130,14 +131,14 @@ export default function StudentSessionRecord({
                     key={si}
                   >
                     <TableCell>
-                      <div className="flex gap-4 px-4">
+                      <div className="flex gap-4">
                         <SessionCheckbox
                           dotName={studentData.fullName}
                           classRoom={className}
                         />
                         <div className="">
                           <NameCell student={undotName(studentData.fullName)} />
-                          <div className="text-muted-foreground flex gap-2">
+                          <div className="text-muted-foreground flex flex-col">
                             {studentData?.mergeNames?.map((mn) => (
                               <NameCell student={undotName(mn)} />
                             ))}
@@ -145,25 +146,26 @@ export default function StudentSessionRecord({
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell>
-                      {!studentData?.mergeNames?.length || (
-                        <Button
-                          size="xs"
-                          onClick={(e) => {
-                            unmerge(className, studentData?.mergeNames);
-                          }}
-                        >
-                          Unmerge
-                        </Button>
-                      )}
-                    </TableCell>
-                    <TableCell className="w-12">
+                    <TableCell className="inline-flex w-auto gap-2 items-center">
+                      <Button
+                        size="xs"
+                        disabled={!studentData?.mergeNames?.length}
+                        onClick={(e) => {
+                          unmerge(className, studentData?.mergeNames);
+                        }}
+                      >
+                        Unmerge
+                      </Button>
+
+                      <ImportStudentAction data={studentData} />
+                      {/* </TableCell>
+                    <TableCell className="inline-flex items-center"> */}
                       <GenderCell name={studentData.firstName} />
-                    </TableCell>
-                    <TableCell>
-                      <Badge>{className}</Badge>
-                    </TableCell>
-                    <TableCell>
+                      {/* </TableCell>
+                    <TableCell> */}
+                      <Badge className="whitespace-nowrap">{className}</Badge>
+                      {/* </TableCell>
+                    <TableCell> */}
                       <div className="flex gap-2">
                         {(["1st", "2nd", "3rd"] as any).map((t) => (
                           <div key={t}>
@@ -175,6 +177,7 @@ export default function StudentSessionRecord({
                                   : "bg-green-800",
                                 studentData?.paymentData?.storePayments
                                   ?.billables?.[t]?.omit && "bg-red-600",
+                                "whitespace-nowrap",
                               )}
                             >
                               {t}
@@ -182,8 +185,8 @@ export default function StudentSessionRecord({
                           </div>
                         ))}
                       </div>
-                    </TableCell>
-                    <TableCell className="w-12">
+                      {/* </TableCell>
+                    <TableCell className="w-12"> */}
                       <PaymentCell student={studentData} />
                     </TableCell>
                   </TableRow>

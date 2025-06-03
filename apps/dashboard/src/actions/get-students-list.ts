@@ -3,7 +3,7 @@
 import { PageDataMeta, PageItemData } from "@/types";
 import { SearchParamsType } from "@/utils/search-params";
 import { studentDisplayName } from "@/utils/utils";
-import { whereStudents } from "@/utils/where.students";
+import { whereStudents } from "@/utils/query.students";
 
 import { prisma } from "@school-clerk/db";
 

@@ -32,6 +32,9 @@ export async function createSchoolFee(
         },
       },
     },
+    include: {
+      feeHistory: true,
+    },
   });
   feesChanged();
   return fee;

@@ -19,7 +19,7 @@ export function Actions({
     __updateStudent(data);
   }
   return (
-    <Menu>
+    <Menu triggerSize="xs">
       <Menu.Item onClick={markAsFree}>Free</Menu.Item>
     </Menu>
   );

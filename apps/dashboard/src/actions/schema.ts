@@ -22,7 +22,7 @@ export const studentFeePaymentSchema = z.object({
   studentFeeId: z.string(),
   amount: z.number(),
   paymentType: z.string(),
-  termId: z.string(),
+  termFormId: z.string(),
 });
 export const guardianSchema = z.object({
   id: z.string().optional().nullable(),
@@ -47,6 +47,15 @@ export const createStudentSchema = z.object({
   classRoomId: z.string().nullable(),
   fees: z.array(studentFeeSchema).optional(),
   guardian: guardianSchema.optional().nullable(),
+  termForms: z
+    .array(
+      z.object({
+        sessionTermId: z.string(),
+        schoolSessionId: z.string(),
+      }),
+    )
+    .optional()
+    .nullable(),
 });
 export const createStaffSchema = z.object({
   title: z.string(),

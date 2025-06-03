@@ -1,0 +1,300 @@
+"use server";
+
+import { StudentRecord } from "@/app/dashboard/[domain]/migration/data";
+import {
+  getSaasProfileCookie,
+  resetProfile,
+  switchSessionTerm,
+} from "./cookies/login-session";
+import { prisma } from "@school-clerk/db";
+import { transaction } from "@/utils/db";
+import { createStudent } from "./create-student";
+import { createClassroom } from "./create-classroom";
+import { setMonth, setYear } from "date-fns";
+import { getCachedFees } from "./cache/fees";
+import { createSchoolFee } from "./create-school-fee";
+import { createStudentFee } from "./create-student-fee";
+import { createStudentFeePayment } from "./create-student-fee-payment";
+import { getSchoolFees } from "./get-school-fees";
+
+export async function importStudentAction(data: StudentRecord) {
+  const profile = await getSaasProfileCookie();
+  const prevTermId = profile?.termId;
+
+  const rsp = await transaction(async (tx) => {
+    const { session } = await getSession(tx);
+    const terms = session.terms.filter(
+      (t) =>
+        // data.terms.some((d) => t?.title?.startsWith(d)),
+        !!Object.entries(data.paymentData.storePayments.billables).find(
+          ([a, b]) => t.title?.startsWith(a) && !b.omit,
+        ),
+    );
+    console.log({ terms });
+
+    await switchSessionTerm(terms?.[0]?.id, tx, false);
+
+    let student;
+    const classRoom = await createClassroom(
+      {
+        className: data?.classRoom,
+        departments: [],
+      },
+      tx,
+    );
+
+    const [name, surname, otherName] = data?.fullName
+      ?.replaceAll("-", "")
+      .split("_");
+    console.log({ classRoom });
+
+    student = await createStudent(
+      {
+        classRoomId: classRoom?.classRoomDepartments?.[0]?.id,
+        name,
+        surname,
+        otherName,
+        gender: data.gender as any,
+        termForms: terms.map((t) => ({
+          schoolSessionId: session.id,
+          sessionTermId: t.id,
+        })),
+      },
+      tx,
+    );
+
+    console.log({ student });
+    const studentTermForms = await tx.studentTermForm.findMany({
+      where: {
+        studentId: student.id,
+        schoolSessionId: session.id,
+      },
+      select: {
+        id: true,
+        sessionTermId: true,
+      },
+    });
+    for (const term of terms) {
+      await switchSessionTerm(term.id, tx, false);
+      console.log("SESSION CHANGED");
+      const payments = data.payments
+        ?.filter((p) => term?.title?.startsWith(p?.term))
+        .filter((p) => p.paymentType == "entrance");
+      const studenForm = studentTermForms?.find(
+        (f) => f.sessionTermId == term.id,
+      );
+      console.log(payments);
+      for (const payment of payments) {
+        if (!payment.amountPaid) return;
+        const paidIn = terms?.find((t) => t.title?.startsWith(payment.paidIn));
+        await createFee(
+          {
+            amount: 1000,
+            paidAmount: payment.amountPaid,
+            payments: [],
+            title: "Admission Fee",
+            studentId: student.id,
+            // paymentTermId: paidIn?.id,
+            studentTermId: studenForm?.id,
+          },
+          tx,
+        );
+      }
+      // fees
+      for (const [termName, pData] of Object.entries(
+        data.paymentData.storePayments?.billables,
+      )) {
+        if (term?.title?.startsWith(termName)) {
+          console.log(pData);
+          if (pData?.free || pData?.omit) {
+            console.log(pData);
+            continue;
+          }
+          const payments = [
+            ...data.payments.filter(
+              (p) =>
+                p.paymentType == "fee" && termName == p.term && p.amountPaid,
+            ),
+            ...(data.paymentData.storePayments?.payments?.filter(
+              (p) =>
+                p.paymentType == "fee" && termName == p.term && p.amountPaid,
+            ) || []),
+          ];
+          console.log({ payments, termName });
+
+          await createFee(
+            {
+              amount: 3000,
+              title: "Term Fee",
+              studentId: student.id,
+              // paymentTermId: paidIn?.id,
+              studentTermId: studenForm?.id,
+              term: termName,
+              payments: payments.map((payment) => {
+                const paidIn = terms?.find((t) =>
+                  t.title?.startsWith(payment.paidIn),
+                );
+                return {
+                  termId: paidIn?.id,
+                  amount: payment.amountPaid,
+                };
+              }),
+            },
+            tx,
+          );
+        }
+      }
+    }
+
+    await resetProfile(tx, false);
+    console.log("THROWING>>");
+    throw new Error("break on purpose");
+  }, 30000);
+  await resetProfile(prisma, false);
+  return rsp;
+}
+
+async function getSession(tx: typeof prisma) {
+  const profile = await getSaasProfileCookie();
+  let session = await tx.schoolSession.findFirst({
+    where: {
+      title: `1445/1446`,
+      schoolId: profile?.schoolId,
+    },
+    select: {
+      title: true,
+      id: true,
+      terms: {
+        select: {
+          id: true,
+          title: true,
+        },
+      },
+    },
+  });
+  if (!session)
+    session = await tx.schoolSession.create({
+      data: {
+        title: `1445/1446`,
+        schoolId: profile?.schoolId,
+        createdAt: setMonth(setYear(new Date(), 2024), 4),
+        terms: {
+          createMany: {
+            data: ["1st", "2nd", "3rd"].map((t, i) => ({
+              schoolId: profile?.schoolId,
+              title: `${t} term`,
+              createdAt: setMonth(
+                setYear(new Date(), 2024),
+                i == 0 ? 4 : i == 1 ? 8 : 12,
+              ),
+              startDate: setMonth(
+                setYear(new Date(), 2024),
+                i == 0 ? 4 : i == 1 ? 8 : 12,
+              ),
+              endDate: setMonth(
+                setYear(new Date(), i == 2 ? 2025 : 2024),
+                i == 0 ? 7 : i == 1 ? 12 : 2,
+              ),
+            })),
+          },
+        },
+      },
+      select: {
+        title: true,
+        id: true,
+        terms: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+      },
+    });
+
+  return {
+    session,
+  };
+}
+interface CreateFeeProps {
+  title: "Admission Fee" | "Term Fee";
+  description?: string;
+  term?: string;
+  amount: number;
+  studentId?: string;
+  paymentTermId?: string;
+  studentTermId?: string;
+  paidAmount?;
+  payments: {
+    termId: string;
+    amount: number;
+  }[];
+}
+async function createFee(
+  props: CreateFeeProps,
+  tx: typeof prisma,
+  retries = 0,
+) {
+  // console.log({ props });
+  // return;
+  const profile = await getSaasProfileCookie();
+  const { termId } = profile;
+  const fees = await getSchoolFees(
+    {
+      termId: profile.termId,
+      title: props.title,
+    },
+    tx,
+  );
+  const fee = fees?.data?.[0];
+  console.log({ fee, profile, retries });
+  if (retries > 2) throw new Error("Cannot create");
+  const history = fee?.feeHistory?.[0];
+
+  if (!fee || !history) {
+    const f = await createSchoolFee(
+      {
+        title: props.title,
+        amount: props.amount,
+        description: props.description,
+      },
+      tx,
+    );
+    console.log(f);
+
+    return createFee(props, tx, ++retries);
+  }
+  console.log(fee);
+  const studentFee = await createStudentFee(
+    {
+      amount: history.amount,
+      feeId: history.id,
+      studentId: props.studentId,
+      paid: props.paidAmount,
+      studentTermId: props.studentTermId,
+      title: fee.title,
+    },
+    tx,
+  );
+  console.log({ studentFee });
+
+  if (props.payments?.length > 0) {
+    for (const payment of props.payments) {
+      if (termId != payment.termId)
+        await switchSessionTerm(props.paymentTermId, tx, false);
+      await createStudentFeePayment(
+        {
+          amount: payment.amount,
+          paymentType: studentFee.feeTitle,
+          studentFeeId: studentFee.id,
+          termFormId: props.studentTermId,
+        },
+        tx,
+      );
+      console.log("PAYMENT APPLIED");
+      if (termId != payment.termId) await switchSessionTerm(termId, tx, false);
+    }
+    console.log({ studentFee });
+  } else {
+    console.log("NO PAYMENT");
+  }
+}

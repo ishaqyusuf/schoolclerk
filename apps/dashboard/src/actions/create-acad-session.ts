@@ -13,8 +13,8 @@ export const createAcadSessionAction = actionClient
   .schema(createAcadSessionSchema)
   .action(async ({ parsedInput: data }) => {
     // throw new Error("....");
-    await prisma.sessionTerm.deleteMany({});
-    await prisma.schoolSession.deleteMany({});
+    // await prisma.sessionTerm.deleteMany({});
+    // await prisma.schoolSession.deleteMany({});
     const resp = await prisma.$transaction(async (tx) => {
       const profile = await getSaasProfileCookie();
       const schoolSession = await tx.schoolSession.create({
