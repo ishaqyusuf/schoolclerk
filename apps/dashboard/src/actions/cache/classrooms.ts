@@ -6,6 +6,8 @@ import { whereClassroom } from "@/utils/where.classroom";
 import { prisma } from "@school-clerk/db";
 
 import { getSaasProfileCookie } from "../cookies/login-session";
+import { getStudentsListAction } from "../get-students-list";
+import { SearchParamsType } from "@/utils/search-params";
 
 export async function getCachedClassRooms(termId, sessionId) {
   return unstable_cache(
@@ -40,4 +42,19 @@ export async function getCachedClassRooms(termId, sessionId) {
       tags: [`classrooms_${termId}`],
     },
   )();
+}
+export async function getCachedClassroomStudents(departmentId, start = 0) {
+  const tags = [`classroom_students_${departmentId}`];
+  const profile = await getSaasProfileCookie();
+  const query: SearchParamsType = {};
+  query.sessionId = profile.sessionId;
+  query.start = start;
+  query.departmentId = departmentId;
+  return unstable_cache(
+    async (query) => {
+      return await getStudentsListAction(query);
+    },
+    tags,
+    { tags },
+  )(query);
 }

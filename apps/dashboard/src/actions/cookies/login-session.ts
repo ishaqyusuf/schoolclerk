@@ -14,6 +14,8 @@ interface SaasProfile {
   sessionId?: string;
   schoolId?: string;
   termId?: string;
+  sessionTitle: string;
+  termTitle: string;
 }
 export async function getTenantDomain() {
   let host = decodeURIComponent(headers().get("host") || "");
@@ -104,6 +106,7 @@ export async function loadSaasProfile(
         take: 1,
         select: {
           id: true,
+          title: true,
           terms: {
             take: 1,
             where: termId
@@ -113,6 +116,7 @@ export async function loadSaasProfile(
               : undefined,
             select: {
               id: true,
+              title: true,
             },
             orderBy: {
               createdAt: "desc",
@@ -131,6 +135,8 @@ export async function loadSaasProfile(
     sessionId: session?.id,
     termId: term?.id,
     schoolId: school?.id,
+    sessionTitle: session?.title,
+    termTitle: term?.title,
   } satisfies SaasProfile;
 
   return cookieData;

@@ -16,13 +16,14 @@ import { TableProvider } from "..";
 import { TableHeaderComponent } from "../table-header";
 import { TableRow } from "../table-row";
 import { columns } from "./columns";
+import { Icons } from "@/components/icons";
 
 type Props = {
   data: StudentData[];
-  loadMore: (query) => Promise<any>;
-  pageSize: number;
-  hasNextPage: boolean;
-  filterDataPromise;
+  loadMore?: (query) => Promise<any>;
+  pageSize?: number;
+  hasNextPage?: boolean;
+  filterDataPromise?;
 };
 
 export function DataTable({
@@ -85,6 +86,7 @@ export function DataTable({
           <MiddaySearchFilter placeholder={"Search"} filterList={filterData} />
           <div className="flex-1"></div>
           <Button
+            className="whitespace-nowrap"
             variant="outline"
             onClick={() =>
               setParams({
@@ -92,7 +94,8 @@ export function DataTable({
               })
             }
           >
-            Create student
+            <Icons.add className="size-4 mr-2" />
+            Create
           </Button>
         </div>
         <Table>

@@ -5,8 +5,15 @@ import { Menu } from "@/components/menu";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { ActionCell } from "../action-cell";
+import { Badge } from "@school-clerk/ui/badge";
+import { useClassesParams } from "@/hooks/use-classes-params";
 
 export type ClassItem = ClassRoomPageItem;
+export const __classQueryState: {
+  context: ReturnType<typeof useClassesParams>;
+} = {
+  context: null as any,
+};
 export const columns: ColumnDef<ClassItem>[] = [
   {
     header: "Classroom",
@@ -21,8 +28,24 @@ export const columns: ColumnDef<ClassItem>[] = [
     accessorKey: "department",
     meta: {
       className: "w-[80px]",
+      onClick(item: ClassItem) {
+        if (__classQueryState?.context) {
+          __classQueryState?.context?.setParams({
+            viewClassroomId: item?.id,
+            classroomTab: "students",
+          });
+          console.log(item);
+        }
+      },
     },
-    cell: ({ row: { original: item } }) => <div>{10}</div>,
+
+    cell: ({ row: { original: item } }) => {
+      return (
+        <span className="flex text-center">
+          <Badge>{item?._count?.studentSessionForms}</Badge>
+        </span>
+      );
+    },
   },
   {
     header: "Subjects",

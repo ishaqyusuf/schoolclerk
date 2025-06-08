@@ -24,10 +24,14 @@ export function TableRow({}: Props) {
               onClick={(e) => {
                 if (cell.column.id == "actions") return;
                 tableMeta?.rowClick?.(row.original?.id, row.original);
+                const meta = cell.column.columnDef?.meta as any;
+                meta?.onClick?.(row?.original);
               }}
               className={cn(
                 (cell.column.columnDef.meta as any)?.className,
-                tableMeta?.rowClick && "cursor-pointer hover:bg-transparent",
+                tableMeta?.rowClick ||
+                  ((cell?.column?.columnDef?.meta as any)?.onClick &&
+                    "cursor-pointer hover:bg-transparent"),
               )}
             >
               {flexRender(cell.column.columnDef.cell, cell.getContext())}

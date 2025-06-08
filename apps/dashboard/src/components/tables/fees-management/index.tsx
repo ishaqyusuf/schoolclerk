@@ -1,6 +1,5 @@
 import { getClassRooms } from "@/actions/get-class-rooms";
 import { getSchoolFees } from "@/actions/get-school-fees";
-import { getStudentsListAction } from "@/actions/get-students-list";
 
 import { EmptyState, NoResults } from "./empty-states";
 import { DataTable } from "./table";

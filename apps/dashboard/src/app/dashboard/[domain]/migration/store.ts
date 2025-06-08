@@ -15,6 +15,8 @@ const data = {
   studentPayments: {} as {
     [className in string]: {
       [name in string]: {
+        studentId?;
+        departmentId?;
         postId?;
         studentName;
         billables: {

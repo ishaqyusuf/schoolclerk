@@ -6,13 +6,16 @@ import { studentDisplayName } from "@/utils/utils";
 import { whereStudents } from "@/utils/query.students";
 
 import { prisma } from "@school-clerk/db";
-
+import { getStaffListAction } from "./get-staff-list";
 import { getSaasProfileCookie } from "./cookies/login-session";
 
 export type StudentData = PageItemData<typeof getStudentsListAction>;
-export async function getStudentsListAction(query: SearchParamsType = {}) {
+export async function getStudentListPageAction(query: SearchParamsType = {}) {
   const profile = await getSaasProfileCookie();
   query.sessionId = profile.sessionId;
+  return await getStaffListAction(query);
+}
+export async function getStudentsListAction(query: SearchParamsType = {}) {
   const where = whereStudents(query);
   const students = await prisma.students.findMany({
     where,
@@ -26,7 +29,7 @@ export async function getStudentsListAction(query: SearchParamsType = {}) {
       gender: true,
       sessionForms: {
         where: {
-          schoolSessionId: profile.sessionId,
+          schoolSessionId: query.sessionId,
         },
         select: {
           id: true,
@@ -45,7 +48,7 @@ export async function getStudentsListAction(query: SearchParamsType = {}) {
           },
           termForms: {
             where: {
-              sessionTermId: profile?.termId,
+              sessionTermId: query?.termId,
             },
             take: 1,
             select: {

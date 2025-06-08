@@ -35,7 +35,7 @@ export async function getWalletDashboard() {
           studentPayment: {
             studentTermForm: {
               sessionForm: {
-                Student: {
+                student: {
                   deletedAt: null,
                 },
               },

@@ -44,7 +44,6 @@ export function PaymentCell({ student }: { student: StudentRecord }) {
     updateStudent(postId, student.classRoom, studentName, rest).then(
       (postId) => {
         data.postId = postId;
-        console.log({ postId });
         store.update(
           `studentPayments.${student.classRoom}.${studentName}`,
           data,

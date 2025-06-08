@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { transaction } from "@/utils/db";
 import z from "zod";
 
@@ -98,6 +98,7 @@ export async function createStudent(
       studentId: student.id,
     },
   });
+  if (data.classRoomId) revalidateTag(`classroom_students_${data.classRoomId}`);
   // throw new Error("FAILED S");
   return student;
 }

@@ -2,13 +2,16 @@ import { PageDataMeta, PageItemData } from "@/types";
 import { SearchParamsType } from "@/utils/search-params";
 
 import { prisma } from "@school-clerk/db";
+import { setSaasProfileCookie } from "./cookies/login-session";
 
 export type PageItem = PageItemData<typeof getTransactions>;
 export async function getTransactions(query: SearchParamsType = {}) {
+  const pr = await setSaasProfileCookie();
   const billables = await prisma.walletTransactions.findMany({
     where: {
       wallet: {
         schoolProfileId: query.schoolProfileId,
+        sessionTermId: pr.termId,
       },
       OR: [
         {
@@ -19,6 +22,11 @@ export async function getTransactions(query: SearchParamsType = {}) {
         {
           studentPayment: {
             deletedAt: null,
+            studentTermForm: {
+              student: {
+                deletedAt: null,
+              },
+            },
           },
         },
       ],
@@ -27,12 +35,58 @@ export async function getTransactions(query: SearchParamsType = {}) {
       amount: true,
       summary: true,
       type: true,
+      createdAt: true,
+      wallet: {
+        select: {
+          sessionTerm: {
+            select: {
+              title: true,
+              session: {
+                select: {
+                  title: true,
+                },
+              },
+            },
+          },
+        },
+      },
+      studentPayment: {
+        select: {
+          studentTermForm: {
+            select: {
+              sessionTerm: {
+                select: {
+                  title: true,
+                  session: {
+                    select: {
+                      title: true,
+                    },
+                  },
+                },
+              },
+              student: {
+                select: {
+                  name: true,
+                  otherName: true,
+                  surname: true,
+                },
+              },
+            },
+          },
+        },
+      },
     },
   });
   return {
     meta: {} as PageDataMeta,
-    data: billables.map((dept) => {
-      return dept;
+    data: billables.map((tx) => {
+      return {
+        amount: tx.amount,
+        type: tx.type,
+        student: tx.studentPayment?.studentTermForm?.student,
+        billTerm: tx.studentPayment?.studentTermForm?.sessionTerm,
+        invoiceTerm: tx.wallet?.sessionTerm,
+      };
     }),
   };
 }

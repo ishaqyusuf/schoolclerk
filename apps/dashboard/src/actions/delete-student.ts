@@ -8,15 +8,24 @@ import { prisma } from "@school-clerk/db";
 import { studentChanged } from "./cache/cache-control";
 import { actionClient } from "./safe-action";
 import { deleteStudentSchema } from "./schema";
+import { revalidateTag } from "next/cache";
 
 export type Data = z.infer<typeof deleteStudentSchema>;
 export async function deleteStudent(data: Data, tx: typeof prisma = prisma) {
-  await tx.students.update({
+  const r = await tx.students.update({
     where: {
       id: data.studentId,
     },
     data: {
       deletedAt: new Date(),
+      termForms: {
+        updateMany: {
+          where: {},
+          data: {
+            deletedAt: new Date(),
+          },
+        },
+      },
       sessionForms: {
         updateMany: {
           where: {},
@@ -26,6 +35,16 @@ export async function deleteStudent(data: Data, tx: typeof prisma = prisma) {
         },
       },
     },
+    select: {
+      sessionForms: {
+        select: {
+          classroomDepartmentId: true,
+        },
+      },
+    },
+  });
+  r?.sessionForms?.map((s) => {
+    revalidateTag(`classroom_students_${s.classroomDepartmentId}`);
   });
 }
 export const deleteStudentAction = actionClient

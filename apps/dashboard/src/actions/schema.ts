@@ -38,6 +38,18 @@ export const studentFeeSchema = z.object({
   studentTermId: z.string().optional(),
   studentId: z.string().optional(),
 });
+export const createStudentAcademicProfileSchema = z.object({
+  termIds: z.array(
+    z.object({
+      sessionTermId: z.string(),
+      schoolSessionId: z.string(),
+    }),
+  ),
+  studentId: z.string(),
+  sessionId: z.string(),
+  sessionFormId: z.string().optional(),
+  classroomDepartmentId: z.string(),
+});
 export const createStudentSchema = z.object({
   name: z.string().min(1),
   surname: z.string().min(1),

@@ -35,6 +35,8 @@ export default function StudentSessionRecord({
   studentPayments,
   genders,
   studentMerge,
+  classRooms,
+  fees,
 }) {
   const store = useMigrationStore();
 
@@ -157,7 +159,11 @@ export default function StudentSessionRecord({
                         Unmerge
                       </Button>
 
-                      <ImportStudentAction data={studentData} />
+                      <ImportStudentAction
+                        data={studentData}
+                        classRooms={classRooms}
+                        fees={fees}
+                      />
                       {/* </TableCell>
                     <TableCell className="inline-flex items-center"> */}
                       <GenderCell name={studentData.firstName} />
@@ -166,12 +172,13 @@ export default function StudentSessionRecord({
                       <Badge className="whitespace-nowrap">{className}</Badge>
                       {/* </TableCell>
                     <TableCell> */}
-                      <div className="flex gap-2">
+                      <div className="flex">
                         {(["1st", "2nd", "3rd"] as any).map((t) => (
                           <div key={t}>
                             <Badge
                               variant={"default"}
                               className={cn(
+                                "px-1 rounded-none",
                                 !studentData.terms?.includes(t)
                                   ? "bg-muted-foreground"
                                   : "bg-green-800",

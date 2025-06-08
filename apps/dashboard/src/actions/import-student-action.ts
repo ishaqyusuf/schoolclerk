@@ -16,8 +16,16 @@ import { createSchoolFee } from "./create-school-fee";
 import { createStudentFee } from "./create-student-fee";
 import { createStudentFeePayment } from "./create-student-fee-payment";
 import { getSchoolFees } from "./get-school-fees";
+import { createStudentAcademicProfile } from "./create-student-academic-profile";
+import { updateStudent } from "@/app/dashboard/[domain]/migration/server";
 
-export async function importStudentAction(data: StudentRecord) {
+export async function importStudentAction(
+  data: StudentRecord,
+  _classRoom?: {
+    departmentId: string;
+  },
+) {
+  const postId = data.paymentData?.storePayments?.postId;
   const profile = await getSaasProfileCookie();
   const prevTermId = profile?.termId;
 
@@ -76,7 +84,7 @@ export async function importStudentAction(data: StudentRecord) {
     });
     for (const term of terms) {
       await switchSessionTerm(term.id, tx, false);
-      console.log("SESSION CHANGED");
+      console.log(term.id);
       const payments = data.payments
         ?.filter((p) => term?.title?.startsWith(p?.term))
         .filter((p) => p.paymentType == "entrance");
@@ -84,6 +92,8 @@ export async function importStudentAction(data: StudentRecord) {
         (f) => f.sessionTermId == term.id,
       );
       console.log(payments);
+      console.log(studenForm);
+
       for (const payment of payments) {
         if (!payment.amountPaid) return;
         const paidIn = terms?.find((t) => t.title?.startsWith(payment.paidIn));
@@ -134,6 +144,8 @@ export async function importStudentAction(data: StudentRecord) {
                 const paidIn = terms?.find((t) =>
                   t.title?.startsWith(payment.paidIn),
                 );
+                console.log(paidIn);
+
                 return {
                   termId: paidIn?.id,
                   amount: payment.amountPaid,
@@ -147,13 +159,115 @@ export async function importStudentAction(data: StudentRecord) {
     }
 
     await resetProfile(tx, false);
+    if (_classRoom?.departmentId) {
+      const pr = await getSaasProfileCookie();
+      await createStudentAcademicProfile(
+        {
+          classroomDepartmentId: _classRoom.departmentId,
+          studentId: student.id,
+          termIds: [
+            {
+              sessionTermId: pr.termId,
+              schoolSessionId: pr.sessionId,
+            },
+          ],
+        },
+        tx,
+      );
+    }
     console.log("THROWING>>");
-    throw new Error("break on purpose");
+    // throw new Error("break on purpose");
+    let post = data.paymentData?.storePayments;
+    if (!post) post = {} as any;
+    const { postId, ...postData } = post;
+    postData.studentId = student.id;
+    await updateStudent(postId, data.classRoom, data.fullName, postData);
+
+    return {
+      studentId: student.id,
+      postData: {
+        ...postData,
+        postId,
+      },
+    };
   }, 30000);
   await resetProfile(prisma, false);
   return rsp;
 }
+async function createFee(
+  props: CreateFeeProps,
+  tx: typeof prisma,
+  retries = 0,
+) {
+  // console.log({ props });
+  // return;
+  const profile = await getSaasProfileCookie();
+  const { termId } = profile;
+  console.log(termId);
+  const fees = await getSchoolFees(
+    {
+      termId: profile.termId,
+      title: props.title,
+    },
+    tx,
+  );
+  const fee = fees?.data?.[0];
+  console.log({ fee, profile, retries });
+  if (retries > 2) throw new Error("Cannot create");
+  const history = fee?.feeHistory?.[0];
 
+  if (!fee || !history) {
+    const f = await createSchoolFee(
+      {
+        title: props.title,
+        amount: props.amount,
+        description: props.description,
+      },
+      tx,
+    );
+    console.log(f);
+
+    return createFee(props, tx, ++retries);
+  }
+  console.log(fee);
+  const studentFee = await createStudentFee(
+    {
+      amount: history.amount,
+      feeId: history.id,
+      studentId: props.studentId,
+      paid: props.paidAmount,
+      studentTermId: props.studentTermId,
+      title: fee.title,
+    },
+    tx,
+  );
+  console.log({ studentFee });
+
+  if (props.payments?.length > 0) {
+    for (const payment of props.payments) {
+      if (payment.termId && termId != payment.termId) {
+        console.log(props.paymentTermId);
+
+        await switchSessionTerm(payment.termId, tx, false);
+      }
+
+      await createStudentFeePayment(
+        {
+          amount: payment.amount,
+          paymentType: studentFee.feeTitle,
+          studentFeeId: studentFee.id,
+          termFormId: props.studentTermId,
+        },
+        tx,
+      );
+      console.log("PAYMENT APPLIED");
+      if (termId != payment.termId) await switchSessionTerm(termId, tx, false);
+    }
+    console.log({ studentFee });
+  } else {
+    console.log("NO PAYMENT");
+  }
+}
 async function getSession(tx: typeof prisma) {
   const profile = await getSaasProfileCookie();
   let session = await tx.schoolSession.findFirst({
@@ -228,73 +342,4 @@ interface CreateFeeProps {
     termId: string;
     amount: number;
   }[];
-}
-async function createFee(
-  props: CreateFeeProps,
-  tx: typeof prisma,
-  retries = 0,
-) {
-  // console.log({ props });
-  // return;
-  const profile = await getSaasProfileCookie();
-  const { termId } = profile;
-  const fees = await getSchoolFees(
-    {
-      termId: profile.termId,
-      title: props.title,
-    },
-    tx,
-  );
-  const fee = fees?.data?.[0];
-  console.log({ fee, profile, retries });
-  if (retries > 2) throw new Error("Cannot create");
-  const history = fee?.feeHistory?.[0];
-
-  if (!fee || !history) {
-    const f = await createSchoolFee(
-      {
-        title: props.title,
-        amount: props.amount,
-        description: props.description,
-      },
-      tx,
-    );
-    console.log(f);
-
-    return createFee(props, tx, ++retries);
-  }
-  console.log(fee);
-  const studentFee = await createStudentFee(
-    {
-      amount: history.amount,
-      feeId: history.id,
-      studentId: props.studentId,
-      paid: props.paidAmount,
-      studentTermId: props.studentTermId,
-      title: fee.title,
-    },
-    tx,
-  );
-  console.log({ studentFee });
-
-  if (props.payments?.length > 0) {
-    for (const payment of props.payments) {
-      if (termId != payment.termId)
-        await switchSessionTerm(props.paymentTermId, tx, false);
-      await createStudentFeePayment(
-        {
-          amount: payment.amount,
-          paymentType: studentFee.feeTitle,
-          studentFeeId: studentFee.id,
-          termFormId: props.studentTermId,
-        },
-        tx,
-      );
-      console.log("PAYMENT APPLIED");
-      if (termId != payment.termId) await switchSessionTerm(termId, tx, false);
-    }
-    console.log({ studentFee });
-  } else {
-    console.log("NO PAYMENT");
-  }
 }

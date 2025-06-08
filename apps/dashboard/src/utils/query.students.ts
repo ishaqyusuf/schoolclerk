@@ -13,11 +13,11 @@ export async function commissionQueryMetaData(query: SearchParamsType) {
   };
 }
 export function whereStudents(query: SearchParamsType) {
-  console.log({ query });
   const where: Prisma.StudentsWhereInput[] = [
     {
       sessionForms: {
         some: {
+          deletedAt: null,
           schoolSessionId: query.sessionId,
         },
       },

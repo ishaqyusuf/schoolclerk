@@ -7,6 +7,12 @@ export function wherStudentFees(query: SearchParamsType) {
   const where: Prisma.StudentFeeWhereInput[] = [
     {
       schoolProfileId: query.schoolProfileId,
+      studentTermForm: {
+        sessionTermId: query.termId || undefined,
+        sessionForm: {
+          deletedAt: null,
+        },
+      },
     },
     {
       OR: [

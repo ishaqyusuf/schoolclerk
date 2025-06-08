@@ -1,6 +1,6 @@
 import { studentFilterData } from "@/actions/cache/student-filter-data";
 import { getSaasProfileCookie } from "@/actions/cookies/login-session";
-import { getStudentsListAction } from "@/actions/get-students-list";
+import { getStudentListPageAction } from "@/actions/get-students-list";
 
 import { EmptyState, NoResults } from "./empty-states";
 import { DataTable } from "./table";
@@ -32,7 +32,7 @@ export async function StudentsTable({ query }: Props) {
   async function loadMore({ from, to }: { from: number; to: number }) {
     "use server";
 
-    return getStudentsListAction({
+    return getStudentListPageAction({
       // start
       // to,
       // from: from + 1,
@@ -42,7 +42,7 @@ export async function StudentsTable({ query }: Props) {
       // filter,
     });
   }
-  const { data, meta } = await getStudentsListAction({
+  const { data, meta } = await getStudentListPageAction({
     ...query,
     // searchQuery: query,
     // sort,
@@ -67,7 +67,7 @@ export async function StudentsTable({ query }: Props) {
   return (
     <DataTable
       filterDataPromise={filterDataPromise}
-      data={data}
+      data={data as any}
       loadMore={loadMore}
       pageSize={pageSize}
       hasNextPage={hasNextPage}

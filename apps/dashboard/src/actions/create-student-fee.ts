@@ -24,8 +24,6 @@ export async function createStudentFee(data: Type, tx: typeof prisma = prisma) {
       schoolSessionId: profile.sessionId,
       feeHistoryId: data.feeId,
       studentId: data.studentId,
-      // description: data.title,
-      // description: data.feeDescription
     },
     select: {
       id: true,
@@ -40,12 +38,15 @@ export async function createStudentFee(data: Type, tx: typeof prisma = prisma) {
     },
   });
   if (data.paid) {
-    await createStudentFeePayment({
-      amount: data.paid,
-      paymentType: fee.feeTitle,
-      studentFeeId: fee.id,
-      termFormId: profile.termId,
-    });
+    await createStudentFeePayment(
+      {
+        amount: data.paid,
+        paymentType: fee.feeTitle,
+        studentFeeId: fee.id,
+        termFormId: data.studentTermId,
+      },
+      tx,
+    );
   }
   return fee;
   // const student = await prisma

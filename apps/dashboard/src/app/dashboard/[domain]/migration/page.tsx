@@ -1,5 +1,6 @@
+import { getClassRooms } from "@/actions/get-class-rooms";
 import { loadCookie } from "./cookie";
-import { classList, getTermsData } from "./data";
+import { classList } from "./data";
 import { Filter } from "./filter";
 import { List } from "./list";
 import {
@@ -8,16 +9,31 @@ import {
   loadStudentPayments,
 } from "./server";
 import StudentSessionRecord from "./student-session-record";
+import { getCachedFees } from "@/actions/cache/fees";
+import { getSaasProfileCookie } from "@/actions/cookies/login-session";
 
 export default async function Migration() {
   const cook = await loadCookie();
 
-  const [genders, studentPayments, studentMerge] = await Promise.all([
-    loadGenders(),
-    loadStudentPayments(),
-    loadStudentMergeData(),
-  ]);
-  const ctx = { studentPayments, genders, studentMerge };
+  const profile = await getSaasProfileCookie();
+
+  const [genders, studentPayments, studentMerge, classRooms, fees] =
+    await Promise.all([
+      loadGenders(),
+      loadStudentPayments(),
+      loadStudentMergeData(),
+      getClassRooms({}),
+      getCachedFees(profile.termId),
+    ]);
+  const ctx = {
+    studentPayments,
+    genders,
+    studentMerge,
+    classRooms: classRooms.data,
+    fees,
+  };
+  // console.log({ classRooms });
+
   return (
     <div className="space-y-4 p-4">
       <div></div>

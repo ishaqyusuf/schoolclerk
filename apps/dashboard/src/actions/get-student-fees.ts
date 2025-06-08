@@ -3,9 +3,12 @@ import { SearchParamsType } from "@/utils/search-params";
 import { wherStudentFees } from "@/utils/where.student-fees";
 
 import { prisma } from "@school-clerk/db";
+import { setSaasProfileCookie } from "./cookies/login-session";
 
 export type PageItem = PageItemData<typeof getStudentFees>;
 export async function getStudentFees(query: SearchParamsType = {}) {
+  const profile = await setSaasProfileCookie();
+  if (query?.termId) query.termId = profile.termId;
   const where = wherStudentFees(query);
   const data = await prisma.studentFee.findMany({
     where,

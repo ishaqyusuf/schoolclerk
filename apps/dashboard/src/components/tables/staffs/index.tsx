@@ -1,7 +1,6 @@
 import { studentFilterData } from "@/actions/cache/student-filter-data";
 import { getSaasProfileCookie } from "@/actions/cookies/login-session";
 import { getStaffListAction } from "@/actions/get-staff-list";
-import { getStudentsListAction } from "@/actions/get-students-list";
 
 import { EmptyState, NoResults } from "./empty-states";
 import { DataTable } from "./table";

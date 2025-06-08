@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { deleteClassroomDepartmentAction } from "@/actions/delete-department";
 import { MiddaySearchFilter } from "@/components/midday-search-filter/search-filter";
 import { useClassesParams } from "@/hooks/use-classes-params";
@@ -14,7 +14,7 @@ import { Table, TableBody } from "@school-clerk/ui/table";
 import { TableProvider } from "..";
 import { TableHeaderComponent } from "../table-header";
 import { TableRow } from "../table-row";
-import { columns, type ClassItem } from "./columns";
+import { __classQueryState, columns, type ClassItem } from "./columns";
 
 type Props = {
   data: ClassItem[];
@@ -24,7 +24,10 @@ type Props = {
 };
 
 export function DataTable({ data, loadMore, pageSize, hasNextPage }: Props) {
-  const { setParams, ...params } = useClassesParams();
+  const classQueryState = useClassesParams();
+  const { setParams, ...params } = classQueryState;
+  __classQueryState.context = classQueryState;
+  // useEffect(() => {}, []);
   const toast = useLoadingToast();
   const deleteAction = useAction(deleteClassroomDepartmentAction, {
     onSuccess(args) {
@@ -57,11 +60,11 @@ export function DataTable({ data, loadMore, pageSize, hasNextPage }: Props) {
           columns,
           tableMeta: {
             deleteAction: handleDeleteInvoice,
-            rowClick(id, rowData) {
-              setParams({
-                viewClassroomId: id,
-              });
-            },
+            // rowClick(id, rowData) {
+            //   setParams({
+            //     viewClassroomId: id,
+            //   });
+            // },
           },
           pageSize,
           hasNextPage,

@@ -2,6 +2,7 @@
 
 import { BillableCreateSheet } from "./billable-create-sheet";
 import { ClassroomCreateSheet } from "./classroom-create-sheet";
+import { ClassroomOverviewSheet } from "./classroom-overview-sheet";
 import { CreateBillSheet } from "./create-bill-sheet";
 import { SchoolFeeCreateSheet } from "./school-fee-create-sheet";
 import { StaffCreateSheet } from "./staff-create-sheet";
@@ -20,6 +21,7 @@ export function GlobalSheets({}: Props) {
       <SchoolFeeCreateSheet />
       <StudentCreateSheet />
       <StudentOverviewSheet />
+      <ClassroomOverviewSheet />
       <StaffCreateSheet />
       <CreateBillSheet />
 

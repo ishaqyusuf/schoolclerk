@@ -14,11 +14,14 @@ const lineItemSchema = z.object({
   quantity: z.number(),
 });
 
+const tabs = ["overview", "students"] as const;
+export type TabType = (typeof tabs)[number];
 export function useClassesParams(options?: { shallow: boolean }) {
   const [params, setParams] = useQueryStates(
     {
       createClassroom: parseAsBoolean,
       viewClassroomId: parseAsString,
+      classroomTab: parseAsStringEnum<TabType>(tabs as any),
     },
     options,
   );

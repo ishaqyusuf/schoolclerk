@@ -16,8 +16,6 @@ export async function getCachedFees(termId, tx: typeof prisma = prisma) {
           termId,
         },
       });
-      console.log({ _, termId });
-
       const items = await tx.feeHistory.findMany({
         where: {
           termId,
