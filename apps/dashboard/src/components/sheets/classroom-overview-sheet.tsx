@@ -13,12 +13,21 @@ import {
   TabsList,
   TabsTrigger,
 } from "@school-clerk/ui/tabs";
-import { CustomSheet, CustomSheetContent } from "../custom-sheet-content";
+import {
+  CustomSheet,
+  CustomSheetContent,
+  MultiSheetContent,
+  SecondarySheetContent,
+  SecondarySheetHeader,
+} from "../custom-sheet-content";
 import { useClassesParams } from "@/hooks/use-classes-params";
 import { getClassRooms } from "@/actions/get-class-rooms";
 import { DataSkeletonProvider } from "@/hooks/use-data-skeleton";
 import { DataSkeleton } from "../data-skeleton";
 import { StudentsByClassRoom } from "../students/students-by-classroom";
+import { ClassroomSubject } from "../classroom-subjects";
+import { FormContext } from "../students/form-context";
+import { Form } from "../forms/student-form";
 
 export function ClassroomOverviewSheet({}) {
   const { setParams, ...params } = useClassesParams();
@@ -36,12 +45,11 @@ export function ClassroomOverviewSheet({}) {
     return item;
   }, [params.viewClassroomId]);
   if (!isOpen) return null;
-
   return (
     <CustomSheet
       floating
       rounded
-      size="lg"
+      size={params.secondaryTab ? "5xl" : "xl"}
       open={isOpen}
       onOpenChange={() => setParams(null)}
       sheetName="student-overview"
@@ -63,33 +71,57 @@ export function ClassroomOverviewSheet({}) {
             </DataSkeleton>
           </SheetDescription>
         </SheetHeader>
-        <Tabs
-          onValueChange={(e) => {
-            setParams({
-              classroomTab: e as any,
-            });
-          }}
-          defaultValue="overview"
-          value={params?.classroomTab || "overview"}
+        <MultiSheetContent
+          Header={
+            <Tabs
+              onValueChange={(e) => {
+                setParams({
+                  classroomTab: e as any,
+                });
+              }}
+              defaultValue="overview"
+              value={params?.classroomTab || "overview"}
+            >
+              <TabsList className="w-full">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="students">Students</TabsTrigger>
+                <TabsTrigger value="subjects">Subjects</TabsTrigger>
+                <TabsTrigger value="finance">Finance</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          }
         >
-          <TabsList className="w-full">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="students">Students</TabsTrigger>
-            <TabsTrigger value="attendance">Attendance</TabsTrigger>
-            <TabsTrigger value="finance">Finance</TabsTrigger>
-          </TabsList>
-        </Tabs>
-        <CustomSheetContent className="flex flex-col gap-2">
-          <Tabs
-            defaultValue="overview"
-            value={params?.classroomTab || "overview"}
-          >
-            <TabsContent value="students" className="h-screen">
-              <StudentsByClassRoom departmentId={viewClassroomId} />
-            </TabsContent>
-          </Tabs>
-        </CustomSheetContent>
+          <CustomSheetContent className="flex flex-col gap-2">
+            <Tabs
+              defaultValue="overview"
+              value={params?.classroomTab || "overview"}
+            >
+              <TabsContent value="students" className="h-screen">
+                <StudentsByClassRoom departmentId={viewClassroomId} />
+              </TabsContent>
+              <TabsContent value="subjects" className="h-screen">
+                <ClassroomSubject departmentId={viewClassroomId} />
+              </TabsContent>
+            </Tabs>
+          </CustomSheetContent>
+          <StudentForm />
+        </MultiSheetContent>
       </DataSkeletonProvider>
     </CustomSheet>
+  );
+}
+function StudentForm({}) {
+  const ctx = useClassesParams();
+  if (ctx.secondaryTab != "student-form") return null;
+
+  return (
+    <SecondarySheetContent>
+      <SecondarySheetHeader ctx={ctx} title="New  Student" />
+      <CustomSheetContent>
+        <FormContext>
+          <Form />
+        </FormContext>
+      </CustomSheetContent>
+    </SecondarySheetContent>
   );
 }

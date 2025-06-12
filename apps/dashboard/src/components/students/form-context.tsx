@@ -15,6 +15,7 @@ export function FormContext({ children }) {
       dob: null,
       classRoomId: null,
       fees: [],
+      termForms: [],
       guardian: {
         id: null,
         name: null,

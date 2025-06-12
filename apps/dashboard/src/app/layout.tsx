@@ -8,6 +8,7 @@ import { TailwindIndicator } from "@/components/tailwind-indicator";
 
 import { cn } from "@school-clerk/ui/cn";
 import { Toaster } from "@school-clerk/ui/toaster";
+import { Providers } from "./providers";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -35,9 +36,11 @@ export default function RootLayout({
           fontHeading.variable,
         )}
       >
-        <TailwindIndicator />
-        <Toaster />
-        {children}
+        <Providers>
+          <TailwindIndicator />
+          <Toaster />
+          {children}
+        </Providers>
       </body>
     </html>
   );

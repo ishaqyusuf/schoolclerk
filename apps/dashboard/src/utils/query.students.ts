@@ -29,7 +29,9 @@ export function whereStudents(query: SearchParamsType) {
         some: {
           schoolSessionId: query.sessionId,
           classroomDepartmentId:
-            query.departmentId == "undocumented" ? null : query.departmentId,
+            query.departmentId == "undocumented" || !query?.departmentId
+              ? null
+              : query.departmentId,
         },
       },
     });

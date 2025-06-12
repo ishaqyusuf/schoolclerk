@@ -15,16 +15,16 @@ import { Table, TableBody } from "@school-clerk/ui/table";
 import { TableProvider } from "..";
 import { TableHeaderComponent } from "../table-header";
 import { TableRow } from "../table-row";
-import { columns } from "./columns";
+
 import { Icons } from "@/components/icons";
+import { classroomSubjectsColumn } from "./columns";
 
 type Props = {
-  data: StudentData[];
+  data?: any[];
   loadMore?: (query) => Promise<any>;
   pageSize?: number;
   hasNextPage?: boolean;
   filterDataPromise?;
-  createAction?;
 };
 
 export function DataTable({
@@ -33,14 +33,11 @@ export function DataTable({
   pageSize,
   hasNextPage,
   filterDataPromise,
-  createAction,
 }: Props) {
   const { setParams, ...params } = useStudentParams();
   const filterData: PageFilterData[] = filterDataPromise
     ? use(filterDataPromise)
     : [];
-  //   const deleteInvoice = useAction(deleteInvoiceAction);
-  //   const { date_format: dateFormat } = useUserContext((state) => state.data);
 
   const handleDeleteInvoice = (id: string) => {
     // setData((prev) => {
@@ -61,7 +58,7 @@ export function DataTable({
     <TableProvider
       args={[
         {
-          columns,
+          columns: classroomSubjectsColumn,
           data,
           hasNextPage,
           loadMore,
@@ -90,13 +87,11 @@ export function DataTable({
           <Button
             className="whitespace-nowrap"
             variant="outline"
-            onClick={() => {
-              if (createAction) createAction();
-              else
-                setParams({
-                  createStudent: true,
-                });
-            }}
+            onClick={() =>
+              setParams({
+                createStudent: true,
+              })
+            }
           >
             <Icons.add className="size-4 mr-2" />
             Create

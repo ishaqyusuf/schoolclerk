@@ -9,7 +9,7 @@ import { prisma } from "@school-clerk/db";
 function getCookieName(domain, name) {
   return `${domain}-${name}`;
 }
-interface SaasProfile {
+export interface SaasProfile {
   domain: string;
   sessionId?: string;
   schoolId?: string;
@@ -25,12 +25,12 @@ export async function getTenantDomain() {
     // rootDmain =
   }
   return {
-    host,
+    // host,
     domain: host?.replace(`.${env.APP_ROOT_DOMAIN}`, ""),
   };
 }
 export async function getSaasProfileCookie() {
-  const { domain, host } = await getTenantDomain();
+  const { domain } = await getTenantDomain();
   const cookieStore = cookies();
   const cookieName = getCookieName(domain, "saas-profile");
   const value = cookieStore.get(cookieName)?.value;
@@ -44,14 +44,14 @@ export async function getSaasProfileCookie() {
   // return await setSaasProfileCookie();
 }
 export async function clearSaasCookie() {
-  const { domain, host } = await getTenantDomain();
+  const { domain } = await getTenantDomain();
   const cookieStore = cookies();
   const cookieName = getCookieName(domain, "saas-profile");
   cookieStore.delete(cookieName);
 }
 export async function initializeSaasProfile() {
   const profile = await getSaasProfileCookie();
-  const { domain, host } = await getTenantDomain();
+  const { domain } = await getTenantDomain();
 
   const cookieStore = cookies();
   const cookieName = getCookieName(domain, "saas-profile");
@@ -76,7 +76,7 @@ export async function loadSaasProfile(
   { termId, sessionId }: Query = {},
   db: typeof prisma = prisma,
 ) {
-  const { domain, host } = await getTenantDomain();
+  const { domain } = await getTenantDomain();
   const school = await db.schoolProfile.findFirst({
     where: {
       // domain: domain,
@@ -142,7 +142,7 @@ export async function loadSaasProfile(
   return cookieData;
 }
 export async function setSaasProfileCookie() {
-  const { domain, host } = await getTenantDomain();
+  const { domain } = await getTenantDomain();
 
   const cookieStore = cookies();
   const cookieName = getCookieName(domain, "saas-profile");
@@ -175,7 +175,7 @@ export async function switchSessionTerm(
       schoolId: true,
     },
   });
-  const { domain, host } = await getTenantDomain();
+  const { domain } = await getTenantDomain();
 
   const cookieStore = cookies();
   const cookieName = getCookieName(domain, "saas-profile");
@@ -187,7 +187,7 @@ export async function resetProfile(
   db: typeof prisma = prisma,
   __redirect = true,
 ) {
-  const { domain, host } = await getTenantDomain();
+  const { domain } = await getTenantDomain();
 
   const cookieStore = cookies();
   const cookieName = getCookieName(domain, "saas-profile");
