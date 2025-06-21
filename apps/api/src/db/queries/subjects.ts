@@ -1,13 +1,17 @@
+import type { TRPCContext } from "@api/trpc/init";
 import type {
   GetAllSubjects,
   GetClassroomSubjects,
 } from "@api/trpc/schemas/students";
 import { prisma, type Database } from "@school-clerk/db";
 
-export async function getAllSubjects(db: Database, params: GetAllSubjects) {
-  const subjects = await prisma.subject.findMany({
+export async function getAllSubjects(
+  { db, profile }: TRPCContext,
+  params: GetAllSubjects,
+) {
+  const subjects = await db.subject.findMany({
     where: {
-      schoolProfileId: params.schoolProfileId,
+      schoolProfileId: profile.schoolId,
     },
     select: {
       id: true,

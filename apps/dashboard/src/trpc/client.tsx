@@ -40,14 +40,15 @@ export function TRPCReactProvider(
           async headers() {
             const session = await getSaasProfileCookie();
             console.log({ session });
-            //     // const supabase = createClient();
-            //     // const {
-            //     //   data: { session },
-            //     // } = await supabase.auth.getSession();
-            return {};
-            //     return {
-            //       //   Authorization: `Bearer ${session?.access_token}`,
-            //     };
+
+            return {
+              //       //   Authorization: `Bearer ${session?.access_token}`,
+              "x-tenant-session-term-id": [
+                session?.termId,
+                session?.sessionId,
+                session?.schoolId,
+              ]?.join("|"),
+            };
           },
         }),
 

@@ -31,6 +31,9 @@ function Content({ departmentId }) {
       },
     ),
   );
+  const { data: allSubjects } = useSuspenseQuery(
+    trpc.subjects.all.queryOptions({}),
+  );
   return (
     <div>
       <DataTable data={data} />
