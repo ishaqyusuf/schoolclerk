@@ -6,7 +6,7 @@ export async function queryResponse<T>(
 ) {
   let meta = {} as PageDataMeta;
   if (model) {
-    const count = await (model as any)({
+    const count = await (model as any).count({
       where,
     });
     const size = (query as any)?.size || 20;
