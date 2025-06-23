@@ -1,9 +1,16 @@
 import { PageDataMeta } from "@/types";
 import { SearchParamsType } from "./search-params";
-
 export async function queryResponse<T>(
   data: T[],
-  { query = null, model = null, where = null },
+  {
+    query,
+    model,
+    where,
+  }: {
+    query?;
+    model?;
+    where?;
+  },
 ) {
   let meta = {} as PageDataMeta;
   if (model) {
@@ -26,9 +33,10 @@ export async function queryResponse<T>(
 }
 export function queryMeta(query?: SearchParamsType) {
   const take = query.size ? Number(query.size) : 20;
-  const { sort = "createdAt", start = 0 } = query;
+  const { start = 0 } = query;
+  const [sort, sortOrder = "desc"] = (query.sort || "createdAt").split(".");
   const orderBy = {
-    [sort]: "desc",
+    [sort]: sortOrder,
   };
   const skip = Number(start);
 

@@ -1,17 +1,24 @@
 import type { PageDataMeta } from "./type";
-
 export async function queryResponse<T>(
   data: T[],
-  { query = null, model = null, where = null },
+  {
+    query,
+    model,
+    where,
+  }: {
+    query?;
+    model?;
+    where?;
+  },
 ) {
   let meta = {} as PageDataMeta;
   if (model) {
-    const count = await (model as any).count({
+    const count = await model.count({
       where,
     });
-    const size = (query as any)?.size || 20;
+    const size = query?.size || 20;
     meta.count = count;
-    let start = ((query as any)?.start || 0) + size;
+    let start = (query?.start || 0) + size;
     if (start < count)
       meta.next = {
         size: size,
@@ -25,9 +32,10 @@ export async function queryResponse<T>(
 }
 export function queryMeta(query?: any) {
   const take = query.size ? Number(query.size) : 20;
-  const { sort = "createdAt", start = 0 } = query;
+  const { start = 0 } = query;
+  const [sort, sortOrder = "desc"] = (query.sort || "createdAt").split(".");
   const orderBy = {
-    [sort]: "desc",
+    [sort]: sortOrder,
   };
   const skip = Number(start);
 
