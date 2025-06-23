@@ -44,6 +44,8 @@ function Content({ departmentId }) {
       },
     ),
   );
+  console.log({ data });
+
   const ctx = useClassesParams();
   return (
     <>
