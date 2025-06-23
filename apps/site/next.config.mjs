@@ -4,7 +4,7 @@ import "./src/env.mjs";
 // import "@school-clerk/auth/env.mjs";
 
 import { withNextDevtools } from "@next-devtools/core/plugin";
-// import "@school-clerk/api/env"
+import "@school-clerk/api/env";
 import withMDX from "@next/mdx";
 
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
