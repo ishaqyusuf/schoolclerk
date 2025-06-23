@@ -1,4 +1,4 @@
-import type { AppRouter } from "@school-clerk/api/trpc/routers/_app";
+import type { AppRouter } from "@/api/trpc/routers/_app";
 import { QueryClient } from "@tanstack/react-query";
 import { createTRPCContext } from "@trpc/tanstack-react-query";
 import { QueryClientProvider, isServer } from "@tanstack/react-query";

@@ -1,14 +1,7 @@
 import SignupForm from "@/components/forms/signup-form";
 import { LanguageSelector } from "@/components/language-selector";
 
-// import { prisma } from "@school-clerk/db";
-
 export default async function SignUpPage() {
-  // await prisma.whatIsGoingOn.create({
-  //   data: {
-  //     name: "HELLO",
-  //   },
-  // });
   return (
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
       <div className="absolute right-4 top-4">
