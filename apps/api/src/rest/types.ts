@@ -1,4 +1,4 @@
-import { Database } from "@school-clerk/db";
+import type { Database } from "@school-clerk/db";
 
 export type Context = {
   Variables: {
