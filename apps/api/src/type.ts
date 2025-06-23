@@ -1,5 +1,3 @@
-import { Primitive } from "@radix-ui/react-primitive";
-
 export type PageDataMeta = {
   count?;
   page?;

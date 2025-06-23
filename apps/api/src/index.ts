@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { Context } from "./rest/types";
+import type { Context } from "./rest/types";
 import { secureHeaders } from "hono/secure-headers";
 import { cors } from "hono/cors";
 import { trpcServer } from "@hono/trpc-server";
