@@ -1,7 +1,6 @@
 {
   "$schema": "https://turborepo.org/schema.json",
   "globalDependencies": ["**/.env"],
-  "ui": "stream",
   "experimentalUI": true,
   "pipeline": {
     "topo": {
