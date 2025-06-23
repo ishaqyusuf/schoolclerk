@@ -2,6 +2,7 @@
   "name": "@school-clerk/api",
   "scripts": {
     "dev": "TZ=UTC PORT=3003 bun run --hot src/index.ts",
+    "build": "TZ=UTC bun run --hot src/index.ts",
     "db:pull": "drizzle-kit pull",
     "lint": "biome check .",
     "format": "biome format --write .",
