@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "TZ=UTC PORT=3003 bun run --hot src/index.ts",
     "deploy": "vercel",
+    "build": "vercel",
     "--build": "tsc",
     "db:pull": "drizzle-kit pull",
     "lint": "biome check .",
