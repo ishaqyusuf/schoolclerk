@@ -7,6 +7,9 @@ import { appRouter } from "./trpc/routers/_app";
 import { createTRPCContext } from "./trpc/init";
 import { handle } from "hono/vercel";
 
+export const config = {
+  runtime: "edge",
+};
 const app = new Hono<Context>();
 
 app.use(secureHeaders());

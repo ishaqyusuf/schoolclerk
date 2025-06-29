@@ -1,8 +1,7 @@
 {
   "functions": {
     "src/index.ts": {
-      "runtime": "edge",
-      "version": "now-pp@1.0.0"
+      "runtime": "edge"
     }
   }
 }
