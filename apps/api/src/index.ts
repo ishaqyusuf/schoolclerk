@@ -33,15 +33,15 @@ app.use(secureHeaders());
 //     maxAge: 86400,
 //   }),
 // );
-app.use(
-  "/api/hono-trpc/*",
-  trpcServer({
-    router: appRouter,
-    createContext: createTRPCContext,
-    endpoint: "/api/hono-trpc",
-  }),
-);
-app.get("/api", (c) => {
+// app.use(
+//   "/api/hono-trpc/*",
+//   trpcServer({
+//     router: appRouter,
+//     createContext: createTRPCContext,
+//     endpoint: "/api/hono-trpc",
+//   }),
+// );
+app.get("/", (c) => {
   return c.json({ message: "Congrats! You've deployed Hono to Vercel" });
 });
 

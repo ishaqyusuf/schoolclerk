@@ -5,7 +5,7 @@
     "module": "ESNext",
     "moduleDetection": "force",
     "allowJs": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
