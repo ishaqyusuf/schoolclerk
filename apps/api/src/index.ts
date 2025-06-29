@@ -10,7 +10,7 @@ import { handle } from "hono/vercel";
 export const config = {
   runtime: "edge",
 };
-const app = new Hono<Context>();
+const app = new Hono<Context>().basePath("/api");
 
 app.use(secureHeaders());
 // adsad
