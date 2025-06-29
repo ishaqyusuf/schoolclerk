@@ -42,6 +42,7 @@
     "zod": "^3.25.46"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.15"
+    "@types/bun": "^1.2.15",
+    "vercel": "^32.4.1"
   }
 }
