@@ -41,7 +41,7 @@ app.use(
     endpoint: "/api/hono-trpc",
   }),
 );
-app.get("/", (c) => {
+app.get("/api", (c) => {
   return c.json({ message: "Congrats! You've deployed Hono to Vercel" });
 });
 
