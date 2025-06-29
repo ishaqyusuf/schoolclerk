@@ -62,7 +62,6 @@ export function ImportStudentAction({
       let post = data.paymentData?.storePayments;
       if (!post) post = {} as any;
       const { postId, studentId: stdId, departmentId, ...postData } = post;
-      console.log({ stdId, departmentId });
 
       // postData.studentId = null
       updateStudent(postId, data.classRoom, data.fullName, postData).then(

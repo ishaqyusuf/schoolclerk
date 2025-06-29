@@ -10,7 +10,9 @@
     "test:watch": "bun test --watch"
   },
   "exports": {
-    "./trpc/routers/_app": "./src/trpc/routers/_app.ts"
+    "./trpc/routers/_app": "./src/trpc/routers/_app.ts",
+    "./api": "./src/index.ts",
+    "./api/query-response": "./src/query-response.ts"
   },
   "dependencies": {
     "@date-fns/utc": "^2.1.0",

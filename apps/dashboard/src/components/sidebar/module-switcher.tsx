@@ -25,6 +25,8 @@ import { useAsyncMemo } from "use-async-memo";
 import { timeout } from "@/utils/timeout";
 import { randomInt } from "@/utils/utils";
 import { getTermListAction } from "@/actions/get-term-list";
+import { useTRPC } from "@/trpc/client";
+import { switchSessionTerm } from "@/actions/cookies/login-session";
 
 export function ModuleSwitcher() {
   const sb = useSidebar();
@@ -53,6 +55,10 @@ export function ModuleSwitcher() {
     await timeout(randomInt(200));
     return await getTermListAction();
   }, []);
+  const trpc = useTRPC();
+  async function switchSession(termId) {
+    await switchSessionTerm(termId);
+  }
   if (!modules?.length || !termProfiles) return null;
   return (
     <SidebarMenu>
@@ -94,7 +100,7 @@ export function ModuleSwitcher() {
                   {session?.terms?.map((term, index) => (
                     <DropdownMenuItem
                       onClick={(e) => {
-                        // switchModule(team.name);
+                        switchSession(term.id);
                       }}
                       key={index}
                       // onClick={() => setActiveTeam(team)}

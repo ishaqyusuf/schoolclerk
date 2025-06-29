@@ -30,6 +30,7 @@ import { useMigrationStore } from "./store";
 import { undotName } from "./utils";
 import { dumpData } from "./server";
 import { ImportStudentAction } from "./import-student";
+import { AutoCreate } from "./auto-create";
 
 export default function StudentSessionRecord({
   studentPayments,
@@ -75,7 +76,9 @@ export default function StudentSessionRecord({
   if (!data) return;
   return (
     <>
+      <AutoCreate data={data} />
       <Button
+        disabled
         onClick={async (e) => {
           const gender = store.genders;
           const studentData = [];
@@ -114,9 +117,6 @@ export default function StudentSessionRecord({
         <TableBody>
           {Object.entries(data)?.map(([className, classData], di) => (
             <React.Fragment key={di}>
-              {/* {Object.entries(classData?.students)
-                ?.sort((a, b) => a?.[0]?.localeCompare(b?.[0], ["ar"]))
-                .map(([studentName, studentData]) => ( */}
               {classData.students
                 ?.filter((std) => {
                   if (cook?.studentEntrolledIn == "some")
