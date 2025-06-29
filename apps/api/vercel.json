@@ -1,9 +1,7 @@
 {
-  "rewrites": [
-    {
-      "source": "/src/(.*)",
-      "destination": "/"
+  "functions": {
+    "src/index.ts": {
+      "runtime": "edge"
     }
-  ],
-  "redirects": [{ "source": "/", "destination": "/", "permanent": false }]
+  }
 }
