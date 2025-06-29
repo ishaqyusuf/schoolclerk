@@ -41,6 +41,10 @@ app.use(
     endpoint: "/api/hono-trpc",
   }),
 );
+app.get("/", (c) => {
+  return c.json({ message: "Congrats! You've deployed Hono to Vercel" });
+});
+
 // export default app;
 // export default {
 //   port: process.env.PORT ? Number.parseInt(process.env.PORT) : 3000,
