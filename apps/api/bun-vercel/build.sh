@@ -1,2 +1,2 @@
 #!/bin/bash
-bun run ./bun-vercel/build.ts $@
+bun run node_modules/bun-vercel/build.ts $@
