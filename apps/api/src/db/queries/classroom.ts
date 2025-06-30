@@ -1,17 +1,11 @@
-"use server";
+import type { TRPCContext } from "@api/trpc/init";
+import type { ClassroomQuery } from "@api/trpc/schemas/schemas";
 
-import { AsyncFnType, PageItemData } from "@/types";
-import { SearchParamsType } from "@/utils/search-params";
-
-import { prisma } from "@school-clerk/db";
-
-import { getSaasProfileCookie } from "./cookies/login-session";
-
-export type ClassRoomPageItem = PageItemData<typeof getClassRooms>;
-export async function getClassRooms(params: SearchParamsType) {
-  const profile = await getSaasProfileCookie();
-
-  const classRooms = await prisma.classRoomDepartment.findMany({
+export async function getClassrooms(
+  { db, profile }: TRPCContext,
+  params: ClassroomQuery
+) {
+  const classRooms = await db.classRoomDepartment.findMany({
     where: {
       id: !params?.departmentId ? undefined : params.departmentId,
       classRoom: {
@@ -52,7 +46,9 @@ export async function getClassRooms(params: SearchParamsType) {
   });
   return {
     data: classRooms.map(({ ...a }) => {
-      const displayName = a.departmentName?.includes(a.classRoom?.name)
+      const displayName = a.departmentName?.includes(
+        a.classRoom?.name as string
+      )
         ? a.departmentName
         : `${a.classRoom?.name} ${a.departmentName}`;
       return {

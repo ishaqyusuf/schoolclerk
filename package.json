@@ -1,20 +1,14 @@
 {
   "name": "nextjs-template",
-  "devDependencies": {
-    "@turbo/gen": "1.13.3",
-    "bun-vercel": "^1.0.0-alpha.5",
-    "check-dependency-version-consistency": "4.1.0",
-    "prettier": "3.2.5",
-    "tailwind-config-viewer": "^2.0.4",
-    "turbo": "1.13.3",
-    "typescript": "^5.6.3"
-  },
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "bun@1.1.38",
-  "prettier": "@school-clerk/prettier-config",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "tooling/*"
+  ],
   "scripts": {
     "build": "turbo build ",
     "clean": "git clean -xdf node_modules",
@@ -25,7 +19,7 @@
     "db:migrate": "turbo -F @school-clerk/db db-migrate",
     "db:generate": "turbo -F @school-clerk/db prisma-generate",
     "dev": "turbo dev --parallel",
-    "dev:web": "turbo dev --parallel --filter !site --filter !email",
+    "dev:web": "turbo dev --parallel --filter !@school-clerk/site --filter !@school-clerk/email",
     "format": "turbo format --continue -- --cache --cache-location='node_modules/.cache/.prettiercache' --ignore-path='../../.gitignore'",
     "format:fix": "turbo format --continue -- --write --cache --cache-location='node_modules/.cache/.prettiercache' --ignore-path='../../.gitignore'",
     "lint": "turbo lint -- --quiet -- --cache --cache-location 'node_modules/.cache/.eslintcache' && manypkg check",
@@ -35,13 +29,11 @@
     "check-deps": "check-dependency-version-consistency .",
     "gen": "turbo gen --config 'turbo/generators/config.ts'"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "tooling/*"
-  ],
   "dependencies": {
-    "@types/dot-object": "^2.1.6",
-    "install": "^0.13.0"
-  }
+    "@biomejs/biome": "1.9.4",
+    "@manypkg/cli": "^0.24.0",
+    "turbo": "2.5.4",
+    "typescript": "^5.8.3"
+  },
+  "packageManager": "bun@1.1.38"
 }

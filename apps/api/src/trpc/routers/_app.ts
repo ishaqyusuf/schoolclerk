@@ -2,9 +2,13 @@ import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { createTRPCRouter } from "../init";
 import { studentsRouter } from "./students";
 import { subjectsRouter } from "./subjects";
+import { questionsRouter } from "./question.routes";
+import { classroomRouter } from "./classroom.routes";
 export const appRouter = createTRPCRouter({
   students: studentsRouter,
   subjects: subjectsRouter,
+  questions: questionsRouter,
+  classrooms: classroomRouter,
 });
 
 export type AppRouter = typeof appRouter;

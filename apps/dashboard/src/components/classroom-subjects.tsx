@@ -19,8 +19,11 @@ export function ClassroomSubject({ departmentId }) {
 function Content({ departmentId }) {
   const trpc = useTRPC();
   const qc = useQueryClient();
+
+  console.log({ departmentId });
+
   const { data, error } = useSuspenseQuery(
-    trpc.subjects.getByClassroom.queryOptions(
+    trpc.subjects.byClassroom.queryOptions(
       {
         departmentId,
       },

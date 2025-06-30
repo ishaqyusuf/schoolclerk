@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 
 import "@school-clerk/ui/globals.css";
 import "@/styles/globals.css";
-
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 
 import { cn } from "@school-clerk/ui/cn";
@@ -36,11 +36,13 @@ export default function RootLayout({
           fontHeading.variable,
         )}
       >
-        <Providers>
-          <TailwindIndicator />
-          <Toaster />
-          {children}
-        </Providers>
+        <NuqsAdapter>
+          <Providers>
+            <TailwindIndicator />
+            <Toaster />
+            {children}
+          </Providers>
+        </NuqsAdapter>
       </body>
     </html>
   );

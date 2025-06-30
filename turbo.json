@@ -1,8 +1,9 @@
 {
   "$schema": "https://turborepo.org/schema.json",
   "globalDependencies": ["**/.env"],
-  "experimentalUI": true,
-  "pipeline": {
+  "ui": "tui",
+
+  "tasks": {
     "topo": {
       "dependsOn": ["^topo"]
     },
@@ -16,7 +17,8 @@
         "dist/**",
         "build/**",
         "lib/**"
-      ]
+      ],
+      "env": []
     },
     "prisma-generate": {
       "cache": false,
@@ -55,10 +57,7 @@
       "persistent": true,
       "cache": false
     },
-    "format": {
-      "outputs": ["node_modules/.cache/.prettiercache"],
-      "outputMode": "new-only"
-    },
+    "format": {},
     "lint": {
       "dependsOn": ["^topo"],
       "outputs": ["node_modules/.cache/.eslintcache"]
