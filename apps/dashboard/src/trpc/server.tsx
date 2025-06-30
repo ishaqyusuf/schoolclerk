@@ -25,8 +25,8 @@ export const trpc = createTRPCOptionsProxy<AppRouter>({
   client: createTRPCClient({
     links: [
       httpBatchLink({
-        // url: `${process.env.NEXT_PUBLIC_API_URL}/trpc`,
-        url: `/api/hono-trpc`,
+        url: `${process.env.NEXT_PUBLIC_API_URL}/api/trpc`,
+        // url: `/api/trpc`,
         transformer: superjson as any,
         async headers() {
           const session = await getSaasProfileCookie();

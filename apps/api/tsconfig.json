@@ -5,7 +5,7 @@
     "module": "ESNext",
     "moduleDetection": "force",
     "allowJs": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
@@ -18,8 +18,9 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
     "jsx": "react-jsx",
-    "jsxImportSource": "react",
-    "baseUrl": ".",
+    "jsxImportSource": "hono/jsx",
+    "baseUrl": "./",
+    "outDir": "./dist",
     "paths": {
       "@api/*": ["src/*"],
       "@engine/*": ["../engine/src/*"],
@@ -27,6 +28,9 @@
     },
     "types": ["bun-types"]
   },
+  "tsc-alias": {
+    "resolveFullPaths": true
+  },
   "exclude": ["node_modules"],
-  "include": ["src/**/*.ts"]
+  "include": ["_api", "src/**/*.ts"]
 }

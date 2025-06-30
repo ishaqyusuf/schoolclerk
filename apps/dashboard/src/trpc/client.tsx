@@ -33,8 +33,8 @@ export function TRPCReactProvider(
     createTRPCClient<AppRouter>({
       links: [
         httpBatchLink({
-          // url: `${process.env.NEXT_PUBLIC_API_URL}/trpc`,
-          url: `/api/hono-trpc`,
+          url: `${process.env.NEXT_PUBLIC_API_URL}/api/trpc`,
+          // url: `/api/hono-trpc`,
           transformer: superjson as any,
           //   fetch(input,iniit) {
           //   },

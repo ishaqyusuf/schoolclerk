@@ -8,4 +8,9 @@ export const studentsRouter = createTRPCRouter({
       const result = await getStudents(db, input);
       return result;
     }),
+  test: publicProcedure.query(async ({ input, ctx: { db } }) => {
+    return {
+      id: 1,
+    };
+  }),
 });

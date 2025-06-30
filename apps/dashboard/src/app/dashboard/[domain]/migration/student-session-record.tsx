@@ -31,6 +31,8 @@ import { undotName } from "./utils";
 import { dumpData } from "./server";
 import { ImportStudentAction } from "./import-student";
 import { AutoCreate } from "./auto-create";
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
 
 export default function StudentSessionRecord({
   studentPayments,
@@ -40,6 +42,8 @@ export default function StudentSessionRecord({
   fees,
 }) {
   const store = useMigrationStore();
+  const trpc = useTRPC();
+  const { data: testData } = useQuery(trpc.students.test.queryOptions());
 
   useEffect(() => {
     // console.log({ studentPayments, genders, studentMerge });
@@ -76,6 +80,7 @@ export default function StudentSessionRecord({
   if (!data) return;
   return (
     <>
+      {JSON.stringify(testData)}
       <AutoCreate data={data} />
       <Button
         disabled
