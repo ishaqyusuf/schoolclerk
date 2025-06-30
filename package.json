@@ -32,6 +32,7 @@
   "dependencies": {
     "@biomejs/biome": "1.9.4",
     "@manypkg/cli": "^0.24.0",
+    "bun-vercel": "^1.0.0-alpha.5",
     "turbo": "2.5.4",
     "typescript": "^5.8.3"
   },

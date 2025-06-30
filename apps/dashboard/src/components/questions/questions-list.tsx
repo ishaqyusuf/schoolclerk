@@ -35,7 +35,7 @@ export function QuestionList({}) {
   const { params, setParams } = useQuestionFormParams();
   if (!data?.length) return <>No Result</>;
   return (
-    <div>
+    <div className="max-w-[800px] print:max-w-none container">
       {data?.map((question) => (
         <div
           onClick={(e) => {
