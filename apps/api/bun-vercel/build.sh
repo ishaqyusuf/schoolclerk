@@ -1,2 +1,2 @@
 #!/bin/bash
-bun run ./build.ts $@
+bun run ./bun-vercel/build.ts $@
