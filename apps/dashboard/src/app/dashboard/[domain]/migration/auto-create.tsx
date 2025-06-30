@@ -34,11 +34,10 @@ export function AutoCreate({
     const student = students[0];
     if (!student) return;
 
-    t.loading(
-      `Importing... ${index + 1}/${students.length} ${student.fullName}`,
-    );
+    const title = `Importing ${student.fullName} | ${students.length} left`;
+    t.loading(title);
     // update documeent tab title
-    document.title = `Importing... ${index + 1}/${students.length} ${student.fullName}`;
+    document.title = title;
     isProcessing.current = true;
 
     try {

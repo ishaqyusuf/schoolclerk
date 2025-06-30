@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "TZ=UTC PORT=3003 bun run --hot src/index.ts",
     "dev:node": "tsx src/node.ts",
-    "build:vc": "bun-vercel ./src/bun.ts",
+    "build:vc": "bun ./src/bun.ts",
     "deploy:vc": "vc",
     "db:pull": "drizzle-kit pull",
     "lint": "biome check .",
@@ -43,7 +43,7 @@
     "zod": "^3.25.46"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.15",
-    "vercel": "^32.4.1"
+    "@types/bun": "^1.2.17",
+    "vercel": "^44.2.7"
   }
 }

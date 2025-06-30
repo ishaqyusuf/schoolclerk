@@ -2,6 +2,7 @@
   "name": "nextjs-template",
   "devDependencies": {
     "@turbo/gen": "1.13.3",
+    "bun-vercel": "^1.0.0-alpha.5",
     "check-dependency-version-consistency": "4.1.0",
     "prettier": "3.2.5",
     "tailwind-config-viewer": "^2.0.4",
