@@ -9,6 +9,5 @@
   "redirects": [
     { "source": "/", "destination": "/api/trpc", "permanent": false }
   ],
-  "buildCommand": "bun run build",
   "regions": ["bom1"]
 }
