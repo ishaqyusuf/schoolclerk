@@ -4,7 +4,7 @@
     "dev": "TZ=UTC PORT=3003 bun run --hot src/index.ts",
     "dev:node": "tsx src/node.ts",
     "clean": "git clean -xdf .next .turbo node_modules",
-    "build": "bun-vercel ./src/bun.ts",
+    "build": "./node_modules/bun-vercel/build.js ./src/bun.ts",
     "deploy:vc": "vc",
     "db:pull": "drizzle-kit pull",
     "lint": "biome check .",
