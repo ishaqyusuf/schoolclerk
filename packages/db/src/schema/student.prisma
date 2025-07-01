@@ -73,4 +73,7 @@ model StudentTermForm {
 
     student   Students? @relation(fields: [studentId], references: [id])
     studentId String?
+
+    classroomDepartment   ClassRoomDepartment? @relation(fields: [classroomDepartmentId], references: [id])
+    classroomDepartmentId String?
 }

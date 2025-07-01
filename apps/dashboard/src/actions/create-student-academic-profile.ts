@@ -36,6 +36,7 @@ export async function createStudentAcademicProfile(
                       ...termForm,
                       schoolProfileId: profile.schoolId,
                       studentId: data.studentId,
+                      classroomDepartmentId: data?.classroomDepartmentId,
                     })),
                   },
                 },

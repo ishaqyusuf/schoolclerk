@@ -3,6 +3,7 @@ import { DataTable } from "@/components/tables/enrollments/table";
 import { TableSkeleton } from "@/components/tables/skeleton";
 import { loadStudentFilterParams } from "@/hooks/use-student-filter-params";
 import { batchPrefetch, trpc } from "@/trpc/server";
+import { prisma } from "@school-clerk/db";
 import { Metadata } from "next";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import { SearchParams } from "nuqs";

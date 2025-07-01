@@ -1,13 +1,7 @@
 "use client";
 
 import React, { use, useEffect, useMemo } from "react";
-import { deleteStudentAction } from "@/actions/delete-student";
-import { StudentData } from "@/actions/get-students-list";
-import { MiddaySearchFilter } from "@/components/midday-search-filter/search-filter";
 import { useLoadingToast } from "@/hooks/use-loading-toast";
-import { useStudentParams } from "@/hooks/use-student-params";
-import { PageFilterData } from "@/types";
-import { useAction } from "next-safe-action/hooks";
 
 import { Button } from "@school-clerk/ui/button";
 import { Table, TableBody } from "@school-clerk/ui/table";
@@ -54,10 +48,11 @@ export function DataTable({}: Props) {
     useSuspenseInfiniteQuery(infiniteQueryOptions);
 
   const tableData = useMemo(() => {
-    return data?.pages.flatMap((page) => page?.data ?? []) ?? [];
+    return data?.pages.flatMap((page) => (page as any)?.data ?? []) ?? [];
   }, [data]);
   useEffect(() => {
     if (inView) {
+      console.log("FETCH NEXT PAGE!");
       fetchNextPage();
     }
   }, [inView]);

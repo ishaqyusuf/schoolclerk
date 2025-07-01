@@ -5,9 +5,7 @@ import { useLoadingToast } from "@/hooks/use-loading-toast";
 import { importStudentAction } from "@/actions/import-student-action";
 import { useMigrationStore } from "./store";
 import { generateRandomString } from "@/utils/utils";
-import { timeout } from "@/utils/timeout";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import { set } from "date-fns";
 
 export function AutoCreate({
   data,

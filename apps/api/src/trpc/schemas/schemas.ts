@@ -28,6 +28,7 @@ export type ClassroomQuery = z.infer<typeof classroomQuerySchema>;
 export const enrollmentQuerySchema = z.object({
   previousSessionId: z.string().optional().nullable(),
   previousTermId: z.string().optional().nullable(),
+  currentSessionId: z.string().optional().nullable(),
   currentTermId: z.string().optional().nullable(),
   previousClassDepartmentId: z.string().optional().nullable(),
   currentClassDepartmentId: z.string().optional().nullable(),
