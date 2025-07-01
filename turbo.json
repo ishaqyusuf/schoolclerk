@@ -18,7 +18,7 @@
         "build/**",
         "lib/**"
       ],
-      "env": []
+      "env": ["ALLOWED_API_ORIGINS"]
     },
     "prisma-generate": {
       "cache": false,
