@@ -11,7 +11,6 @@ import { transaction } from "@/utils/db";
 import { createStudent } from "./create-student";
 import { createClassroom } from "./create-classroom";
 import { setMonth, setYear } from "date-fns";
-import { getCachedFees } from "./cache/fees";
 import { createSchoolFee } from "./create-school-fee";
 import { createStudentFee } from "./create-student-fee";
 import { createStudentFeePayment } from "./create-student-fee-payment";
@@ -38,7 +37,6 @@ export async function importStudentAction(
           ([a, b]) => t.title?.startsWith(a) && !b.omit,
         ),
     );
-    console.log({ terms });
 
     await switchSessionTerm(terms?.[0]?.id, tx, false);
 
@@ -54,7 +52,6 @@ export async function importStudentAction(
     const [name, surname, otherName] = data?.fullName
       ?.replaceAll("-", "")
       .split("_");
-    console.log({ classRoom });
 
     student = await createStudent(
       {
@@ -71,7 +68,6 @@ export async function importStudentAction(
       tx,
     );
 
-    console.log({ student });
     const studentTermForms = await tx.studentTermForm.findMany({
       where: {
         studentId: student.id,
@@ -84,15 +80,12 @@ export async function importStudentAction(
     });
     for (const term of terms) {
       await switchSessionTerm(term.id, tx, false);
-      console.log(term.id);
       const payments = data.payments
         ?.filter((p) => term?.title?.startsWith(p?.term))
         .filter((p) => p.paymentType == "entrance");
       const studenForm = studentTermForms?.find(
         (f) => f.sessionTermId == term.id,
       );
-      console.log(payments);
-      console.log(studenForm);
 
       for (const payment of payments) {
         if (!payment.amountPaid) return;
@@ -115,9 +108,7 @@ export async function importStudentAction(
         data.paymentData.storePayments?.billables,
       )) {
         if (term?.title?.startsWith(termName)) {
-          console.log(pData);
           if (pData?.free || pData?.omit) {
-            console.log(pData);
             continue;
           }
           const payments = [
@@ -130,7 +121,6 @@ export async function importStudentAction(
                 p.paymentType == "fee" && termName == p.term && p.amountPaid,
             ) || []),
           ];
-          console.log({ payments, termName });
 
           await createFee(
             {
@@ -144,7 +134,6 @@ export async function importStudentAction(
                 const paidIn = terms?.find((t) =>
                   t.title?.startsWith(payment.paidIn),
                 );
-                console.log(paidIn);
 
                 return {
                   termId: paidIn?.id,
@@ -199,11 +188,10 @@ async function createFee(
   tx: typeof prisma,
   retries = 0,
 ) {
-  // console.log({ props });
   // return;
   const profile = await getSaasProfileCookie();
   const { termId } = profile;
-  console.log(termId);
+
   const fees = await getSchoolFees(
     {
       termId: profile.termId,
@@ -212,7 +200,7 @@ async function createFee(
     tx,
   );
   const fee = fees?.data?.[0];
-  console.log({ fee, profile, retries });
+
   if (retries > 2) throw new Error("Cannot create");
   const history = fee?.feeHistory?.[0];
 
@@ -225,11 +213,10 @@ async function createFee(
       },
       tx,
     );
-    console.log(f);
 
     return createFee(props, tx, ++retries);
   }
-  console.log(fee);
+
   const studentFee = await createStudentFee(
     {
       amount: history.amount,
@@ -241,13 +228,10 @@ async function createFee(
     },
     tx,
   );
-  console.log({ studentFee });
 
   if (props.payments?.length > 0) {
     for (const payment of props.payments) {
       if (payment.termId && termId != payment.termId) {
-        console.log(props.paymentTermId);
-
         await switchSessionTerm(payment.termId, tx, false);
       }
 
@@ -263,7 +247,6 @@ async function createFee(
       console.log("PAYMENT APPLIED");
       if (termId != payment.termId) await switchSessionTerm(termId, tx, false);
     }
-    console.log({ studentFee });
   } else {
     console.log("NO PAYMENT");
   }

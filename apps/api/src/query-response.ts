@@ -9,7 +9,7 @@ export async function queryResponse<T>(
     query?;
     model?;
     where?;
-  },
+  }
 ) {
   let meta = {} as PageDataMeta;
   if (model) {
@@ -24,6 +24,9 @@ export async function queryResponse<T>(
         size: size,
         start,
       };
+    meta.cursor = meta.next?.start;
+    meta.hasNextPage = start < count;
+    meta.hasPreviousePage = start > 0;
   }
   return {
     data,

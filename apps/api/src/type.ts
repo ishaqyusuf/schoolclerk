@@ -7,6 +7,9 @@ export type PageDataMeta = {
     size?;
     start?;
   };
+  cursor?;
+  hasPreviousePage?;
+  hasNextPage?;
 };
 export type ColumnMeta = {
   preventDefault?: boolean;

@@ -6,6 +6,8 @@ import { importStudentAction } from "@/actions/import-student-action";
 import { useMigrationStore } from "./store";
 import { generateRandomString } from "@/utils/utils";
 import { timeout } from "@/utils/timeout";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { set } from "date-fns";
 
 export function AutoCreate({
   data,
@@ -20,6 +22,10 @@ export function AutoCreate({
     .flat()
     .filter((a) => !a.paymentData?.storePayments?.studentId);
 
+  const [failedNames, setFailedNames] = useLocalStorage<
+    { name: string; className: string }[]
+  >("failed-names", []);
+
   const t = useLoadingToast();
   const store = useMigrationStore();
   const isProcessing = useRef(false); // prevent multiple calls at once
@@ -30,12 +36,22 @@ export function AutoCreate({
       document.title = "Migration";
       return;
     }
+    // filter out failed students
+    const filterStudents = students.filter(
+      (s) =>
+        !failedNames.some(
+          (a) => a.name === s.fullName && a.className === s.classRoom,
+        ),
+    );
 
-    const student = students[0];
+    const student = filterStudents[0];
     if (!student) return;
 
-    const title = `Importing ${student.fullName} | ${students.length} left`;
-    t.loading(title);
+    const title = `Importing`;
+    const description = `${student.fullName} | ${students.length} left`;
+    t.loading(title, {
+      description,
+    });
     // update documeent tab title
     document.title = title;
     isProcessing.current = true;
@@ -56,9 +72,24 @@ export function AutoCreate({
         setCurrentIndex((prev) => prev + 1);
       }, 1000);
     } catch (error) {
-      t.error("Failed");
-      isProcessing.current = false;
-      setIsRunning(false);
+      console.log(error);
+
+      t.error("Failed", {
+        description,
+      });
+      // isProcessing.current = false;
+      // setIsRunning(false);
+      setFailedNames((prev) => [
+        ...prev,
+        {
+          name: student.fullName,
+          className: student.classRoom,
+        },
+      ]);
+      setTimeout(() => {
+        isProcessing.current = false;
+        setCurrentIndex((prev) => prev + 1);
+      }, 1000);
     }
   }
 

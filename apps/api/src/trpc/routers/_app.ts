@@ -4,8 +4,10 @@ import { studentsRouter } from "./students";
 import { subjectsRouter } from "./subjects";
 import { questionsRouter } from "./question.routes";
 import { classroomRouter } from "./classroom.routes";
+import { enrollmentsRouter } from "./enrollment.routes";
 export const appRouter = createTRPCRouter({
   students: studentsRouter,
+  enrollments: enrollmentsRouter,
   subjects: subjectsRouter,
   questions: questionsRouter,
   classrooms: classroomRouter,

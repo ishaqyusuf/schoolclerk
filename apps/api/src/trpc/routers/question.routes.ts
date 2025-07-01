@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@hono/zod-openapi";
 import { createTRPCRouter, publicProcedure } from "../init";
 import { questionDataSchema, questionQuerySchema } from "../schemas/schemas";
 
@@ -22,7 +22,7 @@ export const questionsRouter = createTRPCRouter({
     }),
   saveQuestion: publicProcedure
     .input(questionDataSchema)
-    .mutation(async ({ input, ctx: { db } }) => {
-      return saveQuestion(db, input);
+    .mutation(async ({ input, ctx }) => {
+      return saveQuestion(ctx, input);
     }),
 });

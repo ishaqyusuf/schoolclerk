@@ -20,16 +20,12 @@
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
     "baseUrl": "./",
-    "outDir": "./dist",
     "paths": {
       "@api/*": ["src/*"],
       "@engine/*": ["../engine/src/*"],
       "@jobs/*": ["../../packages/jobs/src/*"]
     },
     "types": ["bun-types"]
-  },
-  "tsc-alias": {
-    "resolveFullPaths": true
   },
   "exclude": ["node_modules"],
   "include": ["_api", "src/**/*.ts"]

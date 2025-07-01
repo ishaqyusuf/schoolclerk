@@ -1,4 +1,4 @@
-import { Hono } from "hono";
+import { OpenAPIHono } from "@hono/zod-openapi";
 import type { Context } from "./rest/types";
 import { secureHeaders } from "hono/secure-headers";
 import { cors } from "hono/cors";
@@ -7,7 +7,7 @@ import { appRouter } from "./trpc/routers/_app";
 import { createTRPCContext } from "./trpc/init";
 import { handle } from "hono/vercel";
 
-const app = new Hono<Context>().basePath("/api");
+const app = new OpenAPIHono<Context>().basePath("/api");
 
 app.use(secureHeaders());
 // adsad
@@ -28,7 +28,7 @@ app.use(
     ],
     exposeHeaders: ["Content-Length"],
     maxAge: 86400,
-  }),
+  })
 );
 app.use(
   "/trpc/*",
@@ -36,7 +36,7 @@ app.use(
     router: appRouter,
     createContext: createTRPCContext,
     endpoint: "/api/trpc",
-  }),
+  })
 );
 app.get("/", (c) => {
   return c.json({ message: "Congrats! You've deployed Hono to Vercel" });

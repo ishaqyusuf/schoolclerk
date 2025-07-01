@@ -1,11 +1,11 @@
-import { z } from "zod";
+import { z } from "@hono/zod-openapi";
 
 export const questionDataSchema = z.object({
   id: z.number().optional().nullable(),
   question: z.string().optional(),
   type: z.string().optional().nullable(),
-  subject: z.string().optional(),
-  classDepartmentId: z.string().optional(),
+  subject: z.string(),
+  classDepartmentId: z.string(),
   className: z.string().optional(),
   subjectId: z.string().optional().nullable(),
 });
@@ -24,3 +24,12 @@ export const classroomQuerySchema = z.object({
   className: z.string().optional().nullable(),
 });
 export type ClassroomQuery = z.infer<typeof classroomQuerySchema>;
+
+export const enrollmentQuerySchema = z.object({
+  previousSessionId: z.string().optional().nullable(),
+  previousTermId: z.string().optional().nullable(),
+  currentTermId: z.string().optional().nullable(),
+  previousClassDepartmentId: z.string().optional().nullable(),
+  currentClassDepartmentId: z.string().optional().nullable(),
+});
+export type EnrollmentQuery = z.infer<typeof enrollmentQuerySchema>;

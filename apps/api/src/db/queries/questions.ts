@@ -2,6 +2,7 @@ import type { TRPCContext } from "@api/trpc/init";
 import type { QuestionData, QuestionQuery } from "@api/trpc/schemas/schemas";
 import { composeQuery } from "@api/utils";
 import type { Database } from "@school-clerk/db";
+import { getClassroomSubjectByName } from "./subjects";
 
 export async function loadQuestions(
   { db, profile }: TRPCContext,
@@ -47,8 +48,15 @@ export async function loadQuestions(
   })) as QuestionData[];
 }
 
-export async function saveQuestion(db: Database, data: QuestionData) {
+export async function saveQuestion(ctx: TRPCContext, data: QuestionData) {
   let { id, ...meta } = data;
+  const { db } = ctx;
+  const subject = await getClassroomSubjectByName(
+    ctx,
+    meta.subject,
+    meta.classDepartmentId
+  );
+  meta.subjectId = subject.id;
   if (id)
     await db.posts.update({
       where: { id },

@@ -11,11 +11,7 @@ const tableHeaderVariants = cva("", {
   defaultVariants: {},
 });
 export function TableHeaderComponent({}) {
-  const {
-    table,
-    setParams,
-    params: { sort },
-  } = useTable();
+  const { table, setParams, params: { sort } = {} } = useTable();
 
   const [column, value] = sort || [];
 

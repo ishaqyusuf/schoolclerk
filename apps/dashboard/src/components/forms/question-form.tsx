@@ -15,7 +15,7 @@ import {
   TableRow,
 } from "@school-clerk/ui/table";
 import { useTRPC } from "@/trpc/client";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useQuestionFormContext } from "../questions/form-context";
 import { useQuestionFormParams } from "@/hooks/use-question-form-params";
 import FormSelect from "../controls/form-select";
@@ -42,12 +42,27 @@ export function Form({}) {
       postId: params.postId > 0 ? params.postId : undefined,
     }),
   );
+  const queryClient = useQueryClient();
   useEffect(() => {
-    reset(formData);
+    reset(
+      formData || {
+        subject: "",
+        classDepartmentId: "",
+        question: "",
+        className: "",
+        id: null,
+      },
+    );
   }, [formData]);
   const saveMutation = useMutation(
     trpc.questions.saveQuestion.mutationOptions({
-      onSuccess: (data) => {},
+      onSuccess: (data) => {
+        setParams(null);
+        reset({});
+        queryClient.invalidateQueries({
+          queryKey: trpc.questions.all.queryKey(),
+        });
+      },
     }),
   );
 
@@ -77,6 +92,16 @@ export function Form({}) {
       </div>
       <div className="">
         <Textarea
+          placeholder="1'ما عاصمة فرنسا؟`باريس`لندن`برلين`مدريد
+~font-bold-true~color-blue
+__اقرأ التعليمات التالية بعناية__
+~align-center~font-italic-true
+1،العنصر الأول_2،العنصر الثاني_3،العنصر الثالث
+~border-yes
+2'اختر الصيغة الصحيحة للماء:`H2O`CO2`O2`NaCl
+سؤال بدون خيارات
+~font-size-14
+"
           className={cn("h-[300px]", arabic.className, "px-4  text-lg")}
           dir="rtl"
           {...register("question")}

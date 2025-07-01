@@ -6,7 +6,10 @@ const lineItemSchema = z.object({
   price: z.number(),
   quantity: z.number(),
 });
-
+export const studentFilterParamsSchema = {
+  termId: parseAsString,
+  classDepartmentId: parseAsString,
+};
 export function useStudentParams(options?: { shallow: boolean }) {
   const [params, setParams] = useQueryStates(
     {
@@ -17,7 +20,6 @@ export function useStudentParams(options?: { shallow: boolean }) {
     },
     options,
   );
-
   return {
     ...params,
     setParams,

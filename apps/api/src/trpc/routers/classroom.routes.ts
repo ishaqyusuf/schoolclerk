@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@hono/zod-openapi";
 import { createTRPCRouter, publicProcedure } from "../init";
 import { classroomQuerySchema, questionQuerySchema } from "../schemas/schemas";
 
