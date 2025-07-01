@@ -1,7 +1,8 @@
 import { ColumnDef } from "@/types";
-import { RouterOutputs } from "@school-clerk/api/trpc/routers/_app";
+import { RouterOutputs } from "@api/trpc/routers/_app";
 
-export type ClassroomSubjectData = RouterOutputs["subjects"]["all"][number];
+export type ClassroomSubjectData =
+  RouterOutputs["subjects"]["byClassroom"][number];
 export const classroomSubjectsColumn: ColumnDef<ClassroomSubjectData>[] = [
   {
     header: "Title",

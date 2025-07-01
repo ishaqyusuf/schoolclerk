@@ -1,7 +1,8 @@
 import { ColumnDef } from "@/types";
-import { RouterOutputs } from "@school-clerk/api/trpc/routers/_app";
+import { RouterOutputs } from "@api/trpc/routers/_app";
 
-export type ClassroomSubjectData = RouterOutputs["students"]["get"];
+export type ClassroomSubjectData =
+  RouterOutputs["enrollments"]["index"]["data"][number];
 export const columns: ColumnDef<ClassroomSubjectData>[] = [
   {
     header: "Title",
@@ -9,7 +10,7 @@ export const columns: ColumnDef<ClassroomSubjectData>[] = [
     cell: ({ row: { original: item } }) => (
       <div>
         <div>
-          <>{item.id}</>
+          <>{item.surname}</>
         </div>
       </div>
     ),

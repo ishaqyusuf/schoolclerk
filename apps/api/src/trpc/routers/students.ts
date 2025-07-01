@@ -5,8 +5,7 @@ export const studentsRouter = createTRPCRouter({
   get: publicProcedure
     .input(getStudentsSchema)
     .query(async ({ input, ctx: { db } }) => {
-      const result = await getStudents(db, input);
-      return result;
+      return getStudents(db, input);
     }),
   test: publicProcedure.query(async ({ input, ctx: { db } }) => {
     return {

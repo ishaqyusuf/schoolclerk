@@ -2,7 +2,6 @@
 
 import React, { use } from "react";
 import { deleteStudentAction } from "@/actions/delete-student";
-import { StudentData } from "@/actions/get-students-list";
 import { MiddaySearchFilter } from "@/components/midday-search-filter/search-filter";
 import { useLoadingToast } from "@/hooks/use-loading-toast";
 import { useStudentParams } from "@/hooks/use-student-params";
