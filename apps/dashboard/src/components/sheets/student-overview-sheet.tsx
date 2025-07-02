@@ -18,6 +18,7 @@ import {
 } from "@school-clerk/ui/tabs";
 
 import { CustomSheet, CustomSheetContent } from "../custom-sheet-content";
+import { StudentOverview } from "../students/student-overview";
 
 export function StudentOverviewSheet({}) {
   const { studentViewId, studentViewTab, setParams } = useStudentParams();
@@ -69,7 +70,7 @@ export function StudentOverviewSheet({}) {
       <CustomSheetContent className="flex flex-col gap-2">
         <Tabs defaultValue="overview" value={studentViewTab || "overview"}>
           <TabsContent value="overview" className="h-screen bg-red-100">
-            <span>abc---</span>
+            <StudentOverview />
           </TabsContent>
         </Tabs>
       </CustomSheetContent>

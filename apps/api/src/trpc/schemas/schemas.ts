@@ -52,3 +52,15 @@ export const getStudentsSchema = z
   })
   .merge(paginationSchema);
 export type GetStudentsSchema = z.infer<typeof getStudentsSchema>;
+export const getStudentOverviewSchema = z.object({
+  studentId: z.string(),
+  termSheetId: z.string(),
+});
+export type GetStudentOverviewSchema = z.infer<typeof getStudentOverviewSchema>;
+
+export const getStudentTermsListSchema = z.object({
+  studentId: z.string(),
+});
+export type GetStudentTermListSchema = z.infer<
+  typeof getStudentTermsListSchema
+>;

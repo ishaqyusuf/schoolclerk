@@ -11,6 +11,7 @@ import { Table, TableBody } from "@school-clerk/ui/table";
 import { TableRow } from "../table-row";
 import { TableHeaderComponent } from "../table-header";
 import { columns } from "./columns";
+import { useStudentParams } from "@/hooks/use-student-params";
 
 export function DataTable({}) {
   const trpc = useTRPC();
@@ -37,6 +38,7 @@ export function DataTable({}) {
   const tableData = useMemo(() => {
     return data?.pages.flatMap((page) => (page as any)?.data ?? []) ?? [];
   }, [data]);
+  const { setParams, ...params } = useStudentParams();
   useEffect(() => {
     if (inView) {
       fetchNextPage();
@@ -60,9 +62,9 @@ export function DataTable({}) {
               // });
             },
             rowClick(id, rowData) {
-              // setParams({
-              //   studentViewId: id,
-              // });
+              setParams({
+                studentViewId: id,
+              });
             },
           },
         },

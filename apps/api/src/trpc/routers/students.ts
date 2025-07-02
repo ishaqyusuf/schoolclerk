@@ -1,6 +1,10 @@
 import { createTRPCRouter, publicProcedure } from "../init";
 import { getStudents, getStudentsQueryParams } from "../../db/queries/students";
-import { getStudentsSchema } from "../schemas/schemas";
+import {
+  getStudentOverviewSchema,
+  getStudentsSchema,
+} from "../schemas/schemas";
+import { studentsOverview } from "@api/db/queries/students.overview";
 export const studentsRouter = createTRPCRouter({
   filters: publicProcedure.query(async ({ input, ctx }) => {
     console.log("FILTERS");
@@ -11,9 +15,9 @@ export const studentsRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       return getStudents(ctx, input);
     }),
-  test: publicProcedure.query(async ({ input, ctx: { db } }) => {
-    return {
-      id: 1,
-    };
-  }),
+  overview: publicProcedure
+    .input(getStudentOverviewSchema)
+    .query(async (props) => {
+      return studentsOverview(props.ctx, props.input);
+    }),
 });

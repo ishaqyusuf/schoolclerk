@@ -16,7 +16,7 @@ export function useStudentParams(options?: { shallow: boolean }) {
       createStudent: parseAsBoolean,
       studentViewId: parseAsString,
       studentViewTab: parseAsString,
-      // ...studentPageQuery,
+      studentTermSheetId: parseAsString,
     },
     options,
   );
