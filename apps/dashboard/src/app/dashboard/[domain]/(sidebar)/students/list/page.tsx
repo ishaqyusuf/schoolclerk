@@ -1,26 +1,36 @@
+import { getQueryClient, HydrateClient, trpc } from "@/trpc/server";
+import { Metadata } from "next";
+import { SearchParams } from "nuqs";
+import { loadStudentFilterParams } from "@/hooks/use-student-filter-params";
+import { StudentSearchFilter } from "@/components/student-search-filter";
 import { Suspense } from "react";
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
-import { ErrorFallback } from "@/components/error-fallback";
-import { ClassesSkeleton } from "@/components/tables/classrooms/skeleton";
 import { TableSkeleton } from "@/components/tables/skeleton";
-import { StudentsTable } from "@/components/tables/students";
+import { DataTable } from "@/components/tables/students/data-table";
 
-import { searchParamsCache } from "./search-params";
+export const metadata: Metadata = {
+  title: "Students",
+};
+type Props = {
+  searchParams: Promise<SearchParams>;
+};
+export default async function Page(props: Props) {
+  const queryClient = getQueryClient();
+  const searchParams = await props.searchParams;
+  const filter = loadStudentFilterParams(searchParams);
 
-export default async function Page({ searchParams, params }) {
-  const searchQuery = searchParamsCache.parse(await searchParams);
-  const { search } = searchQuery;
-
-  const loadingKey = JSON.stringify({
-    search,
-  });
+  await queryClient.fetchInfiniteQuery(
+    trpc.students.index.infiniteQueryOptions({}),
+  );
   return (
-    <div className="flex flex-col gap-6">
-      <ErrorBoundary errorComponent={ErrorFallback}>
-        <Suspense fallback={<TableSkeleton />} key={loadingKey}>
-          <StudentsTable query={searchQuery} />
+    <HydrateClient>
+      <div className="flex justify-between py-6">
+        <StudentSearchFilter />
+      </div>
+      <div className="flex flex-col gap-6">
+        <Suspense fallback={<TableSkeleton />}>
+          <DataTable />
         </Suspense>
-      </ErrorBoundary>
-    </div>
+      </div>
+    </HydrateClient>
   );
 }

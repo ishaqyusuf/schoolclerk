@@ -15,8 +15,10 @@ export type ColumnMeta = {
   preventDefault?: boolean;
   className?: string;
 };
-export type PageFilterData = {
-  value?: string;
+// PageFilterData<T> optional value type
+
+export type PageFilterData<TValue = string> = {
+  value?: TValue;
   icon?: any;
   type: "checkbox" | "input" | "date" | "date-range";
   label?: string;

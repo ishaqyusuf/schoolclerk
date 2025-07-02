@@ -114,7 +114,7 @@ export function ComboboxDropdown<T extends ComboboxItem>({
                         isChecked ? "opacity-100" : "opacity-0",
                       )}
                     />
-                    {item.label}
+                    {item.label} 
                   </>
                 )}
               </CommandItem>

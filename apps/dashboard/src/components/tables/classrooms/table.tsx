@@ -2,13 +2,11 @@
 
 import React, { useEffect } from "react";
 import { deleteClassroomDepartmentAction } from "@/actions/delete-department";
-import { MiddaySearchFilter } from "@/components/midday-search-filter/search-filter";
 import { useClassesParams } from "@/hooks/use-classes-params";
 import { useLoadingToast } from "@/hooks/use-loading-toast";
 import { useAction } from "next-safe-action/hooks";
 
 import { Button } from "@school-clerk/ui/button";
-import { Spinner } from "@school-clerk/ui/spinner";
 import { Table, TableBody } from "@school-clerk/ui/table";
 
 import { TableProvider } from "..";
@@ -74,15 +72,6 @@ export function DataTable({ data, loadMore, pageSize, hasNextPage }: Props) {
     >
       <div className="flex flex-col gap-4">
         <div className="flex">
-          <MiddaySearchFilter
-            placeholder={"Search"}
-            filterList={[
-              {
-                value: "search",
-                icon: "Search",
-              },
-            ]}
-          />
           <div className="flex-1"></div>
           <Button
             variant="outline"

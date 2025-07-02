@@ -58,6 +58,7 @@
     "./combobox-dropdown": "./src/components/combobox-dropdown.tsx",
     "./command": "./src/components/command.tsx",
     "./context-menu": "./src/components/context-menu.tsx",
+    "./custom/progress": "./src/components/custom/progress.tsx",
     "./date-range-picker": "./src/components/date-range-picker.tsx",
     "./dialog": "./src/components/dialog.tsx",
     "./drawer": "./src/components/drawer.tsx",

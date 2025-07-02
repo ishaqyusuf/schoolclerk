@@ -1,5 +1,11 @@
 import { z } from "@hono/zod-openapi";
 
+export const paginationSchema = z.object({
+  size: z.number().nullable().optional(),
+  sort: z.string().nullable().optional(),
+  start: z.number().nullable().optional(),
+  search: z.string().nullable().optional(),
+});
 export const questionDataSchema = z.object({
   id: z.number().optional().nullable(),
   question: z.string().optional(),
@@ -34,3 +40,15 @@ export const enrollmentQuerySchema = z.object({
   currentClassDepartmentId: z.string().optional().nullable(),
 });
 export type EnrollmentQuery = z.infer<typeof enrollmentQuerySchema>;
+
+export const getStudentsSchema = z
+  .object({
+    sessionId: z.string().optional().nullable(),
+    departmentId: z.string().optional().nullable(),
+    departmentTitles: z.array(z.string()).optional().nullable(),
+    // departmentTitles: z.string().optional().nullable(),
+    classroomTitle: z.string().optional().nullable(),
+    sessionTermId: z.string().optional().nullable(),
+  })
+  .merge(paginationSchema);
+export type GetStudentsSchema = z.infer<typeof getStudentsSchema>;

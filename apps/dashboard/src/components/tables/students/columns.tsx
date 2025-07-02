@@ -5,23 +5,30 @@ import { Menu } from "@/components/menu";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { ActionCell } from "../action-cell";
+import { RouterOutputs } from "@api/trpc/routers/_app";
+import { Progress } from "@school-clerk/ui/custom/progress";
+import { Arabic } from "@/components/arabic";
 
-export type Item = StudentData;
-export const columns: ColumnDef<StudentData>[] = [
+export type Item = RouterOutputs["students"]["index"]["data"][number];
+export const columns: ColumnDef<Item>[] = [
   {
     header: "Student",
     accessorKey: "student",
     cell: ({ row: { original: item } }) => (
-      <div>
-        <div>{item.studentName}</div>
-        <div>{item.gender}</div>
+      <div className="inline-flex gap-2 items-center">
+        <Arabic className="font-bold">{item.studentName}</Arabic>
+        <Progress>
+          <Progress.Status variant="secondary" color="blue" noDot>
+            {item.gender}
+          </Progress.Status>
+        </Progress>
       </div>
     ),
   },
   {
     header: "Department",
     accessorKey: "department",
-    cell: ({ row: { original: item } }) => <div>{item.department}</div>,
+    cell: ({ row: { original: item } }) => <Arabic>{item.department}</Arabic>,
   },
   {
     header: "",

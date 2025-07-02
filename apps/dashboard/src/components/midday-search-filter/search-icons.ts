@@ -1,16 +1,22 @@
-import { IconKeys } from "../_v1/icons";
-import { SearchParamsKeys } from "../(clean-code)/data-table/search-params";
+import { SearchParamsKeys } from "@/utils/search-params";
+import { IconKeys } from "../icons";
+import { RouterInputs, RouterOutputs } from "@api/trpc/routers/_app";
+
+type T = RouterInputs["students"]["index"];
+type NonVoidT = Exclude<T, void>;
+//get keys
+type Keys = keyof NonVoidT;
 
 export const searchIcons: Partial<{
-    [id in SearchParamsKeys]: IconKeys;
+  [id in Keys]: IconKeys;
 }> = {
-    "order.no": "orders",
-    "customer.name": "user",
-    phone: "phone",
-    search: "Search",
-    "production.assignedToId": "production",
-    "production.assignment": "production",
-    "production.status": "production",
-    production: "production",
-    // "sales.rep": "r"
+  //   "order.no": "orders",
+  //   "customer.name": "user",
+  //   phone: "phone",
+  //   search: "Search",
+  //   "production.assignedToId": "production",
+  //   "production.assignment": "production",
+  //   "production.status": "production",
+  //   production: "production",
+  // "sales.rep": "r"
 };

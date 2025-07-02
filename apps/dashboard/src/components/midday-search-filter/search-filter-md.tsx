@@ -26,6 +26,10 @@ import { SelectTag } from "../select-tag";
 import { FilterList } from "./filter-list";
 import { searchIcons } from "./search-icons";
 import { useQuery } from "@tanstack/react-query";
+import {
+  SearchFilterProvider,
+  useSearchFilterContext,
+} from "@/hooks/use-search-filter";
 
 interface Props {
   // filters;
@@ -33,28 +37,26 @@ interface Props {
   defaultSearch?;
   placeholder?;
   filterList?: PageFilterData[];
-  trpcFilter?;
-  filterSchema?;
 }
-
-export function MiddaySearchFilter({
-  // filters,
+export function SearchFilter({
   placeholder,
-  // setFilters,
   defaultSearch = {},
   filterList,
-  trpcFilter,
-  filterSchema,
 }: Props) {
-  const [filters, setFilters] = useQueryStates(filterSchema, {
-    shallow: false,
-  });
   const [prompt, setPrompt] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const [streaming, setStreaming] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
 
+  const [streaming, setStreaming] = useState(false);
+
+  const {
+    isFocused,
+    isOpen,
+    setIsOpen,
+    shouldFetch,
+    filters,
+    setFilters,
+    optionSelected,
+  } = useSearchFilterContext();
   useHotkeys(
     "esc",
     () => {
@@ -88,12 +90,7 @@ export function MiddaySearchFilter({
       setPrompt("");
     }
   };
-  const shouldFetch = isOpen || isFocused || !filterList?.length;
 
-  const { data: trpcFilterData } = useQuery({
-    enabled: shouldFetch,
-    ...(trpcFilter?.queryOptions?.() || {}),
-  });
   const deb = useDebounce(prompt, 1500);
   const hasMounted = useRef(false);
   useEffect(() => {
@@ -109,26 +106,17 @@ export function MiddaySearchFilter({
   }, [deb]);
   const handleSubmit = async () => {
     // If the user is typing a query with multiple words, we want to stream the results
-    console.log(prompt);
+    // console.log(prompt);
     setFilters({ search: prompt.length > 0 ? prompt : null });
   };
   const hasValidFilters =
     Object.entries(filters).filter(
       ([key, value]) => value !== null && key !== "q",
     ).length > 0;
-  function optionSelected(qk, { label, value }) {
-    setFilters({
-      [qk]: filters?.[qk]?.includes(value)
-        ? filters?.[qk].filter((s) => s !== value)
-        : [...(filters?.[qk] ?? []), value],
-    });
-  }
-  const __filters = (filterList || trpcFilterData || ([] as any))?.filter(
+
+  const __filters = (filterList || ([] as any))?.filter(
     (a) => a.value != "search" && a.value != "q",
   );
-  useEffect(() => {
-    console.log(trpcFilterData);
-  }, [trpcFilterData]);
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <div className="flex items-center space-x-4">

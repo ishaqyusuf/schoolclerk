@@ -10,4 +10,3 @@ export type GetClassroomSubjects = z.infer<typeof getClassroomSubjectsSchema>;
 export const getClassroomSubjectsSchema = z.object({
   departmentId: z.string(),
 });
-export const getStudentsSchema = z.object({});
