@@ -28,5 +28,5 @@
     "types": ["bun-types"]
   },
   "exclude": ["node_modules"],
-  "include": ["api", "src/**/*.ts"]
+  "include": ["_api", "src/**/*.ts"]
 }

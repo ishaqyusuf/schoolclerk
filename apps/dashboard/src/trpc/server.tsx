@@ -27,7 +27,7 @@ export const trpc = createTRPCOptionsProxy<AppRouter>({
       httpBatchLink({
         // url: `${process.env.NEXT_PUBLIC_API_URL}/api/trpc`,
         // url: `${process.env.NEXT_PUBLIC_URL}/api/trpc`,
-        url: `http://daarulhadith.localhost:2200/api/trpc`,
+        url: `http://localhost:2200/api/trpc`,
         transformer: superjson as any,
         async headers() {
           const session = await getSaasProfileCookie();
