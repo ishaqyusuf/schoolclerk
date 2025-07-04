@@ -34,7 +34,7 @@ export function TRPCReactProvider(
       links: [
         httpBatchLink({
           // url: `${process.env.NEXT_PUBLIC_API_URL}/api/trpc`,
-          url: `/api/trpc`,
+          url: `${process.env.NEXT_PUBLIC_URL}/api/trpc`,
           transformer: superjson as any,
           //   fetch(input,iniit) {
           //   },
