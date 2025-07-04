@@ -12,7 +12,7 @@ const app = new OpenAPIHono<Context>();
 app.use(secureHeaders());
 // adsad
 app.use(
-  "/api/trpc/*",
+  "/trpc/*",
   cors({
     origin: process.env.ALLOWED_API_ORIGINS?.split(",") ?? [],
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
@@ -31,7 +31,7 @@ app.use(
   })
 );
 app.use(
-  "/api/trpc/*",
+  "/trpc/*",
   trpcServer({
     router: appRouter,
     createContext: createTRPCContext,
