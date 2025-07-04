@@ -21,7 +21,7 @@ async function logPrismaEngineFiles(dirPath: string) {
 }
 
 // Example usage
-await logPrismaEngineFiles("../../../packages/db/node_modules/@prisma/client");
+await logPrismaEngineFiles("../../packages/db/node_modules/@prisma/client");
 
 // Ex. ./src/main.ts
 const mainModulePath = process.argv[2];
