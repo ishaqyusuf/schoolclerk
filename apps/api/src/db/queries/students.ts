@@ -279,7 +279,6 @@ export async function getStudentsQueryParams(ctx: TRPCContext) {
       })),
       value: "classroomTitle",
     });
-  console.log(resp.length);
 
   return resp;
 }
