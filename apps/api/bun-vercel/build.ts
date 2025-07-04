@@ -1,4 +1,27 @@
-import { exists, mkdir, unlink } from "node:fs/promises";
+import { exists, mkdir, readdir, unlink } from "node:fs/promises";
+import path from "node:path";
+async function logPrismaEngineFiles(dirPath: string) {
+  try {
+    const entries = await readdir(dirPath);
+    const engineFiles = entries.filter(
+      (name) => name.includes("_engine") && name.endsWith(".node")
+    );
+
+    if (engineFiles.length === 0) {
+      console.log(`🚫 No Prisma engine files found in: ${dirPath}`);
+    } else {
+      console.log(`✅ Prisma engine files in ${dirPath}:`);
+      engineFiles.forEach((file) => {
+        console.log(`  - ${file}`);
+      });
+    }
+  } catch (err) {
+    console.error(`❌ Error reading ${dirPath}: ${err.message}`);
+  }
+}
+
+// Example usage
+await logPrismaEngineFiles("./node_modules/.prisma/client");
 
 // Ex. ./src/main.ts
 const mainModulePath = process.argv[2];
