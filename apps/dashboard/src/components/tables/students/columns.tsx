@@ -2,12 +2,12 @@
 
 import { StudentData } from "@/actions/get-students-list";
 import { Menu } from "@/components/menu";
-import { ColumnDef } from "@tanstack/react-table";
 
 import { ActionCell } from "../action-cell";
 import { RouterOutputs } from "@api/trpc/routers/_app";
 import { Progress } from "@school-clerk/ui/custom/progress";
 import { Arabic } from "@/components/arabic";
+import { ColumnDef } from "@/types";
 
 export type Item = RouterOutputs["students"]["index"]["data"][number];
 export const columns: ColumnDef<Item>[] = [

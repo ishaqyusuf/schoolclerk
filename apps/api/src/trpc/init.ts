@@ -18,10 +18,9 @@ export type TRPCContext = {
 };
 export const createTRPCContext = async (
   _: unknown,
-  c: Context,
+  c: Context
 ): Promise<TRPCContext> => {
   const accessToken = c.req.header("Authorization")?.split(" ")[1];
-  // const session = await verifyAccessToken(accessToken);
   const [termId, sessionId, schoolId] = (
     c.req.header()["x-tenant-session-term-id"] ?? ""
   )?.split("|");

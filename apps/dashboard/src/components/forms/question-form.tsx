@@ -6,14 +6,7 @@ import { Button } from "@school-clerk/ui/button";
 import FormInput from "../controls/form-input";
 import { CustomSheetContentPortal } from "../custom-sheet-content";
 import { SubmitButton } from "../submit-button";
-import { useFieldArray } from "react-hook-form";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@school-clerk/ui/table";
+
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useQuestionFormContext } from "../questions/form-context";

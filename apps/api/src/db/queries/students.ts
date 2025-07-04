@@ -33,7 +33,6 @@ export async function getStudents(ctx: TRPCContext, query: GetStudentsSchema) {
     select: {
       id: true,
       name: true,
-
       otherName: true,
       surname: true,
       dob: true,
@@ -58,9 +57,13 @@ export async function getStudents(ctx: TRPCContext, query: GetStudentsSchema) {
             },
           },
           termForms: {
-            where: {
-              sessionTermId: query?.sessionTermId,
-            },
+            where: !query?.sessionTermId
+              ? {
+                  schoolSessionId: query?.sessionId,
+                }
+              : {
+                  sessionTermId: query?.sessionTermId,
+                },
             take: 1,
             select: {
               id: true,
@@ -87,6 +90,7 @@ export async function getStudents(ctx: TRPCContext, query: GetStudentsSchema) {
       const className = classRoom?.name;
       const departmentName = classroomDepartment?.departmentName;
       const departmentId = classroomDepartment?.id;
+      const termFormId = sf?.termForms?.[0]?.id;
       return {
         id: student.id,
         gender: student.gender,
@@ -94,6 +98,7 @@ export async function getStudents(ctx: TRPCContext, query: GetStudentsSchema) {
         department: Array.from(new Set([className, departmentName])).join(" "),
         departmentId,
         classId: classRoom?.id,
+        termFormId,
       };
     })
   );

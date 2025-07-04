@@ -7,7 +7,6 @@ import {
 import { studentsOverview } from "@api/db/queries/students.overview";
 export const studentsRouter = createTRPCRouter({
   filters: publicProcedure.query(async ({ input, ctx }) => {
-    console.log("FILTERS");
     return getStudentsQueryParams(ctx);
   }),
   index: publicProcedure
@@ -20,4 +19,8 @@ export const studentsRouter = createTRPCRouter({
     .query(async (props) => {
       return studentsOverview(props.ctx, props.input);
     }),
+  test: publicProcedure.query(async (props) => {
+    const s = await props?.ctx?.db?.schoolProfile.findFirst({});
+    return { s };
+  }),
 });

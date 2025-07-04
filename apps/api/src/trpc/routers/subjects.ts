@@ -10,6 +10,7 @@ import {
 export const subjectsRouter = createTRPCRouter({
   all: publicProcedure.input(getAllSubjectsSchema).query(async (q) => {
     // console.log(q.ctx.)
+
     return await getAllSubjects(q.ctx, q.input);
   }),
   byClassroom: publicProcedure
