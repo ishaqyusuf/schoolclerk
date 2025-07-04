@@ -4,14 +4,15 @@
 
 import { handle } from "hono/vercel";
 
-import { app } from "../src";
+import { app } from ".";
 
-export const config = {
-  runtime: "edge",
-  regions: ["bom1"], // Mumbai, India (South) - bom1
-};
+// export const config = {
+//   runtime: "edge",
+//   regions: ["bom1"], // Mumbai, India (South) - bom1
+// };
 
-export default handle(app);
+// export default handle(app);
+export const GET = handle(app);
 
 /* -----------------------------------------------------------------------------------------------
  * Serverless
