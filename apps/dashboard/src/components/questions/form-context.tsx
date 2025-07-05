@@ -1,6 +1,3 @@
-import { CreateClassRoom } from "@/actions/create-classroom";
-import { createClassroomSchema } from "@/actions/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { RouterOutputs } from "@school-clerk/api/trpc/routers/_app";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 
