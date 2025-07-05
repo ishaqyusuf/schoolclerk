@@ -54,7 +54,7 @@ export const getStudentsSchema = z
 export type GetStudentsSchema = z.infer<typeof getStudentsSchema>;
 export const getStudentOverviewSchema = z.object({
   studentId: z.string(),
-  termSheetId: z.string(),
+  termSheetId: z.string().optional().nullable(),
 });
 export type GetStudentOverviewSchema = z.infer<typeof getStudentOverviewSchema>;
 

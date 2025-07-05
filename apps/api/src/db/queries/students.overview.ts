@@ -5,9 +5,17 @@ export async function studentsOverview(
   ctx: TRPCContext,
   query: GetStudentOverviewSchema
 ) {
+  // const termSheetId = query.termSheetId || ctx.profile?.termId;
   const termSheet = await ctx.db.studentTermForm.findFirstOrThrow({
     where: {
-      id: query.termSheetId,
+      OR: [
+        {
+          id: query.termSheetId!!,
+        },
+        {
+          studentId: query.studentId,
+        },
+      ],
     },
     select: {
       id: true,

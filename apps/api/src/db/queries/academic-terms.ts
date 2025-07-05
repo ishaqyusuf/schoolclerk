@@ -24,6 +24,7 @@ export async function getStudentTermsList(
     },
     select: {
       title: true,
+      id: true,
       startDate: true,
       endDate: true,
       session: {
@@ -48,6 +49,7 @@ export async function getStudentTermsList(
     const termForm = term?.termForms?.[0];
     return {
       term: `${term.title} ${term.session?.title}`,
+      termId: term?.id,
       //   description: [term.startDate, term.endDate].map(d => ())
       studentTermId: termForm?.id,
     };

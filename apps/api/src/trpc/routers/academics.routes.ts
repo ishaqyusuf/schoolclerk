@@ -7,10 +7,13 @@ import {
 } from "../schemas/schemas";
 
 import { loadQuestions, saveQuestion } from "@api/db/queries/questions";
+import { getStudentTermsList } from "@api/db/queries/academic-terms";
 export const academicsRouter = createTRPCRouter({
   getStudentTermsList: publicProcedure
     .input(getStudentTermsListSchema)
-    .query(async (props) => {}),
+    .query(async (props) => {
+      return getStudentTermsList(props.ctx, props.input);
+    }),
   // all: publicProcedure
   //   .input(questionQuerySchema)
   //   .query(async ({ input, ctx }) => {

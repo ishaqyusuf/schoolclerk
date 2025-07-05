@@ -70,7 +70,7 @@ export function StudentOverviewSheet({}) {
       <CustomSheetContent className="flex flex-col gap-2">
         <Tabs defaultValue="overview" value={studentViewTab || "overview"}>
           <TabsContent value="overview" className="h-screen bg-red-100">
-            <StudentOverview />
+            {/* <StudentOverview /> */}
           </TabsContent>
         </Tabs>
       </CustomSheetContent>

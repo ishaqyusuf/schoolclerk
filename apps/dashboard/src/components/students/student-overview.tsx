@@ -1,16 +1,5 @@
-import { getCachedClassroomStudents } from "@/actions/cache/classrooms";
-import { timeout } from "@/utils/timeout";
-import { randomInt } from "@/utils/utils";
-import { Skeleton } from "@school-clerk/ui/skeleton";
-import { useAsyncMemo } from "use-async-memo";
-import { NoResults } from "../tables/students/empty-states";
-import { DataTable } from "../tables/students/table";
 import { useTRPC } from "@/trpc/client";
-import {
-  useQuery,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { TableSkeleton } from "../tables/skeleton";
 import { Suspense } from "react";
 import { useClassesParams } from "@/hooks/use-classes-params";
