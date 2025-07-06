@@ -49,6 +49,7 @@ interface RowActionMoreMenuProps {
   triggerSize?: VariantProps<typeof buttonVariants>["size"];
   open?;
   onOpenChanged?;
+  className?: string;
   // dir?:  ComponentPropsWithoutRef<>
 }
 function BaseMenu(
@@ -63,6 +64,7 @@ function BaseMenu(
     onOpenChanged,
     triggerSize,
     variant = "outline",
+    className,
   }: RowActionMoreMenuProps,
   ref,
 ) {
@@ -96,7 +98,14 @@ function BaseMenu(
           </Button>
         )}
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className={cn(!noSize && "w-[185px]")}>
+      <DropdownMenuContent
+        align="end"
+        className={cn(
+          !noSize && "w-[185px]",
+          "max-h-56 overflow-auto",
+          className,
+        )}
+      >
         {children}
       </DropdownMenuContent>
     </DropdownMenu>

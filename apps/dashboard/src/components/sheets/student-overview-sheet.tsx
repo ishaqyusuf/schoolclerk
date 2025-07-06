@@ -18,24 +18,36 @@ import {
 } from "@school-clerk/ui/tabs";
 
 import { CustomSheet, CustomSheetContent } from "../custom-sheet-content";
-import { StudentOverview } from "../students/student-overview";
+import { useTRPC } from "@/trpc/client";
+import {
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import { StudentOverviewSheetHeader } from "../students/student-overview-sheet-header";
 
 export function StudentOverviewSheet({}) {
   const { studentViewId, studentViewTab, setParams } = useStudentParams();
   const isOpen = Boolean(studentViewId);
 
-  const student = useAsyncMemo(async () => {
-    if (!studentViewId) return null;
-    const profile = await getSaasProfileCookie();
-    await timeout(randomInt(100));
-    const {
-      data: [student],
-    } = await getStudentsListAction({
-      sessionId: profile.sessionId,
-      studentId: studentViewId,
-    });
-    return student;
-  }, [studentViewId]);
+  // const { setParams, ...params } = useStudentParams();
+
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const {
+    data: overviewData,
+    error,
+    isLoading,
+  } = useQuery(
+    trpc.students.overview.queryOptions(
+      {
+        studentId: studentViewId,
+      },
+      {
+        enabled: isOpen,
+      },
+    ),
+  );
   if (!isOpen) return null;
 
   return (
@@ -47,10 +59,6 @@ export function StudentOverviewSheet({}) {
       onOpenChange={() => setParams(null)}
       sheetName="student-overview"
     >
-      <SheetHeader>
-        <SheetTitle>{student?.studentName}</SheetTitle>
-        <SheetDescription>{student?.department}</SheetDescription>
-      </SheetHeader>
       <Tabs
         onValueChange={(e) => {
           setParams({
@@ -60,6 +68,7 @@ export function StudentOverviewSheet({}) {
         defaultValue="overview"
         value={studentViewTab || "overview"}
       >
+        <StudentOverviewSheetHeader overview={overviewData} />
         <TabsList className="w-full">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="academics">Academics</TabsTrigger>

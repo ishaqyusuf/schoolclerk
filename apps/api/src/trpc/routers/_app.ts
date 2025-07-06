@@ -1,6 +1,6 @@
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { createTRPCRouter } from "../init";
-import { studentsRouter } from "./students";
+import { studentsRouter } from "./students.routes";
 import { subjectsRouter } from "./subjects";
 import { questionsRouter } from "./question.routes";
 import { classroomRouter } from "./classroom.routes";

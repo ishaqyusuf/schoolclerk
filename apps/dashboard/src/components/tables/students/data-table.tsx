@@ -12,6 +12,7 @@ import { TableRow } from "../table-row";
 import { TableHeaderComponent } from "../table-header";
 import { columns } from "./columns";
 import { useStudentParams } from "@/hooks/use-student-params";
+import { useStudentsStore } from "@/store/student";
 
 export function DataTable({}) {
   const trpc = useTRPC();
@@ -38,7 +39,12 @@ export function DataTable({}) {
   const tableData = useMemo(() => {
     return data?.pages.flatMap((page) => (page as any)?.data ?? []) ?? [];
   }, [data]);
+  const { update } = useStudentsStore();
+  useEffect(() => {
+    update("studentsList", tableData);
+  }, [tableData]);
   const { setParams, ...params } = useStudentParams();
+
   useEffect(() => {
     if (inView) {
       fetchNextPage();

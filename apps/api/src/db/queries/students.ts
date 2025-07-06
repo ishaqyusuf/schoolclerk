@@ -3,9 +3,8 @@ import type { TRPCContext } from "@api/trpc/init";
 import type { GetStudentsSchema } from "@api/trpc/schemas/schemas";
 import type { PageFilterData } from "@api/type";
 import { composeQuery } from "@api/utils";
-import type { Database, Prisma } from "@school-clerk/db";
+import type { Prisma } from "@school-clerk/db";
 import { studentDisplayName } from "./enrollment-query";
-// import { Database, Prisma } from "@school-clerk/db";
 
 type SearchParams = {
   sessionId?: string;
@@ -103,7 +102,10 @@ export async function getStudents(ctx: TRPCContext, query: GetStudentsSchema) {
     })
   );
 }
-
+export async function getStudent(ctx: TRPCContext, query: GetStudentsSchema) {
+  const student = await getStudents(ctx, query);
+  return student?.data?.[0];
+}
 function whereStudents(query: GetStudentsSchema) {
   const where: Prisma.StudentsWhereInput[] = [
     {
@@ -168,6 +170,10 @@ function whereStudents(query: GetStudentsSchema) {
           },
         });
         break;
+      case "studentId":
+        where.push({
+          id: value as string,
+        });
     }
   });
   return composeQuery(where);

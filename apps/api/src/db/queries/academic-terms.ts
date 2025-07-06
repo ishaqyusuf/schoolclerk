@@ -41,6 +41,16 @@ export async function getStudentTermsList(
         },
         select: {
           id: true,
+          classroomDepartment: {
+            select: {
+              departmentName: true,
+              classRoom: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
         },
       },
     },
@@ -52,6 +62,7 @@ export async function getStudentTermsList(
       termId: term?.id,
       //   description: [term.startDate, term.endDate].map(d => ())
       studentTermId: termForm?.id,
+      departmentName: termForm?.classroomDepartment?.departmentName,
     };
   });
 }

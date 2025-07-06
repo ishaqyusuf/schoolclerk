@@ -49,6 +49,7 @@ export const getStudentsSchema = z
     // departmentTitles: z.string().optional().nullable(),
     classroomTitle: z.string().optional().nullable(),
     sessionTermId: z.string().optional().nullable(),
+    studentId: z.string().optional().nullable(),
   })
   .merge(paginationSchema);
 export type GetStudentsSchema = z.infer<typeof getStudentsSchema>;

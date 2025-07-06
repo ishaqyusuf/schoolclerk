@@ -1,5 +1,9 @@
 import { createTRPCRouter, publicProcedure } from "../init";
-import { getStudents, getStudentsQueryParams } from "../../db/queries/students";
+import {
+  getStudents,
+  getStudent,
+  getStudentsQueryParams,
+} from "../../db/queries/students";
 import {
   getStudentOverviewSchema,
   getStudentsSchema,
@@ -14,13 +18,14 @@ export const studentsRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       return getStudents(ctx, input);
     }),
+  getStudent: publicProcedure
+    .input(getStudentsSchema)
+    .query(async ({ input, ctx }) => {
+      return getStudent(ctx, input);
+    }),
   overview: publicProcedure
     .input(getStudentOverviewSchema)
     .query(async (props) => {
       return studentsOverview(props.ctx, props.input);
     }),
-  test: publicProcedure.query(async (props) => {
-    const s = await props?.ctx?.db?.schoolProfile.findFirst({});
-    return { s };
-  }),
 });
