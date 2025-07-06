@@ -41,7 +41,11 @@ export function StudentOverviewSheetHeader({ overview }: Props) {
                 <Menu.Item
                   dir="rtl"
                   onClick={(e) => {
-                    setParams({});
+                    setParams({
+                      studentViewId: student?.id,
+                      studentTermSheetId: student.termFormId,
+                      studentViewTermId: student.termFormSessionTermId,
+                    });
                   }}
                   shortCut={
                     params.studentViewTermId == student.id ? (
