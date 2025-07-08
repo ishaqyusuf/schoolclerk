@@ -11,6 +11,7 @@ export const example = schemaTask({
     concurrencyLimit: 10,
   },
   run: async ({}) => {
+    console.log("RUNNING>>>>>");
     await logger.info("Starting example task");
     const user = await prisma.user.findFirst({});
     await logger.log(JSON.stringify(user));

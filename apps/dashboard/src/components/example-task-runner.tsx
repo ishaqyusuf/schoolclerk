@@ -17,12 +17,15 @@ export function ExampleTaskRunner({}) {
   const manualSyncTransactions = useAction(exampleTaskAction, {
     onExecute: () => setSyncing(true),
     onSuccess: ({ data }) => {
+      console.log(data);
+
       if (data) {
         setRunId(data.id);
         setAccessToken(data.publicAccessToken);
       }
     },
-    onError: () => {
+    onError: (error) => {
+      console.log(error);
       setSyncing(false);
       setRunId(undefined);
       setStatus("FAILED");
