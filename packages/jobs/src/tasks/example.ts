@@ -1,11 +1,11 @@
-import { exampleSchema } from "@jobs/schema";
+import { exampleTaskPayload } from "@jobs/schema";
 import { logger, schemaTask } from "@trigger.dev/sdk/v3";
 import { prisma } from "@school-clerk/db";
 const BATCH_SIZE = 500;
 
 export const example = schemaTask({
-  id: "example",
-  schema: exampleSchema,
+  id: "example-task",
+  schema: exampleTaskPayload,
   maxDuration: 120,
   queue: {
     concurrencyLimit: 10,

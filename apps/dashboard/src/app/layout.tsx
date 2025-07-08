@@ -9,6 +9,7 @@ import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { cn } from "@school-clerk/ui/cn";
 import { Toaster } from "@school-clerk/ui/toaster";
 import { Providers } from "./providers";
+import { ExampleTaskRunner } from "@/components/example-task-runner";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -41,6 +42,7 @@ export default function RootLayout({
             <TailwindIndicator />
             <Toaster />
             {children}
+            <ExampleTaskRunner />
           </Providers>
         </NuqsAdapter>
       </body>
