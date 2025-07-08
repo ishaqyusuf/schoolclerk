@@ -28,4 +28,7 @@ export const studentsRouter = createTRPCRouter({
     .query(async (props) => {
       return studentsOverview(props.ctx, props.input);
     }),
+  getStudentPaymentHistory: publicProcedure.query(async ({ ctx, input }) => {
+    return getStudentPaymentHistory(ctx, input);
+  }),
 });

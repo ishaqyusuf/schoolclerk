@@ -65,3 +65,20 @@ export const getStudentTermsListSchema = z.object({
 export type GetStudentTermListSchema = z.infer<
   typeof getStudentTermsListSchema
 >;
+
+export const studentPaymentHistorySchema = z.object({
+  studentId: z.string(),
+  termSheetId: z.string().optional().nullable(),
+});
+export type StudentPaymentHistorySchema = z.infer<
+  typeof studentPaymentHistorySchema
+>;
+export const transactionsQuerySchema = z.object({
+  termId: z.string().optional().nullable(),
+  termProfileId: z.string().optional().nullable(),
+});
+export type TransactionsQuerySchema = z.infer<typeof transactionsQuerySchema>;
+export const transactionsSummarySchema = z
+  .object({})
+  .merge(transactionsQuerySchema);
+export type TransactionsSummaryQuery = z.infer<typeof transactionsQuerySchema>;

@@ -25,6 +25,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { StudentOverviewSheetHeader } from "../students/student-overview-sheet-header";
+import { StudentOverview } from "../students/student-overview";
 
 export function StudentOverviewSheet({}) {
   const { studentViewId, studentViewTab, setParams } = useStudentParams();
@@ -79,7 +80,7 @@ export function StudentOverviewSheet({}) {
       <CustomSheetContent className="flex flex-col gap-2">
         <Tabs defaultValue="overview" value={studentViewTab || "overview"}>
           <TabsContent value="overview" className="h-screen bg-red-100">
-            {/* <StudentOverview /> */}
+            <StudentOverview />
           </TabsContent>
         </Tabs>
       </CustomSheetContent>

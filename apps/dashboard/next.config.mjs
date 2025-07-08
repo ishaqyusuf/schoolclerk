@@ -23,6 +23,7 @@ const config = {
     // "@school-clerk/common",
     "@school-clerk/ui",
     "@school-clerk/api",
+
     // "@school-clerk/stripe",
   ],
   pageExtensions: ["ts", "tsx", "mdx"],

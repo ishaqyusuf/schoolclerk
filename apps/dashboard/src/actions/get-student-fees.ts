@@ -18,7 +18,6 @@ export async function getStudentFees(query: SearchParamsType = {}) {
       updatedAt: true,
       feeTitle: true,
       description: true,
-
       studentTermForm: {
         select: {
           sessionForm: {

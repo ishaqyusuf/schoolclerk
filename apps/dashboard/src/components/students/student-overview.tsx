@@ -29,18 +29,6 @@ function Content({}) {
       },
     ),
   );
-  const { data: studentTerms } = useSuspenseQuery(
-    trpc.academics.getStudentTermsList.queryOptions(
-      {
-        studentId: params.studentViewId,
-        // termSheetId: params.studentTermSheetId,
-      },
-      {
-        enabled: true,
-        staleTime: 60 * 1000,
-      },
-    ),
-  );
 
   const ctx = useClassesParams();
   return (
