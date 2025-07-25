@@ -19,7 +19,7 @@ import FormSelect from "@/components/controls/form-select";
 import { ClassSubjectAssessment } from "@api/db/queries/first-term-data";
 import { ClassroomSubjectData } from "@/components/tables/subjects/columns";
 import { SubjectForm } from "./subject-form";
-import { enToAr } from "@/utils/utils";
+import { enToAr, sum } from "@/utils/utils";
 
 export function ClassroomStudents({ classRoomId }) {
   const trpc = useTRPC();
@@ -81,12 +81,9 @@ export function ClassroomStudents({ classRoomId }) {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>{data?.assessments?.length}</td>
-              </tr>
               {data?.students.map((student, i) => (
                 <tr className="" key={student.postId}>
-                  <td className="">
+                  <td className="border">
                     <div className="flex gap-2">
                       <span>{enToAr(i + 1)}.</span>
                       <span>{student.firstName}</span>
@@ -94,6 +91,22 @@ export function ClassroomStudents({ classRoomId }) {
                       <span>{student.otherName}</span>
                     </div>
                   </td>
+                  {student.subjectAssessments.map((sa, sai) => (
+                    <Fragment key={sai}>
+                      {sa.assessments.map((ass, asi) => (
+                        <td className="border" key={asi}>
+                          {ass.studentAssessment?.markObtained}
+                        </td>
+                      ))}
+                      <td className="border">
+                        {sum(
+                          sa.assessments?.map(
+                            (a) => a?.studentAssessment?.markObtained,
+                          ),
+                        )}
+                      </td>
+                    </Fragment>
+                  ))}
                   {/* <div className="flex gap-4">
                 {subject?.assessments?.map((a) => (
                   <Assessment assessment={a} key={a.postId}>

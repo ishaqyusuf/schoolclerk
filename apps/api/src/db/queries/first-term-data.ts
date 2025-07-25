@@ -332,7 +332,7 @@ export async function getClassroomStudents(ctx: TRPCContext, classId) {
     pathEquals("type", "student" as PostTypes),
     pathEquals("classId" as keyof Student, classId),
   ]);
-  const assessments = await getDataList<ClassSubjectAssessment>(ctx, [
+  const assessments = await getDataList<StudentSubjectAssessment>(ctx, [
     pathEquals("type", "student-subject-assessment" as PostTypes),
     // pathEquals("classId" as keyof ClassSubjectAssessment, classId),
   ]);
@@ -340,14 +340,27 @@ export async function getClassroomStudents(ctx: TRPCContext, classId) {
   type T = ClassSubjectAssessment;
 
   return {
-    // classroomSubjects: classroomSubjects.map((s) => ({
-    //   ...s,
-    //   title: subjects?.find((a) => a.postId === s.subjectId)?.title,
-    //   assessments: assessments.filter((a) => a.classSubjectId == s.postId),
-    // })),
     assessments,
     classSubjects,
-    students,
+    students: students.map((student) => {
+      const subjectAssessments = classSubjects.classroomSubjects.map((cs) => ({
+        classroomSubjectId: cs.postId,
+        classId: cs.classId,
+        assessments: cs.assessments.map((csa) => ({
+          subjectAssessment: csa,
+          studentAssessment: assessments.find(
+            (a) =>
+              a.classSubjectId == cs.postId &&
+              a.subjectAssessmentId === csa.postId &&
+              a.studentId === student.postId
+          ),
+        })),
+      }));
+      return {
+        ...student,
+        subjectAssessments,
+      };
+    }),
   };
 }
 export async function getClassroomSubjects(ctx: TRPCContext, classId) {
