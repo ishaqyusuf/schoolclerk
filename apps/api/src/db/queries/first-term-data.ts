@@ -118,6 +118,7 @@ export async function generateFirstTermData(ctx: TRPCContext, payload: Data[]) {
                 calculatedScore: assessment.score!,
                 classId: classRoom?.postId,
                 classSubjectId: subject.id!,
+                type: "student-subject-assessment",
               });
             });
           }
@@ -280,24 +281,8 @@ async function createClassroomSubjectAssessment(
   ctx,
   data: Partial<ClassSubjectAssessment>
 ) {
-  const db: TRPCContext["db"] = ctx.db;
-  //   const data: Partial<ClassSubjectAssessment> = {
-  //     type: "class-subject-assessment",
-  //     classSubjectId,
-  //     classId,
-  //     title,
-  //     obtainable,
-  //     index,
-  //   };
   data.type = "class-subject-assessment";
   return await createPost<ClassSubjectAssessment>(ctx, data);
-  //   const r = await db.posts.create({
-  //     data: {
-  //       name: postCode,
-  //       data,
-  //     },
-  //   });
-  //   return transformData<ClassSubjectAssessment>(r);
 }
 async function createStudent(ctx, data: Partial<Student>) {
   const db: TRPCContext["db"] = ctx.db;

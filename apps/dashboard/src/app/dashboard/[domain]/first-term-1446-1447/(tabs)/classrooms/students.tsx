@@ -42,8 +42,8 @@ export function ClassroomStudents({ classRoomId }) {
   }, [data]);
   if (!opened) return null;
   return (
-    <TableRow className="">
-      <TableCell>
+    <tr className="">
+      <td>
         <div className="">
           <div className="flex gap-4">
             <p>Students</p>
@@ -117,8 +117,8 @@ export function ClassroomStudents({ classRoomId }) {
             </tbody>
           </table>
         </div>
-      </TableCell>
-    </TableRow>
+      </td>
+    </tr>
   );
 }
 
