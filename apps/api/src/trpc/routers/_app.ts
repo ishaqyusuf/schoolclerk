@@ -6,6 +6,7 @@ import { questionsRouter } from "./question.routes";
 import { classroomRouter } from "./classroom.routes";
 import { enrollmentsRouter } from "./enrollment.routes";
 import { academicsRouter } from "./academics.routes";
+import { ftdRouter } from "./ftd.routes";
 export const appRouter = createTRPCRouter({
   students: studentsRouter,
   enrollments: enrollmentsRouter,
@@ -13,6 +14,7 @@ export const appRouter = createTRPCRouter({
   questions: questionsRouter,
   classrooms: classroomRouter,
   academics: academicsRouter,
+  ftd: ftdRouter,
 });
 
 export type AppRouter = typeof appRouter;

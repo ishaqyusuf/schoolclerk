@@ -1,7 +1,7 @@
 {
   "name": "@school-clerk/api",
   "scripts": {
-    "dev": "TZ=UTC PORT=3003 bun run --hot src/index.ts",
+    "dev": "TZ=UTC PORT=3023 bun run --hot src/index.ts",
     "dev:node": "tsx src/node.ts",
     "clean": "git clean -xdf .next .turbo node_modules",
     "--build": "bun-vercel ./src/bun.ts",
@@ -25,6 +25,7 @@
     "@hono/zod-validator": "^0.7.0",
     "@scalar/hono-api-reference": "^0.9.1",
     "@school-clerk/db": "workspace:*",
+    "@school-clerk/utils": "workspace:*",
     "@sindresorhus/slugify": "^2.2.1",
     "@trigger.dev/sdk": "3.3.17",
     "@trpc/server": "^11.4.1",
