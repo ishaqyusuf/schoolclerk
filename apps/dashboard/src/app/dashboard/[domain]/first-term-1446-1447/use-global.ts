@@ -5,6 +5,7 @@ import { parseAsInteger, useQueryStates } from "nuqs";
 export function useGlobalParams() {
   const [params, setParams] = useQueryStates({
     openClassSubjectId: parseAsInteger,
+    openStudentsForClass: parseAsInteger,
   });
   return {
     params,

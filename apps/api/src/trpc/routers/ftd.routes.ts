@@ -4,6 +4,7 @@ import {
   createPost,
   generateFirstTermData,
   getClassrooms,
+  getClassroomStudents,
   getClassroomSubjects,
   getSubjects,
   updatePost,
@@ -25,6 +26,15 @@ export const ftdRouter = createTRPCRouter({
   subjectsList: publicProcedure.query(async (props) => {
     return getSubjects(props.ctx);
   }),
+  getClassroomStudents: publicProcedure
+    .input(
+      z.object({
+        classRoomId: z.number(),
+      })
+    )
+    .query(async (props) => {
+      return getClassroomStudents(props.ctx, props.input.classRoomId);
+    }),
   getClassRoomSubjects: publicProcedure
     .input(
       z.object({

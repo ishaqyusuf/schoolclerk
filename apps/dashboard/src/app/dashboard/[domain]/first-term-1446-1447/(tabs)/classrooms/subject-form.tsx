@@ -15,6 +15,7 @@ import FormInput from "@/components/controls/form-input";
 import FormSelect from "@/components/controls/form-select";
 import { SubmitButton } from "@/components/submit-button";
 import { ClassSubject, SubjectPostData } from "@api/db/queries/first-term-data";
+import { generateRandomString } from "@school-clerk/utils";
 
 interface SubjectFormProps {
   subject: Partial<ClassSubject>;
@@ -61,6 +62,28 @@ export function SubjectForm({
   const trpc = useTRPC();
   const qc = useQueryClient();
   async function onSubmit(data) {
+    if (isNew) {
+      m.createAction.mutate(
+        {
+          data: {
+            code: generateRandomString(5),
+            title: data.title!,
+            type: "subject",
+          } as SubjectPostData,
+        },
+        {
+          onError(error, variables, context) {
+            console.log(error);
+          },
+          onSuccess(data, variables, context) {
+            qc.invalidateQueries({
+              queryKey: trpc.ftd.getClassRoomSubjects.queryKey(),
+            });
+            form.setValue("subjectId", null);
+          },
+        },
+      );
+    }
     const events = {
       onSuccess(data, variables, context) {
         qc.invalidateQueries({
@@ -114,10 +137,10 @@ export function SubjectForm({
                     label: "Create",
                     value: "-1",
                   },
-                  ...selectableSubjects.map((s) => ({
+                  ...(selectableSubjects?.map((s) => ({
                     label: s.title,
                     value: String(s.postId),
-                  })),
+                  })) || []),
                 ]}
                 control={form.control}
                 name="subjectId"

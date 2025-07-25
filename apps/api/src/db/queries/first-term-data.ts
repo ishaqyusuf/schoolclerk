@@ -337,6 +337,33 @@ async function createStudentSubjectAssessment(
   });
   return transformData<StudentSubjectAssessment>(r);
 }
+export async function getClassroomStudents(ctx: TRPCContext, classId) {
+  //   const classroomSubjects = await getDataList<ClassSubject>(ctx, [
+  //     pathEquals("type", "class-subject" as PostTypes),
+  //     pathEquals("classId" as keyof ClassSubject, classId),
+  //   ]);
+  const classSubjects = await getClassroomSubjects(ctx, classId);
+  const students = await getDataList<Student>(ctx, [
+    pathEquals("type", "student" as PostTypes),
+    pathEquals("classId" as keyof Student, classId),
+  ]);
+  const assessments = await getDataList<ClassSubjectAssessment>(ctx, [
+    pathEquals("type", "class-subject-assessment" as PostTypes),
+    pathEquals("classId" as keyof ClassSubjectAssessment, classId),
+  ]);
+  const subjects = await getSubjects(ctx);
+  type T = ClassSubjectAssessment;
+
+  return {
+    // classroomSubjects: classroomSubjects.map((s) => ({
+    //   ...s,
+    //   title: subjects?.find((a) => a.postId === s.subjectId)?.title,
+    //   assessments: assessments.filter((a) => a.classSubjectId == s.postId),
+    // })),
+    subjects,
+    students,
+  };
+}
 export async function getClassroomSubjects(ctx: TRPCContext, classId) {
   const classroomSubjects = await getDataList<ClassSubject>(ctx, [
     pathEquals("type", "class-subject" as PostTypes),
@@ -432,7 +459,7 @@ export interface BasePostData {
     | "class-subject-assessment"
     | "student-subject-assessment"
     | "student";
-  postId;
+  postId?;
 }
 export interface SubjectPostData extends BasePostData {
   title: string;

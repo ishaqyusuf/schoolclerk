@@ -7,6 +7,7 @@ import { useGlobalParams } from "../../use-global";
 import { Table, TableBody, TableCell, TableRow } from "@school-clerk/ui/table";
 import { Fragment } from "react";
 import { ClassroomSubjects } from "./subjects";
+import { ClassroomStudents } from "./students";
 
 export function Client() {
   const trpc = useTRPC();
@@ -31,12 +32,23 @@ export function Client() {
                       >
                         Subjects
                       </Menu.Item>
+                      <Menu.Item
+                        onClick={(e) => {
+                          g.setParams({
+                            openStudentsForClass: classroom.postId,
+                            openClassSubjectId: null,
+                          });
+                        }}
+                      >
+                        Students
+                      </Menu.Item>
                     </Menu>
                   </span>
                   <span> {classroom.classTitle}</span>
                 </TableCell>
               </TableRow>
               <ClassroomSubjects classRoomId={classroom.postId} />
+              <ClassroomStudents classRoomId={classroom.postId} />
             </Fragment>
           ))}
         </TableBody>
