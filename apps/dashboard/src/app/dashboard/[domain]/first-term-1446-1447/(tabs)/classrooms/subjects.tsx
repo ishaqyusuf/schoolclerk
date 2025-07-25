@@ -23,7 +23,9 @@ import { SubjectForm } from "./subject-form";
 export function ClassroomSubjects({ classRoomId }) {
   const trpc = useTRPC();
   const g = useGlobalParams();
-  const opened = g.params.openClassSubjectId === classRoomId;
+  const opened =
+    g.params.openClassSubjectId === classRoomId &&
+    g.params.tab === "classSubjects";
   const { data } = useQuery(
     trpc.ftd.getClassRoomSubjects.queryOptions(
       {
@@ -143,7 +145,7 @@ function Assessment({ assessment, children }: AssessmentProps) {
             title,
             obtainable,
             assessmentType,
-          },
+          } as ClassSubjectAssessment,
         },
         events,
       );

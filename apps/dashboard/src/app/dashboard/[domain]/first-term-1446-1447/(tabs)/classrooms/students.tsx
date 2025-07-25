@@ -9,7 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@school-clerk/ui/popover";
-import { useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useZodForm } from "@/hooks/use-zod-form";
 import z from "zod";
 import { Form } from "@school-clerk/ui/form";
@@ -24,7 +24,9 @@ import { enToAr } from "@/utils/utils";
 export function ClassroomStudents({ classRoomId }) {
   const trpc = useTRPC();
   const g = useGlobalParams();
-  const opened = g.params.openStudentsForClass === classRoomId;
+  const opened =
+    g.params.openStudentsForClass === classRoomId &&
+    g.params.tab === "classStudents";
   const { data } = useQuery(
     trpc.ftd.getClassroomStudents.queryOptions(
       {
@@ -35,11 +37,9 @@ export function ClassroomStudents({ classRoomId }) {
       },
     ),
   );
-  //   const { data: subjectList } = useQuery(
-  //     trpc.ftd.subjectsList.queryOptions(null, {
-  //       enabled: opened,
-  //     }),
-  //   );
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
   if (!opened) return null;
   return (
     <TableRow className="">
@@ -47,22 +47,43 @@ export function ClassroomStudents({ classRoomId }) {
         <div className="">
           <div className="flex gap-4">
             <p>Students</p>
-            {/* <SubjectForm
-              selectableSubjects={data?.subjects?.filter((a) =>
-                data?.classroomSubjects?.every((b) => b.subjectId != a.postId),
-              )}
-              subject={{}}
-            >
-              Add Subject
-            </SubjectForm> */}
           </div>
           <table>
             <thead>
               <tr>
-                <th></th>
+                <th className="border"></th>
+                {data?.classSubjects?.classroomSubjects?.map((cs, csi) => (
+                  <th
+                    className="border text-center"
+                    colSpan={cs?.assessments?.length + 1}
+                    key={csi}
+                  >
+                    {cs.title}
+                  </th>
+                ))}
+              </tr>
+              <tr>
+                <th className="border"></th>
+                {data?.classSubjects?.classroomSubjects?.map((cs, csi) => (
+                  <Fragment key={csi}>
+                    {cs?.assessments?.map((ass, asi) => (
+                      <th
+                        className="transform rotate-90 h-16 border"
+                        colSpan={1}
+                        key={asi}
+                      >
+                        {ass.title}
+                      </th>
+                    ))}
+                    <th className="border transform rotate-90">Total</th>
+                  </Fragment>
+                ))}
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <td>{data?.assessments?.length}</td>
+              </tr>
               {data?.students.map((student, i) => (
                 <tr className="" key={student.postId}>
                   <td className="">

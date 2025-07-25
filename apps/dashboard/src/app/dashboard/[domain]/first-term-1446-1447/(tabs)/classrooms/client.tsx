@@ -27,6 +27,8 @@ export function Client() {
                         onClick={(e) => {
                           g.setParams({
                             openClassSubjectId: classroom.postId,
+                            // openStudentsForClass: null,
+                            tab: "classSubjects",
                           });
                         }}
                       >
@@ -36,7 +38,8 @@ export function Client() {
                         onClick={(e) => {
                           g.setParams({
                             openStudentsForClass: classroom.postId,
-                            openClassSubjectId: null,
+                            // openClassSubjectId: null,
+                            tab: "classStudents",
                           });
                         }}
                       >

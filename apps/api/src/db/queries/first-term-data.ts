@@ -348,10 +348,10 @@ export async function getClassroomStudents(ctx: TRPCContext, classId) {
     pathEquals("classId" as keyof Student, classId),
   ]);
   const assessments = await getDataList<ClassSubjectAssessment>(ctx, [
-    pathEquals("type", "class-subject-assessment" as PostTypes),
-    pathEquals("classId" as keyof ClassSubjectAssessment, classId),
+    pathEquals("type", "student-subject-assessment" as PostTypes),
+    // pathEquals("classId" as keyof ClassSubjectAssessment, classId),
   ]);
-  const subjects = await getSubjects(ctx);
+  //   const subjects = await getSubjects(ctx);
   type T = ClassSubjectAssessment;
 
   return {
@@ -360,7 +360,8 @@ export async function getClassroomStudents(ctx: TRPCContext, classId) {
     //   title: subjects?.find((a) => a.postId === s.subjectId)?.title,
     //   assessments: assessments.filter((a) => a.classSubjectId == s.postId),
     // })),
-    subjects,
+    assessments,
+    classSubjects,
     students,
   };
 }
