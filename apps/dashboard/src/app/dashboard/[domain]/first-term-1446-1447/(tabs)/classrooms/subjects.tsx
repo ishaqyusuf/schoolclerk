@@ -33,53 +33,66 @@ export function ClassroomSubjects({ classRoomId }) {
       },
       {
         enabled: opened,
-      },
-    ),
+      }
+    )
   );
-  //   const { data: subjectList } = useQuery(
-  //     trpc.ftd.subjectsList.queryOptions(null, {
-  //       enabled: opened,
-  //     }),
-  //   );
+
   if (!opened) return null;
   return (
-    <TableRow className="">
-      <TableCell>
-        <div className="">
-          <div className="flex gap-4">
-            <p>Subjects</p>
+    <TableRow>
+      <TableCell colSpan={100}>
+        <div className="p-4 bg-gray-100 rounded-lg">
+          <div className="flex justify-between items-center mb-4">
+            <p className="font-semibold text-lg">Subjects</p>
             <SubjectForm
               selectableSubjects={data?.subjects?.filter((a) =>
-                data?.classroomSubjects?.every((b) => b.subjectId != a.postId),
+                data?.classroomSubjects?.every((b) => b.subjectId != a.postId)
               )}
               subject={{}}
             >
               Add Subject
             </SubjectForm>
           </div>
-          {data?.classroomSubjects.map((subject) => (
-            <div className="flex gap-4" key={subject.postId}>
-              <span>{subject.title}</span>
-              <div className="flex gap-4">
-                {subject?.assessments?.map((a) => (
-                  <Assessment assessment={a} key={a.postId}>
-                    {a.title}
-                  </Assessment>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse bg-white">
+              <thead className="bg-gray-200">
+                <tr>
+                  <th className="border p-2 text-left">Subject</th>
+                  <th className="border p-2 text-left">Assessments</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {data?.classroomSubjects.map((subject) => (
+                  <tr key={subject.postId} className="hover:bg-gray-50">
+                    <td className="border p-2 font-medium">{subject.title}</td>
+                    <td className="border p-2">
+                      <div className="flex gap-2 flex-wrap">
+                        {subject?.assessments?.map((a) => (
+                          <Assessment assessment={a} key={a.postId}>
+                            <Button variant="outline" size="sm">{a.title}</Button>
+                          </Assessment>
+                        ))}
+                        <Assessment
+                          assessment={{
+                            classId: subject.classId,
+                            type: "class-subject-assessment",
+                            classSubjectId: subject.postId,
+                            assessmentType: "secondary",
+                            index: subject?.assessments?.length,
+                          }}
+                        >
+                          <Button variant="ghost" size="sm">
+                            <Icons.add className="h-4 w-4" />
+                            Add
+                          </Button>
+                        </Assessment>
+                      </div>
+                    </td>
+                  </tr>
                 ))}
-                <Assessment
-                  assessment={{
-                    classId: subject.classId,
-                    type: "class-subject-assessment",
-                    classSubjectId: subject.postId,
-                    assessmentType: "secondary",
-                    index: subject?.assessments?.length,
-                  }}
-                >
-                  <span>Add</span>
-                </Assessment>
-              </div>
-            </div>
-          ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </TableCell>
     </TableRow>
