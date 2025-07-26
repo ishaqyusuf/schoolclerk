@@ -291,10 +291,19 @@ export async function updateStudentAssessment(ctx: TRPCContext, input) {
   }
 }
 export async function updatePost<T>({ db }, id, data) {
+  const postData = (await getData<T>({ db }, [
+    {
+      id,
+    },
+  ])) as any;
+  const { postId, ...oldPostData } = postData || {};
   const post = await db.posts.update({
     where: { id },
     data: {
-      data: data as any,
+      data: {
+        ...oldPostData,
+        ...postData,
+      } as any,
     },
   });
   return transformData<T>(post);

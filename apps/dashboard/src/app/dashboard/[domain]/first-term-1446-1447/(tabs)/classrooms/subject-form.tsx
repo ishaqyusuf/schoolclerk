@@ -84,6 +84,7 @@ export function SubjectForm({
         },
       );
     }
+
     const events = {
       onSuccess(data, variables, context) {
         qc.invalidateQueries({
@@ -94,32 +95,6 @@ export function SubjectForm({
         console.log(error);
       },
     };
-    // if (assessment.postId) {
-    //   m.updateAction.mutate(
-    //     {
-    //       id: assessment.postId,
-    //       data: {
-    //         ...assessment,
-    //         title,
-    //         obtainable,
-    //         assessmentType,
-    //       },
-    //     },
-    //     events,
-    //   );
-    // } else {
-    //   m.createAction.mutate(
-    //     {
-    //       data: {
-    //         ...assessment,
-    //         title,
-    //         obtainable,
-    //         assessmentType,
-    //       },
-    //     },
-    //     events,
-    //   );
-    // }
   }
   const subjectIdWatch = form.watch("subjectId");
   const isNew = subjectIdWatch === "-1";
