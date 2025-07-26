@@ -2,6 +2,7 @@ import z from "zod";
 import { createTRPCRouter, publicProcedure } from "../init";
 import {
   createPost,
+  findStudents,
   generateFirstTermData,
   getClassrooms,
   getClassroomStudents,
@@ -14,6 +15,15 @@ import {
 } from "@api/db/queries/first-term-data";
 
 export const ftdRouter = createTRPCRouter({
+  studentSearch: publicProcedure
+    .input(
+      z.object({
+        searchParts: z.array(z.string()),
+      })
+    )
+    .query(async (props) => {
+      return findStudents(props.ctx, props.input.searchParts);
+    }),
   generateFirstTermData: publicProcedure
     .input(
       z.object({

@@ -173,11 +173,48 @@ async function getClassroom(ctx, classTitle) {
   if (classRoom) return classRoom;
 }
 export async function getPaymentsList(ctx: TRPCContext) {
-  const payments = await getDataList<Payment>(
+  const payments = await getDataList<PaymentRaw>(
     ctx,
-    pathEquals("type", "payment")
+    pathEquals("type", "raw-payment" as PostTypes)
   );
-  return { payments };
+  const studentPayments = await getDataList<Payment>(
+    ctx,
+    pathEquals("type", "student-payment" as PostTypes)
+  );
+
+  return {
+    payments: payments.map((payment) => ({
+      ...payment,
+      appliedPayments: studentPayments.filter(
+        (a) => a.rawPaymentId === payment?.postId
+      ),
+    })),
+  };
+}
+export async function findStudents(ctx: TRPCContext, searchParts: string[]) {
+  const students = await getDataList<Student>(ctx, [
+    pathEquals("type", "student" as PostTypes),
+    {
+      OR: [
+        ...searchParts
+          .map((search) => [
+            pathEquals("firstName" as keyof Student, search),
+            pathEquals("surname" as keyof Student, search),
+          ])
+          .flat(),
+      ],
+    },
+  ]);
+  const classrooms = await getClassrooms(ctx);
+  return {
+    students: students.map((s) => ({
+      studentId: s.postId,
+      fullName: [s.firstName, s.surname, s.otherName].filter(Boolean).join(" "),
+      classId: s.classId,
+      classRoom: classrooms.find((c) => c.postId === s.classId)?.classTitle,
+    })),
+    classrooms,
+  };
 }
 export async function getSubjects(ctx) {
   const subjects = await getDataList<SubjectPostData>(
@@ -216,6 +253,7 @@ const pathEquals = (path, equals) => ({
     equals,
   },
 });
+
 export async function createPost<T>({ db }, data) {
   const post = await db.posts.create({
     data: {
@@ -506,7 +544,6 @@ export interface PaymentRaw extends BasePostData {
   line?: string;
 }
 export interface Payment extends BasePostData {
-  paymentLine: string;
   amount: number;
   term: "first" | "second" | "third";
   paymentType?: "fee" | "form";
