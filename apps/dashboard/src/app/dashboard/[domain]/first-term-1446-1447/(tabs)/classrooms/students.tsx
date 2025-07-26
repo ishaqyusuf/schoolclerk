@@ -7,7 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@school-clerk/ui/popover";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { useZodForm } from "@/hooks/use-zod-form";
 import z from "zod";
 import {
@@ -20,6 +20,15 @@ import { cn } from "@school-clerk/ui/cn";
 import { generateRandomString } from "@school-clerk/utils";
 import { useDebounce } from "use-debounce";
 import { toast } from "@school-clerk/ui/use-toast";
+import { Button } from "@school-clerk/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@school-clerk/ui/select";
+
 export function ClassroomStudents({ classRoomId }) {
   const trpc = useTRPC();
   const g = useGlobalParams();
@@ -36,6 +45,36 @@ export function ClassroomStudents({ classRoomId }) {
       },
     ),
   );
+  const [sortBy, setSortBy] = useState<"name" | "grade">("name");
+
+  const sortedStudents = useMemo(() => {
+    if (!data?.students) return [];
+    const students = [...data.students];
+    if (sortBy === "name") {
+      return students.sort((a, b) => {
+        if (a.gender !== b.gender) {
+          return a.gender === "M" ? -1 : 1;
+        }
+        return a.firstName.localeCompare(b.firstName);
+      });
+    } else if (sortBy === "grade") {
+      return students.sort((a, b) => {
+        const aTotal = sum(
+          a.subjectAssessments.flatMap((sa) =>
+            sa.assessments.map((ass) => ass.studentAssessment?.markObtained || 0),
+          ),
+        );
+        const bTotal = sum(
+          b.subjectAssessments.flatMap((sa) =>
+            sa.assessments.map((ass) => ass.studentAssessment?.markObtained || 0),
+          ),
+        );
+        return bTotal - aTotal;
+      });
+    }
+    return students;
+  }, [data?.students, sortBy]);
+
   useEffect(() => {
     console.log(data);
   }, [data]);
@@ -44,8 +83,23 @@ export function ClassroomStudents({ classRoomId }) {
     <tr className="">
       <td colSpan={100}>
         <div className="p-4 bg-gray-100 rounded-lg">
-          <div className="flex gap-4 mb-4">
+          <div className="flex gap-4 mb-4 items-center">
             <p className="font-semibold text-lg">Students</p>
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium">Sort By:</label>
+              <Select
+                onValueChange={(value) => setSortBy(value as "name" | "grade")}
+                defaultValue={sortBy}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="name">Name</SelectItem>
+                  <SelectItem value="grade">Grade</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           <div className="overflow-x-auto relative" style={{ height: "600px" }}>
             <table className="w-full border-collapse bg-white">
@@ -83,7 +137,7 @@ export function ClassroomStudents({ classRoomId }) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {data?.students.map((student, i) => (
+                {sortedStudents.map((student, i) => (
                   <tr className="hover:bg-gray-50" key={student.postId}>
                     <td className="border p-2 sticky left-0 bg-white z-10">
                       <div className="flex gap-2 items-center">
