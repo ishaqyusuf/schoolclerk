@@ -502,17 +502,16 @@ export interface Student extends BasePostData {
   classId;
   gender;
 }
+export interface PaymentRaw extends BasePostData {
+  line?: string;
+}
 export interface Payment extends BasePostData {
   paymentLine: string;
-  student?: {
-    firstName: string;
-    surname: string;
-    otherName?: string;
-  };
   amount: number;
   term: "first" | "second" | "third";
   paymentType?: "fee" | "form";
   studentId?: number;
+  rawPaymentId?: number;
   status: "applied" | "pending";
 }
 export interface ClassSubjectAssessment extends BasePostData {
@@ -535,7 +534,8 @@ export interface BasePostData {
     | "class-subject-assessment"
     | "student-subject-assessment"
     | "student"
-    | "student-payment";
+    | "student-payment"
+    | "raw-payment";
   postId?;
 }
 export interface SubjectPostData extends BasePostData {
