@@ -1,13 +1,33 @@
 import Link from "next/link";
 
-export default async function Layout({ children }) {
+export default async function Layout({ children, params }) {
+  const domain = params.domain;
+  const navLinks = [
+    {
+      href: `/dashboard/${domain}/first-term-1446-1447`,
+      label: "Home",
+    },
+    {
+      href: `/dashboard/${domain}/first-term-1446-1447/classrooms`,
+      label: "Classrooms",
+    },
+  ];
   return (
     <>
-      <div className="h-12 px-4 flex  gap-4">
-        <div className="flex-1"></div>
-        <Link href={`/first-term-1446-1447/classrooms`}>Classrooms</Link>
+      <div className="h-16 border-b flex items-center px-6 bg-white">
+        <nav className="flex items-center gap-6 text-sm font-medium">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-foreground transition-colors hover:text-foreground/80"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
       </div>
-      {children}
+      <div className="p-6">{children}</div>
     </>
   );
 }
