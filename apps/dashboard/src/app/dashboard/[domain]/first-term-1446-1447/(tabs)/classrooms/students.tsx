@@ -20,6 +20,7 @@ import { ClassSubjectAssessment } from "@api/db/queries/first-term-data";
 import { ClassroomSubjectData } from "@/components/tables/subjects/columns";
 import { SubjectForm } from "./subject-form";
 import { enToAr, sum } from "@/utils/utils";
+import { RouterOutputs } from "@api/trpc/routers/_app";
 
 export function ClassroomStudents({ classRoomId }) {
   const trpc = useTRPC();
@@ -95,7 +96,9 @@ export function ClassroomStudents({ classRoomId }) {
                     <Fragment key={sai}>
                       {sa.assessments.map((ass, asi) => (
                         <td className="border" key={asi}>
-                          {ass.studentAssessment?.markObtained}
+                          <Assessment assessment={ass}>
+                            {ass.studentAssessment?.markObtained}
+                          </Assessment>
                         </td>
                       ))}
                       <td className="border">
@@ -136,12 +139,11 @@ export function ClassroomStudents({ classRoomId }) {
 }
 
 interface AssessmentProps {
-  assessment: Partial<ClassroomSubjectData>;
+  assessment: RouterOutputs["ftd"]["getClassroomStudents"]["students"][number]["subjectAssessments"][number]["assessments"][number];
   children?;
 }
 function Assessment({ assessment, children }: AssessmentProps) {
-  const { postId, obtainable, classId, index, assessmentType, title } =
-    assessment;
+  const {} = assessment;
   const [opened, setOpened] = useState(false);
   const form = useZodForm(
     z.object({
@@ -152,10 +154,10 @@ function Assessment({ assessment, children }: AssessmentProps) {
     }),
     {
       defaultValues: {
-        title,
-        obtainable,
-        assessmentType,
-        index,
+        // title,
+        // obtainable,
+        // assessmentType,
+        // index,
       },
     },
   );
@@ -173,35 +175,35 @@ function Assessment({ assessment, children }: AssessmentProps) {
         console.log(error);
       },
     };
-    if (assessment.postId) {
-      m.updateAction.mutate(
-        {
-          id: assessment.postId,
-          data: {
-            ...assessment,
-            title,
-            obtainable,
-            assessmentType,
-          },
-        },
-        events,
-      );
-    } else {
-      m.createAction.mutate(
-        {
-          data: {
-            ...assessment,
-            title,
-            obtainable,
-            assessmentType,
-          },
-        },
-        events,
-      );
-    }
+    // if (assessment.postId) {
+    //   m.updateAction.mutate(
+    //     {
+    //       id: assessment.postId,
+    //       data: {
+    //         ...assessment,
+    //         title,
+    //         obtainable,
+    //         assessmentType,
+    //       },
+    //     },
+    //     events,
+    //   );
+    // } else {
+    //   m.createAction.mutate(
+    //     {
+    //       data: {
+    //         ...assessment,
+    //         title,
+    //         obtainable,
+    //         assessmentType,
+    //       },
+    //     },
+    //     events,
+    //   );
+    // }
   }
   return (
-    <Popover>
+    <Popover open={opened} onOpenChange={setOpened}>
       <PopoverTrigger>{children}</PopoverTrigger>
       <PopoverContent className="w-80">
         <div className="grid gap-4">

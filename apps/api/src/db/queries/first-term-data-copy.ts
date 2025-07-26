@@ -34,10 +34,8 @@ export async function generateFirstTermData(ctx: TRPCContext, payload: Data[]) {
             const subjectData = item.subjects[si];
             let subject;
             try {
-              subject = subjects.find(
-                (s) =>
-                  // s.title?.localeCompare(subjectData?.subject!)
-                  s.title === subjectData?.subject!
+              subject = subjects.find((s) =>
+                s.title?.localeCompare(subjectData?.subject!)
               );
             } catch (error) {
               raws.stacks.push({
@@ -84,7 +82,7 @@ export async function generateFirstTermData(ctx: TRPCContext, payload: Data[]) {
             }
           }
           for (let sti = 0; sti < item.students.length; sti++) {
-            // if (sti == 2) throw new Error("BREAK");
+            if (sti == 2) throw new Error("BREAK");
             const studentData = item.students[sti];
             const {
               assessments,
@@ -103,10 +101,8 @@ export async function generateFirstTermData(ctx: TRPCContext, payload: Data[]) {
             });
             payload[ci]!.students[sti]!.id = student.postId;
             assessments.map((assessment) => {
-              const subject = payload[ci]!.subjects?.find(
-                (a) =>
-                  // a.code?.localeCompare(assessment.subjectCode)
-                  a.code === assessment.subjectCode
+              const subject = payload[ci]!.subjects?.find((a) =>
+                a.code?.localeCompare(assessment.subjectCode)
               );
               const subjectAssessmentId = subject?.assessments?.find(
                 (_) => _.code === assessment.assessmentCode
@@ -118,9 +114,9 @@ export async function generateFirstTermData(ctx: TRPCContext, payload: Data[]) {
                 });
                 throw new Error("Assessment Id not found");
               }
-              raws.stackObj.scoreLines[
-                `${studentData?.firstName}--${assessment.subjectCode}--${subject.subject}`
-              ] = assessment.score;
+              //   raws.stackObj.scoreLines[
+              //     `${studentData?.firstName}--${subject.subject}`
+              //   ] = assessment.score;
               assessmentsList.push({
                 markObtained: assessment.score,
                 studentId: student.postId,
