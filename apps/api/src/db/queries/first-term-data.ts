@@ -15,7 +15,7 @@ async function clear(ctx: TRPCContext) {
   });
 }
 export async function generateFirstTermData(ctx: TRPCContext, payload: Data[]) {
-  await clear(ctx);
+  //   await clear(ctx);
   const assessmentsList: Partial<StudentSubjectAssessment>[] = [];
   try {
     await ctx.db.$transaction(
@@ -218,6 +218,26 @@ export async function createPost<T>({ db }, data) {
   });
   return transformData<T>(post);
 }
+export async function updateStudentAssessment(ctx: TRPCContext, { meta }) {
+  const { calculatedScore, subjectAssessmentId, studentId, markObtained } =
+    meta as StudentSubjectAssessment;
+  const p = await getData<StudentSubjectAssessment>(ctx, [
+    pathEquals(
+      "subjectAssessmentId" as keyof StudentSubjectAssessment,
+      subjectAssessmentId
+    ),
+    pathEquals("studentId" as keyof StudentSubjectAssessment, studentId),
+  ]);
+  if (p?.postId) {
+    const { postId, ...rest } = p;
+    rest.markObtained = markObtained;
+    rest.calculatedScore = markObtained;
+    await updatePost(ctx, p.postId, rest);
+  } else
+    await createPost(ctx, {
+      ...meta,
+    });
+}
 export async function updatePost<T>({ db }, id, data) {
   const post = await db.posts.update({
     where: { id },
@@ -332,6 +352,25 @@ async function createStudentSubjectAssessment(
     },
   });
   return transformData<StudentSubjectAssessment>(r);
+}
+export async function getStudentAssessments(
+  ctx: TRPCContext,
+  { studentId, subjectAssessments }
+) {
+  const assessments = await getDataList<StudentSubjectAssessment>(ctx, [
+    pathEquals("type", "student-subject-assessment" as PostTypes),
+    pathEquals("studentId" as keyof StudentSubjectAssessment, studentId),
+  ]);
+  //   const subjectAssessments = await getDaa
+  return assessments.map((studentAssessment) => {
+    const subjectAssessment = (
+      subjectAssessments as ClassSubjectAssessment[]
+    )?.find((a) => a.postId === studentAssessment.subjectAssessmentId);
+    return {
+      studentAssessment,
+      subjectAssessment,
+    };
+  });
 }
 export async function getClassroomStudents(ctx: TRPCContext, classId) {
   //   const classroomSubjects = await getDataList<ClassSubject>(ctx, [

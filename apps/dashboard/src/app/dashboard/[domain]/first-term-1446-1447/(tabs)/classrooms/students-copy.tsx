@@ -29,8 +29,8 @@ export function ClassroomStudents({ classRoomId }) {
       },
       {
         enabled: opened,
-      }
-    )
+      },
+    ),
   );
   useEffect(() => {
     console.log(data);
@@ -38,69 +38,85 @@ export function ClassroomStudents({ classRoomId }) {
   if (!opened) return null;
   return (
     <tr className="">
-      <td colSpan={100}>
-        <div className="p-4 bg-gray-100 rounded-lg">
-          <div className="flex gap-4 mb-4">
-            <p className="font-semibold text-lg">Students</p>
+      <td>
+        <div className="">
+          <div className="flex gap-4">
+            <p>Students</p>
           </div>
-          <div className="overflow-x-auto relative" style={{ height: '600px' }}>
-            <table className="w-full border-collapse bg-white">
-              <thead className="sticky top-0 bg-gray-200 z-10">
-                <tr>
-                  <th className="border p-2 sticky left-0 bg-gray-200 z-20">Student Name</th>
-                  {data?.classSubjects?.classroomSubjects?.map((cs, csi) => (
-                    <th
-                      className="border text-center p-2"
-                      colSpan={cs?.assessments?.length + 1}
-                      key={csi}
-                    >
-                      {cs.title}
-                    </th>
-                  ))}
-                </tr>
-                <tr>
-                  <th className="border p-2 sticky left-0 bg-gray-200 z-20"></th>
-                  {data?.classSubjects?.classroomSubjects?.map((cs, csi) => (
-                    <Fragment key={csi}>
-                      {cs?.assessments?.map((ass, asi) => (
-                        <th
-                          className="transform rotate-90 h-16 border p-2"
-                          colSpan={1}
-                          key={asi}
-                        >
-                          {ass.title}
-                        </th>
-                      ))}
-                      <th className="border transform rotate-90 p-2">Total</th>
-                    </Fragment>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {data?.students.map((student, i) => (
-                  <tr className="hover:bg-gray-50" key={student.postId}>
-                    <td className="border p-2 sticky left-0 bg-white z-10">
-                      <div className="flex gap-2 items-center">
-                        <span className="font-mono text-sm text-gray-500">{enToAr(i + 1)}.</span>
-                        <span className="font-medium">{student.firstName}</span>
-                        <span className="font-semibold">{student.surname}</span>
-                        <span className="text-gray-600">{student.otherName}</span>
-                      </div>
-                    </td>
-                    {student.subjectAssessments.map((sa, sai) => (
-                      <Assessment
-                        studentId={student.postId}
-                        student={student}
-                        index={i % 2 == 0 ? sai : sai + 1}
-                        subjectAssessment={sa}
-                        key={sai}
-                      />
-                    ))}
-                  </tr>
+          <table>
+            <thead>
+              <tr>
+                <th className="border"></th>
+                {data?.classSubjects?.classroomSubjects?.map((cs, csi) => (
+                  <th
+                    className="border text-center"
+                    colSpan={cs?.assessments?.length + 1}
+                    key={csi}
+                  >
+                    {cs.title}
+                  </th>
                 ))}
-              </tbody>
-            </table>
-          </div>
+              </tr>
+              <tr>
+                <th className="border"></th>
+                {data?.classSubjects?.classroomSubjects?.map((cs, csi) => (
+                  <Fragment key={csi}>
+                    {cs?.assessments?.map((ass, asi) => (
+                      <th
+                        className="transform rotate-90 h-16 border"
+                        colSpan={1}
+                        key={asi}
+                      >
+                        {ass.title}
+                      </th>
+                    ))}
+                    <th className="border transform rotate-90">Total</th>
+                  </Fragment>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data?.students.map((student, i) => (
+                <tr className="" key={student.postId}>
+                  <td className="border">
+                    <div className="flex gap-2">
+                      <span>{enToAr(i + 1)}.</span>
+                      <span>{student.firstName}</span>
+                      <span className="font-semibold">{student.surname}</span>
+                      <span>{student.otherName}</span>
+                    </div>
+                  </td>
+                  {student.subjectAssessments.map((sa, sai) => (
+                    <Assessment
+                      studentId={student.postId}
+                      student={student}
+                      index={i % 2 == 0 ? sai : sai + 1}
+                      subjectAssessment={sa}
+                      key={sai}
+                    />
+                  ))}
+                  {/* <div className="flex gap-4">
+                {subject?.assessments?.map((a) => (
+                  <Assessment assessment={a} key={a.postId}>
+                    {a.title}
+                  </Assessment>
+                ))}
+                <Assessment
+                  assessment={{
+                    classId: subject.classId,
+                    type: "class-subject-assessment",
+                    classSubjectId: subject.postId,
+                    assessmentType: "secondary",
+                    index: subject?.assessments?.length,
+                  }}
+                >
+                  <span>Add</span>
+                </Assessment>
+              </div> */}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </td>
     </tr>

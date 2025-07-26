@@ -6,6 +6,7 @@ import {
   getClassrooms,
   getClassroomStudents,
   getClassroomSubjects,
+  getStudentAssessments,
   getSubjects,
   updatePost,
 } from "@api/db/queries/first-term-data";
@@ -35,6 +36,16 @@ export const ftdRouter = createTRPCRouter({
     .query(async (props) => {
       return getClassroomStudents(props.ctx, props.input.classRoomId);
     }),
+  getStudentAssessments: publicProcedure
+    .input(
+      z.object({
+        studentId: z.number(),
+        subjectAssessments: z.array(z.any()),
+      })
+    )
+    .query(async (props) => {
+      return getStudentAssessments(props.ctx, props.input);
+    }),
   getClassRoomSubjects: publicProcedure
     .input(
       z.object({
@@ -43,6 +54,15 @@ export const ftdRouter = createTRPCRouter({
     )
     .query(async (props) => {
       return getClassroomSubjects(props.ctx, props.input.classRoomId);
+    }),
+  updateStudentAssessment: publicProcedure
+    .input(
+      z.object({
+        meta: z.any(),
+      })
+    )
+    .mutation(async (props) => {
+      return await createPost(props.ctx, props.input);
     }),
   createPost: publicProcedure
     .input(

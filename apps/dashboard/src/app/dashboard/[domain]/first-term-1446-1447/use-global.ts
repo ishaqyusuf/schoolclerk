@@ -22,5 +22,7 @@ export function usePostMutate() {
     createAction,
     updateAction,
     isPending: createAction.isPending || updateAction.isPending,
+    isSuccess: createAction.isSuccess || updateAction.isSuccess,
+    isError: createAction.isError || updateAction.isError,
   };
 }
