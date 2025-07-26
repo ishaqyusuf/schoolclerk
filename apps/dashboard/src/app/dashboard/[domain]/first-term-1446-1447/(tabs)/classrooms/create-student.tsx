@@ -225,6 +225,7 @@ export function CreateStudent({ classId }: { classId: number }) {
                       <FormControl>
                         <Textarea
                           placeholder="e.g., John Doe\nJane.Doe"
+                          rows={10}
                           {...field}
                         />
                       </FormControl>
