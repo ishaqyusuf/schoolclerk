@@ -10,38 +10,31 @@ import {
 import { Badge } from "@school-clerk/ui/badge";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHead,
-  TableCell,
-} from "@school-clerk/ui/table";
+import { Table, TableBody, TableRow, TableCell } from "@school-clerk/ui/table";
 import { Checkbox } from "@school-clerk/ui/checkbox";
 import { cn } from "@school-clerk/ui/cn";
 import { useGlobalParams } from "../../use-global";
+import { PrintLayout } from "./print-layout";
 
 export default function ReportSheetPage() {
   const trpc = useTRPC();
   const { data: classrooms, isLoading: isLoadingClassrooms } = useQuery(
     trpc.ftd.classRooms.queryOptions(),
   );
-  const [selectedStudentIds, setSelectedStudentIds] = useState<Set<string>>(
-    new Set(),
+  const g = useGlobalParams();
+  const { data: printList } = useQuery(
+    trpc.ftd.studentPrintData.queryOptions(
+      {
+        studentIds: g.params.selectedStudentIds,
+      },
+      {
+        throwOnError(error) {
+          console.log(error);
+        },
+        enabled: !!g.params.selectedStudentIds?.length,
+      },
+    ),
   );
-
-  const handleSelectStudent = (studentId: string, isSelected: boolean) => {
-    setSelectedStudentIds((prev) => {
-      const newSet = new Set(prev);
-      if (isSelected) {
-        newSet.add(studentId);
-      } else {
-        newSet.delete(studentId);
-      }
-      return newSet;
-    });
-  };
 
   return (
     <div className="flex h-full">
@@ -53,11 +46,7 @@ export default function ReportSheetPage() {
         ) : (
           <div className="space-y-2">
             {classrooms?.map((classroom) => (
-              <ClassroomItem
-                key={classroom.postId}
-                classroom={classroom}
-                onSelectStudent={handleSelectStudent}
-              />
+              <ClassroomItem key={classroom.postId} classroom={classroom} />
             ))}
           </div>
         )}
@@ -66,7 +55,7 @@ export default function ReportSheetPage() {
       {/* Main Content */}
       <div className="flex-1 p-4 overflow-y-auto">
         <h1 className="text-2xl font-bold mb-4">Report Sheet Print Page</h1>
-        <p>Selected Students: {Array.from(selectedStudentIds).join(", ")}</p>
+        {printList?.map((p) => <PrintLayout key={p.student.postId} data={p} />)}
       </div>
     </div>
   );
@@ -74,10 +63,9 @@ export default function ReportSheetPage() {
 
 interface ClassroomItemProps {
   classroom: any;
-  onSelectStudent: (studentId: string, isSelected: boolean) => void;
 }
 
-function ClassroomItem({ classroom, onSelectStudent }: ClassroomItemProps) {
+function ClassroomItem({ classroom }: ClassroomItemProps) {
   const g = useGlobalParams();
   const [isOpen, setIsOpen] = useState(false);
   const trpc = useTRPC();
@@ -124,12 +112,9 @@ function ClassroomItem({ classroom, onSelectStudent }: ClassroomItemProps) {
                           : g.params.selectedStudentIds?.filter(
                               (a) => a != student.postId,
                             ) || null;
-                        console.log(newRes);
-                        // return;
                         g.setParams({
                           selectedStudentIds: newRes,
                         });
-                        onSelectStudent(student.id, checked as boolean);
                       }}
                     />
                     <p className="font-medium inline-flex gap-1">

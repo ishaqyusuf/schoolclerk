@@ -540,6 +540,123 @@ export async function getClassrooms(ctx: TRPCContext) {
   );
   return classrooms;
 }
+export async function getStudentsPrintdata(
+  ctx: TRPCContext,
+  studentIds: number[]
+) {
+  const studentIdsArray = studentIds
+    .filter((a) => a > 0)
+    .map((id) => ({
+      id,
+    }));
+  if (!studentIdsArray.length)
+    throw new Error(
+      `student ids not found: ${JSON.stringify({ studentIds, studentIdsArray })}`
+    );
+  const students = await getDataList<Student>(ctx, [
+    pathEquals("type", "student" as PostTypes),
+    {
+      OR: studentIdsArray,
+    },
+  ]);
+  if (!students?.length)
+    throw new Error(`Students not found ${JSON.stringify(studentIds)}`);
+  const classList = await getDataList<ClassPostData>(ctx, [
+    pathEquals("type", "class" as PostTypes),
+    {
+      OR: Array.from(new Set(students.map((a) => a.classId))).map((id) => ({
+        id,
+      })),
+    },
+  ]);
+  const response = await Promise.all(
+    classList
+      .map(async (classroom) => {
+        const classAssessments = await getDataList<StudentSubjectAssessment>(
+          ctx,
+          [
+            pathEquals("type", "student-subject-assessment" as PostTypes),
+            pathEquals(
+              "classId" as keyof ClassSubjectAssessment,
+              classroom.postId
+            ),
+          ]
+        );
+        const classSubjects = await getClassroomSubjects(ctx, classroom.postId);
+        return students
+          .filter((s) => s.classId === classroom.postId)
+          .map((student) => {
+            const subjectList = classSubjects.classroomSubjects.map((a) => {
+              const assessments = a.assessments.map((_as) => {
+                return {
+                  obtainable: _as.obtainable,
+                  obtained: classAssessments.find(
+                    (cas) =>
+                      cas.studentId === student.postId &&
+                      cas.subjectAssessmentId === _as.postId
+                  )?.calculatedScore,
+                  label: _as.title,
+                  index: _as.index,
+                };
+              });
+              return {
+                title: a.title,
+                assessments,
+                index: a.index,
+              };
+            });
+            const tables: {
+              [tk in string]: {
+                columns: {
+                  label?: string;
+                  subLabel?: string;
+                }[];
+                rows: {
+                  columns: {
+                    value?;
+                    // style?: '
+                  }[];
+                }[];
+              };
+            } = {};
+            subjectList.map((subject) => {
+              const assessmentCode = subject.assessments
+                .map((a) => {
+                  a.label;
+                })
+                .join("-");
+              if (!tables[assessmentCode])
+                tables[assessmentCode] = {
+                  columns: subject.assessments.map((a) => ({
+                    label: a.label,
+                    subLabel: a.obtainable,
+                  })),
+                  rows: [],
+                };
+              tables[assessmentCode].rows.push({
+                columns: subject.assessments.map((a) => ({
+                  value: a.obtained,
+                })),
+              });
+            });
+            return {
+              tables: Object.values(tables),
+              grade: {
+                obtained: 0,
+                obtainable: 0,
+                totalStudents: 0,
+                position: 0,
+              },
+              subjectList,
+              student,
+              classroom: { title: classroom.classTitle },
+            };
+          });
+      })
+      .flat()
+  );
+  return response.flat();
+}
 async function getStudentAssessmentForm(ctx: TRPCContext, studentId) {
   const student = await getData<Student>(ctx, null, studentId);
   const assessments = await getDataList<StudentSubjectAssessment>(ctx, [
@@ -597,6 +714,7 @@ export interface ClassSubjectAssessment extends BasePostData {
 export interface ClassSubject extends BasePostData {
   classId;
   subjectId;
+  index;
 }
 export interface BasePostData {
   type:

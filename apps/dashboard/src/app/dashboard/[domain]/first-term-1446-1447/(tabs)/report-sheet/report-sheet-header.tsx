@@ -1,14 +1,14 @@
 import { moonDance } from "@/fonts";
 import { enToAr } from "@/utils/utils";
 import { cn } from "@school-clerk/ui/cn";
+import { PrintLayoutProps } from "./print-layout";
 
 const schoolName = `مدرسـة دار الحديث لتحفيـظ القرآن والسنـة`;
-export default function ResultPrintHeader({
-  term = "الثالثة",
-  fasl,
-  data,
-  student,
-}) {
+
+export function ReportSheetHeader(
+  // { term = "الثالثة", fasl, data, student }
+  { data }: PrintLayoutProps,
+) {
   return (
     <div className="mb-3s">
       <div className="space-y-2">
@@ -35,9 +35,11 @@ export default function ResultPrintHeader({
               <span>:</span>
               <div className="inline-flex w-full border-b-2 border-dashed border-muted-foreground px-4 text-xl">
                 {/* {student.fullName} */}
-                {student.pritName?.map((p, i) => (
-                  <div className="px-2">{p}</div>
-                ))}
+                {[
+                  data.student.firstName,
+                  data.student.surname,
+                  data.student.otherName,
+                ]?.map((p, i) => <div className="px-2">{p}</div>)}
               </div>
             </div>
             <div className="flex items-end">
@@ -51,22 +53,22 @@ export default function ResultPrintHeader({
               <span className="text-black/70">الفصل</span>
               <span>:</span>
               <span className="mx-1 border-b border-muted-foreground">
-                {fasl}
+                {data.classroom.title}
               </span>
             </div>
             <div className="flex items-end">
               <span className="text-black/70">الفترة</span>
               <span>:</span>
               <span className="mx-1 border-b border-muted-foreground">
-                {term}
+                {`term`}
               </span>
             </div>
             <div className="">
               <span className="text-black/70">المجموع الكلي </span>
               <span>:</span>
               <span className="mx-1 border-b border-muted-foreground">
-                {`${enToAr(student.result.totalScores.obtained)}/${enToAr(
-                  student.result.totalScores.obtainable,
+                {`${enToAr(data.grade.obtained)}/${enToAr(
+                  data.grade.obtainable,
                 )}`}
               </span>
             </div>
@@ -74,14 +76,14 @@ export default function ResultPrintHeader({
               <span className="text-black/70">عدد الطلاب في الفصل</span>
               <span>:</span>
               <span className="mx-1 border-b border-muted-foreground">
-                {enToAr(data.students.length)}
+                {enToAr(data.grade.totalStudents)}
               </span>
             </div>
             <div className="">
               <span className="text-black/70">الدرجة</span>
               <span>:</span>
               <span className="mx-1 border-b border-muted-foreground">
-                {`${enToAr(student.result.totalScores)}`}
+                {`${enToAr(data.grade.position)}`}
               </span>
             </div>
             <div className="">

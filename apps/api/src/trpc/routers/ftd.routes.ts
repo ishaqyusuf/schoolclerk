@@ -10,6 +10,7 @@ import {
   getClassroomSubjects,
   getPaymentsList,
   getStudentAssessments,
+  getStudentsPrintdata,
   getSubjects,
   updatePost,
   updateStudentAssessment,
@@ -33,6 +34,15 @@ export const ftdRouter = createTRPCRouter({
     )
     .mutation(async (props) => {
       return generateFirstTermData(props.ctx, props.input.payload);
+    }),
+  studentPrintData: publicProcedure
+    .input(
+      z.object({
+        studentIds: z.array(z.number()),
+      })
+    )
+    .query(async (props) => {
+      return getStudentsPrintdata(props.ctx, props.input.studentIds);
     }),
   classRooms: publicProcedure.query(async (props) => {
     return getClassrooms(props.ctx);
