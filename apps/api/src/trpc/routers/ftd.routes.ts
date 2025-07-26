@@ -5,6 +5,7 @@ import {
   findStudents,
   generateFirstTermData,
   getClassrooms,
+  getClassroomStudentList,
   getClassroomStudents,
   getClassroomSubjects,
   getPaymentsList,
@@ -50,6 +51,15 @@ export const ftdRouter = createTRPCRouter({
     )
     .query(async (props) => {
       return getClassroomStudents(props.ctx, props.input.classRoomId);
+    }),
+  getClassroomStudentList: publicProcedure
+    .input(
+      z.object({
+        classRoomId: z.number(),
+      })
+    )
+    .query(async (props) => {
+      return getClassroomStudentList(props.ctx, props.input.classRoomId);
     }),
   getStudentAssessments: publicProcedure
     .input(

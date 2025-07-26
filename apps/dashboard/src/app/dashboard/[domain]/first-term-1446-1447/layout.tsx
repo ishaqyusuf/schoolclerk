@@ -15,6 +15,10 @@ export default async function Layout({ children, params }) {
       href: `/first-term-1446-1447/payments`,
       label: "Payments",
     },
+    {
+      href: `/first-term-1446-1447/report-sheet`,
+      label: "Report Sheet",
+    },
   ];
   return (
     <>

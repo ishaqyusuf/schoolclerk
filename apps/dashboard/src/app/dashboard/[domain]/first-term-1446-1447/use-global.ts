@@ -1,13 +1,14 @@
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryStates } from "nuqs";
-import { parseAsInteger, parseAsStringEnum } from "nuqs/server";
+import { parseAsArrayOf, parseAsInteger, parseAsStringEnum } from "nuqs/server";
 
 export function useGlobalParams() {
   const [params, setParams] = useQueryStates({
     openClassSubjectId: parseAsInteger,
     openStudentsForClass: parseAsInteger,
     tab: parseAsStringEnum(["classStudents", "classSubjects"]),
+    selectedStudentIds: parseAsArrayOf(parseAsInteger),
   });
   return {
     params,

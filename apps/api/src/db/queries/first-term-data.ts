@@ -433,11 +433,36 @@ export async function getStudentAssessments(
     };
   });
 }
+export async function getClassroomStudentList(ctx: TRPCContext, classId) {
+  const classSubjects = await getClassroomSubjects(ctx, classId);
+  const students = await getDataList<Student>(ctx, [
+    pathEquals("type", "student" as PostTypes),
+    pathEquals("classId" as keyof Student, classId),
+  ]);
+  const assessments = await getDataList<StudentSubjectAssessment>(ctx, [
+    pathEquals("type", "student-subject-assessment" as PostTypes),
+  ]);
+
+  type T = ClassSubjectAssessment;
+  const paymentList = await getDataList<Payment>(ctx, [
+    pathEquals("type", "student-payment" as PostTypes),
+    pathEquals("classId" as keyof Payment, classId),
+  ]);
+  return {
+    assessments,
+    classSubjects,
+    students: students.map((student) => {
+      const payments = paymentList.filter(
+        (p) => p.studentId === student.postId
+      );
+      return {
+        ...student,
+        payments,
+      };
+    }),
+  };
+}
 export async function getClassroomStudents(ctx: TRPCContext, classId) {
-  //   const classroomSubjects = await getDataList<ClassSubject>(ctx, [
-  //     pathEquals("type", "class-subject" as PostTypes),
-  //     pathEquals("classId" as keyof ClassSubject, classId),
-  //   ]);
   const classSubjects = await getClassroomSubjects(ctx, classId);
   const students = await getDataList<Student>(ctx, [
     pathEquals("type", "student" as PostTypes),
@@ -557,6 +582,7 @@ export interface Payment extends BasePostData {
   term: "first" | "second" | "third";
   paymentType?: "fee" | "form";
   studentId?: number;
+  classId?: number;
   rawPaymentId?: number;
   status: "applied" | "pending";
 }
