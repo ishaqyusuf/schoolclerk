@@ -269,7 +269,6 @@ function AssessmentInput({
       return;
     }
 
-    console.log(_meta);
     updater.mutate({
       meta: _meta,
     });

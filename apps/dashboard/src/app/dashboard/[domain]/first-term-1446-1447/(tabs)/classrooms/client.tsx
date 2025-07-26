@@ -11,6 +11,8 @@ import { ClassroomStudents } from "./students";
 
 import { Button } from "@school-clerk/ui/button";
 
+import { CreateStudent } from "./create-student";
+
 export function Client() {
   const trpc = useTRPC();
   const { data } = useQuery(trpc.ftd.classRooms.queryOptions());
@@ -57,6 +59,7 @@ export function Client() {
                     >
                       Students
                     </Button>
+                    <CreateStudent classId={classroom.postId} />
                   </div>
                 </TableCell>
               </TableRow>
