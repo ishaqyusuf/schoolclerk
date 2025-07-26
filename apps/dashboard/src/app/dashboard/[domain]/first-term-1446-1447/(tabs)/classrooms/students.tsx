@@ -125,18 +125,8 @@ interface AssessmentProps {
   index;
   studentId;
 }
-function Assessment({
-  subjectAssessment,
-  student,
-  studentId,
-  index,
-}: AssessmentProps) {
-  const { classroomSubjectId } = subjectAssessment;
+function Assessment({ subjectAssessment, student, index }: AssessmentProps) {
   const [opened, setOpened] = useState(false);
-
-  const m = usePostMutate();
-  const trpc = useTRPC();
-  const qc = useQueryClient();
 
   const { assessments: _assessments } = subjectAssessment;
   const [assessments, setAssessments] = useState(_assessments);
