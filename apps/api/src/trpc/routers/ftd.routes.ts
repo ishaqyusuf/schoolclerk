@@ -80,6 +80,12 @@ export const ftdRouter = createTRPCRouter({
       })
     )
     .mutation(async (props) => {
+      if (Array.isArray(props.input.data)) {
+        const result = await Promise.all(
+          props.input.data.map((item) => createPost(props.ctx, item))
+        );
+        return result;
+      }
       return await createPost(props.ctx, props.input.data);
     }),
   updatePost: publicProcedure
