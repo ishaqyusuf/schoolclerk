@@ -49,3 +49,10 @@
     --ring: 240 4.9% 83.9%;
   }
 }
+
+td.score {
+  @apply w-6 border cursor-pointer p-1 px-2;
+}
+td.total {
+  @apply font-semibold;
+}

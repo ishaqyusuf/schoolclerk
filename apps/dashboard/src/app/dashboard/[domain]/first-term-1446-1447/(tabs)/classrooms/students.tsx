@@ -21,6 +21,7 @@ import { ClassroomSubjectData } from "@/components/tables/subjects/columns";
 import { SubjectForm } from "./subject-form";
 import { enToAr, sum } from "@/utils/utils";
 import { RouterOutputs } from "@api/trpc/routers/_app";
+import { cn } from "@school-clerk/ui/cn";
 
 export function ClassroomStudents({ classRoomId }) {
   const trpc = useTRPC();
@@ -93,22 +94,11 @@ export function ClassroomStudents({ classRoomId }) {
                     </div>
                   </td>
                   {student.subjectAssessments.map((sa, sai) => (
-                    <Fragment key={sai}>
-                      {sa.assessments.map((ass, asi) => (
-                        <td className="border" key={asi}>
-                          <Assessment assessment={ass}>
-                            {ass.studentAssessment?.markObtained}
-                          </Assessment>
-                        </td>
-                      ))}
-                      <td className="border">
-                        {sum(
-                          sa.assessments?.map(
-                            (a) => a?.studentAssessment?.markObtained,
-                          ),
-                        )}
-                      </td>
-                    </Fragment>
+                    <Assessment
+                      index={i % 2 == 0 ? sai : sai + 1}
+                      subjectAssessment={sa}
+                      key={sai}
+                    />
                   ))}
                   {/* <div className="flex gap-4">
                 {subject?.assessments?.map((a) => (
@@ -139,11 +129,10 @@ export function ClassroomStudents({ classRoomId }) {
 }
 
 interface AssessmentProps {
-  assessment: RouterOutputs["ftd"]["getClassroomStudents"]["students"][number]["subjectAssessments"][number]["assessments"][number];
-  children?;
+  subjectAssessment: RouterOutputs["ftd"]["getClassroomStudents"]["students"][number]["subjectAssessments"][number]; //["assessments"][number];
+  index;
 }
-function Assessment({ assessment, children }: AssessmentProps) {
-  const {} = assessment;
+function Assessment({ subjectAssessment, index }: AssessmentProps) {
   const [opened, setOpened] = useState(false);
   const form = useZodForm(
     z.object({
@@ -202,37 +191,56 @@ function Assessment({ assessment, children }: AssessmentProps) {
     //   );
     // }
   }
+  const { assessments } = subjectAssessment;
   return (
-    <Popover open={opened} onOpenChange={setOpened}>
-      <PopoverTrigger>{children}</PopoverTrigger>
-      <PopoverContent className="w-80">
-        <div className="grid gap-4">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <FormInput control={form.control} name="title" label="Title" />
-              <FormInput
-                control={form.control}
-                name="index"
-                label="Index"
-                type="number"
-              />
-              <FormInput
-                control={form.control}
-                name="obtainable"
-                label="Obtainable"
-                type="number"
-              />
-              <FormSelect
-                label="Assessment Type"
-                options={["primary", "secondary"]}
-                control={form.control}
-                name="assessmentType"
-              />
-              <SubmitButton isSubmitting={m.isPending}>Submit</SubmitButton>
-            </form>
-          </Form>
-        </div>
-      </PopoverContent>
-    </Popover>
+    <Fragment>
+      {assessments.map((ass, asi) => (
+        <td
+          onClick={(e) => {
+            setOpened(!opened);
+          }}
+          className={cn("score", index % 2 == 0 ? "bg-muted" : "bg")}
+          key={asi}
+        >
+          {ass.studentAssessment?.markObtained}
+        </td>
+      ))}
+      <Popover open={opened} onOpenChange={setOpened}>
+        <PopoverTrigger asChild>
+          {/* {children} */}
+          <td className={cn("score total", index % 2 == 0 ? "bg-muted" : "bg")}>
+            {sum(assessments?.map((a) => a?.studentAssessment?.markObtained))}
+          </td>
+        </PopoverTrigger>
+        <PopoverContent className="w-80">
+          <div className="grid gap-4">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <FormInput control={form.control} name="title" label="Title" />
+                <FormInput
+                  control={form.control}
+                  name="index"
+                  label="Index"
+                  type="number"
+                />
+                <FormInput
+                  control={form.control}
+                  name="obtainable"
+                  label="Obtainable"
+                  type="number"
+                />
+                <FormSelect
+                  label="Assessment Type"
+                  options={["primary", "secondary"]}
+                  control={form.control}
+                  name="assessmentType"
+                />
+                <SubmitButton isSubmitting={m.isPending}>Submit</SubmitButton>
+              </form>
+            </Form>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </Fragment>
   );
 }
