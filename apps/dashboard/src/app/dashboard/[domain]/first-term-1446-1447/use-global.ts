@@ -9,6 +9,7 @@ export function useGlobalParams() {
     openStudentsForClass: parseAsInteger,
     tab: parseAsStringEnum(["classStudents", "classSubjects"]),
     selectedStudentIds: parseAsArrayOf(parseAsInteger),
+    printFilterClassIds: parseAsArrayOf(parseAsInteger),
   });
   return {
     params,

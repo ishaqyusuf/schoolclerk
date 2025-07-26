@@ -1,5 +1,5 @@
 import type { TRPCContext } from "@api/trpc/init";
-import { generateRandomString } from "@school-clerk/utils";
+import { enToAr, generateRandomString, sum } from "@school-clerk/utils";
 const postCode = `firstTerm-1446-1447`;
 const raws = {
   stacks: [] as any[],
@@ -302,7 +302,7 @@ export async function updatePost<T>({ db }, id, data) {
     data: {
       data: {
         ...oldPostData,
-        ...postData,
+        ...data,
       } as any,
     },
   });
@@ -492,9 +492,15 @@ export async function getClassroomStudents(ctx: TRPCContext, classId) {
           ),
         })),
       }));
+      const totalScore = sum(
+        subjectAssessments.flatMap((sa) =>
+          sa.assessments.map((ass) => ass.studentAssessment?.markObtained || 0)
+        )
+      );
       return {
         ...student,
         subjectAssessments,
+        totalScore,
       };
     }),
   };
@@ -619,7 +625,7 @@ export async function getStudentsPrintdata(
                 }[];
               };
             } = {};
-            subjectList.map((subject) => {
+            subjectList.map((subject, si) => {
               const assessmentCode = subject.assessments
                 .map((a) => {
                   a.label;
@@ -627,16 +633,26 @@ export async function getStudentsPrintdata(
                 .join("-");
               if (!tables[assessmentCode])
                 tables[assessmentCode] = {
-                  columns: subject.assessments.map((a) => ({
-                    label: a.label,
-                    subLabel: a.obtainable,
-                  })),
+                  columns: [
+                    {
+                      label: `المواد`,
+                    },
+                    ...subject.assessments.map((a) => ({
+                      label: a.label,
+                      subLabel: a.obtainable,
+                    })),
+                  ],
                   rows: [],
                 };
               tables[assessmentCode].rows.push({
-                columns: subject.assessments.map((a) => ({
-                  value: a.obtained,
-                })),
+                columns: [
+                  {
+                    value: `${enToAr(si + 1)}. ${subject.title}`,
+                  },
+                  ...subject.assessments.map((a) => ({
+                    value: a.obtained,
+                  })),
+                ],
               });
             });
             return {

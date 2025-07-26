@@ -9,8 +9,8 @@ export function PrintLayout(props: PrintLayoutProps) {
     <div className="">
       <ReportSheetHeader data={props.data} />
       {props?.data?.tables?.map((table, ti) => (
-        <table className="" key={ti}>
-          <thead>
+        <table dir={"rtl"} className="w-full" key={ti}>
+          <thead className="">
             <tr>
               {table.columns?.map((c, ci) => (
                 <th key={ci}>

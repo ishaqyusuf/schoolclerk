@@ -19,6 +19,7 @@ import FormSelect from "@/components/controls/form-select";
 import { ClassSubjectAssessment } from "@api/db/queries/first-term-data";
 import { ClassroomSubjectData } from "@/components/tables/subjects/columns";
 import { SubjectForm } from "./subject-form";
+import { toast } from "@school-clerk/ui/use-toast";
 
 export function ClassroomSubjects({ classRoomId }) {
   const trpc = useTRPC();
@@ -33,8 +34,8 @@ export function ClassroomSubjects({ classRoomId }) {
       },
       {
         enabled: opened,
-      }
-    )
+      },
+    ),
   );
 
   if (!opened) return null;
@@ -46,7 +47,7 @@ export function ClassroomSubjects({ classRoomId }) {
             <p className="font-semibold text-lg">Subjects</p>
             <SubjectForm
               selectableSubjects={data?.subjects?.filter((a) =>
-                data?.classroomSubjects?.every((b) => b.subjectId != a.postId)
+                data?.classroomSubjects?.every((b) => b.subjectId != a.postId),
               )}
               subject={{}}
             >
@@ -69,7 +70,9 @@ export function ClassroomSubjects({ classRoomId }) {
                       <div className="flex gap-2 flex-wrap">
                         {subject?.assessments?.map((a) => (
                           <Assessment assessment={a} key={a.postId}>
-                            <Button variant="outline" size="sm">{a.title}</Button>
+                            <Button variant="outline" size="sm">
+                              {a.title}
+                            </Button>
                           </Assessment>
                         ))}
                         <Assessment
@@ -127,10 +130,17 @@ function Assessment({ assessment, children }: AssessmentProps) {
   const trpc = useTRPC();
   const qc = useQueryClient();
   async function onSubmit({ title, obtainable, assessmentType }) {
+    // console.log({ title });
+    // return;
     const events = {
       onSuccess(data, variables, context) {
         qc.invalidateQueries({
           queryKey: trpc.ftd.getClassRoomSubjects.queryKey(),
+        });
+        toast({
+          // type: "",
+          variant: "success",
+          description: "Updated successfully",
         });
       },
       onError(error, variables, context) {

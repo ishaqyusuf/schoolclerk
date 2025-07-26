@@ -28,6 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@school-clerk/ui/select";
+import { sortClassroomStudents } from "../../utils";
 
 export function ClassroomStudents({ classRoomId }) {
   const trpc = useTRPC();
@@ -48,31 +49,7 @@ export function ClassroomStudents({ classRoomId }) {
   const [sortBy, setSortBy] = useState<"name" | "grade">("name");
 
   const sortedStudents = useMemo(() => {
-    if (!data?.students) return [];
-    const students = [...data.students];
-    if (sortBy === "name") {
-      return students.sort((a, b) => {
-        if (a.gender !== b.gender) {
-          return a.gender === "M" ? -1 : 1;
-        }
-        return a.firstName.localeCompare(b.firstName);
-      });
-    } else if (sortBy === "grade") {
-      return students.sort((a, b) => {
-        const aTotal = sum(
-          a.subjectAssessments.flatMap((sa) =>
-            sa.assessments.map((ass) => ass.studentAssessment?.markObtained || 0),
-          ),
-        );
-        const bTotal = sum(
-          b.subjectAssessments.flatMap((sa) =>
-            sa.assessments.map((ass) => ass.studentAssessment?.markObtained || 0),
-          ),
-        );
-        return bTotal - aTotal;
-      });
-    }
-    return students;
+    return sortClassroomStudents([...(data?.students || [])], sortBy);
   }, [data?.students, sortBy]);
 
   useEffect(() => {

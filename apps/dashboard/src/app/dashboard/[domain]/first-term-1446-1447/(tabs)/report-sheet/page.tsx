@@ -9,12 +9,14 @@ import {
 } from "@school-clerk/ui/collapsible";
 import { Badge } from "@school-clerk/ui/badge";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Table, TableBody, TableRow, TableCell } from "@school-clerk/ui/table";
 import { Checkbox } from "@school-clerk/ui/checkbox";
 import { cn } from "@school-clerk/ui/cn";
 import { useGlobalParams } from "../../use-global";
 import { PrintLayout } from "./print-layout";
+import { sortClassroomStudents } from "../../utils";
+import { useStore } from "../../store";
 
 export default function ReportSheetPage() {
   const trpc = useTRPC();
@@ -67,7 +69,8 @@ interface ClassroomItemProps {
 
 function ClassroomItem({ classroom }: ClassroomItemProps) {
   const g = useGlobalParams();
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(g.params.printFilterClassIds);
+  const isOpen = g.params.printFilterClassIds?.includes(classroom.postId);
   const trpc = useTRPC();
   const { data: students, isLoading: isLoadingStudents } = useQuery(
     trpc.ftd.getClassroomStudents.queryOptions(
@@ -75,11 +78,64 @@ function ClassroomItem({ classroom }: ClassroomItemProps) {
       { enabled: isOpen },
     ),
   );
+  const store = useStore();
+  useEffect(() => {
+    if (!students?.students?.length) {
+      console.log("NO STUDENTS");
+      return;
+    }
+    const sorted = sortClassroomStudents([...students?.students], "grade");
+    sorted.map((a, i) => {
+      store.update(`studentGrade.${a.postId}`, {
+        totalScore: a.totalScore!,
+        position:
+          sorted.filter((b) => b.totalScore! > a.totalScore!)?.length + 1,
+        totalStudents: sorted.length,
+      });
+    });
+    console.log({ sorted });
+    // const posistioned = students.students
+    //   .map((a) => {
+    //     let totalScore = 0;
+    //     a.subjectAssessments.map((sa) => {
+    //       sa.assessments.map((sas) => {
+    //         if (sas.subjectAssessment?.assessmentType == "primary") {
+    //           totalScore += Number(sas.studentAssessment?.markObtained) || 0;
+    //         }
+    //       });
+    //     });
+    //     return {
+    //       totalScore,
+    //       studentId: a.postId,
+    //     };
+    //   })
+    //   .sort((a, b) => a.totalScore - b.totalScore);
+    // console.log(posistioned);
+  }, [students]);
+  const sortedStudents = useMemo(() => {
+    // console.log("DATA>>>>");
+    return sortClassroomStudents([...(students?.students || [])], "name");
+  }, [students?.students]);
+  // const { data: classRoom } = useQuery(
+  //   trpc.ftd.class.queryOptions(
+  //     { classRoomId: classroom.postId },
+  //     { enabled: isOpen },
+  //   ),
+  // );
 
   return (
     <Collapsible
       open={isOpen}
-      onOpenChange={setIsOpen}
+      onOpenChange={(e) => {
+        const newRes = e
+          ? [...(g.params.printFilterClassIds || []), classroom.postId]
+          : g.params.printFilterClassIds?.filter(
+              (a) => a != classroom.postId,
+            ) || null;
+        g.setParams({
+          printFilterClassIds: newRes,
+        });
+      }}
       className="w-full space-y-2"
     >
       <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md border p-2 py-2 text-left font-medium transition-all hover:bg-gray-100 [&[data-state=open]>svg]:rotate-180">
@@ -96,7 +152,7 @@ function ClassroomItem({ classroom }: ClassroomItemProps) {
         ) : (
           <Table dir="rtl" className="">
             <TableBody>
-              {students?.students?.map((student: any) => (
+              {sortedStudents?.map((student: any) => (
                 <TableRow onClick={(e) => {}} key={student.postId}>
                   <TableCell className="inline-flex  gap-2 items-center">
                     <Checkbox
@@ -117,7 +173,7 @@ function ClassroomItem({ classroom }: ClassroomItemProps) {
                         });
                       }}
                     />
-                    <p className="font-medium inline-flex gap-1">
+                    <div dir="rtl" className="font-medium inline-flex gap-1">
                       {[
                         student.firstName,
                         student.surname,
@@ -125,7 +181,7 @@ function ClassroomItem({ classroom }: ClassroomItemProps) {
                       ].map((a) => (
                         <span>{a}</span>
                       ))}
-                    </p>
+                    </div>
 
                     {student.payments?.map((payment: any, index: number) => (
                       <Badge

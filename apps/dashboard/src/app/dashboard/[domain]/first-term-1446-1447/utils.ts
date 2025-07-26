@@ -1,0 +1,35 @@
+import { sum } from "@/utils/utils";
+
+export function sortClassroomStudents<T>(
+  students: T[],
+  sortBy: "name" | "grade",
+): T[] {
+  if (!students) return [] as any;
+  const __students = [...students] as any;
+  if (sortBy === "name") {
+    return __students.sort((a, b) => {
+      if (a.gender !== b.gender) {
+        return a.gender === "M" ? -1 : 1;
+      }
+      return a.firstName.localeCompare(b.firstName);
+    });
+  } else if (sortBy === "grade") {
+    return __students.sort(
+      (a, b) => b.totalScore - a.totalScore,
+      //     {
+      //   const aTotal = sum(
+      //     a.subjectAssessments.flatMap((sa) =>
+      //       sa.assessments.map((ass) => ass.studentAssessment?.markObtained || 0),
+      //     ),
+      //   );
+      //   const bTotal = sum(
+      //     b.subjectAssessments.flatMap((sa) =>
+      //       sa.assessments.map((ass) => ass.studentAssessment?.markObtained || 0),
+      //     ),
+      //   );
+      //   return bTotal - aTotal;
+      // }
+    );
+  }
+  return students;
+}
