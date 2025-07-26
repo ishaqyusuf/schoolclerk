@@ -4,15 +4,15 @@ export default async function Layout({ children, params }) {
   const domain = params.domain;
   const navLinks = [
     {
-      href: `/dashboard/${domain}/first-term-1446-1447`,
+      href: `/first-term-1446-1447`,
       label: "Home",
     },
     {
-      href: `/dashboard/${domain}/first-term-1446-1447/classrooms`,
+      href: `/first-term-1446-1447/classrooms`,
       label: "Classrooms",
     },
     {
-      href: `/dashboard/${domain}/first-term-1446-1447/payments`,
+      href: `/first-term-1446-1447/payments`,
       label: "Payments",
     },
   ];

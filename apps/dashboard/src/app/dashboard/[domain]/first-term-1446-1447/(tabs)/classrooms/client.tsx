@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { useGlobalParams } from "../../use-global";
@@ -12,6 +11,7 @@ import { ClassroomStudents } from "./students";
 import { Button } from "@school-clerk/ui/button";
 
 import { CreateStudent } from "./create-student";
+import { CreateClassroom } from "./create-class-room";
 
 export function Client() {
   const trpc = useTRPC();
@@ -19,6 +19,9 @@ export function Client() {
   const g = useGlobalParams();
   return (
     <>
+      <div className="">
+        <CreateClassroom />
+      </div>
       <Table dir={"rtl"} className="">
         <TableBody>
           {data?.map((classroom) => (

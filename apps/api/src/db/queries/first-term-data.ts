@@ -582,7 +582,7 @@ export interface SubjectPostData extends BasePostData {
 export interface ClassPostData extends BasePostData {
   classCode: string;
   classTitle: string;
-  courseIndex;
+  classIndex?: number;
 }
 export interface Data {
   course: string;
