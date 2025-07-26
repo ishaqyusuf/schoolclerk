@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "@/components/menu";
+
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { useGlobalParams } from "../../use-global";
@@ -8,6 +8,8 @@ import { Table, TableBody, TableCell, TableRow } from "@school-clerk/ui/table";
 import { Fragment } from "react";
 import { ClassroomSubjects } from "./subjects";
 import { ClassroomStudents } from "./students";
+
+import { Button } from "@school-clerk/ui/button";
 
 export function Client() {
   const trpc = useTRPC();
@@ -21,33 +23,41 @@ export function Client() {
             <Fragment key={classroom.postId}>
               <TableRow className="">
                 <TableCell className="inline-flex items-center gap-4">
-                  <span>
-                    <Menu>
-                      <Menu.Item
-                        onClick={(e) => {
-                          g.setParams({
-                            openClassSubjectId: classroom.postId,
-                            // openStudentsForClass: null,
-                            tab: "classSubjects",
-                          });
-                        }}
-                      >
-                        Subjects
-                      </Menu.Item>
-                      <Menu.Item
-                        onClick={(e) => {
-                          g.setParams({
-                            openStudentsForClass: classroom.postId,
-                            // openClassSubjectId: null,
-                            tab: "classStudents",
-                          });
-                        }}
-                      >
-                        Students
-                      </Menu.Item>
-                    </Menu>
-                  </span>
                   <span> {classroom.classTitle}</span>
+                  <div className="flex gap-2">
+                    <Button
+                      variant={
+                        g.params.openClassSubjectId === classroom.postId &&
+                        g.params.tab === "classSubjects"
+                          ? "default"
+                          : "secondary"
+                      }
+                      onClick={(e) => {
+                        g.setParams({
+                          openClassSubjectId: classroom.postId,
+                          tab: "classSubjects",
+                        });
+                      }}
+                    >
+                      Subjects
+                    </Button>
+                    <Button
+                      variant={
+                        g.params.openStudentsForClass === classroom.postId &&
+                        g.params.tab === "classStudents"
+                          ? "default"
+                          : "secondary"
+                      }
+                      onClick={(e) => {
+                        g.setParams({
+                          openStudentsForClass: classroom.postId,
+                          tab: "classStudents",
+                        });
+                      }}
+                    >
+                      Students
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
               <ClassroomSubjects classRoomId={classroom.postId} />
