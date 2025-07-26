@@ -172,6 +172,13 @@ async function getClassroom(ctx, classTitle) {
   const classRoom = await createPost<ClassPostData>(ctx, data);
   if (classRoom) return classRoom;
 }
+export async function getPaymentsList(ctx: TRPCContext) {
+  const payments = await getDataList<Payment>(
+    ctx,
+    pathEquals("type", "payment")
+  );
+  return { payments };
+}
 export async function getSubjects(ctx) {
   const subjects = await getDataList<SubjectPostData>(
     ctx,
@@ -495,6 +502,19 @@ export interface Student extends BasePostData {
   classId;
   gender;
 }
+export interface Payment extends BasePostData {
+  paymentLine: string;
+  student?: {
+    firstName: string;
+    surname: string;
+    otherName?: string;
+  };
+  amount: number;
+  term: "first" | "second" | "third";
+  paymentType?: "fee" | "form";
+  studentId?: number;
+  status: "applied" | "pending";
+}
 export interface ClassSubjectAssessment extends BasePostData {
   classSubjectId;
   classId;
@@ -514,7 +534,8 @@ export interface BasePostData {
     | "class-subject"
     | "class-subject-assessment"
     | "student-subject-assessment"
-    | "student";
+    | "student"
+    | "student-payment";
   postId?;
 }
 export interface SubjectPostData extends BasePostData {

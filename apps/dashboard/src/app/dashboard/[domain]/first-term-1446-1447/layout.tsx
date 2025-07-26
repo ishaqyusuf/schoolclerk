@@ -11,6 +11,10 @@ export default async function Layout({ children, params }) {
       href: `/dashboard/${domain}/first-term-1446-1447/classrooms`,
       label: "Classrooms",
     },
+    {
+      href: `/dashboard/${domain}/first-term-1446-1447/payments`,
+      label: "Payments",
+    },
   ];
   return (
     <>

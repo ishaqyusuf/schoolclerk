@@ -6,6 +6,7 @@ import {
   getClassrooms,
   getClassroomStudents,
   getClassroomSubjects,
+  getPaymentsList,
   getStudentAssessments,
   getSubjects,
   updatePost,
@@ -27,6 +28,9 @@ export const ftdRouter = createTRPCRouter({
   }),
   subjectsList: publicProcedure.query(async (props) => {
     return getSubjects(props.ctx);
+  }),
+  getPaymentsList: publicProcedure.query(async (props) => {
+    return getPaymentsList(props.ctx);
   }),
   getClassroomStudents: publicProcedure
     .input(
