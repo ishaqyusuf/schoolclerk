@@ -89,8 +89,8 @@ export default function PaymentsPage() {
                   </td>
 
                   <td className="px-6 flex gap-4 py-4 whitespace-nowrap">
-                    {payment?.appliedPayments?.map((ap) => (
-                      <Badge>
+                    {payment?.appliedPayments?.map((ap, api) => (
+                      <Badge key={api}>
                         {ap?.term}
                         {" - "} {ap?.paymentType}
                       </Badge>
@@ -114,6 +114,7 @@ function PaymentAction({ line, id }) {
   const [opened, setOpened] = useState(false);
   const trpc = useTRPC();
   const m = usePostMutate();
+  const qc = useQueryClient();
   const { data, isPending } = useQuery(
     trpc.ftd.studentSearch.queryOptions(
       {
@@ -134,18 +135,27 @@ function PaymentAction({ line, id }) {
     rawPaymentId,
     studentId,
   }: Payment) => {
-    m.createAction.mutate({
-      data: {
-        amount,
-        status,
-        term,
-        type,
-        paymentType,
-        postId,
-        rawPaymentId,
-        studentId,
+    m.createAction.mutate(
+      {
+        data: {
+          amount,
+          status,
+          term,
+          type,
+          paymentType,
+          postId,
+          rawPaymentId,
+          studentId,
+        },
       },
-    });
+      {
+        onSuccess(data, variables, context) {
+          qc.invalidateQueries({
+            queryKey: trpc.ftd.getPaymentsList.queryKey(),
+          });
+        },
+      },
+    );
   };
   useEffect(() => {
     if (!opened) return;
