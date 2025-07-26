@@ -9,6 +9,7 @@ import {
   getStudentAssessments,
   getSubjects,
   updatePost,
+  updateStudentAssessment,
 } from "@api/db/queries/first-term-data";
 
 export const ftdRouter = createTRPCRouter({
@@ -58,11 +59,18 @@ export const ftdRouter = createTRPCRouter({
   updateStudentAssessment: publicProcedure
     .input(
       z.object({
-        meta: z.any(),
+        meta: z.object({
+          studentId: z.number(),
+          subjectAssessmentId: z.number(),
+          classSubjectId: z.number(),
+          classId: z.number(),
+          markObtained: z.number().optional().nullable(),
+          calculatedScore: z.number().optional().nullable(),
+        }),
       })
     )
     .mutation(async (props) => {
-      return await createPost(props.ctx, props.input);
+      return await updateStudentAssessment(props.ctx, props.input);
     }),
   createPost: publicProcedure
     .input(

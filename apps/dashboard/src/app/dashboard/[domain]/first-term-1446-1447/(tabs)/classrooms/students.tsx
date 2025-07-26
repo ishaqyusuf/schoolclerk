@@ -10,12 +10,16 @@ import {
 import { Fragment, useEffect, useState } from "react";
 import { useZodForm } from "@/hooks/use-zod-form";
 import z from "zod";
-import { StudentSubjectAssessment } from "@api/db/queries/first-term-data";
+import {
+  ClassSubjectAssessment,
+  StudentSubjectAssessment,
+} from "@api/db/queries/first-term-data";
 import { enToAr, sum } from "@/utils/utils";
 import { RouterOutputs } from "@api/trpc/routers/_app";
 import { cn } from "@school-clerk/ui/cn";
 import { generateRandomString } from "@school-clerk/utils";
 import { useDebounce } from "use-debounce";
+import { toast } from "@school-clerk/ui/use-toast";
 export function ClassroomStudents({ classRoomId }) {
   const trpc = useTRPC();
   const g = useGlobalParams();
@@ -29,8 +33,8 @@ export function ClassroomStudents({ classRoomId }) {
       },
       {
         enabled: opened,
-      }
-    )
+      },
+    ),
   );
   useEffect(() => {
     console.log(data);
@@ -43,11 +47,13 @@ export function ClassroomStudents({ classRoomId }) {
           <div className="flex gap-4 mb-4">
             <p className="font-semibold text-lg">Students</p>
           </div>
-          <div className="overflow-x-auto relative" style={{ height: '600px' }}>
+          <div className="overflow-x-auto relative" style={{ height: "600px" }}>
             <table className="w-full border-collapse bg-white">
               <thead className="sticky top-0 bg-gray-200 z-10">
                 <tr>
-                  <th className="border p-2 sticky left-0 bg-gray-200 z-20">Student Name</th>
+                  <th className="border p-2 sticky left-0 bg-gray-200 z-20">
+                    Student Name
+                  </th>
                   {data?.classSubjects?.classroomSubjects?.map((cs, csi) => (
                     <th
                       className="border text-center p-2"
@@ -81,10 +87,14 @@ export function ClassroomStudents({ classRoomId }) {
                   <tr className="hover:bg-gray-50" key={student.postId}>
                     <td className="border p-2 sticky left-0 bg-white z-10">
                       <div className="flex gap-2 items-center">
-                        <span className="font-mono text-sm text-gray-500">{enToAr(i + 1)}.</span>
+                        <span className="font-mono text-sm text-gray-500">
+                          {enToAr(i + 1)}.
+                        </span>
                         <span className="font-medium">{student.firstName}</span>
                         <span className="font-semibold">{student.surname}</span>
-                        <span className="text-gray-600">{student.otherName}</span>
+                        <span className="text-gray-600">
+                          {student.otherName}
+                        </span>
                       </div>
                     </td>
                     {student.subjectAssessments.map((sa, sai) => (
@@ -107,9 +117,11 @@ export function ClassroomStudents({ classRoomId }) {
   );
 }
 
+type ClassRoomStudent =
+  RouterOutputs["ftd"]["getClassroomStudents"]["students"][number];
 interface AssessmentProps {
-  subjectAssessment: RouterOutputs["ftd"]["getClassroomStudents"]["students"][number]["subjectAssessments"][number]; //["assessments"][number];
-  student: RouterOutputs["ftd"]["getClassroomStudents"]["students"][number]; //["assessments"][number];
+  subjectAssessment: ClassRoomStudent["subjectAssessments"][number]; //["assessments"][number];
+  student: ClassRoomStudent; //["assessments"][number];
   index;
   studentId;
 }
@@ -121,85 +133,39 @@ function Assessment({
 }: AssessmentProps) {
   const { classroomSubjectId } = subjectAssessment;
   const [opened, setOpened] = useState(false);
-  const form = useZodForm(
-    z.object({
-      title: z.string(),
-      obtainable: z.number(),
-      index: z.number(),
-      assessmentType: z.enum(["primary", "secondary"]),
-    }),
-    {
-      defaultValues: {
-        // title,
-        // obtainable,
-        // assessmentType,
-        // index,
-      },
-    },
-  );
+
   const m = usePostMutate();
   const trpc = useTRPC();
   const qc = useQueryClient();
-  async function onSubmit({ title, obtainable, assessmentType }) {
-    const events = {
-      onSuccess(data, variables, context) {
-        qc.invalidateQueries({
-          queryKey: trpc.ftd.getClassRoomSubjects.queryKey(),
-        });
-      },
-      onError(error, variables, context) {
-        console.log(error);
-      },
-    };
-    // if (assessment.postId) {
-    //   m.updateAction.mutate(
-    //     {
-    //       id: assessment.postId,
-    //       data: {
-    //         ...assessment,
-    //         title,
-    //         obtainable,
-    //         assessmentType,
-    //       },
-    //     },
-    //     events,
-    //   );
-    // } else {
-    //   m.createAction.mutate(
-    //     {
-    //       data: {
-    //         ...assessment,
-    //         title,
-    //         obtainable,
-    //         assessmentType,
-    //       },
-    //     },
-    //     events,
-    //   );
-    // }
-  }
+
   const { assessments: _assessments } = subjectAssessment;
-  const { data: updatedAssessments } = useQuery(
-    trpc.ftd.getStudentAssessments.queryOptions(
-      {
-        studentId,
-        subjectAssessments: _assessments?.map((a) => a.subjectAssessment),
-      },
-      {
-        enabled: opened,
-      },
-    ),
-  );
-  // useEffect(() => {
-  //   if (!opened) return null;
-  //   console.log({ updatedAssessments, opened, _assessments });
-  // }, [updatedAssessments, _assessments]);
-  const scoreUpdated = () => {
-    qc.invalidateQueries({
-      queryKey: trpc.ftd.getStudentAssessments.queryKey(),
+  const [assessments, setAssessments] = useState(_assessments);
+
+  const scoreUpdated = (updates: ScoreUpdates[]) => {
+    setAssessments((prev) => {
+      return prev.map((p) => {
+        // p.studentAssessment.classSubjectId;
+        const update = updates.find(
+          (u) => u.subjectAssessmentId == p.subjectAssessment.postId,
+        );
+        if (update) {
+          if (!p.studentAssessment)
+            p.studentAssessment = {
+              classId: student?.classId,
+              type: "student-subject-assessment",
+              studentId: student.postId,
+              subjectAssessmentId: p.subjectAssessment?.postId,
+              classSubjectId: p.subjectAssessment?.classSubjectId,
+              calculatedScore: 0,
+              markObtained: 0,
+              // postId: update.studentSubjectAssessmentId,
+            };
+          p.studentAssessment.markObtained = update.markObtained;
+        }
+        return p;
+      });
     });
   };
-  const assessments = updatedAssessments ?? _assessments;
   return (
     <Fragment>
       {assessments.map((ass, asi) => (
@@ -227,16 +193,18 @@ function Assessment({
                 key={ai}
                 label={a.subjectAssessment?.title}
                 onUpdate={scoreUpdated}
+                assessmentData={a}
+                value={a.studentAssessment?.markObtained}
                 meta={{
                   classId: student?.classId,
                   type: "student-subject-assessment",
                   studentId: student.postId,
                   subjectAssessmentId: a.subjectAssessment?.postId,
-                  classSubjectId: a.studentAssessment?.classSubjectId,
+                  classSubjectId: a.subjectAssessment?.classSubjectId,
                   calculatedScore: 0,
                   markObtained: 0,
                 }}
-              ></AssessmentInput>
+              />
             ))}
           </div>
         </PopoverContent>
@@ -244,11 +212,16 @@ function Assessment({
     </Fragment>
   );
 }
-
+interface ScoreUpdates {
+  subjectAssessmentId;
+  markObtained;
+}
 interface AssessmentInput {
-  onUpdate?;
+  onUpdate?(updates: ScoreUpdates[]);
   label?;
   value?;
+  // subjectAssessment: ClassSubjectAssessment
+  assessmentData: ClassRoomStudent["subjectAssessments"][number]["assessments"][number];
   meta?: StudentSubjectAssessment;
 }
 function AssessmentInput({
@@ -256,35 +229,52 @@ function AssessmentInput({
   label,
   onUpdate,
   meta,
+  assessmentData,
 }: AssessmentInput) {
   const [typing, setTyping] = useState(null);
   const [debounceValue] = useDebounce(typing, 300, {});
   const [focus, setFocus] = useState(false);
-  // const m = usePostMutate();
   const trpc = useTRPC();
   const updater = useMutation(
     trpc.ftd.updateStudentAssessment.mutationOptions({
       onSuccess(data, variables, context) {
-        onUpdate?.();
+        onUpdate?.([
+          {
+            markObtained: data.markObtained,
+            subjectAssessmentId: data.subjectAssessmentId,
+          },
+        ]);
+        toast({
+          variant: "success",
+          title: "Assessment updated successfully",
+          description: "Assessment updated successfully",
+        });
+      },
+      onError(error, variables, context) {
+        console.log(error);
       },
     }),
   );
   const [value, setValue] = useState(_value);
   useEffect(() => {
+    if (!debounceValue) return;
     const _meta = { ...meta };
-    _meta.markObtained = Number(value);
-    if (debounceValue) {
-      updater.mutate({
-        meta: _meta,
+    _meta.markObtained = Number(value) || 0;
+    if (_meta.markObtained > assessmentData?.subjectAssessment?.obtainable) {
+      toast({
+        variant: "error",
+        title: "Mark obtained cannot be greater than obtainable mark",
+        description: "Mark obtained cannot be greater than obtainable mark",
       });
-      // m.execute({
-      //   obtained: value || 0,
-      //   studentId: studentData?.id,
-      //   assessmentId: subjectAssessment.id,
-      //   subjectOnClassRoomId: subjectAssessment.subjectsOnClassRoomsId,
-      // });
+      return;
     }
+
+    console.log(_meta);
+    updater.mutate({
+      meta: _meta,
+    });
   }, [debounceValue]);
+
   const borderColor =
     updater.isSuccess && focus
       ? "#16a34a" // Green (Success)
@@ -296,8 +286,9 @@ function AssessmentInput({
   return (
     <>
       <motion.div
-        className="relative w-20 rounded-lg"
+        className="relative inline-flex gap-2 rounded-lg"
         transition={{ duration: 0.3 }}
+        dir="rtl"
         animate={{
           borderColor,
           borderStyle: updater.isPending ? "dashed" : "solid",
@@ -305,7 +296,7 @@ function AssessmentInput({
         }}
         style={{ borderWidth: 2 }}
       >
-        <span>{label}</span>
+        <div className="bg-muted px-2 flex items-center">{label}</div>
         <motion.input
           type="number"
           max={100}
@@ -318,10 +309,10 @@ function AssessmentInput({
           onChange={(e) =>
             setValue(e.target.value === "" ? "" : +e.target.value)
           }
-          // animate={{ borderColor }}
-          // transition={{ duration: 0.3 }}
-          // style={{ borderWidth: 2 }}
         />
+        <div className=" px-2 flex items-center">
+          /{assessmentData?.subjectAssessment?.obtainable}
+        </div>
       </motion.div>
     </>
   );

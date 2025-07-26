@@ -218,9 +218,9 @@ export async function createPost<T>({ db }, data) {
   });
   return transformData<T>(post);
 }
-export async function updateStudentAssessment(ctx: TRPCContext, { meta }) {
+export async function updateStudentAssessment(ctx: TRPCContext, input) {
   const { calculatedScore, subjectAssessmentId, studentId, markObtained } =
-    meta as StudentSubjectAssessment;
+    input.meta as StudentSubjectAssessment;
   const p = await getData<StudentSubjectAssessment>(ctx, [
     pathEquals(
       "subjectAssessmentId" as keyof StudentSubjectAssessment,
@@ -232,11 +232,18 @@ export async function updateStudentAssessment(ctx: TRPCContext, { meta }) {
     const { postId, ...rest } = p;
     rest.markObtained = markObtained;
     rest.calculatedScore = markObtained;
-    await updatePost(ctx, p.postId, rest);
-  } else
-    await createPost(ctx, {
-      ...meta,
+    const result = await updatePost<StudentSubjectAssessment>(
+      ctx,
+      p.postId,
+      rest
+    );
+    return result;
+  } else {
+    const result = await createPost<StudentSubjectAssessment>(ctx, {
+      ...input.meta,
     });
+    return result;
+  }
 }
 export async function updatePost<T>({ db }, id, data) {
   const post = await db.posts.update({
