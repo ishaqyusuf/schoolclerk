@@ -14,6 +14,7 @@ import { CreateStudent } from "./create-student";
 import { CreateClassroom } from "./create-class-room";
 import { Menu } from "@/components/menu";
 import { indices } from "../../utils";
+import { cn } from "@school-clerk/ui/cn";
 
 export function Client() {
   const trpc = useTRPC();
@@ -39,71 +40,89 @@ export function Client() {
     );
   return (
     <>
-      <div className="">
-        <CreateClassroom />
-      </div>
+      {g.params.entryMode || (
+        <div className="">
+          <CreateClassroom />
+        </div>
+      )}
       <Table dir={"rtl"} className="">
         <TableBody>
-          {data?.map((classroom, ci) => (
-            <Fragment key={ci}>
-              <TableRow className="">
-                <TableCell className="inline-flex items-center gap-4">
-                  <span className="inline-flex gap-2 items-center">
-                    <Menu Icon={null} label={`${classroom.classIndex}.`}>
-                      {indices.map((i) => (
-                        <Menu.Item
-                          key={i}
-                          onClick={(e) => {
-                            updateIndex(classroom.postId, Number(i));
-                          }}
-                        >
-                          {i}
-                        </Menu.Item>
-                      ))}
-                    </Menu>{" "}
-                    {classroom.classTitle}
-                  </span>
-                  <div className="flex gap-2">
-                    <Button
-                      variant={
-                        g.params.openClassSubjectId === classroom.postId &&
-                        g.params.tab === "classSubjects"
-                          ? "default"
-                          : "secondary"
-                      }
-                      onClick={(e) => {
-                        g.setParams({
-                          openClassSubjectId: classroom.postId,
-                          tab: "classSubjects",
-                        });
-                      }}
+          {data
+            ?.filter((a) => {
+              if (g.params.entryMode) {
+                return a.postId === g.params.openStudentsForClass;
+              }
+              return true;
+            })
+            .map((classroom, ci) => (
+              <Fragment key={ci}>
+                <TableRow className="">
+                  <TableCell className="inline-flex items-center gap-4">
+                    <span className="inline-flex gap-2 items-center">
+                      <Menu
+                        disabled={g.params.entryMode}
+                        Icon={null}
+                        label={`${classroom.classIndex}.`}
+                      >
+                        {indices.map((i) => (
+                          <Menu.Item
+                            key={i}
+                            onClick={(e) => {
+                              updateIndex(classroom.postId, Number(i));
+                            }}
+                          >
+                            {i}
+                          </Menu.Item>
+                        ))}
+                      </Menu>{" "}
+                      {classroom.classTitle}
+                    </span>
+                    <div
+                      className={cn(
+                        "flex gap-2",
+                        g.params.entryMode && "hidden",
+                      )}
                     >
-                      Subjects
-                    </Button>
-                    <Button
-                      variant={
-                        g.params.openStudentsForClass === classroom.postId &&
-                        g.params.tab === "classStudents"
-                          ? "default"
-                          : "secondary"
-                      }
-                      onClick={(e) => {
-                        g.setParams({
-                          openStudentsForClass: classroom.postId,
-                          tab: "classStudents",
-                        });
-                      }}
-                    >
-                      Students
-                    </Button>
-                    <CreateStudent classId={classroom.postId} />
-                  </div>
-                </TableCell>
-              </TableRow>
-              <ClassroomSubjects classRoomId={classroom.postId} />
-              <ClassroomStudents classRoomId={classroom.postId} />
-            </Fragment>
-          ))}
+                      <Button
+                        variant={
+                          g.params.openClassSubjectId === classroom.postId &&
+                          g.params.tab === "classSubjects"
+                            ? "default"
+                            : "secondary"
+                        }
+                        onClick={(e) => {
+                          g.setParams({
+                            openClassSubjectId: classroom.postId,
+                            tab: "classSubjects",
+                          });
+                        }}
+                      >
+                        Subjects
+                      </Button>
+                      <Button
+                        variant={
+                          g.params.openStudentsForClass === classroom.postId &&
+                          g.params.tab === "classStudents"
+                            ? "default"
+                            : "secondary"
+                        }
+                        onClick={(e) => {
+                          g.setParams({
+                            openStudentsForClass: classroom.postId,
+                            tab: "classStudents",
+                          });
+                        }}
+                      >
+                        Students
+                      </Button>
+                      <CreateStudent classId={classroom.postId} />
+                    </div>
+                  </TableCell>
+                </TableRow>
+                <ClassroomSubjects classRoomId={classroom.postId} />
+                <ClassroomStudents classRoomId={classroom.postId} />
+              </Fragment>
+            ))}
         </TableBody>
       </Table>
     </>

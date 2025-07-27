@@ -26,7 +26,7 @@ export function Generate({}) {
     }),
   );
   return (
-    <div className="fixed flex bg-muted m-4 top-0 right-0">
+    <div className="flex  items-center">
       <Menu>
         {data.map((c, i) => (
           <Menu.Item

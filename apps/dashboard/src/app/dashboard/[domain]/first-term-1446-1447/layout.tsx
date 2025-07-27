@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Generate } from "./generate";
+import { Header } from "./header";
 
 export default async function Layout({ children, params }) {
   const domain = params.domain;
@@ -23,20 +22,7 @@ export default async function Layout({ children, params }) {
   ];
   return (
     <>
-      <div className="h-16 gap-4 border-b flex items-center px-6 bg-white hide-on-print">
-        <nav className="flex items-center gap-6 text-sm font-medium">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-foreground transition-colors hover:text-foreground/80"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-        <Generate />
-      </div>
+      <Header />
       <div className="p-6">{children}</div>
     </>
   );

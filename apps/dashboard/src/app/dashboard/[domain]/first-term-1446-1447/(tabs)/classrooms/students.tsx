@@ -50,9 +50,6 @@ export function ClassroomStudents({ classRoomId }) {
     return sortClassroomStudents([...(data?.students || [])], sortBy);
   }, [data?.students, sortBy]);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
   if (!opened) return null;
   return (
     <tr className="">

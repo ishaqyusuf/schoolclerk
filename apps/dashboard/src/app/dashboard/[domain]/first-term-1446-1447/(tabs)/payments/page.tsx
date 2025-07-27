@@ -11,6 +11,7 @@ import { Badge } from "@school-clerk/ui/badge";
 import { Menu } from "@/components/menu";
 import { useEffect, useState } from "react";
 import { Input } from "@school-clerk/ui/input";
+import { CreatePaymentLine } from "../classrooms/create-payment-line";
 
 export default function PaymentsPage() {
   const { createAction, deleteAction } = usePostMutate();
@@ -53,17 +54,20 @@ export default function PaymentsPage() {
         <div className="flex gap-4">
           <Button
             onClick={handleComposePayment}
-            disabled={createAction.isPending}
+            // disabled={createAction.isPending}
+            disabled
           >
             {createAction.isPending ? "Composing..." : "Compose Payment"}
           </Button>
-          <Button
+          <CreatePaymentLine />
+          {/* <Button
             variant="destructive"
             onClick={handleComposePayment}
             disabled={createAction.isPending}
           >
             {deleteAction.isPending ? "Clearing..." : "Clear"}
           </Button>
+          */}
         </div>
       </div>
       {isLoading ? (
