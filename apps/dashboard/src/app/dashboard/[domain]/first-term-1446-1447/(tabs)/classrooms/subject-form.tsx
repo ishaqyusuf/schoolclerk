@@ -118,6 +118,7 @@ export function SubjectForm({
           <Form {...form}>
             <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
               <FormSelect
+                inlineLabel
                 label="Subject"
                 options={[
                   {
@@ -133,6 +134,7 @@ export function SubjectForm({
                 name="subjectId"
               />
               <FormInput
+                inlineLabel
                 disabled={!isNew}
                 label="Subject"
                 control={form.control}

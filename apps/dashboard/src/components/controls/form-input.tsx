@@ -29,6 +29,7 @@ interface Props<T> {
   prefix?: string;
   tabIndex?;
   uppercase?: boolean;
+  inlineLabel?: boolean;
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
   midday?: NumericFormatProps;
 
@@ -51,6 +52,7 @@ export default function FormInput<
   size = "default",
   inputProps,
   midday,
+  inlineLabel,
   ...props
 }: Partial<ControllerProps<TFieldValues, TName>> & Props<TOptionType>) {
   const load = useDataSkeleton();
@@ -63,6 +65,7 @@ export default function FormInput<
             className,
             props.disabled && "text-muted-foreground",
             "mx-1",
+            inlineLabel && "flex items-center gap-2",
           )}
         >
           {label && (

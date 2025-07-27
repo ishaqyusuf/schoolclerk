@@ -48,6 +48,7 @@ export interface FormSelectProps<T> {
   transformValue?(value?);
   size?: "sm" | "default" | "xs";
   listMode?: boolean;
+  inlineLabel?: boolean;
   prefix?;
 }
 export default function FormSelect<
@@ -70,6 +71,7 @@ export default function FormSelect<
   transformValue,
   size = "default",
   listMode,
+  inlineLabel,
   ...props
 }: Partial<ControllerProps<TFieldValues, TName>> &
   FormSelectProps<TOptionType>) {
@@ -106,7 +108,11 @@ export default function FormSelect<
     <FormField
       {...(props as any)}
       render={({ field }) => (
-        <FormItem className={cn(className, "mx-1")}>
+        <FormItem
+          className={
+            (cn(className, "mx-1"), inlineLabel && "flex items-center gap-2")
+          }
+        >
           {label && (
             <FormLabel
               className={cn(props.disabled && "text-muted-foreground")}

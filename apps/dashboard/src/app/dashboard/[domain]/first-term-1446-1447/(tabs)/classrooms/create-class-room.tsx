@@ -76,11 +76,13 @@ export function CreateClassroom() {
             <h4 className="font-medium leading-none">Add Class</h4>
             <p className="text-sm text-muted-foreground">New Class</p>
             <FormInput
+              inlineLabel
               label="Class Title"
               control={form.control}
               name="classTitle"
             />
             <FormSelect
+              inlineLabel
               options={["1", "2", "3", "4", "5"]}
               control={form.control}
               label="Class Index"

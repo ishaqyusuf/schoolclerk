@@ -35,6 +35,8 @@ import {
   TabsTrigger,
 } from "@school-clerk/ui/tabs";
 import { Textarea } from "@school-clerk/ui/textarea";
+import FormInput from "@/components/controls/form-input";
+import FormSelect from "@/components/controls/form-select";
 
 const createStudentSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -137,69 +139,41 @@ export function CreateStudent({ classId }: { classId: number }) {
                 <p className="text-sm text-muted-foreground">
                   Fill in the details to add a new student to this class.
                 </p>
-                <FormField
+                <FormInput
+                  inlineLabel
+                  label="First Name"
                   control={form.control}
                   name="firstName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>First Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g., John" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
                 />
-                <FormField
+                <FormInput
+                  inlineLabel
+                  label="Surname"
                   control={form.control}
                   name="surname"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Surname</FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g., Doe" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
                 />
-                <FormField
+                <FormInput
+                  inlineLabel
+                  label="Other Name"
                   control={form.control}
                   name="otherName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Other Name(s)</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
                 />
-                <FormField
+                <FormSelect
+                  inlineLabel
+                  label="Gender"
+                  options={[
+                    {
+                      label: "Male",
+                      value: "M",
+                    },
+                    {
+                      label: "Female",
+                      value: "F",
+                    },
+                  ]}
                   control={form.control}
                   name="gender"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Gender</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a gender" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="M">Male</SelectItem>
-                          <SelectItem value="F">Female</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
                 />
+
                 <Button type="submit" disabled={m.createAction.isPending}>
                   {m.createAction.isPending ? "Creating..." : "Create Student"}
                 </Button>
