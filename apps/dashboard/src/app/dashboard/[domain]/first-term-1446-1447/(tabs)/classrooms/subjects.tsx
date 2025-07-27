@@ -75,6 +75,24 @@ export function ClassroomSubjects({ classRoomId }) {
       </Menu>
     );
   }
+  const m = usePostMutate();
+  const qc = useQueryClient();
+  const updateIndex = (id, inddex) =>
+    m.updateAction.mutate(
+      {
+        id,
+        data: {
+          index: inddex,
+        },
+      },
+      {
+        onSuccess(data, variables, context) {
+          qc.invalidateQueries({
+            queryKey: trpc.ftd.getClassRoomSubjects.queryKey(),
+          });
+        },
+      },
+    );
   if (!opened) return null;
   return (
     <TableRow>
@@ -102,7 +120,22 @@ export function ClassroomSubjects({ classRoomId }) {
               <tbody className="divide-y divide-gray-200">
                 {data?.classroomSubjects.map((subject) => (
                   <tr key={subject.postId} className="hover:bg-gray-50">
-                    <td className="border p-2 font-medium">{subject.title}</td>
+                    <td className="border p-2 font-medium">
+                      <span className="inline-flex gap-2 items-center">
+                        <Menu Icon={null} label={`${subject.index}.`}>
+                          {["1", "2", "3", "4", "5"].map((i) => (
+                            <Menu.Item
+                              onClick={(e) => {
+                                updateIndex(subject.postId, Number(i));
+                              }}
+                            >
+                              {i}
+                            </Menu.Item>
+                          ))}
+                        </Menu>{" "}
+                        {subject.title}
+                      </span>
+                    </td>
                     <td className="border p-2">
                       <div className="flex gap-2 flex-wrap">
                         {subject?.assessments?.map((a) => (

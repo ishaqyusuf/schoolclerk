@@ -1,7 +1,7 @@
 "use client";
 
 import { useTRPC } from "@/trpc/client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useGlobalParams, usePostMutate } from "../../use-global";
 import { Table, TableBody, TableCell, TableRow } from "@school-clerk/ui/table";
 import { Fragment } from "react";
@@ -19,6 +19,7 @@ export function Client() {
   const { data } = useQuery(trpc.ftd.classRooms.queryOptions());
   const g = useGlobalParams();
   const m = usePostMutate();
+  const qc = useQueryClient();
   const updateIndex = (id, inddex) =>
     m.updateAction.mutate(
       {
@@ -28,7 +29,11 @@ export function Client() {
         },
       },
       {
-        onSuccess(data, variables, context) {},
+        onSuccess(data, variables, context) {
+          qc.invalidateQueries({
+            queryKey: trpc.ftd.classRooms.queryKey(),
+          });
+        },
       },
     );
   return (
@@ -42,7 +47,7 @@ export function Client() {
             <Fragment key={classroom.postId}>
               <TableRow className="">
                 <TableCell className="inline-flex items-center gap-4">
-                  <span>
+                  <span className="inline-flex gap-2 items-center">
                     <Menu Icon={null} label={`${classroom.classIndex}.`}>
                       {["1", "2", "3", "4", "5"].map((i) => (
                         <Menu.Item

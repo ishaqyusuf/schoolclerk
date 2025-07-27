@@ -57,7 +57,7 @@ export function CreateClassroom() {
             //   queryKey: trpc.ftd.getClassroomStudents.queryKey(),
             // });
             qc.invalidateQueries({
-              queryKey: trpc.ftd.getClassroomStudents.queryKey(),
+              queryKey: trpc.ftd.classRooms.queryKey(),
             });
           },
         },
