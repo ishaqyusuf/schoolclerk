@@ -75,7 +75,7 @@ export function CreateStudent({ classId }: { classId: number }) {
         gender: data.gender,
         type: "student",
         classId,
-      };
+      } as Student;
     });
 
     m.createAction.mutate(
