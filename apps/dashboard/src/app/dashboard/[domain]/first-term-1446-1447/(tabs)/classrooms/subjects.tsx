@@ -206,7 +206,7 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
     z.object({
       title: z.string(),
       obtainable: z.number(),
-      index: z.number(),
+      index: z.string(),
       assessmentType: z.enum(["primary", "secondary"]),
     }),
     {
