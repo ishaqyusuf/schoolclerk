@@ -11,11 +11,12 @@ import { app } from ".";
 //   regions: ["bom1"], // Mumbai, India (South) - bom1
 // };
 
-// export default handle(app);
-export const GET = handle(app);
-export const POST = handle(app);
-export const PUT = handle(app);
-export const DELETE = handle(app);
+const handler = handle(app);
+export const GET = handler;
+export const POST = handler;
+export const PATCH = handler;
+export const PUT = handler;
+export const OPTIONS = handler;
 
 /* -----------------------------------------------------------------------------------------------
  * Serverless
