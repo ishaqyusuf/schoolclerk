@@ -63,7 +63,7 @@ export function ClassroomSubjects({ classRoomId }) {
   }, [data]);
   function CopyMenu({ onCopy }) {
     return (
-      <Menu className="">
+      <Menu noSize className="">
         {quickCopy?.map((q) => (
           <Menu.Item onClick={(e) => onCopy(q.data)} dir="rtl" key={q.slug}>
             <Badge>{q.data.index}</Badge>
@@ -145,7 +145,8 @@ export function ClassroomSubjects({ classRoomId }) {
                             CopyMenu={CopyMenu}
                           >
                             <Button variant="outline" size="sm">
-                              {a.title}
+                              <span>{a.title}</span>
+                              <span>{a.obtainable}</span>
                             </Button>
                           </Assessment>
                         ))}
@@ -253,7 +254,7 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
     }
   }
   return (
-    <div className="">
+    <div className="inline-flex">
       <Popover open={opened} onOpenChange={setOpened}>
         <PopoverTrigger>{children}</PopoverTrigger>
         <PopoverContent className="w-80">
