@@ -22,7 +22,7 @@ export default async function Layout({ children, params }) {
   ];
   return (
     <>
-      <div className="h-16 border-b flex items-center px-6 bg-white">
+      <div className="h-16 border-b flex items-center px-6 bg-white hide-on-print">
         <nav className="flex items-center gap-6 text-sm font-medium">
           {navLinks.map((link) => (
             <Link

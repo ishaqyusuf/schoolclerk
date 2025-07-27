@@ -2,6 +2,7 @@ import { moonDance } from "@/fonts";
 import { enToAr } from "@/utils/utils";
 import { cn } from "@school-clerk/ui/cn";
 import { PrintLayoutProps } from "./print-layout";
+import { useStore } from "../../store";
 
 const schoolName = `مدرسـة دار الحديث لتحفيـظ القرآن والسنـة`;
 
@@ -9,13 +10,13 @@ export function ReportSheetHeader(
   // { term = "الثالثة", fasl, data, student }
   { data }: PrintLayoutProps,
 ) {
+  const store = useStore();
+  const report = store?.studentGrade?.[String(data?.student?.postId)];
   return (
-    <div className="mb-3s">
-      <div className="space-y-2">
+    <div className="mb-3">
+      <div className="space-y-4 flex flex-col">
         <div className="flex flex-col items-center justify-center">
-          <p className="text-xl font-bold leading-none text-black/70">
-            {schoolName}
-          </p>
+          <p className="text-xl font-bold  text-black/70">{schoolName}</p>
 
           <p className={cn(moonDance.className, "text-base text-black")}>
             Sannushehu Street, Isale-koko, Ojagboro, Isale Gambari, Ilorin,
@@ -26,7 +27,7 @@ export function ReportSheetHeader(
           <div className="w-full border-b-4 border-muted-foreground"></div>
           <div className="under-line w-full"></div>
         </div>
-        <div className="space-y-2 text-sm font-semibold" dir="rtl">
+        <div className="space-y-2   font-semibold" dir="rtl">
           <div className="flex gap-2">
             <div className="flex w-2/3 items-end">
               <div className="whitespace-nowrap text-black/70">
@@ -48,7 +49,7 @@ export function ReportSheetHeader(
               <span className="mx-1">١٤٤٥/١٤٤٦هـ</span>
             </div>
           </div>
-          <div className="flex-wraps flex items-end gap-2 whitespace-nowrap text-sm">
+          <div className="flex-wraps flex items-end gap-2 whitespace-nowrap ">
             <div className="flex items-end">
               <span className="text-black/70">الفصل</span>
               <span>:</span>
@@ -67,8 +68,8 @@ export function ReportSheetHeader(
               <span className="text-black/70">المجموع الكلي </span>
               <span>:</span>
               <span className="mx-1 border-b border-muted-foreground">
-                {`${enToAr(data.grade.obtained)}/${enToAr(
-                  data.grade.obtainable,
+                {`${enToAr(report?.totalScore)}/${enToAr(
+                  report?.totalObtainable,
                 )}`}
               </span>
             </div>

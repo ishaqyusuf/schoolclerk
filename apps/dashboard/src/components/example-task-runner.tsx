@@ -71,7 +71,7 @@ export function ExampleTaskRunner({}) {
   const handleExampleTask = () => {
     manualSyncTransactions.execute({});
   };
-
+  return;
   return (
     <div className="fixed bottom-0 right-0 m-16 h-10 rounded border shadow">
       <Button onClick={handleExampleTask}>Run Task</Button>

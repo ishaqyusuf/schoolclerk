@@ -53,6 +53,9 @@ export function CreateClassroom() {
           onSuccess: () => {
             form.reset();
             setOpen(false);
+            // qc.invalidateQueries({
+            //   queryKey: trpc.ftd.getClassroomStudents.queryKey(),
+            // });
             qc.invalidateQueries({
               queryKey: trpc.ftd.getClassroomStudents.queryKey(),
             });
@@ -65,7 +68,7 @@ export function CreateClassroom() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline">New Student</Button>
+        <Button variant="outline">New Class</Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">
         <Form {...form}>

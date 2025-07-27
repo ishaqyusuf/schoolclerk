@@ -56,3 +56,34 @@ td.score {
 td.total {
   @apply font-semibold;
 }
+table.result td,
+table.result th {
+  @apply border-x border-b border-muted-foreground p-1 px-2;
+}
+table.result th {
+  @apply h-auto font-bold text-black;
+}
+table.result.lines-5 td {
+  @apply p-6 text-2xl;
+}
+table.result.lines-5 td.first {
+  @apply font-bold;
+}
+table.result.lines-5 th.last {
+  @apply w-36 text-lg;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+.size-a4 {
+  /* width: 210mm; */
+  height: 297mm;
+}
+@media print {
+  .hide-on-print {
+    display: none !important;
+  }
+}

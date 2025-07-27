@@ -41,7 +41,7 @@ export default function ReportSheetPage() {
   return (
     <div className="flex h-full">
       {/* Sidebar */}
-      <div className="w-72 border-r bg-gray-50 overflow-y-auto">
+      <div className="w-72 border-r bg-gray-50 overflow-y-auto hide-on-print">
         <h2 className="text-lg font-semibold mb-4">Classrooms</h2>
         {isLoadingClassrooms ? (
           <p>Loading classrooms...</p>
@@ -55,8 +55,11 @@ export default function ReportSheetPage() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-4 overflow-y-auto">
-        <h1 className="text-2xl font-bold mb-4">Report Sheet Print Page</h1>
+      <div className="flex-1 p-4 print:p-0 overflow-y-auto space-y-8 print:space-y-0">
+        <h1 className="text-2xl print:hidden font-bold mb-4 print:hover:">
+          Report Sheet Print Page
+        </h1>
+
         {printList?.map((p) => <PrintLayout key={p.student.postId} data={p} />)}
       </div>
     </div>
@@ -91,6 +94,9 @@ function ClassroomItem({ classroom }: ClassroomItemProps) {
         position:
           sorted.filter((b) => b.totalScore! > a.totalScore!)?.length + 1,
         totalStudents: sorted.length,
+        comment: a.comment,
+        percentage: a.percentageScore,
+        totalObtainable: a.totalObtainable!,
       });
     });
     console.log({ sorted });

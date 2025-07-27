@@ -7,7 +7,12 @@ const data = {
     [studentId: string]: {
       totalStudents: number;
       position: number;
+      comment: {
+        arabic?;
+        english?;
+      };
       totalScore: number;
+      totalObtainable: number;
     };
   },
 };

@@ -9,7 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@school-clerk/ui/popover";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useZodForm } from "@/hooks/use-zod-form";
 import z from "zod";
 import { Form } from "@school-clerk/ui/form";
@@ -20,6 +20,8 @@ import { ClassSubjectAssessment } from "@api/db/queries/first-term-data";
 import { ClassroomSubjectData } from "@/components/tables/subjects/columns";
 import { SubjectForm } from "./subject-form";
 import { toast } from "@school-clerk/ui/use-toast";
+import { Menu } from "@/components/menu";
+import { Badge } from "@school-clerk/ui/badge";
 
 export function ClassroomSubjects({ classRoomId }) {
   const trpc = useTRPC();
@@ -37,7 +39,42 @@ export function ClassroomSubjects({ classRoomId }) {
       },
     ),
   );
-
+  const quickCopy = useMemo(() => {
+    const copiables = [];
+    data?.classroomSubjects?.map((s) => {
+      s.assessments.map((a) => {
+        const { title, assessmentType, obtainable, index } = a;
+        const slug = [title, assessmentType, obtainable, index]
+          .map((a) => {
+            // if(typeof a === 'string')
+            // return a;
+            if (typeof a === "boolean") return a ? "yes" : "no";
+            return a ? a : "nill";
+          })
+          .join("-");
+        if (copiables.indexOf((a) => a.slug === slug) == -1)
+          copiables.push({
+            slug,
+            data: { title, assessmentType, obtainable, index },
+          });
+      });
+    });
+    return copiables;
+  }, [data]);
+  function CopyMenu({ onCopy }) {
+    return (
+      <Menu className="">
+        {quickCopy?.map((q) => (
+          <Menu.Item onClick={(e) => onCopy(q.data)} dir="rtl" key={q.slug}>
+            <Badge>{q.data.index}</Badge>
+            <span>{q.data.title}</span>
+            <Badge>{q.data.assessmentType}</Badge>
+            <Badge>{q.data.obtainable}</Badge>
+          </Menu.Item>
+        ))}
+      </Menu>
+    );
+  }
   if (!opened) return null;
   return (
     <TableRow>
@@ -69,7 +106,11 @@ export function ClassroomSubjects({ classRoomId }) {
                     <td className="border p-2">
                       <div className="flex gap-2 flex-wrap">
                         {subject?.assessments?.map((a) => (
-                          <Assessment assessment={a} key={a.postId}>
+                          <Assessment
+                            assessment={a}
+                            key={a.postId}
+                            CopyMenu={CopyMenu}
+                          >
                             <Button variant="outline" size="sm">
                               {a.title}
                             </Button>
@@ -83,6 +124,7 @@ export function ClassroomSubjects({ classRoomId }) {
                             assessmentType: "secondary",
                             index: subject?.assessments?.length,
                           }}
+                          CopyMenu={CopyMenu}
                         >
                           <Button variant="ghost" size="sm">
                             <Icons.add className="h-4 w-4" />
@@ -105,8 +147,9 @@ export function ClassroomSubjects({ classRoomId }) {
 interface AssessmentProps {
   assessment: Partial<ClassroomSubjectData>;
   children?;
+  CopyMenu?;
 }
-function Assessment({ assessment, children }: AssessmentProps) {
+function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
   const { postId, obtainable, classId, index, assessmentType, title } =
     assessment;
   const [opened, setOpened] = useState(false);
@@ -129,7 +172,7 @@ function Assessment({ assessment, children }: AssessmentProps) {
   const m = usePostMutate();
   const trpc = useTRPC();
   const qc = useQueryClient();
-  async function onSubmit({ title, obtainable, assessmentType }) {
+  async function onSubmit({ title, index, obtainable, assessmentType }) {
     // console.log({ title });
     // return;
     const events = {
@@ -142,6 +185,7 @@ function Assessment({ assessment, children }: AssessmentProps) {
           variant: "success",
           description: "Updated successfully",
         });
+        setOpened(false);
       },
       onError(error, variables, context) {
         console.log(error);
@@ -155,6 +199,7 @@ function Assessment({ assessment, children }: AssessmentProps) {
             ...assessment,
             title,
             obtainable,
+            index,
             assessmentType,
           },
         },
@@ -175,36 +220,44 @@ function Assessment({ assessment, children }: AssessmentProps) {
     }
   }
   return (
-    <Popover>
-      <PopoverTrigger>{children}</PopoverTrigger>
-      <PopoverContent className="w-80">
-        <div className="grid gap-4">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <FormInput control={form.control} name="title" label="Title" />
-              <FormInput
-                control={form.control}
-                name="index"
-                label="Index"
-                type="number"
-              />
-              <FormInput
-                control={form.control}
-                name="obtainable"
-                label="Obtainable"
-                type="number"
-              />
-              <FormSelect
-                label="Assessment Type"
-                options={["primary", "secondary"]}
-                control={form.control}
-                name="assessmentType"
-              />
-              <SubmitButton isSubmitting={m.isPending}>Submit</SubmitButton>
-            </form>
-          </Form>
-        </div>
-      </PopoverContent>
-    </Popover>
+    <div className="">
+      <Popover open={opened} onOpenChange={setOpened}>
+        <PopoverTrigger>{children}</PopoverTrigger>
+        <PopoverContent className="w-80">
+          <div className="grid gap-4">
+            <div className="">Post Id: {assessment?.postId}</div>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <FormInput control={form.control} name="title" label="Title" />
+                <FormInput
+                  control={form.control}
+                  name="index"
+                  label="Index"
+                  type="number"
+                />
+                <FormInput
+                  control={form.control}
+                  name="obtainable"
+                  label="Obtainable"
+                  type="number"
+                />
+                <FormSelect
+                  label="Assessment Type"
+                  options={["primary", "secondary"]}
+                  control={form.control}
+                  name="assessmentType"
+                />
+                <SubmitButton isSubmitting={m.isPending}>Submit</SubmitButton>
+              </form>
+            </Form>
+          </div>
+        </PopoverContent>
+      </Popover>
+      <CopyMenu
+        onCopy={(data) => {
+          onSubmit(data);
+        }}
+      />
+    </div>
   );
 }

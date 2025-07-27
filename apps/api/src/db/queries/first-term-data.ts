@@ -492,15 +492,24 @@ export async function getClassroomStudents(ctx: TRPCContext, classId) {
           ),
         })),
       }));
+      const totalObtainable = sum(
+        subjectAssessments.flatMap((sa) =>
+          sa.assessments.map((ass) => ass.subjectAssessment?.obtainable || 0)
+        )
+      );
       const totalScore = sum(
         subjectAssessments.flatMap((sa) =>
           sa.assessments.map((ass) => ass.studentAssessment?.markObtained || 0)
         )
       );
+      const percentageScore = Math.round((totalScore / totalObtainable) * 100);
       return {
         ...student,
         subjectAssessments,
         totalScore,
+        totalObtainable,
+        percentageScore,
+        comment: getResultComment(percentageScore),
       };
     }),
   };
@@ -534,7 +543,9 @@ export async function getClassroomSubjects(ctx: TRPCContext, classId) {
     classroomSubjects: classroomSubjects.map((s) => ({
       ...s,
       title: subjects?.find((a) => a.postId === s.subjectId)?.title,
-      assessments: assessments.filter((a) => a.classSubjectId == s.postId),
+      assessments: assessments
+        .filter((a) => a.classSubjectId == s.postId)
+        .sort((a, b) => a.index - b.index),
     })),
     subjects,
   };
@@ -544,7 +555,7 @@ export async function getClassrooms(ctx: TRPCContext) {
     ctx,
     pathEquals("type", "class" as PostTypes)
   );
-  return classrooms;
+  return classrooms.sort((a, b) => a.classIndex! - b.classIndex!);
 }
 export async function getStudentsPrintdata(
   ctx: TRPCContext,
@@ -639,8 +650,12 @@ export async function getStudentsPrintdata(
                     },
                     ...subject.assessments.map((a) => ({
                       label: a.label,
-                      subLabel: a.obtainable,
+                      subLabel: `(${a.obtainable ? enToAr(a.obtainable) : "-"})`,
                     })),
+                    {
+                      label: `المجموع الكلي`,
+                      subLabel: `(${enToAr(100)})`,
+                    },
                   ],
                   rows: [],
                 };
@@ -652,11 +667,18 @@ export async function getStudentsPrintdata(
                   ...subject.assessments.map((a) => ({
                     value: a.obtained,
                   })),
+                  {
+                    value: sum(subject.assessments.map((a) => a.obtained)),
+                  },
                 ],
               });
             });
+            const rowsCount = sum(
+              Object.values(tables).map((a) => 1 + a.rows.length)
+            );
             return {
               tables: Object.values(tables),
+              lineCount: rowsCount,
               grade: {
                 obtained: 0,
                 obtainable: 0,
@@ -780,4 +802,49 @@ export interface Data {
       score: number;
     }[];
   }[];
+}
+export function getResultComment(score) {
+  const comments = [
+    {
+      min: 90,
+      max: 100,
+      arabic: "ممتاز! أداء رائع واستثنائي.",
+      english: "Excellent! Outstanding and exceptional performance.",
+    },
+    {
+      min: 80,
+      max: 89,
+      arabic: "جيد جدًا! أداء قوي وجهد ملحوظ.",
+      english: "Very good! Strong performance and great effort.",
+    },
+    {
+      min: 70,
+      max: 79,
+      arabic: "جيد! عمل جيد ولكن هناك مجال للتحسين.",
+      english: "Good! Well done, but there is room for improvement.",
+    },
+    {
+      min: 60,
+      max: 69,
+      arabic: "مقبول! تحتاج إلى بذل المزيد من الجهد.",
+      english: "Satisfactory! Needs more effort.",
+    },
+    {
+      min: 50,
+      max: 59,
+      arabic: "ضعيف! حاول تحسين أدائك في المستقبل.",
+      english: "Weak! Try to improve your performance in the future.",
+    },
+    {
+      min: 0,
+      max: 49,
+      arabic: "راسب! بحاجة إلى العمل الجاد والمثابرة.",
+      english: "Fail! Needs hard work and persistence.",
+    },
+  ];
+
+  const comment = comments.find((c) => score >= c.min && score <= c.max);
+  return comment
+    ? comment
+    : { arabic: "درجة غير صالحة", english: "Invalid score" };
 }

@@ -2,7 +2,7 @@
 
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
-import { useGlobalParams } from "../../use-global";
+import { useGlobalParams, usePostMutate } from "../../use-global";
 import { Table, TableBody, TableCell, TableRow } from "@school-clerk/ui/table";
 import { Fragment } from "react";
 import { ClassroomSubjects } from "./subjects";
@@ -12,11 +12,25 @@ import { Button } from "@school-clerk/ui/button";
 
 import { CreateStudent } from "./create-student";
 import { CreateClassroom } from "./create-class-room";
+import { Menu } from "@/components/menu";
 
 export function Client() {
   const trpc = useTRPC();
   const { data } = useQuery(trpc.ftd.classRooms.queryOptions());
   const g = useGlobalParams();
+  const m = usePostMutate();
+  const updateIndex = (id, inddex) =>
+    m.updateAction.mutate(
+      {
+        id,
+        data: {
+          classIndex: inddex,
+        },
+      },
+      {
+        onSuccess(data, variables, context) {},
+      },
+    );
   return (
     <>
       <div className="">
@@ -28,7 +42,20 @@ export function Client() {
             <Fragment key={classroom.postId}>
               <TableRow className="">
                 <TableCell className="inline-flex items-center gap-4">
-                  <span> {classroom.classTitle}</span>
+                  <span>
+                    <Menu Icon={null} label={`${classroom.classIndex}.`}>
+                      {["1", "2", "3", "4", "5"].map((i) => (
+                        <Menu.Item
+                          onClick={(e) => {
+                            updateIndex(classroom.postId, Number(i));
+                          }}
+                        >
+                          {i}
+                        </Menu.Item>
+                      ))}
+                    </Menu>{" "}
+                    {classroom.classTitle}
+                  </span>
                   <div className="flex gap-2">
                     <Button
                       variant={
