@@ -18,6 +18,7 @@ import { generateRandomString } from "@school-clerk/utils";
 import FormInput from "@/components/controls/form-input";
 import FormSelect from "@/components/controls/form-select";
 import { Form } from "@school-clerk/ui/form";
+import { indices } from "../../utils";
 
 const createStudentSchema = z.object({
   classTitle: z.string().min(1, "Class title is required"),
@@ -83,7 +84,7 @@ export function CreateClassroom() {
             />
             <FormSelect
               inlineLabel
-              options={["1", "2", "3", "4", "5"]}
+              options={indices}
               control={form.control}
               label="Class Index"
               name="classIndex"

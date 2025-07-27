@@ -22,6 +22,7 @@ import { SubjectForm } from "./subject-form";
 import { toast } from "@school-clerk/ui/use-toast";
 import { Menu } from "@/components/menu";
 import { Badge } from "@school-clerk/ui/badge";
+import { indices } from "../../utils";
 
 export function ClassroomSubjects({ classRoomId }) {
   const trpc = useTRPC();
@@ -137,7 +138,7 @@ export function ClassroomSubjects({ classRoomId }) {
                     <td className="border p-2 font-medium">
                       <span className="inline-flex gap-2 items-center">
                         <Menu Icon={null} label={`${subject.index}.`}>
-                          {["1", "2", "3", "4", "5"].map((i) => (
+                          {indices.map((i) => (
                             <Menu.Item
                               onClick={(e) => {
                                 updateIndex(subject.postId, Number(i));
@@ -280,7 +281,7 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
                 <FormInput control={form.control} name="title" label="Title" />
 
                 <FormSelect
-                  options={["1", "2", "3", "4", "5"]}
+                  options={indices}
                   control={form.control}
                   label="Class Index"
                   name="index"

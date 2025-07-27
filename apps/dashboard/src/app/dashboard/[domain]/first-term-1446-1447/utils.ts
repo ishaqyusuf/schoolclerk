@@ -33,3 +33,4 @@ export function sortClassroomStudents<T>(
   }
   return students;
 }
+export const indices = ["1", "2", "3", "4", "5", "6", "7", "8"];

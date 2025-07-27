@@ -13,6 +13,7 @@ import { Button } from "@school-clerk/ui/button";
 import { CreateStudent } from "./create-student";
 import { CreateClassroom } from "./create-class-room";
 import { Menu } from "@/components/menu";
+import { indices } from "../../utils";
 
 export function Client() {
   const trpc = useTRPC();
@@ -49,7 +50,7 @@ export function Client() {
                 <TableCell className="inline-flex items-center gap-4">
                   <span className="inline-flex gap-2 items-center">
                     <Menu Icon={null} label={`${classroom.classIndex}.`}>
-                      {["1", "2", "3", "4", "5"].map((i) => (
+                      {indices.map((i) => (
                         <Menu.Item
                           key={i}
                           onClick={(e) => {
