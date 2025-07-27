@@ -7,17 +7,7 @@ import { Menu } from "@/components/menu";
 
 export default function Page({}) {
   const data = transformData();
-  const trpc = useTRPC();
-  const submit = useMutation(
-    trpc.ftd.generateFirstTermData.mutationOptions({
-      onSuccess(data, variables, context) {
-        console.log("SUCCESS!", data);
-      },
-      onError(error, variables, context) {
-        console.log("ERROR!", data);
-      },
-    }),
-  );
+
   return (
     <div className="space-y-4">
       {data.map((d) => (
@@ -94,33 +84,6 @@ export default function Page({}) {
           </div>
         </div>
       ))}
-
-      <div className="fixed flex bg-muted m-4 top-0 right-0">
-        <Menu>
-          {data.map((c, i) => (
-            <Menu.Item
-              onClick={(e) => {
-                submit.mutate({
-                  payload: [c],
-                });
-              }}
-              key={i}
-            >
-              {c.course}
-            </Menu.Item>
-          ))}
-        </Menu>
-        <Button
-          disabled={submit.isPending}
-          onClick={(e) => {
-            submit.mutate({
-              payload: data,
-            });
-          }}
-        >
-          Generate
-        </Button>
-      </div>
     </div>
   );
 }

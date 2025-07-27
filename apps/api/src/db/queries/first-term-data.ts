@@ -1,6 +1,7 @@
 import type { TRPCContext } from "@api/trpc/init";
 import { enToAr, generateRandomString, sum } from "@school-clerk/utils";
-const postCode = `firstTerm-1446-1447`;
+// const postCode = `firstTerm-1446-1447`;
+const postCode = `firstTerm-1446-1447-prod`;
 const raws = {
   stacks: [] as any[],
   stackObj: {

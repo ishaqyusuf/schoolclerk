@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Generate } from "./generate";
 
 export default async function Layout({ children, params }) {
   const domain = params.domain;
@@ -22,7 +23,7 @@ export default async function Layout({ children, params }) {
   ];
   return (
     <>
-      <div className="h-16 border-b flex items-center px-6 bg-white hide-on-print">
+      <div className="h-16 gap-4 border-b flex items-center px-6 bg-white hide-on-print">
         <nav className="flex items-center gap-6 text-sm font-medium">
           {navLinks.map((link) => (
             <Link
@@ -34,6 +35,7 @@ export default async function Layout({ children, params }) {
             </Link>
           ))}
         </nav>
+        <Generate />
       </div>
       <div className="p-6">{children}</div>
     </>
