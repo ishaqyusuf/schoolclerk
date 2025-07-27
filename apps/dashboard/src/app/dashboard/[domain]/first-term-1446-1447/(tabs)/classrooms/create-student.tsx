@@ -15,35 +15,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@school-clerk/ui/form";
-import { Input } from "@school-clerk/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@school-clerk/ui/select";
+
 import { usePostMutate } from "../../use-global";
 import { useState } from "react";
 import { Student } from "@api/db/queries/first-term-data";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@school-clerk/ui/tabs";
-import { Textarea } from "@school-clerk/ui/textarea";
-import FormInput from "@/components/controls/form-input";
-import FormSelect from "@/components/controls/form-select";
 
-const createStudentSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  surname: z.string().min(1, "Surname is required"),
-  otherName: z.string().optional(),
-  gender: z.enum(["M", "F"]),
-});
+import { Textarea } from "@school-clerk/ui/textarea";
+import FormSelect from "@/components/controls/form-select";
 
 const createBatchStudentSchema = z.object({
   names: z.string().min(1, "Names are required"),
