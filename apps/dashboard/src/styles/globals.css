@@ -72,7 +72,12 @@ table.result.lines-5 td.first {
 table.result.lines-5 th.last {
   @apply w-36 text-lg;
 }
-
+div.result-lines-5 p#schoolName {
+  @apply text-3xl;
+}
+div.result-lines-5 p#address {
+  @apply text-2xl;
+}
 @page {
   size: A4;
   margin: 0;
@@ -80,7 +85,7 @@ table.result.lines-5 th.last {
 
 .size-a4 {
   /* width: 210mm; */
-  height: 297mm;
+  /* height: 297mm; */
 }
 @media print {
   .hide-on-print {

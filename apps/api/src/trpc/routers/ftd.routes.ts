@@ -12,6 +12,7 @@ import {
   getStudentAssessments,
   getStudentsPrintdata,
   getSubjects,
+  getUniqueueAssessmentList,
   updatePost,
   updateStudentAssessment,
 } from "@api/db/queries/first-term-data";
@@ -46,6 +47,9 @@ export const ftdRouter = createTRPCRouter({
     }),
   classRooms: publicProcedure.query(async (props) => {
     return getClassrooms(props.ctx);
+  }),
+  getUniqueueAssessmentList: publicProcedure.query(async (props) => {
+    return getUniqueueAssessmentList(props.ctx);
   }),
   subjectsList: publicProcedure.query(async (props) => {
     return getSubjects(props.ctx);

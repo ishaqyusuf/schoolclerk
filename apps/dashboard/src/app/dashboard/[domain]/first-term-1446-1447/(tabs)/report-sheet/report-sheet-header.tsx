@@ -16,9 +16,14 @@ export function ReportSheetHeader(
     <div className="mb-3">
       <div className="space-y-4 flex flex-col">
         <div className="flex flex-col items-center justify-center">
-          <p className="text-xl font-bold  text-black/70">{schoolName}</p>
+          <p id="schoolName" className="text-xl font-bold  text-black/70">
+            {schoolName}
+          </p>
 
-          <p className={cn(moonDance.className, "text-base text-black")}>
+          <p
+            id="address"
+            className={cn(moonDance.className, "text-base text-black")}
+          >
             Sannushehu Street, Isale-koko, Ojagboro, Isale Gambari, Ilorin,
             Kwara State, Nigeria.
           </p>

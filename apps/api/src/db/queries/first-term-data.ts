@@ -550,6 +550,23 @@ export async function getClassroomSubjects(ctx: TRPCContext, classId) {
     subjects,
   };
 }
+export async function getUniqueueAssessmentList(ctx: TRPCContext) {
+  const list = await getDataList<ClassSubjectAssessment>(
+    ctx,
+    pathEquals("type", "class-subject-assessment" as PostTypes)
+  );
+  const resp = list.map((l) => {
+    const { title, assessmentType, obtainable, index } = l;
+
+    const slug = [title, assessmentType, obtainable].join("-");
+    return {
+      slug,
+      data: { title, assessmentType, obtainable, index },
+    };
+  });
+
+  return resp.filter((a, i) => i === resp.findIndex((b) => b.slug === a.slug));
+}
 export async function getClassrooms(ctx: TRPCContext) {
   const classrooms = await getDataList<ClassPostData>(
     ctx,

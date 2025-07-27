@@ -4,19 +4,28 @@ import { cn } from "@school-clerk/ui/cn";
 import { arabic } from "@/fonts";
 import { ReportSheetFooter } from "./report-sheet-footer";
 import { enToAr } from "@school-clerk/utils";
+import { useGlobalParams } from "../../use-global";
 export interface PrintLayoutProps {
   data: RouterOutputs["ftd"]["studentPrintData"][number];
 }
 export function PrintLayout(props: PrintLayoutProps) {
+  const g = useGlobalParams();
   return (
     <div
       className={cn(
-        "size-a4 p-4 mx-auto border shadow-lg bg-white print:p-0 print:mx-0 print:border-0 print:shadow-none print:bg-transparent h-[11.6in] space-y-8 pt-10 text-lg",
+        " p-4 mx-auto border shadow-lg bg-white print:p-0 print:mx-0 print:border-0 print:shadow-none print:bg-transparent  space-y-8 pt-10 text-lg",
         arabic.className,
+        `result-lines-${props.data?.lineCount}`,
+        g.params.printHideSubjects || "--h-[11.6in] h-[297mm]",
       )}
     >
       <ReportSheetHeader data={props.data} />
-      <div className="flex flex-col text-xl">
+      <div
+        className={cn(
+          "flex flex-col text-xl",
+          g.params.printHideSubjects && "hidden print:flex",
+        )}
+      >
         {/* {props.data?.lineCount} */}
         {props?.data?.tables?.map((table, ti) => (
           <table

@@ -1,6 +1,6 @@
 import { ClassroomSubjectData } from "@/components/tables/subjects/columns";
 import { useZodForm } from "@/hooks/use-zod-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import z from "zod";
 import { usePostMutate } from "../../use-global";
 import { useTRPC } from "@/trpc/client";
@@ -16,6 +16,7 @@ import FormSelect from "@/components/controls/form-select";
 import { SubmitButton } from "@/components/submit-button";
 import { ClassSubject, SubjectPostData } from "@api/db/queries/first-term-data";
 import { generateRandomString } from "@school-clerk/utils";
+import { toast } from "@school-clerk/ui/use-toast";
 
 interface SubjectFormProps {
   subject: Partial<ClassSubject>;
@@ -30,27 +31,17 @@ export function SubjectForm({
   const { postId, classId, subjectId, type } = subject;
   //   selectableSubjects?.[0]?.
   const [opened, setOpened] = useState(false);
-  const subjectForm = useZodForm(
-    z.object({
-      title: z.string(),
-    }),
-    {
-      defaultValues: {
-        title: "",
-      },
-    },
-  );
+
   const form = useZodForm(
     z.object({
-      subjectId: z.string(),
-      type: z.string(),
-      classId: z.number(),
+      subjectId: z.string().optional().nullable(),
+      title: z.string().optional().nullable(),
     }),
     {
       defaultValues: {
-        type,
-        classId,
-        subjectId: String(subjectId),
+        // classId,
+        title: "",
+        subjectId: "-1",
         // title,
         // obtainable,
         // assessmentType,
@@ -62,6 +53,31 @@ export function SubjectForm({
   const trpc = useTRPC();
   const qc = useQueryClient();
   async function onSubmit(data) {
+    if (isNew && !data.title) {
+      toast({
+        variant: "error",
+        title: "Error",
+        description: "Please provide a title for the subject.",
+      });
+      return;
+    }
+
+    const events = {
+      onError(error, variables, context) {
+        console.log(error);
+      },
+      onSuccess(data, variables, context) {
+        qc.invalidateQueries({
+          queryKey: trpc.ftd.getClassRoomSubjects.queryKey(),
+        });
+        form.setValue("subjectId", null);
+        toast({
+          variant: "success",
+          title: "Subject created successfully",
+        });
+        setOpened(false);
+      },
+    };
     if (isNew) {
       m.createAction.mutate(
         {
@@ -71,40 +87,36 @@ export function SubjectForm({
             type: "subject",
           } as SubjectPostData,
         },
+        events,
+      );
+    } else {
+      m.createAction.mutate(
         {
-          onError(error, variables, context) {
-            console.log(error);
-          },
-          onSuccess(data, variables, context) {
-            qc.invalidateQueries({
-              queryKey: trpc.ftd.getClassRoomSubjects.queryKey(),
-            });
-            form.setValue("subjectId", null);
-          },
+          data: {
+            classId,
+            subjectId: Number(data.subjectId),
+            type: "class-subject",
+          } as ClassSubject,
         },
+        events,
       );
     }
-
-    const events = {
-      onSuccess(data, variables, context) {
-        qc.invalidateQueries({
-          queryKey: trpc.ftd.getClassRoomSubjects.queryKey(),
-        });
-      },
-      onError(error, variables, context) {
-        console.log(error);
-      },
-    };
   }
   const subjectIdWatch = form.watch("subjectId");
   const isNew = subjectIdWatch === "-1";
+  useEffect(() => {
+    form.reset({
+      subjectId: "-1",
+      title: "",
+    });
+  }, [opened]);
   return (
-    <Popover>
+    <Popover open={opened} onOpenChange={setOpened}>
       <PopoverTrigger>{children}</PopoverTrigger>
       <PopoverContent className="w-80">
-        <div className="grid gap-4">
+        <div className="">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
               <FormSelect
                 label="Subject"
                 options={[
@@ -120,23 +132,16 @@ export function SubjectForm({
                 control={form.control}
                 name="subjectId"
               />
-              {isNew || (
-                <SubmitButton isSubmitting={m.isPending}>Submit</SubmitButton>
-              )}
+              <FormInput
+                disabled={!isNew}
+                label="Subject"
+                control={form.control}
+                name="title"
+              />
+
+              <SubmitButton isSubmitting={m.isPending}>Submit</SubmitButton>
             </form>
           </Form>
-          {!isNew || (
-            <Form {...subjectForm}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
-                <FormInput
-                  label="Subject"
-                  control={subjectForm.control}
-                  name="title"
-                />
-                <SubmitButton isSubmitting={m.isPending}>Create</SubmitButton>
-              </form>
-            </Form>
-          )}
         </div>
       </PopoverContent>
     </Popover>

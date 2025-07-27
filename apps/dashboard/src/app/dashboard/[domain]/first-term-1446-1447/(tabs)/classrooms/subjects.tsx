@@ -39,33 +39,43 @@ export function ClassroomSubjects({ classRoomId }) {
       },
     ),
   );
-  const quickCopy = useMemo(() => {
-    const copiables = [];
-    data?.classroomSubjects?.map((s) => {
-      s.assessments.map((a) => {
-        const { title, assessmentType, obtainable, index } = a;
-        const slug = [title, assessmentType, obtainable, index]
-          .map((a) => {
-            // if(typeof a === 'string')
-            // return a;
-            if (typeof a === "boolean") return a ? "yes" : "no";
-            return a ? a : "nill";
-          })
-          .join("-");
-        if (copiables.indexOf((a) => a.slug === slug) == -1)
-          copiables.push({
-            slug,
-            data: { title, assessmentType, obtainable, index },
-          });
-      });
-    });
-    return copiables;
-  }, [data]);
+  const { data: subjectList } = useQuery(
+    trpc.ftd.subjectsList.queryOptions(null, {
+      enabled: opened,
+    }),
+  );
+  const { data: quickCopy } = useQuery(
+    trpc.ftd.getUniqueueAssessmentList.queryOptions(null, {
+      enabled: opened,
+    }),
+  );
+  // const quickCopy = useMemo(() => {
+  //   const copiables = [];
+  //   data?.classroomSubjects?.map((s) => {
+  //     s.assessments.map((a) => {
+  //       const { title, assessmentType, obtainable, index } = a;
+  //       const slug = [title, assessmentType, obtainable, index]
+  //         .map((a) => {
+  //           // if(typeof a === 'string')
+  //           // return a;
+  //           if (typeof a === "boolean") return a ? "yes" : "no";
+  //           return a ? a : "nill";
+  //         })
+  //         .join("-");
+  //       if (copiables.indexOf((a) => a.slug === slug) == -1)
+  //         copiables.push({
+  //           slug,
+  //           data: { title, assessmentType, obtainable, index },
+  //         });
+  //     });
+  //   });
+  //   return copiables;
+  // }, [data]);
   function CopyMenu({ onCopy }) {
     return (
       <Menu noSize className="">
-        {quickCopy?.map((q) => (
-          <Menu.Item onClick={(e) => onCopy(q.data)} dir="rtl" key={q.slug}>
+        {quickCopy?.map((q, qi) => (
+          <Menu.Item onClick={(e) => onCopy(q.data)} dir="rtl" key={qi}>
             <Badge>{q.data.index}</Badge>
             <span>{q.data.title}</span>
             <Badge>{q.data.assessmentType}</Badge>
@@ -101,10 +111,14 @@ export function ClassroomSubjects({ classRoomId }) {
           <div className="flex justify-between items-center mb-4">
             <p className="font-semibold text-lg">Subjects</p>
             <SubjectForm
-              selectableSubjects={data?.subjects?.filter((a) =>
-                data?.classroomSubjects?.every((b) => b.subjectId != a.postId),
-              )}
-              subject={{}}
+              selectableSubjects={
+                subjectList
+                // data?.subjects?.filter((a) =>
+                // data?.classroomSubjects?.every((b) => b.subjectId != a.postId),)
+              }
+              subject={{
+                classId: classRoomId,
+              }}
             >
               Add Subject
             </SubjectForm>

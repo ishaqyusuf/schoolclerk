@@ -17,6 +17,7 @@ import { useGlobalParams } from "../../use-global";
 import { PrintLayout } from "./print-layout";
 import { sortClassroomStudents } from "../../utils";
 import { useStore } from "../../store";
+import { Label } from "@school-clerk/ui/label";
 
 export default function ReportSheetPage() {
   const trpc = useTRPC();
@@ -59,7 +60,17 @@ export default function ReportSheetPage() {
         <h1 className="text-2xl print:hidden font-bold mb-4 print:hover:">
           Report Sheet Print Page
         </h1>
-
+        <div>
+          <Checkbox
+            checked={g.params.printHideSubjects}
+            onCheckedChange={(e) =>
+              g.setParams({
+                printHideSubjects: !g.params.printHideSubjects,
+              })
+            }
+          />
+          <Label>Hide Subjects</Label>
+        </div>
         {printList?.map((p) => <PrintLayout key={p.student.postId} data={p} />)}
       </div>
     </div>
