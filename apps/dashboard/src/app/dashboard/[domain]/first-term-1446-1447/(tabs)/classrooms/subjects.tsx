@@ -247,9 +247,9 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
             ...assessment,
             title,
             obtainable,
-            index,
+            index: Number(index),
             assessmentType,
-          },
+          } as ClassSubjectAssessment,
         },
         events,
       );
@@ -261,6 +261,7 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
             title,
             obtainable,
             assessmentType,
+            index: Number(index),
           } as ClassSubjectAssessment,
         },
         events,
@@ -277,11 +278,12 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
                 <FormInput control={form.control} name="title" label="Title" />
-                <FormInput
+
+                <FormSelect
+                  options={["1", "2", "3", "4", "5"]}
                   control={form.control}
+                  label="Class Index"
                   name="index"
-                  label="Index"
-                  type="number"
                 />
                 <FormInput
                   control={form.control}

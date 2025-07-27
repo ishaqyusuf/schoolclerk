@@ -43,14 +43,15 @@ export function Client() {
       </div>
       <Table dir={"rtl"} className="">
         <TableBody>
-          {data?.map((classroom) => (
-            <Fragment key={classroom.postId}>
+          {data?.map((classroom, ci) => (
+            <Fragment key={ci}>
               <TableRow className="">
                 <TableCell className="inline-flex items-center gap-4">
                   <span className="inline-flex gap-2 items-center">
                     <Menu Icon={null} label={`${classroom.classIndex}.`}>
                       {["1", "2", "3", "4", "5"].map((i) => (
                         <Menu.Item
+                          key={i}
                           onClick={(e) => {
                             updateIndex(classroom.postId, Number(i));
                           }}

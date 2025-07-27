@@ -82,6 +82,7 @@ export function CreateClassroom() {
             />
             <FormSelect
               options={["1", "2", "3", "4", "5"]}
+              control={form.control}
               label="Class Index"
               name="classIndex"
             />
