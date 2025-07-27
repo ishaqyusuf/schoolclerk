@@ -46,7 +46,7 @@ export function ReportSheetHeader(
             <div className="flex items-end">
               <span className="text-black/70">العام الدراسي</span>
               <span>:</span>
-              <span className="mx-1">١٤٤٥/١٤٤٦هـ</span>
+              <span className="mx-1">١٤٤٦/١٤٤٧هـ</span>
             </div>
           </div>
           <div className="flex-wraps flex items-end gap-2 whitespace-nowrap ">
@@ -91,7 +91,7 @@ export function ReportSheetHeader(
               <span className="text-black/70">تاريخ العودة للعام الجديد</span>
               <span>:</span>
               <span className="mx-1 border-b border-muted-foreground">
-                {enToAr("05/04/25")}
+                {enToAr("27/07/25")}
               </span>
             </div>
           </div>

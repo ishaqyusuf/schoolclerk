@@ -95,7 +95,7 @@ function ClassroomItem({ classroom }: ClassroomItemProps) {
           sorted.filter((b) => b.totalScore! > a.totalScore!)?.length + 1,
         totalStudents: sorted.length,
         comment: a.comment,
-        percentage: a.percentageScore,
+        // percentage: a.percentageScore,
         totalObtainable: a.totalObtainable!,
       });
     });

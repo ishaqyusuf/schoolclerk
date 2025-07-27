@@ -3,6 +3,7 @@ import { ReportSheetHeader } from "./report-sheet-header";
 import { cn } from "@school-clerk/ui/cn";
 import { arabic } from "@/fonts";
 import { ReportSheetFooter } from "./report-sheet-footer";
+import { enToAr } from "@school-clerk/utils";
 export interface PrintLayoutProps {
   data: RouterOutputs["ftd"]["studentPrintData"][number];
 }
@@ -59,7 +60,7 @@ export function PrintLayout(props: PrintLayoutProps) {
                       align={rci > 0 ? "center" : "right"}
                       key={rci}
                     >
-                      {rc.value || "-"}
+                      {rc.value ? enToAr(rc.value) : "-"}
                     </td>
                   ))}
                 </tr>
