@@ -52,11 +52,7 @@ const createBatchStudentSchema = z.object({
 
 export function CreateStudent({ classId }: { classId: number }) {
   const [open, setOpen] = useState(false);
-  const form = useZodForm(createStudentSchema, {
-    defaultValues: {
-      gender: "M",
-    },
-  });
+
   const batchForm = useZodForm(createBatchStudentSchema, {
     defaultValues: {
       gender: "M",
@@ -65,29 +61,6 @@ export function CreateStudent({ classId }: { classId: number }) {
   const m = usePostMutate();
   const qc = useQueryClient();
   const trpc = useTRPC();
-
-  const onSingleSubmit = form.handleSubmit(async (data) => {
-    const studentData: Partial<Student> = {
-      type: "student",
-      classId,
-      ...data,
-    };
-
-    m.createAction.mutate(
-      {
-        data: studentData,
-      },
-      {
-        onSuccess: () => {
-          form.reset();
-          setOpen(false);
-          qc.invalidateQueries({
-            queryKey: trpc.ftd.getClassroomStudents.queryKey(),
-          });
-        },
-      },
-    );
-  });
 
   const onBatchSubmit = batchForm.handleSubmit(async (data) => {
     const names = data.names.split("\n").filter((name) => name.trim() !== "");
@@ -127,117 +100,47 @@ export function CreateStudent({ classId }: { classId: number }) {
         <Button variant="outline">New Student</Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">
-        <Tabs defaultValue="single">
-          <TabsList>
-            <TabsTrigger value="single">Single Student</TabsTrigger>
-            <TabsTrigger value="batch">Batch Upload</TabsTrigger>
-          </TabsList>
-          <TabsContent value="single">
-            <Form {...form}>
-              <form onSubmit={onSingleSubmit} className="space-y-4 pt-4">
-                <h4 className="font-medium leading-none">Add New Student</h4>
-                <p className="text-sm text-muted-foreground">
-                  Fill in the details to add a new student to this class.
-                </p>
-                <FormInput
-                  inlineLabel
-                  label="First Name"
-                  control={form.control}
-                  name="firstName"
-                />
-                <FormInput
-                  inlineLabel
-                  label="Surname"
-                  control={form.control}
-                  name="surname"
-                />
-                <FormInput
-                  inlineLabel
-                  label="Other Name"
-                  control={form.control}
-                  name="otherName"
-                />
-                <FormSelect
-                  inlineLabel
-                  label="Gender"
-                  options={[
-                    {
-                      label: "Male",
-                      value: "M",
-                    },
-                    {
-                      label: "Female",
-                      value: "F",
-                    },
-                  ]}
-                  control={form.control}
-                  name="gender"
-                />
+        <Form {...batchForm}>
+          <form onSubmit={onBatchSubmit} className="space-y-4 pt-4">
+            <h4 className="font-medium leading-none">Add Multiple Students</h4>
+            <p className="text-sm text-muted-foreground">
+              Enter one student name per line. Split names with a space or dot.
+            </p>
+            <FormField
+              control={batchForm.control}
+              name="names"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Student Names</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="" rows={10} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                <Button type="submit" disabled={m.createAction.isPending}>
-                  {m.createAction.isPending ? "Creating..." : "Create Student"}
-                </Button>
-              </form>
-            </Form>
-          </TabsContent>
-          <TabsContent value="batch">
-            <Form {...batchForm}>
-              <form onSubmit={onBatchSubmit} className="space-y-4 pt-4">
-                <h4 className="font-medium leading-none">
-                  Add Multiple Students
-                </h4>
-                <p className="text-sm text-muted-foreground">
-                  Enter one student name per line. Split names with a space or
-                  dot.
-                </p>
-                <FormField
-                  control={batchForm.control}
-                  name="names"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Student Names</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="e.g., John Doe\nJane.Doe"
-                          rows={10}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={batchForm.control}
-                  name="gender"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Gender</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a gender" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="M">Male</SelectItem>
-                          <SelectItem value="F">Female</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" disabled={m.createAction.isPending}>
-                  {m.createAction.isPending ? "Creating..." : "Create Students"}
-                </Button>
-              </form>
-            </Form>
-          </TabsContent>
-        </Tabs>
+            <FormSelect
+              inlineLabel
+              label="Gender"
+              options={[
+                {
+                  label: "Male",
+                  value: "M",
+                },
+                {
+                  label: "Female",
+                  value: "F",
+                },
+              ]}
+              control={batchForm.control}
+              name="gender"
+            />
+            <Button type="submit" disabled={m.createAction.isPending}>
+              {m.createAction.isPending ? "Creating..." : "Create Students"}
+            </Button>
+          </form>
+        </Form>
       </PopoverContent>
     </Popover>
   );
