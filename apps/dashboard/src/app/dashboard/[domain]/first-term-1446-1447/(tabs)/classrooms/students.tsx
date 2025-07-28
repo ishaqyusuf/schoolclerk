@@ -354,6 +354,7 @@ function AssessmentInput({
         disabled={!obtainable}
         value={value}
         customInput={Input}
+        dir={`rtl`}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
         onInput={() => setTyping(generateRandomString(2))}
