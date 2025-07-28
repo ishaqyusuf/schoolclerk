@@ -9,7 +9,7 @@ import {
 } from "@school-clerk/ui/collapsible";
 import { Badge } from "@school-clerk/ui/badge";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { Table, TableBody, TableRow, TableCell } from "@school-clerk/ui/table";
 import { Checkbox } from "@school-clerk/ui/checkbox";
 import { cn } from "@school-clerk/ui/cn";
@@ -31,9 +31,6 @@ export default function ReportSheetPage() {
         studentIds: g.params.selectedStudentIds,
       },
       {
-        throwOnError(error) {
-          console.log(error);
-        },
         enabled: !!g.params.selectedStudentIds?.length,
       },
     ),
@@ -60,7 +57,7 @@ export default function ReportSheetPage() {
         <h1 className="text-2xl print:hidden font-bold mb-4 print:hover:">
           Report Sheet Print Page
         </h1>
-        <div>
+        <div className="print:hidden">
           <Checkbox
             checked={g.params.printHideSubjects}
             onCheckedChange={(e) =>
