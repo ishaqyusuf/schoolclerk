@@ -106,14 +106,18 @@ export function ClassroomStudents({ classRoomId }) {
                     Student Name
                   </th>
                   {data?.classSubjects?.classroomSubjects
-                    .filter((sa) =>
-                      g.params.studentSubjectFilterId || g.params.entryMode
-                        ? g.params.studentSubjectFilterId == sa.postId
-                        : true,
-                    )
-                    ?.map((cs, csi) => (
+                    // .filter((sa) =>
+                    //   ,
+                    // )
+                    // ?.
+                    .map((cs, csi) => (
                       <th
-                        className="border text-center p-2"
+                        className={cn(
+                          "border text-center p-2",
+                          (g.params.studentSubjectFilterId || g.params.entryMode
+                            ? g.params.studentSubjectFilterId == cs.postId
+                            : true) || "hidden",
+                        )}
                         colSpan={cs?.assessments?.length + 1}
                         key={csi}
                       >
@@ -124,23 +128,37 @@ export function ClassroomStudents({ classRoomId }) {
                 <tr>
                   <th className="border p-2 sticky left-0 bg-gray-200 z-30"></th>
                   {data?.classSubjects?.classroomSubjects
-                    .filter((sa) =>
-                      g.params.studentSubjectFilterId || g.params.entryMode
-                        ? g.params.studentSubjectFilterId == sa.postId
-                        : true,
-                    )
+                    // .filter((sa) =>
+                    //   g.params.studentSubjectFilterId || g.params.entryMode
+                    //     ? g.params.studentSubjectFilterId == sa.postId
+                    //     : true,
+                    // )
                     ?.map((cs, csi) => (
                       <Fragment key={csi}>
                         {cs?.assessments?.map((ass, asi) => (
                           <th
-                            className="transform rotate-90 h-16 border p-2"
+                            className={cn(
+                              "transform rotate-90 h-16 border p-2",
+                              (g.params.studentSubjectFilterId ||
+                              g.params.entryMode
+                                ? g.params.studentSubjectFilterId == cs.postId
+                                : true) || "hidden",
+                            )}
                             colSpan={1}
                             key={asi}
                           >
                             {ass.title}
                           </th>
                         ))}
-                        <th className="border transform rotate-90 p-2">
+                        <th
+                          className={cn(
+                            "border transform rotate-90 p-2",
+                            (g.params.studentSubjectFilterId ||
+                            g.params.entryMode
+                              ? g.params.studentSubjectFilterId == cs.postId
+                              : true) || "hidden",
+                          )}
+                        >
                           Total
                         </th>
                       </Fragment>
@@ -163,14 +181,21 @@ export function ClassroomStudents({ classRoomId }) {
                       </div>
                     </td>
                     {student.subjectAssessments
-                      .filter((sa) =>
-                        g.params.studentSubjectFilterId || g.params.entryMode
-                          ? g.params.studentSubjectFilterId ==
-                            sa.classroomSubjectId
-                          : true,
-                      )
+                      // .filter((sa) =>
+                      //   g.params.studentSubjectFilterId || g.params.entryMode
+                      //     ? g.params.studentSubjectFilterId ==
+                      //       sa.classroomSubjectId
+                      //     : true,
+                      // )
                       .map((sa, sai) => (
                         <Assessment
+                          show={
+                            g.params.studentSubjectFilterId ||
+                            g.params.entryMode
+                              ? g.params.studentSubjectFilterId ==
+                                sa.classroomSubjectId
+                              : true
+                          }
                           studentId={student.postId}
                           student={student}
                           index={i % 2 == 0 ? sai : sai + 1}
@@ -196,8 +221,14 @@ interface AssessmentProps {
   student: ClassRoomStudent; //["assessments"][number];
   index;
   studentId;
+  show?: boolean;
 }
-function Assessment({ subjectAssessment, student, index }: AssessmentProps) {
+function Assessment({
+  subjectAssessment,
+  student,
+  show,
+  index,
+}: AssessmentProps) {
   const [opened, setOpened] = useState(false);
 
   const { assessments: _assessments } = subjectAssessment;
@@ -235,7 +266,11 @@ function Assessment({ subjectAssessment, student, index }: AssessmentProps) {
           onClick={(e) => {
             setOpened(!opened);
           }}
-          className={cn("score", index % 2 == 0 ? "bg-muted" : "bg")}
+          className={cn(
+            "score",
+            index % 2 == 0 ? "bg-muted" : "bg",
+            show || "hidden",
+          )}
           key={asi}
         >
           {ass.studentAssessment?.markObtained}
@@ -244,7 +279,13 @@ function Assessment({ subjectAssessment, student, index }: AssessmentProps) {
       <Popover open={opened} onOpenChange={setOpened}>
         <PopoverTrigger asChild>
           {/* {children} */}
-          <td className={cn("score total", index % 2 == 0 ? "bg-muted" : "bg")}>
+          <td
+            className={cn(
+              "score total",
+              index % 2 == 0 ? "bg-muted" : "bg",
+              show || "hidden",
+            )}
+          >
             {sum(assessments?.map((a) => a?.studentAssessment?.markObtained))}
           </td>
         </PopoverTrigger>
