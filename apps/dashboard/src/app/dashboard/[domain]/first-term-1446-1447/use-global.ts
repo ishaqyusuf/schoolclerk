@@ -28,7 +28,7 @@ export function usePostMutate() {
   const trpc = useTRPC();
   const createAction = useMutation(trpc.ftd.createPost.mutationOptions({}));
   const updateAction = useMutation(trpc.ftd.updatePost.mutationOptions({}));
-  const deleteAction = useMutation(trpc.ftd.updatePost.mutationOptions({}));
+  const deleteAction = useMutation(trpc.ftd.deletePost.mutationOptions({}));
   return {
     createAction,
     updateAction,

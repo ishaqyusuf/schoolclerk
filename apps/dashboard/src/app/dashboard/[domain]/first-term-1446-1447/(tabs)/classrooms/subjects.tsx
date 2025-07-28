@@ -72,7 +72,7 @@ export function ClassroomSubjects({ classRoomId }) {
   //   });
   //   return copiables;
   // }, [data]);
-  function CopyMenu({ onCopy }) {
+  function CopyMenu({ onCopy, subjectID }) {
     return (
       <Menu noSize className="">
         {quickCopy?.map((q, qi) => (
@@ -221,25 +221,25 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
   const m = usePostMutate();
   const trpc = useTRPC();
   const qc = useQueryClient();
+  const events = {
+    onSuccess(data, variables, context) {
+      qc.invalidateQueries({
+        queryKey: trpc.ftd.getClassRoomSubjects.queryKey(),
+      });
+      toast({
+        // type: "",
+        variant: "success",
+        description: "Updated successfully",
+      });
+      setOpened(false);
+    },
+    onError(error, variables, context) {
+      console.log(error);
+    },
+  };
   async function onSubmit({ title, index, obtainable, assessmentType }) {
     // console.log({ title });
     // return;
-    const events = {
-      onSuccess(data, variables, context) {
-        qc.invalidateQueries({
-          queryKey: trpc.ftd.getClassRoomSubjects.queryKey(),
-        });
-        toast({
-          // type: "",
-          variant: "success",
-          description: "Updated successfully",
-        });
-        setOpened(false);
-      },
-      onError(error, variables, context) {
-        console.log(error);
-      },
-    };
     if (assessment.postId) {
       m.updateAction.mutate(
         {
@@ -276,6 +276,22 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
         <PopoverContent className="w-80">
           <div className="grid gap-4">
             <div className="">Post Id: {assessment?.postId}</div>
+            {!assessment?.postId || (
+              <>
+                <Button
+                  onClick={(e) => {
+                    m.deleteAction.mutate(
+                      {
+                        id: assessment?.postId,
+                      },
+                      events,
+                    );
+                  }}
+                >
+                  Delete
+                </Button>
+              </>
+            )}
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
                 <FormInput control={form.control} name="title" label="Title" />

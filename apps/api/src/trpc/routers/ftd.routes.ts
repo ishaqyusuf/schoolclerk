@@ -126,6 +126,19 @@ export const ftdRouter = createTRPCRouter({
       }
       return await createPost(props.ctx, props.input.data);
     }),
+  deletePost: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+      })
+    )
+    .mutation(async (props) => {
+      await props.ctx.db.posts.delete({
+        where: {
+          id: props.input.id,
+        },
+      });
+    }),
   updatePost: publicProcedure
     .input(
       z.object({
