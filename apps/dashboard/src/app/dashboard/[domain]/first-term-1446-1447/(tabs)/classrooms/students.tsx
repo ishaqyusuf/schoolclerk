@@ -53,7 +53,7 @@ export function ClassroomStudents({ classRoomId }) {
   return (
     <tr className="">
       <td colSpan={100}>
-        <div className="p-4 bg-gray-100 rounded-lg">
+        <div className=" overflow-x-auto w-[90vw] bg-gray-100 rounded-lg">
           <div className="flex gap-4 mb-4 items-center">
             <p className="font-semibold text-lg">Students</p>
             <div className="flex items-center gap-2">
@@ -98,9 +98,9 @@ export function ClassroomStudents({ classRoomId }) {
           </div>
           <div className="overflow-x-auto relative" style={{ height: "600px" }}>
             <table className="w-full border-collapse bg-white">
-              <thead className="sticky top-0 bg-gray-200 z-10">
+              <thead className="sticky top-0 bg-gray-200 z-20">
                 <tr>
-                  <th className="border p-2 sticky left-0 bg-gray-200 z-20">
+                  <th className="border p-2 sticky left-0 bg-gray-200 z-30">
                     Student Name
                   </th>
                   {data?.classSubjects?.classroomSubjects
@@ -120,7 +120,7 @@ export function ClassroomStudents({ classRoomId }) {
                     ))}
                 </tr>
                 <tr>
-                  <th className="border p-2 sticky left-0 bg-gray-200 z-20"></th>
+                  <th className="border p-2 sticky left-0 bg-gray-200 z-30"></th>
                   {data?.classSubjects?.classroomSubjects
                     .filter((sa) =>
                       g.params.studentSubjectFilterId || g.params.entryMode
