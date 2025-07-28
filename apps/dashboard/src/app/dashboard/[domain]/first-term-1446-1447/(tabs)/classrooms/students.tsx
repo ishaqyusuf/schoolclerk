@@ -251,22 +251,27 @@ function Assessment({ subjectAssessment, student, index }: AssessmentProps) {
         <PopoverContent className="w-80">
           <div className="grid gap-4">
             {assessments?.map((a, ai) => (
-              <AssessmentInput
+              <div
                 key={ai}
-                label={a.subjectAssessment?.title}
-                onUpdate={scoreUpdated}
-                assessmentData={a}
-                value={a.studentAssessment?.markObtained}
-                meta={{
-                  classId: student?.classId,
-                  type: "student-subject-assessment",
-                  studentId: student.postId,
-                  subjectAssessmentId: a.subjectAssessment?.postId,
-                  classSubjectId: a.subjectAssessment?.classSubjectId,
-                  calculatedScore: 0,
-                  markObtained: 0,
-                }}
-              />
+                className={cn(a.subjectAssessment.obtainable || "hidden")}
+              >
+                <AssessmentInput
+                  key={ai}
+                  label={a.subjectAssessment?.title}
+                  onUpdate={scoreUpdated}
+                  assessmentData={a}
+                  value={a.studentAssessment?.markObtained}
+                  meta={{
+                    classId: student?.classId,
+                    type: "student-subject-assessment",
+                    studentId: student.postId,
+                    subjectAssessmentId: a.subjectAssessment?.postId,
+                    classSubjectId: a.subjectAssessment?.classSubjectId,
+                    calculatedScore: 0,
+                    markObtained: 0,
+                  }}
+                />
+              </div>
             ))}
           </div>
         </PopoverContent>
@@ -344,7 +349,7 @@ function AssessmentInput({
   const obtainable = assessmentData?.subjectAssessment?.obtainable;
   return (
     <>
-      <span>{assessmentData?.studentAssessment?.postId || "NOT FOUDN"}</span>
+      {/* <span>{assessmentData?.studentAssessment?.postId || "NOT FOUDN"}</span> */}
       <NumericFormat
         disabled={!obtainable}
         value={value}
