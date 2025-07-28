@@ -42,9 +42,11 @@ export function ClassroomStudents({ classRoomId }) {
       },
     ),
   );
+
   const [sortBy, setSortBy] = useState<"name" | "grade">("name");
 
   const sortedStudents = useMemo(() => {
+    console.log(data);
     return sortClassroomStudents([...(data?.students || [])], sortBy);
   }, [data?.students, sortBy]);
 
@@ -54,6 +56,7 @@ export function ClassroomStudents({ classRoomId }) {
       <td colSpan={100}>
         <div className=" overflow-x-auto w-[90vw] bg-gray-100 rounded-lg">
           <div className="flex gap-4 mb-4 items-center">
+            <div className=""></div>
             <p className="font-semibold text-lg">Students</p>
             <div className="flex items-center gap-2">
               <label className="text-sm font-medium">Subject:</label>
@@ -308,6 +311,11 @@ function AssessmentInput({
           title: "Assessment updated successfully",
           description: "Assessment updated successfully",
         });
+        console.log({
+          data,
+          variables,
+          assessmentData,
+        });
       },
       onError(error, variables, context) {
         console.log(error);
@@ -333,17 +341,10 @@ function AssessmentInput({
     });
   }, [debounceValue]);
 
-  const borderColor =
-    updater.isSuccess && focus
-      ? "#16a34a" // Green (Success)
-      : updater.isError
-        ? "#dc2626" // Red (Error)
-        : focus
-          ? "#2563eb" // Blue (Focus)
-          : "#e5e7eb"; // Gray (Default)
   const obtainable = assessmentData?.subjectAssessment?.obtainable;
   return (
     <>
+      <span>{assessmentData?.studentAssessment?.postId || "NOT FOUDN"}</span>
       <NumericFormat
         disabled={!obtainable}
         value={value}
@@ -356,43 +357,14 @@ function AssessmentInput({
         prefix={`${label}:`}
         // placeholder={`${label}: -/${obtainable}`}
         placeholder={`${label}: -/${obtainable} | sai:${meta.subjectAssessmentId} csi:${meta.classSubjectId}`}
+        className={cn(
+          updater?.isPending ? "border-dashed" : "",
+          updater.isSuccess && "border-green-500",
+        )}
         onValueChange={(e) => {
           setValue(e.floatValue);
         }}
       />
-    </>
-  );
-  return (
-    <>
-      <motion.div
-        className="relative inline-flex gap-2 rounded-lg"
-        transition={{ duration: 0.3 }}
-        dir="rtl"
-        animate={{
-          borderColor,
-          borderStyle: updater.isPending ? "dashed" : "solid",
-          borderWidth: 2,
-        }}
-        style={{ borderWidth: 2 }}
-      >
-        <div className="bg-muted px-2 flex items-center">{label}</div>
-        <motion.input
-          type="number"
-          max={100}
-          min={0}
-          className="[&::-webkit-outer-spin-button]:appearance-non h-8 w-full appearance-none rounded-md border-none bg-white px-1 outline-none [&::-webkit-inner-spin-button]:appearance-none"
-          value={value}
-          onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)}
-          onInput={() => setTyping(generateRandomString(2))}
-          onChange={(e) =>
-            setValue(e.target.value === "" ? "" : +e.target.value)
-          }
-        />
-        <div className=" px-2 flex items-center">
-          /{assessmentData?.subjectAssessment?.obtainable}
-        </div>
-      </motion.div>
     </>
   );
 }

@@ -1,4 +1,5 @@
 import type { TRPCContext } from "@api/trpc/init";
+import type { Prisma } from "@school-clerk/db";
 import { enToAr, generateRandomString, sum } from "@school-clerk/utils";
 // const postCode = `firstTerm-1446-1447`;
 const postCode = `firstTerm-1446-1447-prod`;
@@ -254,6 +255,12 @@ const pathEquals = (path, equals) => ({
     equals,
   },
 });
+const pathGt = (path, gt) => ({
+  data: {
+    path: [path],
+    gt,
+  },
+});
 
 export async function createPost<T>({ db }, data) {
   const post = await db.posts.create({
@@ -278,16 +285,16 @@ export async function updateStudentAssessment(ctx: TRPCContext, input) {
     const { postId, ...rest } = p;
     rest.markObtained = markObtained;
     rest.calculatedScore = markObtained;
-    const result = await updatePost<StudentSubjectAssessment>(
-      ctx,
-      p.postId,
-      rest
-    );
+    const result = await updatePost<StudentSubjectAssessment>(ctx, p.postId, {
+      ...rest,
+      type: "student-subject-assessment",
+    });
     return result;
   } else {
     const result = await createPost<StudentSubjectAssessment>(ctx, {
       ...input.meta,
-    });
+      type: "student-subject-assessment",
+    } as StudentSubjectAssessment);
     return result;
   }
 }
@@ -477,10 +484,8 @@ export async function getClassroomStudents(ctx: TRPCContext, classId) {
   ]);
   const assessments = await getDataList<StudentSubjectAssessment>(ctx, [
     pathEquals("type", "student-subject-assessment" as PostTypes),
-    // pathEquals("classId" as keyof ClassSubjectAssessment, classId),
+    pathEquals("classId" as keyof StudentSubjectAssessment, classId),
   ]);
-  //   const subjects = await getSubjects(ctx);
-  type T = ClassSubjectAssessment;
 
   return {
     assessments,
