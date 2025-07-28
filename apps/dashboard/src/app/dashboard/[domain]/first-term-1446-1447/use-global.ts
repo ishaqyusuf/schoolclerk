@@ -17,6 +17,7 @@ export function useGlobalParams() {
     printFilterClassIds: parseAsArrayOf(parseAsInteger),
     printHideSubjects: parseAsBoolean,
     entryMode: parseAsBoolean,
+    studentSubjectFilterId: parseAsInteger,
   });
   return {
     params,

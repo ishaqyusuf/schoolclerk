@@ -18,7 +18,6 @@ import { cn } from "@school-clerk/ui/cn";
 import { generateRandomString } from "@school-clerk/utils";
 import { useDebounce } from "use-debounce";
 import { toast } from "@school-clerk/ui/use-toast";
-import { Button } from "@school-clerk/ui/button";
 import {
   Select,
   SelectContent,
@@ -58,6 +57,30 @@ export function ClassroomStudents({ classRoomId }) {
           <div className="flex gap-4 mb-4 items-center">
             <p className="font-semibold text-lg">Students</p>
             <div className="flex items-center gap-2">
+              <label className="text-sm font-medium">Subject:</label>
+              <Select
+                onValueChange={(value) =>
+                  // setSortBy(value as "name" | "grade")
+                  g.setParams({
+                    studentSubjectFilterId: value == "0" ? null : Number(value),
+                  })
+                }
+                defaultValue={String(g.params.studentSubjectFilterId || 0)}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Subject" />
+                </SelectTrigger>
+                <SelectContent>
+                  {g.params.entryMode || <SelectItem value="0">All</SelectItem>}
+                  {data?.classSubjects?.classroomSubjects?.map((subject) => (
+                    <SelectItem value={String(subject.postId)}>
+                      {subject?.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex items-center gap-2">
               <label className="text-sm font-medium">Sort By:</label>
               <Select
                 onValueChange={(value) => setSortBy(value as "name" | "grade")}
@@ -80,32 +103,46 @@ export function ClassroomStudents({ classRoomId }) {
                   <th className="border p-2 sticky left-0 bg-gray-200 z-20">
                     Student Name
                   </th>
-                  {data?.classSubjects?.classroomSubjects?.map((cs, csi) => (
-                    <th
-                      className="border text-center p-2"
-                      colSpan={cs?.assessments?.length + 1}
-                      key={csi}
-                    >
-                      {cs.title}
-                    </th>
-                  ))}
+                  {data?.classSubjects?.classroomSubjects
+                    .filter((sa) =>
+                      g.params.studentSubjectFilterId || g.params.entryMode
+                        ? g.params.studentSubjectFilterId == sa.postId
+                        : true,
+                    )
+                    ?.map((cs, csi) => (
+                      <th
+                        className="border text-center p-2"
+                        colSpan={cs?.assessments?.length + 1}
+                        key={csi}
+                      >
+                        {cs.title}
+                      </th>
+                    ))}
                 </tr>
                 <tr>
                   <th className="border p-2 sticky left-0 bg-gray-200 z-20"></th>
-                  {data?.classSubjects?.classroomSubjects?.map((cs, csi) => (
-                    <Fragment key={csi}>
-                      {cs?.assessments?.map((ass, asi) => (
-                        <th
-                          className="transform rotate-90 h-16 border p-2"
-                          colSpan={1}
-                          key={asi}
-                        >
-                          {ass.title}
+                  {data?.classSubjects?.classroomSubjects
+                    .filter((sa) =>
+                      g.params.studentSubjectFilterId || g.params.entryMode
+                        ? g.params.studentSubjectFilterId == sa.postId
+                        : true,
+                    )
+                    ?.map((cs, csi) => (
+                      <Fragment key={csi}>
+                        {cs?.assessments?.map((ass, asi) => (
+                          <th
+                            className="transform rotate-90 h-16 border p-2"
+                            colSpan={1}
+                            key={asi}
+                          >
+                            {ass.title}
+                          </th>
+                        ))}
+                        <th className="border transform rotate-90 p-2">
+                          Total
                         </th>
-                      ))}
-                      <th className="border transform rotate-90 p-2">Total</th>
-                    </Fragment>
-                  ))}
+                      </Fragment>
+                    ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -123,15 +160,22 @@ export function ClassroomStudents({ classRoomId }) {
                         </span>
                       </div>
                     </td>
-                    {student.subjectAssessments.map((sa, sai) => (
-                      <Assessment
-                        studentId={student.postId}
-                        student={student}
-                        index={i % 2 == 0 ? sai : sai + 1}
-                        subjectAssessment={sa}
-                        key={sai}
-                      />
-                    ))}
+                    {student.subjectAssessments
+                      .filter((sa) =>
+                        g.params.studentSubjectFilterId || g.params.entryMode
+                          ? g.params.studentSubjectFilterId ==
+                            sa.classroomSubjectId
+                          : true,
+                      )
+                      .map((sa, sai) => (
+                        <Assessment
+                          studentId={student.postId}
+                          student={student}
+                          index={i % 2 == 0 ? sai : sai + 1}
+                          subjectAssessment={sa}
+                          key={sai}
+                        />
+                      ))}
                   </tr>
                 ))}
               </tbody>
