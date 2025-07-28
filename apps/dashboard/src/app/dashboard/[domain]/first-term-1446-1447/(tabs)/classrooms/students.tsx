@@ -316,15 +316,8 @@ function AssessmentInput({
           title: "Assessment updated successfully",
           description: "Assessment updated successfully",
         });
-        console.log({
-          data,
-          variables,
-          assessmentData,
-        });
       },
-      onError(error, variables, context) {
-        console.log(error);
-      },
+      onError(error, variables, context) {},
     }),
   );
   const [value, setValue] = useState(_value);
@@ -362,7 +355,7 @@ function AssessmentInput({
         suffix={`/${obtainable}`}
         prefix={`${label}:`}
         // placeholder={`${label}: -/${obtainable}`}
-        placeholder={`${label}: -/${obtainable} | sai:${meta.subjectAssessmentId} csi:${meta.classSubjectId}`}
+        placeholder={`${label}: -/${obtainable}`}
         className={cn(
           updater?.isPending ? "border-dashed" : "",
           updater.isSuccess && "border-green-500",
