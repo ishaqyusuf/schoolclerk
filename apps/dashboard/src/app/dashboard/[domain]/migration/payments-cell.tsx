@@ -184,7 +184,7 @@ function PayData({
                     </TableCell>
                     <TableCell>
                       <FormInput
-                        midday={{
+                        numericProps={{
                           prefix: "NGN ",
                         }}
                         className="w-24"
@@ -241,7 +241,7 @@ function PayData({
                           key={term}
                           control={form.control}
                           name={`billables.${term}.amount`}
-                          midday={{
+                          numericProps={{
                             prefix: "NGN ",
                           }}
                         />

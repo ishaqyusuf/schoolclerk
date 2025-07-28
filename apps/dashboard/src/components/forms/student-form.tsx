@@ -208,7 +208,7 @@ function PaymentSection({}) {
               </TableCell>
               <TableCell>
                 <FormInput
-                  midday={{
+                  numericProps={{
                     prefix: "NGN ",
                   }}
                   control={control}

@@ -332,6 +332,9 @@ async function getData<T>(ctx, dataQuery?, postId?) {
       //       }))
       //     : undefined,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
   if (!post) return null;
   return {
@@ -359,6 +362,9 @@ async function getDataList<T>(ctx, dataQuery) {
       //         data: q,
       //       }))
       //     : undefined,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
   return ls.map(

@@ -9,7 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@school-clerk/ui/popover";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useZodForm } from "@/hooks/use-zod-form";
 import z from "zod";
 import { Form } from "@school-clerk/ui/form";
@@ -214,10 +214,19 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
         title,
         obtainable,
         assessmentType,
-        index,
+        index: String(index),
       },
     },
   );
+  useEffect(() => {
+    if (opened)
+      form.reset({
+        title,
+        obtainable,
+        assessmentType,
+        index: String(index),
+      });
+  }, [opened]);
   const m = usePostMutate();
   const trpc = useTRPC();
   const qc = useQueryClient();
@@ -225,6 +234,9 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
     onSuccess(data, variables, context) {
       qc.invalidateQueries({
         queryKey: trpc.ftd.getClassRoomSubjects.queryKey(),
+      });
+      qc.invalidateQueries({
+        queryKey: trpc.ftd.getClassroomStudents.queryKey(),
       });
       toast({
         // type: "",
@@ -240,16 +252,17 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
   async function onSubmit({ title, index, obtainable, assessmentType }) {
     // console.log({ title });
     // return;
-    if (assessment.postId) {
+    if (postId) {
       m.updateAction.mutate(
         {
-          id: assessment.postId,
+          id: postId,
           data: {
             ...assessment,
             title,
             obtainable,
             index: Number(index),
             assessmentType,
+            type: "class-subject-assessment",
           } as ClassSubjectAssessment,
         },
         events,
@@ -263,6 +276,7 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
             obtainable,
             assessmentType,
             index: Number(index),
+            type: "class-subject-assessment",
           } as ClassSubjectAssessment,
         },
         events,

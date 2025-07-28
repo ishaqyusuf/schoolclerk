@@ -31,7 +31,7 @@ interface Props<T> {
   uppercase?: boolean;
   inlineLabel?: boolean;
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
-  midday?: NumericFormatProps;
+  numericProps?: NumericFormatProps;
 
   // defaultValue?:boolean
 }
@@ -51,7 +51,7 @@ export default function FormInput<
   tabIndex,
   size = "default",
   inputProps,
-  midday,
+  numericProps,
   inlineLabel,
   ...props
 }: Partial<ControllerProps<TFieldValues, TName>> & Props<TOptionType>) {
@@ -80,17 +80,18 @@ export default function FormInput<
               </>
             ) : (
               <>
-                {midday ? (
-                  <>
-                    <NumberInput
+                {numericProps ? (
+                  <div className="relative font-mono">
+                    <NumericFormat
                       value={field.value}
-                      {...midday}
+                      {...numericProps}
                       {...{ className }}
                       onValueChange={(e) => {
+                        // if (numericProps.type == '')
                         field.onChange(e.floatValue);
                       }}
                     />
-                  </>
+                  </div>
                 ) : (
                   <div
                     className={cn(

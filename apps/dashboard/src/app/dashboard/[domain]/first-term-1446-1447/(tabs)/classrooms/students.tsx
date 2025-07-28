@@ -8,10 +8,8 @@ import {
   PopoverTrigger,
 } from "@school-clerk/ui/popover";
 import { Fragment, useEffect, useMemo, useState } from "react";
-import {
-  ClassSubjectAssessment,
-  StudentSubjectAssessment,
-} from "@api/db/queries/first-term-data";
+import { StudentSubjectAssessment } from "@api/db/queries/first-term-data";
+import { NumericFormat, type NumericFormatProps } from "react-number-format";
 import { enToAr, sum } from "@/utils/utils";
 import { RouterOutputs } from "@api/trpc/routers/_app";
 import { cn } from "@school-clerk/ui/cn";
@@ -26,6 +24,7 @@ import {
   SelectValue,
 } from "@school-clerk/ui/select";
 import { sortClassroomStudents } from "../../utils";
+import { Input } from "@school-clerk/ui/input";
 
 export function ClassroomStudents({ classRoomId }) {
   const trpc = useTRPC();
@@ -342,6 +341,27 @@ function AssessmentInput({
         : focus
           ? "#2563eb" // Blue (Focus)
           : "#e5e7eb"; // Gray (Default)
+  const obtainable = assessmentData?.subjectAssessment?.obtainable;
+  return (
+    <>
+      <NumericFormat
+        disabled={!obtainable}
+        value={value}
+        customInput={Input}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        onInput={() => setTyping(generateRandomString(2))}
+        type="tel"
+        suffix={`/${obtainable}`}
+        prefix={`${label}:`}
+        // placeholder={`${label}: -/${obtainable}`}
+        placeholder={`${label}: -/${obtainable} | sai:${meta.subjectAssessmentId} csi:${meta.classSubjectId}`}
+        onValueChange={(e) => {
+          setValue(e.floatValue);
+        }}
+      />
+    </>
+  );
   return (
     <>
       <motion.div
