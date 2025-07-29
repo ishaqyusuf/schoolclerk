@@ -39,7 +39,7 @@ export function Client() {
       },
     );
   return (
-    <>
+    <div className="pb-56 md:pb-10">
       {g.params.entryMode || (
         <div className="">
           <CreateClassroom />
@@ -125,6 +125,6 @@ export function Client() {
             ))}
         </TableBody>
       </Table>
-    </>
+    </div>
   );
 }
