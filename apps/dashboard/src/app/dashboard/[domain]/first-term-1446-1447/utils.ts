@@ -48,3 +48,16 @@ export const indices = [
   "12",
   "13",
 ];
+export function toFixed(value) {
+  const number = typeof value == "string" ? parseFloat(value) : value;
+  if (isNaN(value) || !value) return value;
+  return number.toFixed(2);
+}
+export const calculateScore = (obtained, obtainable, gradeScore) =>
+  !obtained || !obtainable
+    ? obtained
+    : // :
+      // ? obtained
+      // round up
+      Math.ceil((Number(obtained) / Number(obtainable)) * Number(gradeScore));
+// : Math.ceil((Number(obtained) / Number(obtainable)) * Number(gradeScore));

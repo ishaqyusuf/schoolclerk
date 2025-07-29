@@ -23,8 +23,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@school-clerk/ui/select";
-import { sortClassroomStudents } from "../../utils";
+import { calculateScore, sortClassroomStudents } from "../../utils";
 import { Input } from "@school-clerk/ui/input";
+import { arabic } from "@/fonts";
 
 export function ClassroomStudents({ classRoomId }) {
   const trpc = useTRPC();
@@ -52,7 +53,7 @@ export function ClassroomStudents({ classRoomId }) {
 
   if (!opened) return null;
   return (
-    <tr className="">
+    <tr className={cn(arabic.className)}>
       <td colSpan={100}>
         <div className=" overflow-x-auto w-[90vw] bg-gray-100 rounded-lg">
           <div className="flex gap-4 mb-4 items-center">
@@ -117,6 +118,7 @@ export function ClassroomStudents({ classRoomId }) {
                           (g.params.studentSubjectFilterId || g.params.entryMode
                             ? g.params.studentSubjectFilterId == cs.postId
                             : true) || "hidden",
+                          csi % 2 == 0 ? "bg-muted" : "",
                         )}
                         colSpan={cs?.assessments?.length + 1}
                         key={csi}
@@ -138,25 +140,30 @@ export function ClassroomStudents({ classRoomId }) {
                         {cs?.assessments?.map((ass, asi) => (
                           <th
                             className={cn(
-                              "transform rotate-90 h-16 border p-2",
+                              "transform rotate-45 h-16 border p-2",
                               (g.params.studentSubjectFilterId ||
                               g.params.entryMode
                                 ? g.params.studentSubjectFilterId == cs.postId
                                 : true) || "hidden",
+                              csi % 2 == 0 ? "bg-muted" : "",
                             )}
                             colSpan={1}
                             key={asi}
                           >
-                            {ass.title}
+                            {ass.title}{" "}
+                            <span className="text-xs fontbold">
+                              ({enToAr(ass?.obtainable)})
+                            </span>
                           </th>
                         ))}
                         <th
                           className={cn(
-                            "border transform rotate-90 p-2",
+                            "border transform rotate-45 p-2",
                             (g.params.studentSubjectFilterId ||
                             g.params.entryMode
                               ? g.params.studentSubjectFilterId == cs.postId
                               : true) || "hidden",
+                            csi % 2 == 0 ? "bg-muted" : "",
                           )}
                         >
                           Total
@@ -259,6 +266,15 @@ function Assessment({
       });
     });
   };
+  const total = sum(
+    assessments?.map((a) =>
+      calculateScore(
+        a?.studentAssessment?.markObtained,
+        a?.subjectAssessment?.assessmentTotal,
+        a?.subjectAssessment?.obtainable,
+      ),
+    ),
+  );
   return (
     <Fragment>
       {assessments.map((ass, asi) => (
@@ -273,10 +289,24 @@ function Assessment({
           )}
           key={asi}
         >
-          {ass.studentAssessment?.markObtained}
+          {ass.studentAssessment?.markObtained
+            ? enToAr(
+                calculateScore(
+                  ass.studentAssessment?.markObtained,
+                  ass?.subjectAssessment?.assessmentTotal,
+                  ass?.subjectAssessment?.obtainable,
+                ),
+              )
+            : "-"}
+          {/* {JSON.stringify([
+            ass.studentAssessment?.markObtained,
+            ass?.subjectAssessment?.assessmentTotal,
+            ass?.subjectAssessment?.obtainable,
+          ])} */}
+          {/* {ass.studentAssessment?.markObtained} */}
         </td>
       ))}
-      <Popover open={opened} onOpenChange={setOpened}>
+      <Popover modal={true} open={opened} onOpenChange={setOpened}>
         <PopoverTrigger asChild>
           {/* {children} */}
           <td
@@ -286,10 +316,10 @@ function Assessment({
               show || "hidden",
             )}
           >
-            {sum(assessments?.map((a) => a?.studentAssessment?.markObtained))}
+            {total ? enToAr(total) : "-"}
           </td>
         </PopoverTrigger>
-        <PopoverContent className="w-80">
+        <PopoverContent className="w-48">
           <div className="grid gap-4">
             {assessments?.map((a, ai) => (
               <div
@@ -362,11 +392,21 @@ function AssessmentInput({
     }),
   );
   const [value, setValue] = useState(_value);
+  const obtainable =
+    assessmentData?.subjectAssessment?.assessmentTotal ||
+    assessmentData?.subjectAssessment?.obtainable;
   useEffect(() => {
     if (!debounceValue) return;
     const _meta = { ...meta };
     _meta.markObtained = Number(value) || 0;
-    if (_meta.markObtained > assessmentData?.subjectAssessment?.obtainable) {
+    _meta.calculatedScore = calculateScore(
+      _meta.markObtained,
+      assessmentData?.subjectAssessment?.assessmentTotal,
+      assessmentData?.subjectAssessment?.obtainable,
+    );
+
+    //Number(value) || 0;
+    if (_meta.markObtained > obtainable) {
       toast({
         variant: "error",
         title: "Mark obtained cannot be greater than obtainable mark",
@@ -380,7 +420,6 @@ function AssessmentInput({
     });
   }, [debounceValue]);
 
-  const obtainable = assessmentData?.subjectAssessment?.obtainable;
   return (
     <>
       {/* <span>{assessmentData?.studentAssessment?.postId || "NOT FOUDN"}</span> */}

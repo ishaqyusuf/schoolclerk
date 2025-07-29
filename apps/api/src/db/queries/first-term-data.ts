@@ -284,7 +284,7 @@ export async function updateStudentAssessment(ctx: TRPCContext, input) {
   if (p?.postId) {
     const { postId, ...rest } = p;
     rest.markObtained = markObtained;
-    rest.calculatedScore = markObtained;
+    rest.calculatedScore = calculatedScore;
     const result = await updatePost<StudentSubjectAssessment>(ctx, p.postId, {
       ...rest,
       type: "student-subject-assessment",
@@ -775,6 +775,7 @@ export interface ClassSubjectAssessment extends BasePostData {
   classId;
   title;
   obtainable;
+  assessmentTotal?;
   index;
   assessmentType: "primary" | "secondary";
 }

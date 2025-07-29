@@ -1,13 +1,14 @@
 // @ts-check
-import "./src/env.mjs";
-
+// import "./src/env.mjs";
+import { fileURLToPath } from "url";
 // import "@school-clerk/auth/env.mjs";
 
 import { withNextDevtools } from "@next-devtools/core/plugin";
-import "@school-clerk/api/env";
+// import "@school-clerk/api/env";
 import withMDX from "@next/mdx";
 
-!process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
+// !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
+// createJiti(fileURLToPath(import.meta.url))("./src/env");
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -19,6 +20,8 @@ const config = {
     // "@school-clerk/db",
     // "@school-clerk/common",
     "@school-clerk/ui",
+    "@school-clerk/api",
+
     // "@school-clerk/stripe",
   ],
   pageExtensions: ["ts", "tsx", "mdx"],
@@ -41,4 +44,5 @@ const config = {
   output: "standalone",
 };
 
-export default withNextDevtools(withMDX()(config));
+// export default withNextDevtools(withMDX()(config));
+export default config;

@@ -19,7 +19,7 @@
     "db:migrate": "turbo -F @school-clerk/db db-migrate",
     "db:generate": "turbo -F @school-clerk/db prisma-generate",
     "dev": "turbo dev --parallel",
-    "dev:dashboard": "turbo dev --parallel --filter !@school-clerk/site --filter !@school-clerk/email --filter !@school-clerk/jobs",
+    "dev:dashboard": "turbo dev --parallel --filter !@school-clerk/email --filter !@school-clerk/jobs",
     "format": "turbo format --continue -- --cache --cache-location='node_modules/.cache/.prettiercache' --ignore-path='../../.gitignore'",
     "format:fix": "turbo format --continue -- --write --cache --cache-location='node_modules/.cache/.prettiercache' --ignore-path='../../.gitignore'",
     "lint": "turbo lint -- --quiet -- --cache --cache-location 'node_modules/.cache/.eslintcache' && manypkg check",

@@ -162,6 +162,9 @@ export function ClassroomSubjects({ classRoomId }) {
                             <Button variant="outline" size="sm">
                               <span>{a.title}</span>
                               <span>{a.obtainable}</span>
+                              {!a.assessmentTotal || (
+                                <span className="">({a.assessmentTotal})</span>
+                              )}
                             </Button>
                           </Assessment>
                         ))}
@@ -199,13 +202,21 @@ interface AssessmentProps {
   CopyMenu?;
 }
 function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
-  const { postId, obtainable, classId, index, assessmentType, title } =
-    assessment;
+  const {
+    postId,
+    obtainable,
+    assessmentTotal,
+    classId,
+    index,
+    assessmentType,
+    title,
+  } = assessment;
   const [opened, setOpened] = useState(false);
   const form = useZodForm(
     z.object({
       title: z.string(),
       obtainable: z.number(),
+      assessmentTotal: z.number().nullable().optional(),
       index: z.string(),
       assessmentType: z.enum(["primary", "secondary"]),
     }),
@@ -224,6 +235,7 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
         title,
         obtainable,
         assessmentType,
+        assessmentTotal,
         index: String(index),
       });
   }, [opened]);
@@ -249,7 +261,13 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
       console.log(error);
     },
   };
-  async function onSubmit({ title, index, obtainable, assessmentType }) {
+  async function onSubmit({
+    title,
+    index,
+    obtainable,
+    assessmentTotal,
+    assessmentType,
+  }) {
     // console.log({ title });
     // return;
     if (postId) {
@@ -260,6 +278,7 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
             ...assessment,
             title,
             obtainable,
+            assessmentTotal,
             index: Number(index),
             assessmentType,
             type: "class-subject-assessment",
@@ -287,7 +306,7 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
     <div className="inline-flex">
       <Popover open={opened} onOpenChange={setOpened}>
         <PopoverTrigger>{children}</PopoverTrigger>
-        <PopoverContent className="w-80">
+        <PopoverContent className="w-56">
           <div className="grid gap-4">
             <div className="">Post Id: {assessment?.postId}</div>
             {!assessment?.postId || (
@@ -308,15 +327,39 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
             )}
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
-                <FormInput control={form.control} name="title" label="Title" />
+                <FormInput
+                  size="sm"
+                  control={form.control}
+                  name="title"
+                  label="Title"
+                />
 
                 <FormSelect
                   options={indices}
                   control={form.control}
                   label="Class Index"
+                  size="sm"
                   name="index"
                 />
                 <FormInput
+                  // numericProps={{
+                  //   type: "tel",
+                  //   prefix: "Obtainable: ",
+                  //   placeholder: "Obtainable",
+                  // }}
+                  size="sm"
+                  control={form.control}
+                  name="assessmentTotal"
+                  label="Assessment Total"
+                  type="number"
+                />
+                <FormInput
+                  // numericProps={{
+                  //   type: "tel",
+                  //   prefix: "Obtainable: ",
+                  //   placeholder: "Obtainable",
+                  // }}
+                  size="sm"
                   control={form.control}
                   name="obtainable"
                   label="Obtainable"
@@ -324,6 +367,7 @@ function Assessment({ assessment, CopyMenu, children }: AssessmentProps) {
                 />
                 <FormSelect
                   label="Assessment Type"
+                  size="sm"
                   options={["primary", "secondary"]}
                   control={form.control}
                   name="assessmentType"
