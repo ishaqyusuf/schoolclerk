@@ -55,7 +55,7 @@ export function ClassroomStudents({ classRoomId }) {
   return (
     <tr className={cn(arabic.className)}>
       <td colSpan={100}>
-        <div className=" overflow-x-auto w-[90vw] bg-gray-100 rounded-lg">
+        <div className=" overflow-x-auto pb-56 md:pb-4 w-[90vw] bg-gray-100 rounded-lg">
           <div className="flex gap-4 mb-4 items-center">
             <div className=""></div>
             <p className="font-semibold text-lg">Students</p>
