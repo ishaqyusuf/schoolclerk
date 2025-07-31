@@ -1,10 +1,8 @@
 "use client";
 
 import { createAcadSessionAction } from "@/actions/create-acad-session";
-import { createAcadSessionSchema } from "@/actions/schema";
 import { useAction } from "next-safe-action/hooks";
-import { Form, useFieldArray, useForm } from "react-hook-form";
-import { z } from "zod";
+import { Form, useFieldArray } from "react-hook-form";
 
 import { Button } from "@school-clerk/ui/button";
 import { Icons } from "@school-clerk/ui/icons";
@@ -17,13 +15,15 @@ import {
   TableRow,
 } from "@school-clerk/ui/table";
 
+import { FormDate } from "../controls/form-date";
 import FormInput from "../controls/form-input";
 import { SubmitButton } from "../submit-button";
 import { useZodForm } from "@/hooks/use-zod-form";
 import { useAcademicParams } from "@/hooks/use-academic-params";
+import { createAcademicSessionSchema } from "@api/trpc/schemas/schemas";
 
 export function AcademicSessionForm() {
-  const form = useZodForm(createAcadSessionSchema, {});
+  const form = useZodForm(createAcademicSessionSchema, {});
   const { params } = useAcademicParams();
   const terms = useFieldArray({
     control: form.control,
@@ -43,12 +43,14 @@ export function AcademicSessionForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(createSession.execute)}>
         <div className="grid gap-4">
-          <FormInput
-            control={form.control}
-            name="title"
-            label="Session Title"
-            placeholder="2025/2026"
-          />
+          {!!params?.sessionId || (
+            <FormInput
+              control={form.control}
+              name="title"
+              label="Session Title"
+              placeholder="2025/2026"
+            />
+          )}
           <div className="h-auto">
             <Table className="h-auto table-fixed">
               <TableHeader>
@@ -66,6 +68,20 @@ export function AcademicSessionForm() {
                         control={form.control}
                         name={`terms.${ti}.title`}
                         placeholder="1st Term"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <FormDate
+                        control={form.control}
+                        name={`terms.${ti}.startDate`}
+                        placeholder="Start Date"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <FormDate
+                        control={form.control}
+                        name={`terms.${ti}.endDate`}
+                        placeholder="End Date"
                       />
                     </TableCell>
                   </TableRow>

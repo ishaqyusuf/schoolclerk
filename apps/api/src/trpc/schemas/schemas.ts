@@ -31,6 +31,25 @@ export const classroomQuerySchema = z.object({
 });
 export type ClassroomQuery = z.infer<typeof classroomQuerySchema>;
 
+export const createAcademicSessionSchema = z
+  .object({
+    title: z.string().optional().nullable(),
+    sessionId: z.string().optional().nullable(),
+    terms: z
+      .array(
+        z.object({
+          startDate: z.date().optional(),
+          endDate: z.date().optional(),
+          title: z.string().min(1),
+        })
+      )
+      .optional(),
+  })
+  .refine((data) => !data.sessionId && !data.title, {
+    message: "Academic session title is required",
+    path: ["title"],
+  });
+export type CreateAcademicSession = z.infer<typeof createAcademicSessionSchema>;
 export const enrollmentQuerySchema = z.object({
   previousSessionId: z.string().optional().nullable(),
   previousTermId: z.string().optional().nullable(),

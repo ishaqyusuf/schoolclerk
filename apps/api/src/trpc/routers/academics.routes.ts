@@ -14,25 +14,4 @@ export const academicsRouter = createTRPCRouter({
     .query(async (props) => {
       return getStudentTermsList(props.ctx, props.input);
     }),
-  // all: publicProcedure
-  //   .input(questionQuerySchema)
-  //   .query(async ({ input, ctx }) => {
-  //     const result = await loadQuestions(ctx, input);
-  //     return result;
-  //   }),
-  // getForm: publicProcedure
-  //   .input(
-  //     z.object({
-  //       postId: z.number().optional(),
-  //     })
-  //   )
-  //   .query(async ({ input, ctx }) => {
-  //     const result = await loadQuestions(ctx, input);
-  //     return !input?.postId ? null : result?.[0];
-  //   }),
-  // saveQuestion: publicProcedure
-  //   .input(questionDataSchema)
-  //   .mutation(async ({ input, ctx }) => {
-  //     return saveQuestion(ctx, input);
-  //   }),
 });

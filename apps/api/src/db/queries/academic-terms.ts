@@ -1,5 +1,8 @@
 import type { TRPCContext } from "@api/trpc/init";
-import type { GetStudentTermListSchema } from "@api/trpc/schemas/schemas";
+import type {
+  CreateAcademicSession,
+  GetStudentTermListSchema,
+} from "@api/trpc/schemas/schemas";
 
 export async function getStudentTermsList(
   ctx: TRPCContext,
@@ -66,3 +69,7 @@ export async function getStudentTermsList(
     };
   });
 }
+export async function createAcademicSession(
+  ctx: TRPCContext,
+  data: CreateAcademicSession
+) {}
