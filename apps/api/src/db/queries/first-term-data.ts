@@ -763,12 +763,14 @@ export interface PaymentRaw extends BasePostData {
 }
 export interface Payment extends BasePostData {
   amount: number;
+  summary?: string;
   term: "first" | "second" | "third";
-  paymentType?: "fee" | "form";
+  paymentType?: "fee" | "form" | "service" | "service-payout";
   studentId?: number;
+  staffId?: number;
   classId?: number;
   rawPaymentId?: number;
-  status: "applied" | "pending";
+  status: "applied" | "pending" | "paid";
 }
 export interface ClassSubjectAssessment extends BasePostData {
   classSubjectId;

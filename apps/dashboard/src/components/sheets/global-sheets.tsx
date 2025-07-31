@@ -1,5 +1,6 @@
 "use client";
 
+import { AcademicSessionSheet } from "./academic-session-sheet";
 import { BillableCreateSheet } from "./billable-create-sheet";
 import { ClassroomCreateSheet } from "./classroom-create-sheet";
 import { ClassroomOverviewSheet } from "./classroom-overview-sheet";
@@ -17,6 +18,7 @@ type Props = {
 export function GlobalSheets({}: Props) {
   return (
     <>
+      <AcademicSessionSheet />
       <ClassroomCreateSheet />
       <BillableCreateSheet />
       <SchoolFeeCreateSheet />

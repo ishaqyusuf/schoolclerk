@@ -18,7 +18,7 @@ import {
   SidebarMenuItem,
 } from "@school-clerk/ui/sidebar";
 
-import { Icon } from "../icons";
+import { Icon, Icons } from "../icons";
 import { useSidebar } from "./context";
 import { useSidebarStore } from "./store";
 import { useAsyncMemo } from "use-async-memo";
@@ -27,6 +27,9 @@ import { randomInt } from "@/utils/utils";
 import { getTermListAction } from "@/actions/get-term-list";
 import { useTRPC } from "@/trpc/client";
 import { switchSessionTerm } from "@/actions/cookies/login-session";
+import { Menu } from "../menu";
+import { Button } from "@school-clerk/ui/button";
+import { useAcademicParams } from "@/hooks/use-academic-params";
 
 export function ModuleSwitcher() {
   const sb = useSidebar();
@@ -59,6 +62,7 @@ export function ModuleSwitcher() {
   async function switchSession(termId) {
     await switchSessionTerm(termId);
   }
+  const asp = useAcademicParams();
   if (!modules?.length || !termProfiles) return null;
   return (
     <SidebarMenu>
@@ -89,14 +93,30 @@ export function ModuleSwitcher() {
             side={isMobile ? "bottom" : "right"}
             sideOffset={4}
           >
-            <DropdownMenuLabel className="text-xs text-muted-foreground">
-              Session Profiles
+            <DropdownMenuLabel className="text-xs flex justify-between text-muted-foreground">
+              <span>Session Profiles</span>
             </DropdownMenuLabel>
             {termProfiles?.sessions.map((session, index) => (
               <Fragment key={index}>
                 {index == 0 || <DropdownMenuSeparator />}
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel>{session?.title}</DropdownMenuLabel>
+                  <DropdownMenuLabel className="flex justify-between">
+                    <span>{session?.title}</span>
+                    <div>
+                      <Button
+                        onClick={(e) => {
+                          asp.setParams({
+                            academicSessionFormType: "term",
+                            sessionId: session?.id,
+                          });
+                        }}
+                        className="p-1 size-5"
+                        variant="secondary"
+                      >
+                        <Icons.add className="size-4" />
+                      </Button>
+                    </div>
+                  </DropdownMenuLabel>
                   {session?.terms?.map((term, index) => (
                     <DropdownMenuItem
                       onClick={(e) => {

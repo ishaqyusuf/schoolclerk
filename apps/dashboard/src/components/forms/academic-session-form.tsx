@@ -2,13 +2,11 @@
 
 import { createAcadSessionAction } from "@/actions/create-acad-session";
 import { createAcadSessionSchema } from "@/actions/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Form, useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@school-clerk/ui/button";
-import { Form } from "@school-clerk/ui/form";
 import { Icons } from "@school-clerk/ui/icons";
 import {
   Table,
@@ -21,17 +19,18 @@ import {
 
 import FormInput from "../controls/form-input";
 import { SubmitButton } from "../submit-button";
+import { useZodForm } from "@/hooks/use-zod-form";
+import { useAcademicParams } from "@/hooks/use-academic-params";
 
-export function AcademicSessionForm({ defaultValues }) {
-  const form = useForm<z.infer<typeof createAcadSessionSchema>>({
-    defaultValues,
-    // resolver: zodResolver(createAcadSessionSchema),
-  });
+export function AcademicSessionForm() {
+  const form = useZodForm(createAcadSessionSchema, {});
+  const { params } = useAcademicParams();
   const terms = useFieldArray({
     control: form.control,
     name: "terms",
     keyName: "_id",
   });
+
   const createSession = useAction(createAcadSessionAction, {
     onSuccess(args) {
       console.log(args);

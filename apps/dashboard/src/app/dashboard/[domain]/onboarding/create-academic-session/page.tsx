@@ -4,13 +4,9 @@ import { AcademicSessionForm } from "@/components/forms/academic-session-form";
 export default async function CreateAcademicSessionPage({}) {
   const profile = await getSaasProfileCookie();
 
-  const defaultValues = {
-    title: "",
-    terms: [],
-  };
   return (
     <div className="">
-      <AcademicSessionForm defaultValues={defaultValues} />
+      <AcademicSessionForm />
     </div>
   );
 }
