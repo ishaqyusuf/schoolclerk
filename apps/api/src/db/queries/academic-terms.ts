@@ -72,4 +72,51 @@ export async function getStudentTermsList(
 export async function createAcademicSession(
   ctx: TRPCContext,
   data: CreateAcademicSession
-) {}
+) {
+  const { sessionId, terms, title } = data;
+  const { db } = ctx;
+  const resp = await db.$transaction(async (tx) => {
+    sessionId
+      ? await tx.schoolSession.update({
+          where: {
+            id: sessionId,
+          },
+          data: {
+            terms: {
+              createMany: terms?.length
+                ? {
+                    data: data.terms!?.map((d) => ({
+                      schoolId: ctx.profile?.schoolId,
+                      title: d.title,
+                      startDate: d.startDate,
+                      endDate: d.endDate,
+                    })),
+                  }
+                : undefined,
+            },
+          },
+        })
+      : await tx.schoolSession.create({
+          data: {
+            title: title!,
+            school: {
+              connect: {
+                id: ctx.profile.schoolId,
+              },
+            },
+            terms: {
+              createMany: terms?.length
+                ? {
+                    data: data.terms!?.map((d) => ({
+                      schoolId: ctx.profile?.schoolId,
+                      title: d.title,
+                      startDate: d.startDate,
+                      endDate: d.endDate,
+                    })),
+                  }
+                : undefined,
+            },
+          },
+        });
+  });
+}

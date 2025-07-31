@@ -1,8 +1,6 @@
 "use client";
 
-import { createAcadSessionAction } from "@/actions/create-acad-session";
-import { useAction } from "next-safe-action/hooks";
-import { Form, useFieldArray } from "react-hook-form";
+import { FormProvider, useFieldArray } from "react-hook-form";
 
 import { Button } from "@school-clerk/ui/button";
 import { Icons } from "@school-clerk/ui/icons";
@@ -20,7 +18,13 @@ import FormInput from "../controls/form-input";
 import { SubmitButton } from "../submit-button";
 import { useZodForm } from "@/hooks/use-zod-form";
 import { useAcademicParams } from "@/hooks/use-academic-params";
-import { createAcademicSessionSchema } from "@api/trpc/schemas/schemas";
+import {
+  CreateAcademicSession,
+  createAcademicSessionSchema,
+} from "@api/trpc/schemas/schemas";
+import { useTRPC } from "@/trpc/client";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "@school-clerk/ui/use-toast";
 
 export function AcademicSessionForm() {
   const form = useZodForm(createAcademicSessionSchema, {});
@@ -30,18 +34,29 @@ export function AcademicSessionForm() {
     name: "terms",
     keyName: "_id",
   });
-
-  const createSession = useAction(createAcadSessionAction, {
-    onSuccess(args) {
-      console.log(args);
-    },
-    onError(e) {
-      console.log(e);
-    },
+  const trpc = useTRPC();
+  const save = useMutation(
+    trpc.academics.createAcademicSession.mutationOptions({
+      onSuccess(data, variables, context) {
+        toast({
+          title: "Success",
+          description: "Your academic session has been saved.",
+        });
+      },
+      onError(error, variables, context) {
+        toast({
+          title: "Error",
+          description: "Something went wrong. Please try again later.",
+        });
+      },
+    }),
+  );
+  const onSubmit = form.handleSubmit((data) => {
+    save.mutate(data);
   });
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(createSession.execute)}>
+    <FormProvider {...form}>
+      <form onSubmit={onSubmit}>
         <div className="grid gap-4">
           {!!params?.sessionId || (
             <FormInput
@@ -105,12 +120,10 @@ export function AcademicSessionForm() {
             </Button>
           </div>
           <div className="flex justify-end">
-            <SubmitButton isSubmitting={createSession?.isExecuting}>
-              Submit
-            </SubmitButton>
+            <SubmitButton isSubmitting={save?.isPending}>Submit</SubmitButton>
           </div>
         </div>
       </form>
-    </Form>
+    </FormProvider>
   );
 }
