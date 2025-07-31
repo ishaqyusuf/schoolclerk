@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Generate } from "./generate";
-import { useGlobalParams } from "./use-global";
+import { Generate } from "./first-term-1446-1447/generate";
+import { useGlobalParams } from "./first-term-1446-1447/use-global";
 
 export function Header({}) {
   const g = useGlobalParams();
@@ -22,6 +22,10 @@ export function Header({}) {
     {
       href: `/first-term-1446-1447/report-sheet`,
       label: "Report Sheet",
+    },
+    {
+      href: `/2nd-term-accounting`,
+      label: "2nd Term Accounting",
     },
   ];
   if (g.params.entryMode) return null;
