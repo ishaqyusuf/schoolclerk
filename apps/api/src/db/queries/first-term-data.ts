@@ -209,14 +209,43 @@ export async function findStudents(ctx: TRPCContext, searchParts: string[]) {
   ]);
   const classrooms = await getClassrooms(ctx);
   return {
-    students: students.map((s) => ({
-      studentId: s.postId,
-      fullName: [s.firstName, s.surname, s.otherName].filter(Boolean).join(" "),
-      classId: s.classId,
-      classRoom: classrooms.find((c) => c.postId === s.classId)?.classTitle,
-    })),
+    // students: students.map((s) => ({
+    //   studentId: s.postId,
+    //   fullName: [s.firstName, s.surname, s.otherName].filter(Boolean).join(" "),
+    //   classId: s.classId,
+    //   classRoom: classrooms.find((c) => c.postId === s.classId)?.classTitle,
+    // })),
+    students: findBestMatches(students, searchParts, classrooms),
     classrooms,
   };
+}
+function findBestMatches(students, searchParts, classrooms) {
+  const scoredStudents = students.map((s) => {
+    const nameParts = [s.firstName, s.surname, s.otherName].filter(Boolean);
+    const totalParts = searchParts.length;
+    const matchedParts = searchParts.filter((sp) =>
+      nameParts.some((np) => np.toLowerCase() === sp.toLowerCase())
+    ).length;
+    const percentage =
+      totalParts === 0
+        ? 0
+        : Math.round((matchedParts / totalParts) * 100) || 50;
+    return {
+      studentId: s.postId,
+      fullName: nameParts.join(" "),
+      classId: s.classId,
+      classRoom: classrooms.find((c) => c.postId === s.classId)?.classTitle,
+      percentage,
+    };
+  });
+
+  const perfectMatches = scoredStudents.filter((s) => s.percentage === 100);
+
+  const resultStudents =
+    perfectMatches.length > 0
+      ? perfectMatches
+      : scoredStudents.sort((a, b) => b.percentage - a.percentage).slice(0, 2);
+  return resultStudents;
 }
 export async function getSubjects(ctx) {
   const subjects = await getDataList<SubjectPostData>(

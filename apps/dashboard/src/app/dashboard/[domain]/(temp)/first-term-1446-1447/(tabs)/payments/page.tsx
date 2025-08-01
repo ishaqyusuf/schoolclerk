@@ -9,9 +9,10 @@ import { Payment, PaymentRaw } from "@api/db/queries/first-term-data";
 import { toast } from "@school-clerk/ui/use-toast";
 import { Badge } from "@school-clerk/ui/badge";
 import { Menu } from "@/components/menu";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Input } from "@school-clerk/ui/input";
 import { CreatePaymentLine } from "../classrooms/create-payment-line";
+import { arToEn } from "@/utils/utils";
 
 export default function PaymentsPage() {
   const { createAction, deleteAction } = usePostMutate();
@@ -93,6 +94,7 @@ export default function PaymentsPage() {
                   </td>
 
                   <td className="px-6 flex gap-4 py-4 whitespace-nowrap">
+                    <QuickPay line={payment.line} id={payment.postId} />
                     {payment?.appliedPayments?.map((ap, api) => (
                       <Badge key={api}>
                         {ap?.term}
@@ -108,6 +110,209 @@ export default function PaymentsPage() {
         </div>
       )}
     </div>
+  );
+}
+function QuickPay({ line, id }) {
+  const [name, ...rest] = line?.split(". ");
+  const tags = ["رس", "س", "ر", "ق"] as const;
+  const pays = rest
+    // .split(".")
+    .filter(Boolean)
+    .filter((a) => tags.some((b) => a.startsWith(b) || a.endsWith(b)))
+    .map((b) => {
+      const val = arToEn(b);
+      let k = null;
+      let valArr = [];
+      val?.split("").map((a) => {
+        if (Number.isInteger(+a)) valArr.push(a);
+        else k = `${k ? k : ""}${a}`;
+      });
+      return {
+        amount: valArr?.join(""),
+        k,
+      };
+    })
+    .map(({ amount, k }): Payment => {
+      switch (k as (typeof tags)[number]) {
+        case "ر":
+          return {
+            term: "first",
+            amount,
+            type: "student-payment",
+            status: "paid",
+            paymentType: "fee",
+          };
+        case "ق":
+          return {
+            amount: 1000,
+            term: "first",
+            status: "paid",
+            type: "student-payment",
+            paymentType: "form",
+          };
+        case "رس":
+        case "س":
+          return {
+            amount,
+            term: "third",
+            status: "paid",
+            type: "student-payment",
+            paymentType: "fee",
+          };
+      }
+      return null as any;
+    })
+    .filter(Boolean);
+  return (
+    <>
+      <div className="inline-flex gap-1">
+        {pays?.map((p, pi) => (
+          <QuickPayItem line={line} id={id} data={p} key={pi} />
+        ))}
+      </div>
+    </>
+  );
+}
+function QuickPayItem({ line, id, data }) {
+  const [name, ...rest] = line?.split(". ");
+  const searchParts = name
+    ?.split(name?.includes(".") ? "." : " ")
+    ?.filter(Boolean);
+  const [opened, setOpened] = useState(false);
+  const trpc = useTRPC();
+  const m = usePostMutate();
+  const qc = useQueryClient();
+  const { data: matchings, isPending } = useQuery(
+    trpc.ftd.studentSearch.queryOptions(
+      {
+        searchParts,
+      },
+      {
+        enabled: opened,
+      },
+    ),
+  );
+  const create = async ({
+    amount,
+    status,
+    term,
+    type,
+    paymentType,
+    postId,
+    rawPaymentId,
+    studentId,
+  }: Payment) => {
+    m.createAction.mutate(
+      {
+        data: {
+          amount,
+          status,
+          term,
+          type,
+          paymentType,
+          postId,
+          rawPaymentId,
+          studentId,
+        },
+      },
+      {
+        onSuccess(data, variables, context) {
+          qc.invalidateQueries({
+            queryKey: trpc.ftd.getPaymentsList.queryKey(),
+          });
+        },
+      },
+    );
+  };
+  return (
+    <>
+      <Menu
+        noSize
+        open={opened}
+        onOpenChanged={setOpened}
+        Trigger={
+          <Button
+            variant="outline"
+            className="inline-flex text-xs uppercase gap-1"
+          >
+            <span>{data.amount}</span>
+            <span>{data.paymentType}</span>
+            <span>{data.term}</span>
+          </Button>
+        }
+      >
+        <Menu.Label>
+          <div dir="rtl" className="flex gap-1">
+            {searchParts?.map((p, pi) => <span key={pi}>{p}</span>)}
+          </div>
+        </Menu.Label>
+        {isPending ? (
+          <Menu.Item disabled>Loading</Menu.Item>
+        ) : !matchings?.classrooms?.length && !matchings?.students?.length ? (
+          <Menu.Item>No Data Found</Menu.Item>
+        ) : (
+          <>
+            {matchings?.students?.map((student) => (
+              <Fragment key={student.studentId}>
+                <Menu.Item
+                  onClick={(e) => {
+                    const formData: Payment = {
+                      ...(data as Payment),
+                      studentId: student.studentId,
+                      rawPaymentId: id,
+                      status: "applied",
+                    };
+                    console.log(formData);
+                    create(formData);
+                  }}
+                  dir="rtl"
+                  shortCut={
+                    <span className="whitespace-nowrap">
+                      {student?.classRoom}
+                    </span>
+                  }
+                >
+                  <span className="whitespace-nowrap">{student.fullName}</span>
+                </Menu.Item>
+                <Menu.Item
+                  SubMenu={
+                    <>
+                      {["third", "second", "first"].map((term) => (
+                        <Menu.Item
+                          key={term}
+                          onClick={(e) => {
+                            create({
+                              amount: 1000,
+                              studentId: student.studentId,
+                              status: "applied",
+                              term: term as any,
+                              // paymentType,
+                              type: "student-payment",
+                              rawPaymentId: id,
+                            });
+                          }}
+                        >
+                          {term} {" Term"}
+                        </Menu.Item>
+                      ))}
+                    </>
+                  }
+                  dir="rtl"
+                  shortCut={
+                    <span className="whitespace-nowrap">
+                      {student?.classRoom}
+                    </span>
+                  }
+                  key={student.studentId}
+                >
+                  <span className="whitespace-nowrap">{student.fullName}</span>
+                </Menu.Item>
+              </Fragment>
+            ))}
+          </>
+        )}
+      </Menu>
+    </>
   );
 }
 function PaymentAction({ line, id }) {

@@ -45,7 +45,7 @@ export const createAcademicSessionSchema = z
       )
       .optional(),
   })
-  .refine((data) => !data.sessionId && !data.title, {
+  .refine((data) => data.sessionId || data.title, {
     message: "Academic session title is required",
     path: ["title"],
   });

@@ -18,17 +18,18 @@ import FormInput from "../controls/form-input";
 import { SubmitButton } from "../submit-button";
 import { useZodForm } from "@/hooks/use-zod-form";
 import { useAcademicParams } from "@/hooks/use-academic-params";
-import {
-  CreateAcademicSession,
-  createAcademicSessionSchema,
-} from "@api/trpc/schemas/schemas";
+import { createAcademicSessionSchema } from "@api/trpc/schemas/schemas";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "@school-clerk/ui/use-toast";
 
 export function AcademicSessionForm() {
-  const form = useZodForm(createAcademicSessionSchema, {});
   const { params } = useAcademicParams();
+  const form = useZodForm(createAcademicSessionSchema, {
+    defaultValues: {
+      sessionId: params?.sessionId,
+    },
+  });
   const terms = useFieldArray({
     control: form.control,
     name: "terms",
@@ -44,6 +45,7 @@ export function AcademicSessionForm() {
         });
       },
       onError(error, variables, context) {
+        console.log(error);
         toast({
           title: "Error",
           description: "Something went wrong. Please try again later.",
@@ -54,11 +56,12 @@ export function AcademicSessionForm() {
   const onSubmit = form.handleSubmit((data) => {
     save.mutate(data);
   });
+  const watch = form.watch();
   return (
     <FormProvider {...form}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-4">
-          {!!params?.sessionId || (
+          {!!watch.sessionId || (
             <FormInput
               control={form.control}
               name="title"
